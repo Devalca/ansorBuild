@@ -1,5 +1,6 @@
 import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
+import 'package:ansor_build/src/screen/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:flutter/material.dart';
@@ -194,9 +195,15 @@ class _BerandaPageState extends State<BerandaPage> {
   Widget _rowPpobService(PpobService ppobService) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: 
-        (context) => PulsaPage()
-        ));
+        if(ppobService.title == "PDAM") {
+          Navigator.push(context, MaterialPageRoute(builder: 
+          (context) => PdamPage()));
+        } else if (ppobService.title == "PULSA") {
+          Navigator.push(context, MaterialPageRoute(builder: 
+          (context) => PulsaPage()));
+        } else {
+          print('Under Maintence');
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(10.0),
