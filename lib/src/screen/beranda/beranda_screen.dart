@@ -4,7 +4,6 @@ import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
-import 'package:ansor_build/src/screen/testing.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -171,7 +170,11 @@ class _BerandaPageState extends State<BerandaPage> {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.only(right: 10.0),
-                        child: Icon(Icons.refresh),
+                        child: IconButton(icon: Icon(Icons.refresh), onPressed: () {
+                            setState(() {
+                              getSaldo();
+                            });
+                          })
                       ),
                       RaisedButton(
                         onPressed: () {
@@ -180,7 +183,7 @@ class _BerandaPageState extends State<BerandaPage> {
                               MaterialPageRoute(
                                   builder: (context) => TopupPage()));
                         },
-                        child: Text('Saldo'),
+                        child: Text('Isi Saldo'),
                       )
                     ],
                   ),
@@ -339,7 +342,7 @@ class _BerandaPageState extends State<BerandaPage> {
   }
 
   Future<Wallet> getSaldo() async {
-    String url = 'http://192.168.10.31:3000/users/wallet/1';
+    String url = 'http://192.168.10.11:3000/users/wallet/1';
     final response =
         await http.get(url, headers: {"Accept": "application/json"});
 

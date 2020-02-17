@@ -1,166 +1,116 @@
-import 'package:ansor_build/src/model/ansor_model.dart';
-import 'package:ansor_build/src/service/api_service.dart';
-import 'package:flutter/material.dart';
+// import 'package:ansor_build/src/model/ansor_model.dart';
+// import 'package:ansor_build/src/service/api_service.dart';
+// import 'package:flutter/material.dart';
 
-final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+// final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
-class FormAddScreen extends StatefulWidget {
-  @override
-  _FormAddScreenState createState() => _FormAddScreenState();
-}
+// class FormScreen extends StatefulWidget {
+//   Kontak kontak;
+//   FormScreen({this.kontak});
 
-class _FormAddScreenState extends State<FormAddScreen> {
-  bool _isLoading = false;
-  ApiService _apiService = ApiService();
-  bool _isFieldNameValid;
-  bool _isFieldEmailValid;
-  bool _isFieldAgeValid;
-  TextEditingController _controllerName = TextEditingController();
-  TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerAge = TextEditingController();
+//   @override
+//   _FormScreenState createState() => _FormScreenState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldState,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          "Form Add",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-      body: Stack(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _buildTextFieldName(),
-                _buildTextFieldEmail(),
-                _buildTextFieldAge(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: RaisedButton(
-                    onPressed: () {
-                      if (_isFieldNameValid == null ||
-                          _isFieldEmailValid == null ||
-                          _isFieldAgeValid == null ||
-                          !_isFieldNameValid ||
-                          !_isFieldEmailValid ||
-                          !_isFieldAgeValid) {
-                        _scaffoldState.currentState.showSnackBar(
-                          SnackBar(
-                            content: Text("Please fill all field"),
-                          ),
-                        );
-                        return;
-                      }
-                      setState(() => _isLoading = true);
-                      String name = _controllerName.text.toString();
-                      String email = _controllerEmail.text.toString();
-                      int age = int.parse(_controllerAge.text.toString());
-                      Profile profile =
-                          Profile(name: name, email: email, age: age);
-                      _apiService.createProfile(profile).then((isSuccess) {
-                        setState(() => _isLoading = false);
-                        if (isSuccess) {
-                          Navigator.pop(_scaffoldState.currentState.context);
-                        } else {
-                          _scaffoldState.currentState.showSnackBar(SnackBar(
-                            content: Text("Submit data failed"),
-                          ));
-                        }
-                      });
-                    },
-                    child: Text(
-                      "Submit".toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    color: Colors.orange[600],
-                  ),
-                )
-              ],
-            ),
-          ),
-          _isLoading
-              ? Stack(
-                  children: <Widget>[
-                    Opacity(
-                      opacity: 0.3,
-                      child: ModalBarrier(
-                        dismissible: false,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ],
-                )
-              : Container(),
-        ],
-      ),
-    );
-  }
+// class _FormScreenState extends State<FormScreen> {
+//   ApiService api = new ApiService();
+//   TextEditingController ctrlNamaDepan = new TextEditingController();
+//   TextEditingController ctrlNamaBelakang = new TextEditingController();
+//   TextEditingController ctrlNoTelepon = new TextEditingController();
 
-  Widget _buildTextFieldName() {
-    return TextField(
-      controller: _controllerName,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        labelText: "Full name",
-        errorText: _isFieldNameValid == null || _isFieldNameValid
-            ? null
-            : "Full name is required",
-      ),
-      onChanged: (value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _isFieldNameValid) {
-          setState(() => _isFieldNameValid = isFieldValid);
-        }
-      },
-    );
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
 
-  Widget _buildTextFieldEmail() {
-    return TextField(
-      controller: _controllerEmail,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        labelText: "Email",
-        errorText: _isFieldEmailValid == null || _isFieldEmailValid
-            ? null
-            : "Email is required",
-      ),
-      onChanged: (value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _isFieldEmailValid) {
-          setState(() => _isFieldEmailValid = isFieldValid);
-        }
-      },
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       key: _scaffoldState,
+//       appBar: AppBar(
+//         backgroundColor: Colors.orange[400],
+//         iconTheme: IconThemeData(color: Colors.white),
+//         title: Text(
+//           widget.kontak == null ? "Form Tambah" : "Form Update",
+//           style: TextStyle(color: Colors.white),
+//         ),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(20.0),
+//         child: Column(
+//           children: <Widget>[
+//             TextFormField(
+//               controller: ctrlNamaDepan,
+//               keyboardType: TextInputType.text,
+//               decoration: InputDecoration(
+//                 labelText: 'Nomor Hp',
+//                 hintText: 'Nomor Hp',
+//               ),
+//             ),
+//             SizedBox(
+//               height: 10,
+//             ),
+//             TextFormField(
+//               controller: ctrlNamaBelakang,
+//               keyboardType: TextInputType.text,
+//               decoration: InputDecoration(
+//                 labelText: 'Nominal',
+//                 hintText: 'Nominal',
+//               ),
+//             ),
+//             SizedBox(
+//               height: 10,
+//             ),
+//             Row(
+//               children: <Widget>[
+//                 Spacer(),
+//                 RaisedButton(
+//                   onPressed: () {
+//                     if (validateInput()) {
+//                       Kontak dataIn = new Kontak(
+//                           no_hp: ctrlNamaDepan.text,
+//                           nominal: int.parse(ctrlNamaBelakang.text));
+//                       if (this.widget.kontak != null) {
+//                          _scaffoldState.currentState.showSnackBar(SnackBar(
+//                               content: Text("Simpan data gagal"),
+//                             ));
+//                       } else {
+//                         api.create(dataIn).then((result) {
+//                           if (result != null) {
+//                             Navigator.pop(_scaffoldState.currentState.context);
+//                           } else {
+//                             _scaffoldState.currentState.showSnackBar(SnackBar(
+//                               content: Text("Simpan data gagal"),
+//                             ));
+//                           }
+//                         });
+//                       }
+//                     } else {
+//                       _scaffoldState.currentState.showSnackBar(SnackBar(
+//                         content: Text("Data belum lengkap"),
+//                       ));
+//                     }
+//                   },
+//                   child: Text(
+//                     widget.kontak == null ? "Simpan" : "Ubah",
+//                     style: TextStyle(color: Colors.white),
+//                   ),
+//                   color: Colors.orange[400],
+//                 ),
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
 
-  Widget _buildTextFieldAge() {
-    return TextField(
-      controller: _controllerAge,
-      keyboardType: TextInputType.number,
-      decoration: InputDecoration(
-        labelText: "Age",
-        errorText: _isFieldAgeValid == null || _isFieldAgeValid
-            ? null
-            : "Age is required",
-      ),
-      onChanged: (value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _isFieldAgeValid) {
-          setState(() => _isFieldAgeValid = isFieldValid);
-        }
-      },
-    );
-  }
-}
+//   bool validateInput() {
+//     if (ctrlNamaDepan.text == "" ||
+//         ctrlNamaBelakang.text == "" ) {
+//       return false;
+//     } else {
+//       return true;
+//     }
+//   }
+// }

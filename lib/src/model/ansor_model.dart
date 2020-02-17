@@ -1,4 +1,144 @@
+// To parse this JSON data, do
+//
+//     final post = postFromJson(jsonString);
+// To parse this JSON data, do
+//
+//     final post = postFromJson(jsonString);
+
 import 'dart:convert';
+
+Post postFromJson(String str) => Post.fromJson(json.decode(str));
+
+
+String postToJson(Post data) => json.encode(data.toJson());
+
+class Post {
+    int id;
+    int walletId;
+    String noHp;
+    int nominal;
+    int adminFee;
+    String provider;
+    int totalHarga;
+
+    Post({
+        this.id,
+        this.walletId,
+        this.noHp,
+        this.nominal,
+        this.adminFee,
+        this.provider,
+        this.totalHarga,
+    });
+
+    factory Post.fromJson(Map<String, dynamic> json) => Post(
+        id: json["id"],
+        walletId: json["walletId"],
+        noHp: json["no_hp"],
+        nominal: json["nominal"],
+        adminFee: json["admin_fee"],
+        provider: json["provider"],
+        totalHarga: json["total_harga"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "walletId": walletId,
+        "no_hp": noHp,
+        "nominal": nominal,
+        "admin_fee": adminFee,
+        "provider": provider,
+        "total_harga": totalHarga,
+    };
+}
+
+
+// import 'dart:convert';
+
+// Post postFromJson(String str) => Post.fromJson(json.decode(str));
+
+// String postToJson(Post data) => json.encode(data.toJson());
+
+// class Post {
+//     List<Datum> data;
+//     String message;
+
+//     Post({
+//         this.data,
+//         this.message,
+//     });
+
+//     factory Post.fromJson(Map<String, dynamic> json) => Post(
+//         data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+//         message: json["message"],
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "data": List<dynamic>.from(data.map((x) => x.toJson())),
+//         "message": message,
+//     };
+// }
+
+// class Datum {
+//     int id;
+//     int walletId;
+//     String noHp;
+//     int nominal;
+//     int adminFee;
+//     String provider;
+//     int totalHarga;
+
+//     Datum({
+//         this.id,
+//         this.walletId,
+//         this.noHp,
+//         this.nominal,
+//         this.adminFee,
+//         this.provider,
+//         this.totalHarga,
+//     });
+
+//     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+//         id: json["id"],
+//         walletId: json["walletId"],
+//         noHp: json["no_hp"],
+//         nominal: json["nominal"],
+//         adminFee: json["admin_fee"],
+//         provider: json["provider"],
+//         totalHarga: json["total_harga"],
+//     );
+
+//     Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "walletId": walletId,
+//         "no_hp": noHp,
+//         "nominal": nominal,
+//         "admin_fee": adminFee,
+//         "provider": provider,
+//         "total_harga": totalHarga,
+//     };
+// }
+
+ 
+class Kontak {
+  int id;
+  String no_hp;
+  int nominal;
+ 
+  Kontak({this.id, this.no_hp, this.nominal});
+ 
+  factory Kontak.fromJson(Map<String, dynamic> map) {
+    return Kontak(
+        id: map["id"],
+        no_hp: map["no_hp"],
+        nominal: map["nominal"]);
+  }
+ 
+  static List<Kontak> kontakFromJson(String jsonData) {
+    final data = json.decode(jsonData);
+    return List<Kontak>.from(data.map((item) => Kontak.fromJson(item)));
+  }
+}
 
 class Profile {
   int id;
