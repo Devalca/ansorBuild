@@ -1,18 +1,17 @@
 import 'package:ansor_build/src/model/ansor_model.dart';
 
-class KontakResponse {
+class SakitResponse {
   bool status;
   String msg;
-  List<Kontak> data;
+  int data;
+  String blok;
 
-  KontakResponse({this.status, this.msg, this.data});
+  SakitResponse({this.status, this.msg, this.data});
 
-  factory KontakResponse.fromJson(Map<String, dynamic> map) {
-    // cast dynamic object to model (Kontak)
-    var allKontak = map['data'] as List;
-    List<Kontak> kontakList = allKontak.map((i) => Kontak.fromJson(i)).toList();
-
-    return KontakResponse(
-        status: map["status"], msg: map["message"], data: kontakList);
+  factory SakitResponse.fromJson(Map<String, dynamic> map) {
+    var transactionId = map['transactionId'];
+    print(transactionId);
+    return SakitResponse(
+        status: map["status"], msg: map["message"], data: transactionId);
   }
 }

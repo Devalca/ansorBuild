@@ -7,24 +7,26 @@ import 'package:ansor_build/src/response/ansor_response.dart';
 import 'package:http/http.dart' show Client;
 import 'package:http/http.dart' as http;
 
+
+
 class ApiService {
 
 String baseUrl = "http://192.168.10.11:3000/ppob";
 
 Future<List<Post>> getAllPost() async {
-  final postResponse = await http.get(baseUrl);
-  if(postResponse.statusCode == 200) {
-    print(postResponse.body);
+  final response_1 = await http.get(baseUrl);
+  if(response_1.statusCode == 200) {
+    print(response_1.body);
   } else {
-    print(postResponse.statusCode);
+    print(response_1.statusCode);
   }
 }
 
 Future<Post> getPost() async {
-  final postResponse = await http.get('$baseUrl/pulsa/31',
+  final response_1 = await http.get('$baseUrl/pulsa/31',
   headers: {"accept": "application/json"},
   );
-  return postFromJson(postResponse.body);
+  return postFromJson(response_1.body);
 }
 
 // Future<bool> createPost(Post post) async{
@@ -48,6 +50,15 @@ Future<Post> createPost(Post post) async{
       },
       body: postToJson(post)
   );
+  print(response.body);
+  Map blok = jsonDecode(response.body);
+  final bblok = blok['transactionId'];
+  print(blok['transactionId']);
+  print(blok);
+  
+  // String s = response.body;
+  // String result = s.substring(17, s.lastIndexOf('}'));
+  // print('$baseUrl'+result);
   return postFromJson(response.body);
 }
 

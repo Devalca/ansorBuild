@@ -1,8 +1,10 @@
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:ansor_build/src/response/ansor_response.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+SakitResponse r = new SakitResponse();
 
 class PulsaPage extends StatefulWidget {
   @override
@@ -64,8 +66,8 @@ class _PulsaPageState extends State<PulsaPage> {
                       _apiService.createPost(post).then((post) {
                         setState(() => _isLoading = false);
                         if (post != null) {
-                         _scaffoldState.currentState.showSnackBar(SnackBar(
-                           content: Text("Berhasil")
+                         Navigator.pushReplacement(context, MaterialPageRoute(builder:
+                         (context) => PageTow()
                          ));
                         } else {
                           _scaffoldState.currentState.showSnackBar(SnackBar(
@@ -145,6 +147,26 @@ class _PulsaPageState extends State<PulsaPage> {
           setState(() => _isFieldNominal = isFieldValid);
         }
       },
+    );
+  }
+}
+
+class PageTow extends StatefulWidget {
+  @override
+  _PageTowState createState() => _PageTowState();
+}
+
+class _PageTowState extends State<PageTow> {
+  ApiService _apiService = ApiService();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Detal Pembayaran'),
+      ),
+      body: Container(
+        child: Text(r.data.toString()),
+      ),
     );
   }
 }
