@@ -7,7 +7,7 @@ import 'package:ansor_build/src/response/ansor_response.dart';
 import 'package:http/http.dart' show Client;
 import 'package:http/http.dart' as http;
 
-
+String userUid;
 
 class ApiService {
 
@@ -23,10 +23,29 @@ Future<List<Post>> getAllPost() async {
 }
 
 Future<Post> getPost() async {
-  final response_1 = await http.get('$baseUrl/pulsa/31',
+  final response_1 = await http.get('$baseUrl/pulsa/$userUid',
   headers: {"accept": "application/json"},
   );
+  print(response_1.body);
   return postFromJson(response_1.body);
+}
+
+Future<Post> createPost(Post post) async{
+  final response = await http.post('$baseUrl/pulsa/prabayar',
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json'
+      },
+      body: postToJson(post),
+  );
+  print(response.body);
+  Map blok = jsonDecode(response.body);
+  final userUid = blok['transactionId'];
+  print(blok['transactionId']);
+  print(blok);
+  // String s = response.body;
+  // String result = s.substring(17, s.lastIndexOf('}'));
+  // print('$baseUrl'+result);
+  return postFromJson(response.body);
 }
 
 // Future<bool> createPost(Post post) async{
@@ -42,25 +61,6 @@ Future<Post> getPost() async {
 //     return false;
 //   }
 // }
-
-Future<Post> createPost(Post post) async{
-  final response = await http.post('$baseUrl/pulsa/prabayar',
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json'
-      },
-      body: postToJson(post)
-  );
-  print(response.body);
-  Map blok = jsonDecode(response.body);
-  final bblok = blok['transactionId'];
-  print(blok['transactionId']);
-  print(blok);
-  
-  // String s = response.body;
-  // String result = s.substring(17, s.lastIndexOf('}'));
-  // print('$baseUrl'+result);
-  return postFromJson(response.body);
-}
 
 // Future<http.Response> createPost(Post post) async {
 //   final createResponse = await http.post('$baseUrl/pulsa/prabayar',
