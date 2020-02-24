@@ -3,13 +3,11 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:ansor_build/src/response/ansor_response.dart';
 import 'package:http/http.dart' as http;
 
 import 'detail_screen.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
-SakitResponse r = new SakitResponse();
 
 class PulsaPage extends StatefulWidget {
   @override
@@ -17,7 +15,7 @@ class PulsaPage extends StatefulWidget {
 }
 
 class _PulsaPageState extends State<PulsaPage> {
-  Post post = null;
+  var _controller = new TextEditingController();
   bool _isLoading = false;
   ApiService _apiService = ApiService();
   bool _isFieldNomor;
@@ -28,96 +26,93 @@ class _PulsaPageState extends State<PulsaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldState,
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
-          title: Text(
-            "Form Add",
-            style: TextStyle(color: Colors.white),
-          ),
+      key: _scaffoldState,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          "Form Add",
+          style: TextStyle(color: Colors.white),
         ),
-        body: FutureBuilder<Post>(
-          future: _apiService.getPost(),
-          builder: (context, snapshot) {
-            return Container(
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        _buildTextFieldNomor(),
-                        _buildTextFieldNominal(),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: RaisedButton(
-                            onPressed: () {
-                              if (_isFieldNomor == null ||
-                                  _isFieldNominal == null ||
-                                  !_isFieldNomor ||
-                                  !_isFieldNominal) {
-                                _scaffoldState.currentState.showSnackBar(
-                                  SnackBar(
-                                    content: Text("WOYYY 1!1!1!"),
-                                  ),
-                                );
-                                return;
-                              }
-                              setState(() => _isLoading = true);
-                              String no_hp = _controllerNomor.text.toString();
-                              int nominal =
-                                  int.parse(_controllerNominal.text.toString());
-                              Post post = Post(noHp: no_hp, nominal: nominal);
-                              _apiService.createPost(post).then((post) {
-                                setState(() => _isLoading = false);
-                                if (post != null) {
-                                    Navigator.push(context, MaterialPageRoute(builder: 
-                                    (context) => DetailPage()
-                                    ));
-                                } else {
-                                  _scaffoldState.currentState
-                                      .showSnackBar(SnackBar(
-                                    content: Text("Submit data failed"),
-                                  ));
-                                }
-                              });
-                            },
-                            child: Text(
-                              (post != null)
-                                  ? post.id + post.nominal
-                                  : "tidak ADad",
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            color: Colors.orange[600],
+      ),
+      body: Stack(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                _buildTextFieldNomor(),
+                _buildTextFieldNominal(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: RaisedButton(
+                    onPressed: () {
+                      if (_isFieldNomor == null ||
+                          _isFieldNominal == null ||
+                          !_isFieldNomor ||
+                          !_isFieldNominal) {
+                        _scaffoldState.currentState.showSnackBar(
+                          SnackBar(
+                            content: Text("Please fill all field"),
                           ),
-                        ),
-                      ],
+                        );
+                        return;
+                      }
+                      setState(() => _isLoading = true);
+                      String nomor = _controllerNomor.text.toString();
+                      int nominal =
+                          int.parse(_controllerNominal.text.toString());
+                      Post post = Post(noHp: nomor, nominal: nominal);
+                      _apiService.createPost(post).then((response) async {
+                        if (response.statusCode == 200) {
+                          _scaffoldState.currentState.showSnackBar(SnackBar(
+                              duration: Duration(minutes: 5),
+                              content: Text("SEDANG PROSES")));
+                          //  saveId();
+                          Map blok = jsonDecode(response.body);
+                          userUid = blok['transactionId'].toString();
+                          _apiService.saveNameId(userUid).then((bool committed) {
+                            print(userUid);
+                          });
+                           await new Future.delayed(const Duration(seconds: 5));
+                          Navigator.push(context, new MaterialPageRoute(builder: (__) => new DetailPage()));
+                           setState(() => _isLoading = false);
+                        } else {
+                          print(response.statusCode);
+                        }
+                      });
+                    },
+                    child: Text(
+                      "Submit".toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
+                    color: Colors.orange[600],
                   ),
-                  _isLoading
-                      ? Stack(
-                          children: <Widget>[
-                            Opacity(
-                              opacity: 0.3,
-                              child: ModalBarrier(
-                                dismissible: false,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ],
-                        )
-                      : Container(),
-                ],
-              ),
-            );
-          },
-        ));
+                ),
+              ],
+            ),
+          ),
+          _isLoading
+              ? Stack(
+                  children: <Widget>[
+                    Opacity(
+                      opacity: 0.3,
+                      child: ModalBarrier(
+                        dismissible: false,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ],
+                )
+              : Container(),
+        ],
+      ),
+    );
   }
 
   Widget _buildTextFieldNomor() {

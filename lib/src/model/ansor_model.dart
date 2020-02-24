@@ -1,5 +1,69 @@
 import 'dart:convert';
 
+Album albumFromJson(String str) => Album.fromJson(json.decode(str));
+
+String albumToJson(Album data) => json.encode(data.toJson());
+
+class Album {
+  List<Datum> data;
+  String message;
+
+  Album({
+    this.data,
+    this.message,
+  });
+
+  factory Album.fromJson(Map<String, dynamic> json) => Album(
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
+      };
+}
+
+class Datum {
+  int id;
+  int walletId;
+  String noHp;
+  int nominal;
+  int adminFee;
+  String provider;
+  int totalHarga;
+
+  Datum({
+    this.id,
+    this.walletId,
+    this.noHp,
+    this.nominal,
+    this.adminFee,
+    this.provider,
+    this.totalHarga,
+  });
+
+  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        id: json["id"],
+        walletId: json["walletId"],
+        noHp: json["no_hp"],
+        nominal: json["nominal"],
+        adminFee: json["admin_fee"],
+        provider: json["provider"],
+        totalHarga: json["total_harga"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "walletId": walletId,
+        "no_hp": noHp,
+        "nominal": nominal,
+        "admin_fee": adminFee,
+        "provider": provider,
+        "total_harga": totalHarga,
+      };
+}
+
 Post postFromJson(String str) => Post.fromJson(json.decode(str));
 
 String postToJson(Post data) => json.encode(data.toJson());
@@ -12,6 +76,7 @@ class Post {
     int adminFee;
     String provider;
     int totalHarga;
+    int transactionId;
 
     Post({
         this.id,
@@ -21,6 +86,7 @@ class Post {
         this.adminFee,
         this.provider,
         this.totalHarga,
+        this.transactionId
     });
 
     factory Post.fromJson(Map<String, dynamic> json) => Post(
@@ -31,6 +97,7 @@ class Post {
         adminFee: json["admin_fee"],
         provider: json["provider"],
         totalHarga: json["total_harga"],
+        transactionId: json['transactionId']
     );
 
     Map<String, dynamic> toJson() => {
@@ -41,6 +108,7 @@ class Post {
         "admin_fee": adminFee,
         "provider": provider,
         "total_harga": totalHarga,
+        "transactionId": transactionId
     };
 }
  
