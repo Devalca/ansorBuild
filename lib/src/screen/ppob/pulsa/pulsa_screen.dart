@@ -70,7 +70,7 @@ class _PulsaPageState extends State<PulsaPage> {
                               content: Text("SEDANG PROSES")));
                           //  saveId();
                           Map blok = jsonDecode(response.body);
-                          userUid = blok['transactionId'].toString();
+                          userUid = blok['id'].toString();
                           _apiService.saveNameId(userUid).then((bool committed) {
                             print(userUid);
                           });

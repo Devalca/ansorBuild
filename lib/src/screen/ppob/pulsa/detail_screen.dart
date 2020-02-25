@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -45,8 +46,9 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<Album> fetchAlbum() async {
+    String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
     final response =
-        await http.get('http://192.168.10.11:3000/ppob/pulsa/$_id');
+        await http.get(baseUrl + _id);
     print(response.body);
     if (response.statusCode == 200) {
       return albumFromJson(response.body);
@@ -91,8 +93,8 @@ class _DetailPageState extends State<DetailPage> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text('Pulsa'),
-                                      Text(snapshot.data.data[0].noHp),
-                                      Text(snapshot.data.data[0].provider)
+                                      Text((snapshot.data.data[0].noHp) != null ? snapshot.data.data[0].noHp : "Proses" ),
+                                      Text((snapshot.data.data[0].provider) != null ? snapshot.data.data[0].provider : "Proses" )
                                     ],
                                   ),
                                 )
@@ -119,9 +121,7 @@ class _DetailPageState extends State<DetailPage> {
                                       child: Text('Total Harga'),
                                     ),
                                     Container(
-                                      child: Text(snapshot
-                                          .data.data[0].totalHarga
-                                          .toString()),
+                                      child: Text((snapshot.data.data[0].totalHarga) != null ? snapshot.data.data[0].totalHarga.toString() : "Proses" )
                                     ),
                                   ],
                                 ),
@@ -133,8 +133,7 @@ class _DetailPageState extends State<DetailPage> {
                                       child: Text('Biaya Pelayanan'),
                                     ),
                                     Container(
-                                      child: Text(snapshot.data.data[0].adminFee
-                                          .toString()),
+                                      child: Text((snapshot.data.data[0].adminFee) != null ? snapshot.data.data[0].adminFee.toString() : "Proses" ),
                                     ),
                                   ],
                                 ),
@@ -149,9 +148,7 @@ class _DetailPageState extends State<DetailPage> {
                                         child: Text('Total'),
                                       ),
                                       Container(
-                                        child: Text(snapshot
-                                            .data.data[0].adminFee
-                                            .toString()),
+                                        child: Text((snapshot.data.data[0].totalHarga) != null ? snapshot.data.data[0].totalHarga.toString() : "Proses" ),
                                       ),
                                     ],
                                   ),
@@ -243,13 +240,16 @@ class _DetailPageState extends State<DetailPage> {
                               print(response.statusCode);
                               print('Berhasil');
                               print(response.body);
-                              // Map blok = jsonDecode(response.body);
-                              // userUid = blok['id'].toString();
-                              // _apiService.saveNameId(userUid).then((bool committed) {
-                              //   print(userUid);
-                              // });
-                               await new Future.delayed(const Duration(seconds: 5));
-                          Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
+                              Map blok = jsonDecode(response.body);
+                              userUid = blok['id'].toString();
+                              _apiService.saveNameId(userUid).then((bool committed) {
+                                print(userUid);
+                              });
+                              //  await new Future.delayed(const Duration(seconds: 5));
+                               Navigator.pushReplacement(context, MaterialPageRoute(builder: 
+                               (context) => SesPulsaPage()
+                               ));
+                                print(post);
                               setState(() => _isLoading = false);
                             } else {
                               print(response.statusCode);
