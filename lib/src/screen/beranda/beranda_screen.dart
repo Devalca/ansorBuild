@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
-import 'package:ansor_build/src/screen/pdam/pdam_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class BerandaPage extends StatefulWidget {
@@ -84,7 +87,7 @@ class _BerandaPageState extends State<BerandaPage> {
                     ],
                   ),
                 ),
-                 Container(
+                Container(
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -131,23 +134,56 @@ class _BerandaPageState extends State<BerandaPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  child: Text('Rp 1.050.000',
-                  style: TextStyle(
-                    fontSize: 40.0
-                  ),
+                  child: FutureBuilder<Wallet>(
+                    future:
+                        getSaldo(), 
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Center(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Row(
+                                  children: <Widget>[
+                                     Text('Rp. ', style: TextStyle(fontSize: 40.0),),
+                              Text(snapshot.data.saldo_akhir
+                                  .toString(),
+                                  style: TextStyle(
+                                    fontSize: 40.0
+                                  ),
+                                  ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return CircularProgressIndicator();
+                    },
                   ),
                 ),
                 Container(
                   child: Row(
                     children: <Widget>[
-                      Icon(Icons.refresh),
+                      Container(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: IconButton(icon: Icon(Icons.refresh), onPressed: () {
+                            setState(() {
+                              getSaldo();
+                            });
+                          })
+                      ),
                       RaisedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: 
-                          (context) => TopupPage()
-                          ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TopupPage()));
                         },
-                        child: Text('Saldo'),
+                        child: Text('Isi Saldo'),
                       )
                     ],
                   ),
@@ -161,11 +197,13 @@ class _BerandaPageState extends State<BerandaPage> {
   }
 
   Widget _buildIklanOne() {
-    return Container(
-      height: 100.0,
-      width: 400.0,
-      color: Colors.white,
-      child: Center(child: Text('INI IKLAN')),
+    return InkWell(
+      child: Container(
+        height: 100.0,
+        width: 400.0,
+        color: Colors.white,
+        child: Center(child: Text('INI IKLAN')),
+      ),
     );
   }
 
@@ -195,12 +233,12 @@ class _BerandaPageState extends State<BerandaPage> {
   Widget _rowPpobService(PpobService ppobService) {
     return InkWell(
       onTap: () {
-        if(ppobService.title == "PDAM") {
-          Navigator.push(context, MaterialPageRoute(builder: 
-          (context) => PdamPage()));
+        if (ppobService.title == "PDAM") {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PdamPage()));
         } else if (ppobService.title == "PULSA") {
-          Navigator.push(context, MaterialPageRoute(builder: 
-          (context) => PulsaPage()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PulsaPage()));
         } else {
           print('Under Maintence');
         }
@@ -301,6 +339,29 @@ class _BerandaPageState extends State<BerandaPage> {
             ],
           ),
         ));
+  }
+
+  Future<Wallet> getSaldo() async {
+    String url = 'http://192.168.10.11:3000/users/wallet/1';
+    final response =
+        await http.get(url, headers: {"Accept": "application/json"});
+
+    if (response.statusCode == 200) {
+      return Wallet.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load post');
+    }
+  }
+}
+
+class Wallet {
+  final int walletId;
+  final int saldo_akhir;
+
+  Wallet({this.walletId, this.saldo_akhir});
+
+  factory Wallet.fromJson(Map<String, dynamic> json) {
+    return Wallet(saldo_akhir: json['data'][0]['saldo_akhir']);
   }
 }
 
