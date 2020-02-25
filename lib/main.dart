@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: TabBarDemo(),   
+      home: DetailPage(),   
     );
   }
 }
