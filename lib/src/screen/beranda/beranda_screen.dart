@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';

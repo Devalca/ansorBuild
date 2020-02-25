@@ -1,4 +1,4 @@
-import 'package:ansor_build/src/screen/ppob/pulsa/appbar_copy.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/tabbar_pulsa.dart';
 import 'package:flutter/material.dart';
 
 
@@ -20,7 +20,7 @@ class _TabBarDemoState extends State<TabBarDemo> {
             padding: EdgeInsets.only(top:80.0),
              child: Column(
                children: <Widget>[
-                 Expanded(child: BodyTabBar1()),
+                 Expanded(child: TabBarPulsa()),
                ],
              ),
           ),
