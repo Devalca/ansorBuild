@@ -121,7 +121,7 @@ class _DetailPageState extends State<DetailPage> {
                                       child: Text('Total Harga'),
                                     ),
                                     Container(
-                                      child: Text((snapshot.data.data[0].totalHarga) != null ? snapshot.data.data[0].totalHarga.toString() : "Proses" )
+                                      child: snapshot!=null ? Text(snapshot.data.data[0].totalHarga.toString()) : Text('data')
                                     ),
                                   ],
                                 ),
@@ -133,7 +133,7 @@ class _DetailPageState extends State<DetailPage> {
                                       child: Text('Biaya Pelayanan'),
                                     ),
                                     Container(
-                                      child: Text((snapshot.data.data[0].adminFee) != null ? snapshot.data.data[0].adminFee.toString() : "Proses" ),
+                                      child: snapshot!=null ? Text(snapshot.data.data[0].adminFee.toString()) : Text('data'),
                                     ),
                                   ],
                                 ),
@@ -148,7 +148,7 @@ class _DetailPageState extends State<DetailPage> {
                                         child: Text('Total'),
                                       ),
                                       Container(
-                                        child: Text((snapshot.data.data[0].totalHarga) != null ? snapshot.data.data[0].totalHarga.toString() : "Proses" ),
+                                         child: snapshot!=null ? Text(snapshot.data.data[0].totalHarga.toString()) : Text('data'),
                                       ),
                                     ],
                                   ),
