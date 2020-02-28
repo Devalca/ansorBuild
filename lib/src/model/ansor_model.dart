@@ -1,11 +1,87 @@
 import 'dart:convert';
 
+PostTrans postTransFromJson(String str) => PostTrans.fromJson(json.decode(str));
+
+String postTransToJson(PostTrans data) => json.encode(data.toJson());
+
+class PostTrans {
+    List<DataTrans> data;
+    String message;
+
+    PostTrans({
+        this.data,
+        this.message,
+    });
+
+    factory PostTrans.fromJson(Map<String, dynamic> json) => PostTrans(
+        data: List<DataTrans>.from(json["data"].map((x) => DataTrans.fromJson(x))),
+        message: json["message"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
+    };
+}
+
+class DataTrans {
+    int id;
+    int walletId;
+    int transactionId;
+    String noHp;
+    int nominal;
+    int adminFee;
+    String provider;
+    String status;
+    int totalHarga;
+    DateTime periode;
+
+    DataTrans({
+        this.id,
+        this.walletId,
+        this.transactionId,
+        this.noHp,
+        this.nominal,
+        this.adminFee,
+        this.provider,
+        this.status,
+        this.totalHarga,
+        this.periode,
+    });
+
+    factory DataTrans.fromJson(Map<String, dynamic> json) => DataTrans(
+        id: json["id"],
+        walletId: json["walletId"],
+        transactionId: json["transactionId"],
+        noHp: json["no_hp"],
+        nominal: json["nominal"],
+        adminFee: json["admin_fee"],
+        provider: json["provider"],
+        status: json["status"],
+        totalHarga: json["total_harga"],
+        periode: DateTime.parse(json["periode"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "walletId": walletId,
+        "transactionId": transactionId,
+        "no_hp": noHp,
+        "nominal": nominal,
+        "admin_fee": adminFee,
+        "provider": provider,
+        "status": status,
+        "total_harga": totalHarga,
+        "periode": periode.toIso8601String(),
+    };
+}
+
 Album albumFromJson(String str) => Album.fromJson(json.decode(str));
 
 String albumToJson(Album data) => json.encode(data.toJson());
 
 class Album {
-  List<Datum> data;
+  List<DataDetail> data;
   String message;
 
   Album({
@@ -14,7 +90,7 @@ class Album {
   });
 
   factory Album.fromJson(Map<String, dynamic> json) => Album(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<DataDetail>.from(json["data"].map((x) => DataDetail.fromJson(x))),
         message: json["message"],
       );
 
@@ -24,7 +100,7 @@ class Album {
       };
 }
 
-class Datum {
+class DataDetail {
   int id;
   int walletId;
   String noHp;
@@ -32,8 +108,10 @@ class Datum {
   int adminFee;
   String provider;
   int totalHarga;
+  int transactionId;
 
-  Datum({
+
+  DataDetail({
     this.id,
     this.walletId,
     this.noHp,
@@ -41,9 +119,11 @@ class Datum {
     this.adminFee,
     this.provider,
     this.totalHarga,
+    int transactionId
+
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory DataDetail.fromJson(Map<String, dynamic> json) => DataDetail(
         id: json["id"],
         walletId: json["walletId"],
         noHp: json["no_hp"],
@@ -51,6 +131,8 @@ class Datum {
         adminFee: json["admin_fee"],
         provider: json["provider"],
         totalHarga: json["total_harga"],
+        transactionId: json["transactionId"]
+ 
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,6 +143,8 @@ class Datum {
         "admin_fee": adminFee,
         "provider": provider,
         "total_harga": totalHarga,
+        "transactionId" : transactionId
+ 
       };
 }
 
@@ -69,27 +153,27 @@ Post postFromJson(String str) => Post.fromJson(json.decode(str));
 String postToJson(Post data) => json.encode(data.toJson());
 
 class Post {
-    int id;
-    int walletId;
-    String noHp;
-    int nominal;
-    int adminFee;
-    String provider;
-    int totalHarga;
-    int transactionId;
+  int id;
+  int walletId;
+  String noHp;
+  int nominal;
+  int adminFee;
+  String provider;
+  int totalHarga;
+  int transactionId;
 
-    Post({
-        this.id,
-        this.walletId,
-        this.noHp,
-        this.nominal,
-        this.adminFee,
-        this.provider,
-        this.totalHarga,
-        this.transactionId
-    });
+  Post({
+    this.id,
+    this.walletId,
+    this.noHp,
+    this.nominal,
+    this.adminFee,
+    this.provider,
+    this.totalHarga,
+    this.transactionId,
+  });
 
-    factory Post.fromJson(Map<String, dynamic> json) => Post(
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
         id: json["id"],
         walletId: json["walletId"],
         noHp: json["no_hp"],
@@ -97,10 +181,10 @@ class Post {
         adminFee: json["admin_fee"],
         provider: json["provider"],
         totalHarga: json["total_harga"],
-        transactionId: json['transactionId']
-    );
+        transactionId: json['transactionId'],
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "walletId": walletId,
         "no_hp": noHp,
@@ -108,28 +192,8 @@ class Post {
         "admin_fee": adminFee,
         "provider": provider,
         "total_harga": totalHarga,
-        "transactionId": transactionId
-    };
-}
- 
-class Kontak {
-  int id;
-  String no_hp;
-  int nominal;
- 
-  Kontak({this.id, this.no_hp, this.nominal});
- 
-  factory Kontak.fromJson(Map<String, dynamic> map) {
-    return Kontak(
-        id: map["id"],
-        no_hp: map["no_hp"],
-        nominal: map["nominal"]);
-  }
- 
-  static List<Kontak> kontakFromJson(String jsonData) {
-    final data = json.decode(jsonData);
-    return List<Kontak>.from(data.map((item) => Kontak.fromJson(item)));
-  }
+        "transactionId": transactionId,
+      };
 }
 
 class Profile {
@@ -153,7 +217,6 @@ class Profile {
   String toString() {
     return 'Profile{id: $id, name: $name, email: $email, age: $age}';
   }
-
 }
 
 List<Profile> profileFromJson(String jsonData) {
@@ -175,18 +238,23 @@ class ScPdam {
 
   factory ScPdam.fromJson(Map<String, dynamic> map) {
     return ScPdam(
-        id: map["id"], nama_wilayah: map["nama_wilayah"], no_pelanggan: map["no_pelanggan"]);
+        id: map["id"],
+        nama_wilayah: map["nama_wilayah"],
+        no_pelanggan: map["no_pelanggan"]);
   }
 
   Map<String, dynamic> toJson() {
-    return {"id": id, "nama_wilayah": nama_wilayah, "no_pelanggan": no_pelanggan};
+    return {
+      "id": id,
+      "nama_wilayah": nama_wilayah,
+      "no_pelanggan": no_pelanggan
+    };
   }
 
   @override
   String toString() {
     return 'Wilayah{id: $id, nama_wilayah: $nama_wilayah, no_pelanggan: $no_pelanggan}';
   }
-
 }
 
 List<ScPdam> scPdamFromJson(String jsonData) {

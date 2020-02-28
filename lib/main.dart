@@ -1,3 +1,7 @@
+import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'src/screen/launcher_screen.dart';
@@ -12,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: DetailPage(),   
+      home: BerandaPage(),   
     );
   }
 }

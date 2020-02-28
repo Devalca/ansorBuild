@@ -1,9 +1,12 @@
 import 'dart:async';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 
 class SesPulsaPage extends StatefulWidget {
   @override
@@ -20,12 +23,13 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
     super.initState();
   }
 
-  Future<Album> fetchAlbum() async {
+  Future<PostTrans> fetchTrans() async {
     String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
     final response = await http.get(baseUrl + _id);
     print(response.body);
     if (response.statusCode == 200) {
-      return albumFromJson(response.body);
+      print("ID TRANS : " + _id);
+      return postTransFromJson(response.body);
     } else {
       throw Exception('Failed to load album');
     }
@@ -37,9 +41,12 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
         appBar: AppBar(
           title: Text('Transaksi Sukses'),
         ),
-        body: FutureBuilder<Album>(
-          future: fetchAlbum(),
+        body: FutureBuilder<PostTrans>(
+          future: fetchTrans(),
           builder: (context, snapshot) {
+          DateTime dateTime = snapshot.data.data[0].periode;
+          var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
+          var formatterTime = DateFormat('HH.mm').format(dateTime);
             if (snapshot.hasData) {
               return Container(
                 padding: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -67,7 +74,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 ),
                               ),
                               Container(
-                                child: Text('20 Jan 2020, 10.24'),
+                                child: Text("${formatterDate.toString()} ${formatterTime.toString()}"),
                               ),
                               Container(
                                 child: Text('via Unity'),
@@ -102,7 +109,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Jenis Layanan'),
+                                          child: Text(snapshot.data.data[0].status),
                                         ),
                                         Container(),
                                       ],
@@ -117,7 +124,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Nomor Handphone'),
+                                          child: Text(snapshot.data.data[0].noHp),
                                         ),
                                         Container(),
                                       ],
@@ -132,7 +139,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Provider'),
+                                          child: Text(snapshot.data.data[0].provider),
                                         ),
                                         Container(),
                                       ],
@@ -147,7 +154,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Nomor Transaksi'),
+                                          child: Text(snapshot.data.data[0].transactionId.toString()),
                                         ),
                                         Container(),
                                       ],
@@ -160,7 +167,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                           child: Text('Total Tagihan'),
                                         ),
                                         Container(
-                                          child: Text('Total Tagihan'),
+                                          child: Text(snapshot.data.data[0].totalHarga.toString()),
                                         ),
                                         Container(),
                                       ],
@@ -178,7 +185,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                       width: 450.0,
                       child: RaisedButton(
                         onPressed: () {
-                          print("object");
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: 
+                          (context) => BerandaPage()));
                         },
                         child: Text('Selesai'),
                       ),
@@ -187,7 +195,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                 ),
               );
             } else if (snapshot.hasError) {
-              return Text("data Gagal");
+              return Text("${snapshot.error}");
             }
 
             return CircularProgressIndicator();

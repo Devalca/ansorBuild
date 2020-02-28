@@ -19,9 +19,28 @@ class ApiService {
     return response;
   }
 
+    Future<http.Response> createPostPasca(Post post) async {
+    var response = await http.post(
+      '$baseUrl/pulsa/pascabayar',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: postToJson(post),
+    );
+    print("INI RESPONSE :" + response.body );
+    return response;
+  }
+
   Future<http.Response> createPay(Post post) async {
     var response = await http.post(
       '$baseUrl/pulsa/prabayar/transaction',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: postToJson(post),
+    );
+    return response;
+  }
+
+  Future<http.Response> createPayPasca(Post post) async {
+    var response = await http.post(
+      '$baseUrl/pulsa/pascabayar/transaction',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: postToJson(post),
     );

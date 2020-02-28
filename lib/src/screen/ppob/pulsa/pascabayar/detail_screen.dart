@@ -230,13 +230,10 @@ class _DetailPageState extends State<DetailPage> {
                           int transactionId = int.parse(_id.toString());
                           String nomorHp =
                               snapshot.data.data[0].noHp.toString();
-                          int nominal = int.parse(
-                              snapshot.data.data[0].nominal.toString());
                           Post post = Post(
                               transactionId: transactionId,
-                              noHp: nomorHp,
-                              nominal: nominal);
-                          _apiService.createPay(post).then((response) async {
+                              noHp: nomorHp);
+                          _apiService.createPayPasca(post).then((response) async {
                             if (response.statusCode == 200) {
                               Map blok = jsonDecode(response.body);
                               userUid = blok['id'].toString();
