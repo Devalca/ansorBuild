@@ -66,12 +66,13 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                 children: <Widget>[
                   Container(
                     child: SizedBox(
-                      width: 150,
-                      height: 35,
+                      width: 160,
                       child: RaisedButton(
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          '20.000', 
-                          style: TextStyle(color: Colors.black)
+                          '20.000\nHarga Rp. 21.500', 
+                          style: TextStyle(color: Colors.black),
+                          textAlign: TextAlign.left
                         ),
                         color: Colors.white,
                         onPressed: () async{
@@ -82,53 +83,13 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                   ),
                   Container(
                     child: SizedBox(
-                      width: 150,
-                      height: 35,
+                      width: 160,
                       child: RaisedButton(
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          '50.000', 
-                          style: TextStyle(color: Colors.black)
-                        ),
-                        color: Colors.white,
-                        onPressed: () async{
-                          print("clicked");
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Container(
-              height: 50.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    child: SizedBox(
-                      width: 150,
-                      height: 35,
-                      child: RaisedButton(
-                        child: Text(
-                          '100.000', 
-                          style: TextStyle(color: Colors.black)
-                        ),
-                        color: Colors.white,
-                        onPressed: () async{
-                          print("clicked");
-                        },
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: SizedBox(
-                      width: 150,
-                      height: 35,
-                      child: RaisedButton(
-                        child: Text(
-                          '250.000', 
-                          style: TextStyle(color: Colors.black)
+                          '50.000\nHarga Rp. 51.500', 
+                          style: TextStyle(color: Colors.black),
+                          textAlign: TextAlign.left
                         ),
                         color: Colors.white,
                         onPressed: () async{
@@ -148,12 +109,13 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                 children: <Widget>[
                   Container(
                     child: SizedBox(
-                      width: 150,
-                      height: 35,
+                      width: 160,
                       child: RaisedButton(
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          '500.000', 
-                          style: TextStyle(color: Colors.black)
+                          '100.000\nHarga Rp. 101.500', 
+                          style: TextStyle(color: Colors.black),
+                          textAlign: TextAlign.left
                         ),
                         color: Colors.white,
                         onPressed: () async{
@@ -164,17 +126,62 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                   ),
                   Container(
                     child: SizedBox(
-                      width: 150,
-                      height: 35,
+                      width: 160,
                       child: RaisedButton(
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          '1.000.000', 
-                          style: TextStyle(color: Colors.black)
+                          '250.000\nHarga Rp. 251.500', 
+                          style: TextStyle(color: Colors.black),
+                          textAlign: TextAlign.left
                         ),
                         color: Colors.white,
                         onPressed: () async{
                           print("clicked");
                         },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Container(
+              height: 50.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    child: SizedBox(
+                      width: 160,
+                      child: RaisedButton(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          '500.000\nHarga Rp. 501.500', 
+                          style: TextStyle(color: Colors.black),
+                          textAlign: TextAlign.left
+                        ),
+                        color: Colors.white,
+                        onPressed: () async{
+                          print("clicked");
+                        },
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: SizedBox(
+                      width: 160,
+                      child: RaisedButton(
+                        padding: const EdgeInsets.all(10.0),
+                        color: Colors.white,
+                        onPressed: () async{
+                          print("clicked");
+                        },
+                        child: new Column (
+                          children: <Widget>[
+                            new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 16)),
+                            new Text ("Harga Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                          ],
+                        )
                       ),
                     ),
                   ),
