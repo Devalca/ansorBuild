@@ -69,6 +69,9 @@ class _DetailPageState extends State<DetailPage> {
           future: fetchAlbum(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              if(snapshot.data.data.length == 0) {
+                return Text('DAta Doto');
+              } else {
               return Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -275,6 +278,7 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
               );
+              }
             } else {
               Text('GAGAL');
             }
