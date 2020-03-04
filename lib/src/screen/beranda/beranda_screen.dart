@@ -4,7 +4,7 @@ import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa_new.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -147,7 +147,7 @@ class _BerandaPageState extends State<BerandaPage> {
                                 child: Row(
                                   children: <Widget>[
                                      Text('Rp. ', style: TextStyle(fontSize: 40.0),),
-                              Text(snapshot.data.saldo_akhir
+                              Text(snapshot.data.saldoAkhir
                                   .toString(),
                                   style: TextStyle(
                                     fontSize: 40.0
@@ -239,7 +239,7 @@ class _BerandaPageState extends State<BerandaPage> {
               context, MaterialPageRoute(builder: (context) => PdamPage()));
         } else if (ppobService.title == "PULSA") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainPulsaPage()));
+              context, MaterialPageRoute(builder: (context) => MainPulsa()));
         } else {
           print('Under Maintence');
         }
@@ -357,12 +357,12 @@ class _BerandaPageState extends State<BerandaPage> {
 
 class Wallet {
   final int walletId;
-  final int saldo_akhir;
+  final int saldoAkhir;
 
-  Wallet({this.walletId, this.saldo_akhir});
+  Wallet({this.walletId, this.saldoAkhir});
 
   factory Wallet.fromJson(Map<String, dynamic> json) {
-    return Wallet(saldo_akhir: json['data'][0]['saldo_akhir']);
+    return Wallet(saldoAkhir: json['data'][0]['saldo_akhir']);
   }
 }
 

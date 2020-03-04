@@ -1,5 +1,4 @@
-import 'package:ansor_build/src/model/ansor_model.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+
 import 'package:flutter/material.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
@@ -10,8 +9,8 @@ class PdamPage extends StatefulWidget {
 }
 
 class _PdamPageState extends State<PdamPage> {
+  // ApiService _apiService = ApiService();
   bool _isLoading = false;
-  ApiService _apiService = ApiService();
   bool _namaWilayahTxt;
   bool _noPelangganTxt;
   TextEditingController _controllerWilayah = TextEditingController();
@@ -49,9 +48,9 @@ class _PdamPageState extends State<PdamPage> {
                         return;
                       }
                       setState(() => _isLoading = true);
-                      String nama_wilayah = _controllerWilayah.text.toString();
-                      int no_pelanggan = int.parse(_controllerNoPelanggan.text.toString());
-                      ScPdam wilayah = ScPdam(nama_wilayah: nama_wilayah, no_pelanggan: no_pelanggan);
+                      // String namaWilayah = _controllerWilayah.text.toString();
+                      // int noPelanggan = int.parse(_controllerNoPelanggan.text.toString());
+                      // ScPdam wilayah = ScPdam(namaWilayah: namaWilayah, noPelanggan: noPelanggan);
                       // _apiService.createPdam(wilayah).then((isSuccess) {
                       //   setState(() => _isLoading = false);
                       //   if (isSuccess) {

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
@@ -20,43 +19,46 @@ Future<Wallet> getSaldo() async {
 
 class Wallet {
   final int walletId;
-  final int saldo_akhir;
+  final int saldoAkhir;
 
-  Wallet({this.walletId, this.saldo_akhir});
+  Wallet({this.walletId, this.saldoAkhir});
 
   factory Wallet.fromJson(Map<String, dynamic> json) {
-    return Wallet(saldo_akhir: json['data'][0]['saldo_akhir']);
+    return Wallet(saldoAkhir: json['data'][0]['saldo_akhir']);
   }
 }
 
 class DetailPage extends StatefulWidget {
+  final String koId;
+  DetailPage(this.koId);
+
   @override
   _DetailPageState createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
+  Future<Album> futureAlbum;
   bool _isLoading = false;
   ApiService _apiService = ApiService();
   String _id = "";
 
   @override
   void initState() {
-    _apiService.getNameId().then(updateId);
     super.initState();
+    _apiService.getNameId().then(updateId);
+    futureAlbum = fetchAlbum();
   }
 
   Future<Album> fetchAlbum() async {
     String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
-    final response =
-        await http.get(baseUrl + _id);
-    print(response.body);
+    final response = await http.get(baseUrl + widget.koId);
     if (response.statusCode == 200) {
-      print("ID TRANS : " + _id);
       return albumFromJson(response.body);
     } else {
       throw Exception('Failed to load album');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +66,12 @@ class _DetailPageState extends State<DetailPage> {
       appBar: AppBar(
         title: Text('Detail Pembayaran Page'),
       ),
-      body: Center(
+      body: Container(
         child: FutureBuilder<Album>(
-          future: fetchAlbum(),
+          future: futureAlbum,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Container(
+           if (snapshot.hasData) {
+                return Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -205,7 +207,7 @@ class _DetailPageState extends State<DetailPage> {
                                       future: getSaldo(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          return Text(snapshot.data.saldo_akhir
+                                          return Text(snapshot.data.saldoAkhir
                                               .toString());
                                         } else if (snapshot.hasError) {
                                           return Text("${snapshot.error}");
@@ -235,11 +237,14 @@ class _DetailPageState extends State<DetailPage> {
                           Post post = Post(
                               transactionId: transactionId,
                               noHp: nomorHp,
-                              nominal: nominal);
+                              nominal: nominal,
+                              userId: 1,
+                              walletId: 1);
                           _apiService.createPay(post).then((response) async {
                             if (response.statusCode == 200) {
                               Map blok = jsonDecode(response.body);
-                              userUid = blok['id'].toString();
+                              var userUid = blok['id'].toString();
+                              var koId = userUid;
                               _apiService.saveNameId(userUid).then((bool committed) {
                                 print(userUid);
                               });
@@ -247,7 +252,7 @@ class _DetailPageState extends State<DetailPage> {
                               print(snapshot.hasError);
                               // //  await new Future.delayed(const Duration(seconds: 5));
                                Navigator.pushReplacement(context, MaterialPageRoute(builder: 
-                               (context) => SesPulsaPage()
+                               (context) => SesPulsaPage(koId)
                                ));
                               //   print(post);
                               setState(() => _isLoading = false);
@@ -262,13 +267,6 @@ class _DetailPageState extends State<DetailPage> {
                     _isLoading
                         ? Stack(
                             children: <Widget>[
-                              Opacity(
-                                opacity: 0.3,
-                                child: ModalBarrier(
-                                  dismissible: false,
-                                  color: Colors.grey,
-                                ),
-                              ),
                               Center(
                                 child: CircularProgressIndicator(),
                               ),
@@ -278,12 +276,13 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
               );
-            } else {
-              Text('GAGAL');
-            }
-    
-            return CircularProgressIndicator();
-          },
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+
+              // By default, show a loading spinner.
+              return CircularProgressIndicator();
+            },
         ),
       ),
     );
@@ -294,4 +293,22 @@ class _DetailPageState extends State<DetailPage> {
       this._id = transId;
     });
   }
+
+  // Widget _detailPembayaran() {
+  //   return TextField(
+  //     controller: _controllerNominal,
+  //     keyboardType: TextInputType.number,
+  //     decoration: InputDecoration(
+  //       labelText: "Nominal",
+  //       errorText:
+  //           _isFieldNominal == null || _isFieldNominal ? null : "WOYYY 1!1!1!",
+  //     ),
+  //     onChanged: (value) {
+  //       bool isFieldValid = value.trim().isNotEmpty;
+  //       if (isFieldValid != _isFieldNominal) {
+  //         setState(() => _isFieldNominal = isFieldValid);
+  //       }
+  //     },
+  //   );
+  // }
 }

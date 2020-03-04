@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
@@ -9,28 +10,34 @@ import 'package:intl/intl.dart';
 
 
 class SesPulsaPage extends StatefulWidget {
+  final String koId;
+  SesPulsaPage(this.koId);
+
   @override
   _SesPulsaPageState createState() => _SesPulsaPageState();
 }
 
 class _SesPulsaPageState extends State<SesPulsaPage> {
+  Future<PostTrans> futureTrans;
   ApiService _apiService = ApiService();
   String _id = "";
 
   @override
   void initState() {
-    _apiService.getNameId().then(updateId);
     super.initState();
+    _apiService.getNameId().then(updateId);
+    futureTrans = fetchTrans();
   }
 
   Future<PostTrans> fetchTrans() async {
     String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
-    final response = await http.get(baseUrl + _id);
-    print(response.body);
+    final response = await http.get(baseUrl + widget.koId);
+    print("SATATUS CODENYA: " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      print("ID TRANS : " + _id);
+      print("SATATUS CODENYA: " + response.statusCode.toString());
       return postTransFromJson(response.body);
     } else {
+      print("SATATUS CODENYA: " + response.statusCode.toString());
       throw Exception('Failed to load album');
     }
   }
@@ -42,13 +49,14 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
           title: Text('Transaksi Sukses'),
         ),
         body: FutureBuilder<PostTrans>(
-          future: fetchTrans(),
+          future: futureTrans,
           builder: (context, snapshot) {
-          DateTime dateTime = snapshot.data.data[0].periode;
-          var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
-          var formatterTime = DateFormat('HH.mm').format(dateTime);
+          
             if (snapshot.hasData) {
-              return Container(
+              DateTime dateTime = snapshot.data.data[0].periode;
+              var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
+              var formatterTime = DateFormat('HH.mm').format(dateTime);
+               return Container(
                 padding: EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

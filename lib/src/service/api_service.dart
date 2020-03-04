@@ -5,7 +5,6 @@ import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-String userUid;
 
 class ApiService {
   String baseUrl = "http://192.168.10.11:3000/ppob";
@@ -18,6 +17,7 @@ class ApiService {
     );
     return response;
   }
+
 
     Future<http.Response> createPostPasca(Post post) async {
     var response = await http.post(

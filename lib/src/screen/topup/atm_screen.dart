@@ -1,4 +1,3 @@
-import 'package:ansor_build/src/model/bank_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +6,7 @@ void main() {
 }
 
 class AtmPage extends StatelessWidget {
-    List<String> lokasi = [
+   final List<String> lokasi = [
     'BCA',
     'MANDIRI',
     'BRI',

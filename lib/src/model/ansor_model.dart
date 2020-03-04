@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+
 PostTrans postTransFromJson(String str) => PostTrans.fromJson(json.decode(str));
 
 String postTransToJson(PostTrans data) => json.encode(data.toJson());
@@ -161,6 +162,7 @@ class Post {
   String provider;
   int totalHarga;
   int transactionId;
+  int userId;
 
   Post({
     this.id,
@@ -171,6 +173,7 @@ class Post {
     this.provider,
     this.totalHarga,
     this.transactionId,
+    this.userId
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
@@ -182,6 +185,7 @@ class Post {
         provider: json["provider"],
         totalHarga: json["total_harga"],
         transactionId: json['transactionId'],
+        userId: json["userId"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -193,6 +197,7 @@ class Post {
         "provider": provider,
         "total_harga": totalHarga,
         "transactionId": transactionId,
+        "userId": userId
       };
 }
 
@@ -231,29 +236,29 @@ String profileToJson(Profile data) {
 
 class ScPdam {
   int id;
-  String nama_wilayah;
-  int no_pelanggan;
+  String namaWilayah;
+  int noPelanggan;
 
-  ScPdam({this.id = 0, this.nama_wilayah, this.no_pelanggan});
+  ScPdam({this.id = 0, this.namaWilayah, this.noPelanggan});
 
   factory ScPdam.fromJson(Map<String, dynamic> map) {
     return ScPdam(
         id: map["id"],
-        nama_wilayah: map["nama_wilayah"],
-        no_pelanggan: map["no_pelanggan"]);
+        namaWilayah: map["nama_wilayah"],
+        noPelanggan: map["no_pelanggan"]);
   }
 
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "nama_wilayah": nama_wilayah,
-      "no_pelanggan": no_pelanggan
+      "nama_wilayah": namaWilayah,
+      "no_pelanggan": noPelanggan
     };
   }
 
   @override
   String toString() {
-    return 'Wilayah{id: $id, nama_wilayah: $nama_wilayah, no_pelanggan: $no_pelanggan}';
+    return 'Wilayah{id: $id, nama_wilayah: $namaWilayah, no_pelanggan: $noPelanggan}';
   }
 }
 

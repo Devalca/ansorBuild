@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import 'detail_screen.dart';
 
-final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _statePrabayar = GlobalKey<ScaffoldState>();
 
 class PulsaPage extends StatefulWidget {
   @override
@@ -15,7 +14,6 @@ class PulsaPage extends StatefulWidget {
 }
 
 class _PulsaPageState extends State<PulsaPage> {
-  var _controller = new TextEditingController();
   bool _isLoading = false;
   ApiService _apiService = ApiService();
   bool _isFieldNomor;
@@ -24,13 +22,19 @@ class _PulsaPageState extends State<PulsaPage> {
   TextEditingController _controllerNominal = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
+      key: _statePrabayar,
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               color: Colors.white,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +43,7 @@ class _PulsaPageState extends State<PulsaPage> {
                     Container(
                       color: Colors.white,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Container(
                             margin: EdgeInsets.only(top:12.0),
@@ -81,7 +85,6 @@ class _PulsaPageState extends State<PulsaPage> {
                               ],
                             )
                           ),
-                          
                           _buildTextFieldNominal(),
                         ],
                       ),
@@ -97,38 +100,38 @@ class _PulsaPageState extends State<PulsaPage> {
                                 _isFieldNominal == null ||
                                 !_isFieldNomor ||
                                 !_isFieldNominal) {
-                              _scaffoldState.currentState.showSnackBar(
+                              _statePrabayar.currentState.showSnackBar(
                                 SnackBar(
-                                  content: Text("Please fill all field"),
+                                  content: Text("Isi DATA Anda"),
                                 ),
                               );
                               return;
                             }
-                            setState(() => _isLoading = true);
+                            // setState(() => _isLoading = true);
                             String nomor = _controllerNomor.text.toString();
                             int nominal =
                                 int.parse(_controllerNominal.text.toString());
-                            Post post = Post(noHp: nomor, nominal: nominal);
+                            Post post = Post(noHp: nomor, nominal: nominal, userId: 1, walletId: 1 );
                             _apiService.createPost(post).then((response) async {
                               if (response.statusCode == 200) {
-                                _scaffoldState.currentState.showSnackBar(SnackBar(
-                                    duration: Duration(minutes: 5),
-                                    content: Text("SEDANG PROSES")));
-                                //  saveId();
+                                // _statePrabayar.currentState.showSnackBar(SnackBar(
+                                //     duration: Duration(minutes: 5),
+                                //     content: Text("SEDANG PROSES")));
                                 Map blok = jsonDecode(response.body);
-                                userUid = blok['id'].toString();
+                                var userUid = blok['id'].toString();
+                                var koId = userUid;
                                 _apiService
                                     .saveNameId(userUid)
                                     .then((bool committed) {
                                   print(userUid);
                                 });
-                                await new Future.delayed(
-                                    const Duration(seconds: 2));
+                                // await new Future.delayed(
+                                //     const Duration(seconds: 2));
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (__) => new DetailPage()));
-                                setState(() => _isLoading = false);
+                                        builder: (__) => new DetailPage(koId)));
+                                // setState(() => _isLoading = false);
                               } else {
                                 print(response.statusCode);
                               }
@@ -151,13 +154,13 @@ class _PulsaPageState extends State<PulsaPage> {
             _isLoading
                 ? Stack(
                     children: <Widget>[
-                      Opacity(
-                        opacity: 0.3,
-                        child: ModalBarrier(
-                          dismissible: false,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      // Opacity(
+                      //   opacity: 0.3,
+                      //   child: ModalBarrier(
+                      //     dismissible: false,
+                      //     color: Colors.grey,
+                      //   ),
+                      // ),
                       Center(
                         child: CircularProgressIndicator(),
                       ),
@@ -177,7 +180,7 @@ class _PulsaPageState extends State<PulsaPage> {
       decoration: InputDecoration(
          border: InputBorder.none,
         errorText:
-            _isFieldNomor == null || _isFieldNomor ? null : "WOYYY 1!1!1!",
+            _isFieldNomor == null || _isFieldNomor ? null : "Tidak Boleh Kosong",
       ),
       onChanged: (value) {
         bool isFieldValid = value.trim().isNotEmpty;
@@ -195,7 +198,7 @@ class _PulsaPageState extends State<PulsaPage> {
       decoration: InputDecoration(
         labelText: "Nominal",
         errorText:
-            _isFieldNominal == null || _isFieldNominal ? null : "WOYYY 1!1!1!",
+            _isFieldNominal == null || _isFieldNominal ? null : "Tidak Boleh Kosong",
       ),
       onChanged: (value) {
         bool isFieldValid = value.trim().isNotEmpty;

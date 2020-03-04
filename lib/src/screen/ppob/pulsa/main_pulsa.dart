@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +14,10 @@ class MainPulsaPage extends StatefulWidget {
 }
 
 class _MainPulsaPageState extends State<MainPulsaPage> {
+  ApiService _apiService = ApiService();
   bool _btnPascaBayar = false;
   bool _btnPraBayar = true;
-  var _controller = new TextEditingController();
   bool _isLoading = false;
-  ApiService _apiService = ApiService();
   bool _isFieldNomor;
   bool _isFieldNominal;
   TextEditingController _controllerNomor = TextEditingController();
@@ -49,10 +47,10 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                 color: Colors.white,
                 padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      width: 200.0,
                       color: Colors.redAccent,
                       child: FlatButton(
                           onPressed: () {
@@ -68,7 +66,6 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                           child: Text("data 1")),
                     ),
                     Container(
-                      width: 200.0,
                       color: Colors.redAccent,
                       child: FlatButton(
                           onPressed: () {
@@ -204,7 +201,7 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                                     content: Text("SEDANG PROSES")));
                                 //  saveId();
                                 Map blok = jsonDecode(response.body);
-                                userUid = blok['id'].toString();
+                                var userUid = blok['id'].toString();
                                 _apiService
                                     .saveNameId(userUid)
                                     .then((bool committed) {
@@ -212,10 +209,10 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                                 });
                                 await new Future.delayed(
                                     const Duration(seconds: 5));
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (__) => new DetailPage()));
+                                // Navigator.push(
+                                //     context,
+                                //     new MaterialPageRoute(
+                                //         builder: (__) => new DetailPage()));
                                 setState(() => _isLoading = false);
                               } else {
                                 print(response.statusCode);
@@ -344,7 +341,7 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                           String nomor = _controllerNomor.text.toString();
                           int nominal =
                               int.parse(_controllerNominal.text.toString());
-                          Post post = Post(noHp: nomor, nominal: nominal);
+                          Post post = Post(noHp: nomor, nominal: nominal, userId: 1, walletId: 1);
                           _apiService.createPost(post).then((response) async {
                             if (response.statusCode == 200) {
                               _scaffoldState.currentState.showSnackBar(SnackBar(
@@ -352,7 +349,7 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                                   content: Text("SEDANG PROSES")));
                               //  saveId();
                               Map blok = jsonDecode(response.body);
-                              userUid = blok['id'].toString();
+                              var userUid = blok['id'].toString();
                               _apiService
                                   .saveNameId(userUid)
                                   .then((bool committed) {
@@ -360,10 +357,10 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                               });
                               await new Future.delayed(
                                   const Duration(seconds: 2));
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new DetailPage()));
+                              // Navigator.push(
+                              //     context,
+                              //     new MaterialPageRoute(
+                              //         builder: (__) => new DetailPage()));
                               setState(() => _isLoading = false);
                             } else {
                               print(response.statusCode);
@@ -383,16 +380,16 @@ class _MainPulsaPageState extends State<MainPulsaPage> {
                 ],
               ),
             ),
-            _isLoading
+           _isLoading
                 ? Stack(
                     children: <Widget>[
-                      Opacity(
-                        opacity: 0.3,
-                        child: ModalBarrier(
-                          dismissible: false,
-                          color: Colors.grey,
-                        ),
-                      ),
+                      // Opacity(
+                      //   opacity: 0.3,
+                      //   child: ModalBarrier(
+                      //     dismissible: false,
+                      //     color: Colors.grey,
+                      //   ),
+                      // ),
                       Center(
                         child: CircularProgressIndicator(),
                       ),

@@ -1,5 +1,4 @@
-import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
+
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +33,7 @@ class _TabBarPulsaState extends State<TabBarPulsa> {
             physics: NeverScrollableScrollPhysics(),
             children: [
               PulsaPage(), 
-              PulsaPascaPage()
+              // PulsaPascaPage()
             ],
           ),
           )

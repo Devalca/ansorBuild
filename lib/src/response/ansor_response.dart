@@ -1,5 +1,3 @@
-import 'package:ansor_build/src/model/ansor_model.dart';
-
 class SakitResponse {
   bool status;
   String msg;

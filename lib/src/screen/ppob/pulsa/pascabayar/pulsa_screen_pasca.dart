@@ -6,7 +6,7 @@ import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+final GlobalKey<ScaffoldState> _statePascabayar = GlobalKey<ScaffoldState>();
 
 class PulsaPascaPage extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
+      key: _statePascabayar,
       body: SingleChildScrollView(
         child: Stack(
           children: <Widget>[
@@ -89,41 +89,41 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                           onPressed: () {
                             if (_isFieldNomor == null ||
                                 !_isFieldNomor ) {
-                              _scaffoldState.currentState.showSnackBar(
+                              _statePascabayar.currentState.showSnackBar(
                                 SnackBar(
-                                  content: Text("Please fill all field"),
+                                  content: Text("LENGKAPI DATA"),
                                 ),
                               );
                               return;
                             }
-                            setState(() => _isLoading = true);
+                            // setState(() => _isLoading = true);
                             String nomor = _controllerNomor.text.toString();
-                            // int nominal =
-                            //     int.parse(_controllerNominal.text.toString());
-                            Post post = Post(noHp: nomor);
+                            Post post = Post(noHp: nomor, userId: 1, walletId: 1);
                             _apiService.createPostPasca(post).then((response) async {
                               if (response.statusCode == 200) {
-                                print("INI RESPONSE : " + response.body);
-                                _scaffoldState.currentState.showSnackBar(SnackBar(
-                                    duration: Duration(minutes: 5),
-                                    content: Text("SEDANG PROSES")));
-                                //  saveId();
                                 Map blok = jsonDecode(response.body);
-                                userUid = blok['id'].toString();
-                                _apiService
+                                var userUid = blok['id'].toString();
+                                var koId = userUid;
+                                print(userUid);
+                                if(userUid == "null"){
+                                   _statePascabayar.currentState.showSnackBar(SnackBar(
+                                    duration: Duration(milliseconds: 30),
+                                    content: Text("Nomor Yang Anda Masukan Tidak Terdaftar!")));
+                                } else {
+                                   _apiService
                                     .saveNameId(userUid)
                                     .then((bool committed) {
-                                  print(userUid);
                                 });
                                 await new Future.delayed(
                                     const Duration(seconds: 5));
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (__) => new DetailPage()));
+                                        builder: (__) => new DetailPage(koId)));
                                 setState(() => _isLoading = false);
+                                }
                               } else {
-                                print(response.statusCode);
+                                print("INI STATUS CODE: " + response.statusCode.toString());
                               }
                             });
                           },
@@ -144,13 +144,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             _isLoading
                 ? Stack(
                     children: <Widget>[
-                      Opacity(
-                        opacity: 0.3,
-                        child: ModalBarrier(
-                          dismissible: false,
-                          color: Colors.grey,
-                        ),
-                      ),
                       Center(
                         child: CircularProgressIndicator(),
                       ),
@@ -170,7 +163,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
       decoration: InputDecoration(
          border: InputBorder.none,
         errorText:
-            _isFieldNomor == null || _isFieldNomor ? null : "WOYYY 1!1!1!",
+            _isFieldNomor == null || _isFieldNomor ? null : "Tidak Boleh Kosong"
       ),
       onChanged: (value) {
         bool isFieldValid = value.trim().isNotEmpty;
