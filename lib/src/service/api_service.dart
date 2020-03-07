@@ -7,11 +7,45 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class ApiService {
-  String baseUrl = "http://192.168.10.11:3000/ppob";
+  String baseUrl = "http://192.168.10.11:3000";
+
+  Future<ProviderCall> getProvider() async {
+    var response = await http.get(
+      '$baseUrl/master-data/namaprovider',
+      headers: {"accept": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      return providerCallFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+   Future<NominalList> getNominal() async {
+    var response = await http.get(
+      '$baseUrl/master-data/hargapulsa',
+      headers: {"accept": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      return nominalListFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
+
+
+  // Future<ProviderCall> getAllProvider() async {
+  //   var response = await http.get(
+  //     '$baseUrl/master-data/namaprovider',
+  //     headers: {"accept": "application/json"},
+  //   );
+  //   print(response.body);
+  //   return providerCallFromJson(response.body);
+  // }
 
   Future<http.Response> createPost(Post post) async {
     var response = await http.post(
-      '$baseUrl/pulsa/prabayar',
+      '$baseUrl/ppob/pulsa/prabayar',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: postToJson(post),
     );
@@ -21,7 +55,7 @@ class ApiService {
 
     Future<http.Response> createPostPasca(Post post) async {
     var response = await http.post(
-      '$baseUrl/pulsa/pascabayar',
+      '$baseUrl/ppob/pulsa/pascabayar',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: postToJson(post),
     );
@@ -31,7 +65,7 @@ class ApiService {
 
   Future<http.Response> createPay(Post post) async {
     var response = await http.post(
-      '$baseUrl/pulsa/prabayar/transaction',
+      '$baseUrl/ppob/pulsa/prabayar/transaction',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: postToJson(post),
     );
@@ -40,7 +74,7 @@ class ApiService {
 
   Future<http.Response> createPayPasca(Post post) async {
     var response = await http.post(
-      '$baseUrl/pulsa/pascabayar/transaction',
+      '$baseUrl/ppob/pulsa/pascabayar/transaction',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: postToJson(post),
     );

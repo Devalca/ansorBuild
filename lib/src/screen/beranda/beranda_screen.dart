@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/beranda_service.dart';
+import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
@@ -26,17 +27,17 @@ class _BerandaPageState extends State<BerandaPage> {
     _ppobServiceList
         .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
     _ppobServiceList
-        .add(PpobService(image: Icons.directions_car, title: "Entah"));
+        .add(PpobService(image: Icons.directions_car, title: "PPOB"));
     _ppobServiceList
-        .add(PpobService(image: Icons.restaurant, title: "Merasuki"));
+        .add(PpobService(image: Icons.restaurant, title: "PPOB"));
     _ppobServiceList
         .add(PpobService(image: Icons.directions_bike, title: "PDAM"));
     _ppobServiceList
         .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
     _ppobServiceList
-        .add(PpobService(image: Icons.directions_car, title: "Entah"));
+        .add(PpobService(image: Icons.directions_car, title: "PPOB"));
     _ppobServiceList
-        .add(PpobService(image: Icons.restaurant, title: "Merasuki"));
+        .add(PpobService(image: Icons.restaurant, title: "PPOB"));
   }
 
   @override
@@ -240,6 +241,7 @@ class _BerandaPageState extends State<BerandaPage> {
         } else if (ppobService.title == "PULSA") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MainPulsa()));
+          // Navigator.pushNamed(context, Routes.Pascabayar);
         } else {
           print('Under Maintence');
         }

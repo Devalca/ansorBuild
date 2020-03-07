@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 class SesPulsaPage extends StatefulWidget {
   final String koId;
   SesPulsaPage(this.koId);
@@ -46,18 +45,21 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Transaksi Sukses'),
+          elevation: 0.1,
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
+          ),
+          title: Text('Transaksi Sukses', style: TextStyle(color: Colors.black),),
         ),
         body: FutureBuilder<PostTrans>(
           future: futureTrans,
           builder: (context, snapshot) {
-          
             if (snapshot.hasData) {
               DateTime dateTime = snapshot.data.data[0].periode;
               var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
               var formatterTime = DateFormat('HH.mm').format(dateTime);
-               return Container(
-                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+              return Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -78,11 +80,13 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 margin: EdgeInsets.all(12.0),
                                 child: Text(
                                   'Transaksi Berhasil',
-                                  style: TextStyle(fontSize: 20.0),
+                                  style: TextStyle(
+                                      fontSize: 20.0, color: Colors.green),
                                 ),
                               ),
                               Container(
-                                child: Text("${formatterDate.toString()} ${formatterTime.toString()}"),
+                                child: Text(
+                                    "${formatterDate.toString()} ${formatterTime.toString()}"),
                               ),
                               Container(
                                 child: Text('via Unity'),
@@ -91,12 +95,13 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                           ),
                         ),
                         Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
                                 margin: EdgeInsets.only(top: 70.0),
-                                child: Text('Detail Pembayaran'),
+                                child: Text('Detail'),
                               ),
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 12.0),
@@ -105,80 +110,78 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                   border: Border.all(
                                       width: 1.0, color: Colors.grey[200]),
                                 ),
-                                child: Column(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Jenis Layanan'),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text(snapshot.data.data[0].status),
-                                        ),
-                                        Container(),
-                                      ],
+                                    Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text('Jenis Layanan'),
+                                          ),
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text('Nomor Handphone'),
+                                          ),
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text('Provider'),
+                                          ),
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text('Nomor Transaksi'),
+                                          ),
+                                          Container(
+                                            child: Text('Total Tagihan'),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Nomor Handphone'),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text(snapshot.data.data[0].noHp),
-                                        ),
-                                        Container(),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Provider'),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text(snapshot.data.data[0].provider),
-                                        ),
-                                        Container(),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text('Nomor Transaksi'),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 12.0),
-                                          child: Text(snapshot.data.data[0].transactionId.toString()),
-                                        ),
-                                        Container(),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text('Total Tagihan'),
-                                        ),
-                                        Container(
-                                          child: Text(snapshot.data.data[0].totalHarga.toString()),
-                                        ),
-                                        Container(),
-                                      ],
+                                    Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: <Widget>[
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text(
+                                                snapshot.data.data[0].status),
+                                          ),
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text(
+                                                snapshot.data.data[0].noHp),
+                                          ),
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text(
+                                                snapshot.data.data[0].provider),
+                                          ),
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 12.0),
+                                            child: Text(snapshot
+                                                .data.data[0].transactionId
+                                                .toString()),
+                                          ),
+                                          Container(
+                                            child: Text(snapshot
+                                                .data.data[0].totalHarga
+                                                .toString()),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -188,16 +191,34 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                         ),
                       ],
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      width: 450.0,
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: 
-                          (context) => BerandaPage()));
-                        },
-                        child: Text('Selesai'),
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Divider(
+                          color: Colors.black,
+                        ),
+                        Container(
+                          height: 45.0,
+                          margin: EdgeInsets.only(
+                              left: 16.0, right: 16.0, bottom: 20.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.green),
+                              borderRadius: BorderRadius.circular(5.0)),
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BerandaPage()));
+                            },
+                            child: Text(
+                              'Selesai'.toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.green, fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

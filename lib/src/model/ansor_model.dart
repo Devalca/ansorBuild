@@ -1,5 +1,148 @@
 import 'dart:convert';
 
+NominalList nominalListFromJson(String str) => NominalList.fromJson(json.decode(str));
+
+String nominalListToJson(NominalList data) => json.encode(data.toJson());
+
+class NominalList {
+    List<Nominal> data;
+    String message;
+
+    NominalList({
+        this.data,
+        this.message,
+    });
+
+    factory NominalList.fromJson(Map<String, dynamic> json) => NominalList(
+        data: List<Nominal>.from(json["data"].map((x) => Nominal.fromJson(x))),
+        message: json["message"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
+    };
+}
+
+class Nominal {
+    int operatorId;
+    List<Listharga> listharga;
+
+    Nominal({
+        this.operatorId,
+        this.listharga,
+    });
+
+    factory Nominal.fromJson(Map<String, dynamic> json) => Nominal(
+        operatorId: json["operatorId"],
+        listharga: List<Listharga>.from(json["listharga"].map((x) => Listharga.fromJson(x))),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "operatorId": operatorId,
+        "listharga": List<dynamic>.from(listharga.map((x) => x.toJson())),
+    };
+}
+
+class Listharga {
+    int nominalPulsa;
+
+    Listharga({
+        this.nominalPulsa,
+    });
+
+    factory Listharga.fromJson(Map<String, dynamic> json) => Listharga(
+        nominalPulsa: json["nominal_pulsa"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "nominal_pulsa": nominalPulsa,
+    };
+}
+
+
+ProviderCall providerCallFromJson(String str) => ProviderCall.fromJson(json.decode(str));
+
+String providerCallToJson(ProviderCall data) => json.encode(data.toJson());
+
+class ProviderCall {
+    List<Datum> data;
+    String message;
+
+    ProviderCall({
+        this.data,
+        this.message,
+    });
+
+    factory ProviderCall.fromJson(Map<String, dynamic> json) => ProviderCall(
+        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        message: json["message"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
+    };
+}
+
+class Datum {
+    int providerId;
+    int operatorId;
+    JenisProvider jenisProvider;
+    String namaProvider;
+    String kodeProvider;
+
+    Datum({
+        this.providerId,
+        this.operatorId,
+        this.jenisProvider,
+        this.namaProvider,
+        this.kodeProvider,
+    });
+
+    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        providerId: json["providerId"],
+        operatorId: json["operatorId"],
+        jenisProvider: jenisProviderValues.map[json["jenis_provider"]],
+        namaProvider: json["nama_provider"],
+        kodeProvider: json["kode_provider"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "providerId": providerId,
+        "operatorId": operatorId,
+        "jenis_provider": jenisProviderValues.reverse[jenisProvider],
+        "nama_provider": namaProvider,
+        "kode_provider": kodeProvider,
+    };
+}
+
+enum JenisProvider { TELKOMSEL, INDOSAT, XL, AXIS, THREE, SMARTFREN }
+
+final jenisProviderValues = EnumValues({
+    "Axis": JenisProvider.AXIS,
+    "Indosat": JenisProvider.INDOSAT,
+    "Smartfren": JenisProvider.SMARTFREN,
+    "Telkomsel": JenisProvider.TELKOMSEL,
+    "Three": JenisProvider.THREE,
+    "XL": JenisProvider.XL
+});
+
+class EnumValues<T> {
+    Map<String, T> map;
+    Map<T, String> reverseMap;
+
+    EnumValues(this.map);
+
+    Map<T, String> get reverse {
+        if (reverseMap == null) {
+            reverseMap = map.map((k, v) => new MapEntry(v, k));
+        }
+        return reverseMap;
+    }
+}
+
+
 
 PostTrans postTransFromJson(String str) => PostTrans.fromJson(json.decode(str));
 

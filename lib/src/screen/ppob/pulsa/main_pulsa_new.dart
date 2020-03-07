@@ -10,13 +10,17 @@ class MainPulsa extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
+            elevation: 0.1,
+            backgroundColor: Colors.white,
             bottom: TabBar(
+              labelColor: Colors.black,
+              indicatorColor: Colors.green,
               tabs: [
                 Tab(text: "PraBayar",),
                 Tab(text: "PascaBayar",)
               ],
             ),
-            title: Text('PPOB PULSA'),
+            title: Text('PPOB PULSA', style: TextStyle(color: Colors.black),),
           ),
           body: TabBarView(
              physics: NeverScrollableScrollPhysics(),

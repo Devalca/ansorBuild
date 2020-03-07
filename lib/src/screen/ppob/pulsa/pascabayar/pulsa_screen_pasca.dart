@@ -28,7 +28,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
         child: Stack(
           children: <Widget>[
             Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
               color: Colors.white,
+              height: 730.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -61,7 +63,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                     children: <Widget>[
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
-                                        child: Icon(Icons.personal_video),
+                                        child: Icon(Icons.no_sim),
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
@@ -70,7 +72,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                         color: Colors.black,
                                       ),
                                       Container(
-                                        child: Icon(Icons.phone),
+                                        child: Icon(Icons.perm_contact_calendar),
                                       )
                                     ],
                                   ),
@@ -82,61 +84,84 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                       ),
                     ),
                     Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: RaisedButton(
-                          onPressed: () {
-                            if (_isFieldNomor == null ||
-                                !_isFieldNomor ) {
-                              _statePascabayar.currentState.showSnackBar(
-                                SnackBar(
-                                  content: Text("LENGKAPI DATA"),
+                      child: Column(
+                        children: <Widget>[
+                          Divider(
+                            color: Colors.black
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text('Total'),
+                                    Text('Rp')
+                                  ],
                                 ),
-                              );
-                              return;
-                            }
-                            // setState(() => _isLoading = true);
-                            String nomor = _controllerNomor.text.toString();
-                            Post post = Post(noHp: nomor, userId: 1, walletId: 1);
-                            _apiService.createPostPasca(post).then((response) async {
-                              if (response.statusCode == 200) {
-                                Map blok = jsonDecode(response.body);
-                                var userUid = blok['id'].toString();
-                                var koId = userUid;
-                                print(userUid);
-                                if(userUid == "null"){
-                                   _statePascabayar.currentState.showSnackBar(SnackBar(
-                                    duration: Duration(milliseconds: 30),
-                                    content: Text("Nomor Yang Anda Masukan Tidak Terdaftar!")));
-                                } else {
-                                   _apiService
-                                    .saveNameId(userUid)
-                                    .then((bool committed) {
-                                });
-                                await new Future.delayed(
-                                    const Duration(seconds: 5));
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (__) => new DetailPage(koId)));
-                                setState(() => _isLoading = false);
+                              ),
+                              Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: RaisedButton(
+                              onPressed: () {
+                                if (_isFieldNomor == null ||
+                                    !_isFieldNomor ) {
+                                  _statePascabayar.currentState.showSnackBar(
+                                    SnackBar(
+                                      content: Text("LENGKAPI DATA"),
+                                    ),
+                                  );
+                                  return;
                                 }
-                              } else {
-                                print("INI STATUS CODE: " + response.statusCode.toString());
-                              }
-                            });
-                          },
-                          child: Text(
-                            "Submit".toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white,
+                                // setState(() => _isLoading = true);
+                                String nomor = _controllerNomor.text.toString();
+                                Post post = Post(noHp: nomor, userId: 1, walletId: 1);
+                                _apiService.createPostPasca(post).then((response) async {
+                                  if (response.statusCode == 200) {
+                                    Map blok = jsonDecode(response.body);
+                                    var userUid = blok['id'].toString();
+                                    var koId = userUid;
+                                    print(userUid);
+                                    if(userUid == "null"){
+                                       _statePascabayar.currentState.showSnackBar(SnackBar(
+                                        duration: Duration(milliseconds: 30),
+                                        content: Text("Nomor Yang Anda Masukan Tidak Terdaftar!")));
+                                    } else {
+                                       _apiService
+                                        .saveNameId(userUid)
+                                        .then((bool committed) {
+                                    });
+                                    await new Future.delayed(
+                                        const Duration(seconds: 5));
+                                    Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (__) => new DetailPage(koId)));
+                                    setState(() => _isLoading = false);
+                                    }
+                                  } else {
+                                    print("INI STATUS CODE: " + response.statusCode.toString());
+                                  }
+                                });
+                              },
+                              child: Text(
+                                "beli".toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              color: Colors.green,
                             ),
                           ),
-                          color: Colors.orange[600],
-                        ),
-                      ),
                     ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               
