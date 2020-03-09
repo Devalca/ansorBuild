@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -271,7 +272,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                   color: Colors.white,
                                   onPressed: () {
                                     setState(() => _isLoading = true);
-                                    Navigator.push(context, new MaterialPageRoute(builder: (__) => new Listrik()));
+                                    Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
                                     setState(() => _isLoading = false);
                                   },
                                 ),

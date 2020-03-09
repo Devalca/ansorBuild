@@ -146,11 +146,11 @@ class _BerandaPageState extends State<BerandaPage> {
                               Container(
                                 child: Row(
                                   children: <Widget>[
-                                     Text('Rp. ', style: TextStyle(fontSize: 40.0),),
+                                     Text('Rp. ', style: TextStyle(fontSize: 24.0)),
                               Text(snapshot.data.saldoAkhir
                                   .toString(),
                                   style: TextStyle(
-                                    fontSize: 40.0
+                                    fontSize: 24.0
                                   ),
                                   ),
                                   ],

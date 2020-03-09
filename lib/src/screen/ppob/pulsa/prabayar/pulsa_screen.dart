@@ -21,6 +21,7 @@ class _PulsaPageState extends State<PulsaPage> {
   String _jsonContent = "";
   var mobi = "";
   var idProv = "";
+  var logoProv = "";
   bool btn1 = false;
   bool btn2 = false;
   bool btn3 = false;
@@ -101,11 +102,13 @@ class _PulsaPageState extends State<PulsaPage> {
                                                 idProv = providers[i]
                                                     .operatorId
                                                     .toString();
+                                                logoProv = providers[i].file.toString();
                                               });
                                             }
                                           } else if (value.length == 3) {
                                             setState(() {
                                               mobi = "";
+                                              logoProv = "";
                                             });
                                           }
                                         }
@@ -118,7 +121,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(340, 12, 0, 16),
+                                padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
                                 child: Container(
                                   child: Row(
                                     mainAxisAlignment:
@@ -126,7 +129,11 @@ class _PulsaPageState extends State<PulsaPage> {
                                     children: <Widget>[
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
-                                        child: Icon(Icons.no_sim),
+                                        child: Container(
+                                          height: 30.0,
+                                          width: 30.0,
+                                          child: Image.network(logoProv),
+                                        )
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
@@ -184,7 +191,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 40),
+                                        padding: EdgeInsets.only(right: 20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -201,7 +208,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       fontSize: 27.0,
                                                       color: Colors.black),
                                             ),
-                                            Text('Harga Rp11.500')
+                                            Text('Harga Rp11.500', style: TextStyle(fontSize: 10.0),)
                                           ],
                                         ),
                                       )),
@@ -236,7 +243,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 40),
+                                        padding: EdgeInsets.only(right: 20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -253,7 +260,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       fontSize: 27.0,
                                                       color: Colors.black),
                                             ),
-                                            Text('Harga Rp21.500')
+                                            Text('Harga Rp21.500', style: TextStyle(fontSize: 10.0),)
                                           ],
                                         ),
                                       )),
@@ -292,7 +299,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 40),
+                                        padding: EdgeInsets.only(right: 20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -309,7 +316,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       fontSize: 27.0,
                                                       color: Colors.black),
                                             ),
-                                            Text('Harga Rp51.500')
+                                            Text('Harga Rp51.500', style: TextStyle(fontSize: 10.0),)
                                           ],
                                         ),
                                       )),
@@ -344,7 +351,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 40),
+                                        padding: EdgeInsets.only(right: 20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -361,7 +368,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       fontSize: 27.0,
                                                       color: Colors.black),
                                             ),
-                                            Text('Harga Rp101.500')
+                                            Text('Harga Rp101.500', style: TextStyle(fontSize: 10.0),)
                                           ],
                                         ),
                                       )),
@@ -400,7 +407,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 40),
+                                        padding: EdgeInsets.only(right: 20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -417,7 +424,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       fontSize: 27.0,
                                                       color: Colors.black),
                                             ),
-                                            Text('Harga Rp151.500')
+                                            Text('Harga Rp151.500', style: TextStyle(fontSize: 10.0),)
                                           ],
                                         ),
                                       )),
@@ -452,7 +459,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.only(right: 40),
+                                        padding: EdgeInsets.only(right: 20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -469,7 +476,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       fontSize: 27.0,
                                                       color: Colors.black),
                                             ),
-                                            Text('Harga Rp301.500')
+                                            Text('Harga Rp301.500', style: TextStyle(fontSize: 10.0),)
                                           ],
                                         ),
                                       )),
@@ -481,7 +488,7 @@ class _PulsaPageState extends State<PulsaPage> {
                       ),
                     ),
                     Container(
-                      height: 300.0,
+                      height: 180.0,
                     ),
                     Divider(
                       height: 12,
@@ -588,58 +595,6 @@ class _PulsaPageState extends State<PulsaPage> {
         });
   }
 
-  Widget _buildListView(List<Listharga> hargaList) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          Listharga harga = hargaList[index];
-          return Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      harga.nominalPulsa.toString(),
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    Text(harga.nominalPulsa.toString()),
-                    Text(harga.nominalPulsa.toString()),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                          },
-                          child: Text(
-                            "Delete",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                          },
-                          child: Text(
-                            "Edit",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-        itemCount: hargaList.length,
-      ),
-    );
-  }
-
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
@@ -705,4 +660,56 @@ class _PulsaPageState extends State<PulsaPage> {
       });
     }
   }
+
+  // Widget _buildListView(List<Listharga> hargaList) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+  //     child: ListView.builder(
+  //       itemBuilder: (context, index) {
+  //         Listharga harga = hargaList[index];
+  //         return Padding(
+  //           padding: const EdgeInsets.only(top: 8.0),
+  //           child: Card(
+  //             child: Padding(
+  //               padding: const EdgeInsets.all(16.0),
+  //               child: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: <Widget>[
+  //                   Text(
+  //                     harga.nominalPulsa.toString(),
+  //                     style: Theme.of(context).textTheme.title,
+  //                   ),
+  //                   Text(harga.nominalPulsa.toString()),
+  //                   Text(harga.nominalPulsa.toString()),
+  //                   Row(
+  //                     mainAxisAlignment: MainAxisAlignment.end,
+  //                     children: <Widget>[
+  //                       FlatButton(
+  //                         onPressed: () {
+  //                         },
+  //                         child: Text(
+  //                           "Delete",
+  //                           style: TextStyle(color: Colors.red),
+  //                         ),
+  //                       ),
+  //                       FlatButton(
+  //                         onPressed: () {
+  //                         },
+  //                         child: Text(
+  //                           "Edit",
+  //                           style: TextStyle(color: Colors.blue),
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //       itemCount: hargaList.length,
+  //     ),
+  //   );
+  // }
 }
