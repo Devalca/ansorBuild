@@ -33,16 +33,6 @@ class ApiService {
     }
   }
 
-
-  // Future<ProviderCall> getAllProvider() async {
-  //   var response = await http.get(
-  //     '$baseUrl/master-data/namaprovider',
-  //     headers: {"accept": "application/json"},
-  //   );
-  //   print(response.body);
-  //   return providerCallFromJson(response.body);
-  // }
-
   Future<http.Response> createPost(Post post) async {
     var response = await http.post(
       '$baseUrl/ppob/pulsa/prabayar',
@@ -52,8 +42,7 @@ class ApiService {
     return response;
   }
 
-
-    Future<http.Response> createPostPasca(Post post) async {
+  Future<http.Response> createPostPasca(Post post) async {
     var response = await http.post(
       '$baseUrl/ppob/pulsa/pascabayar',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},

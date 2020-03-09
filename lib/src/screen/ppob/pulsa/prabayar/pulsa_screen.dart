@@ -17,7 +17,7 @@ class PulsaPage extends StatefulWidget {
 class _PulsaPageState extends State<PulsaPage> {
   ApiService _apiService = ApiService();
   bool _validate = true;
-  String inputNomor, inputNominal;
+  String inputNomor, inputNominal, hargaNominal;
   String _jsonContent = "";
   var mobi = "";
   var idProv = "";
@@ -150,39 +150,335 @@ class _PulsaPageState extends State<PulsaPage> {
                     Container(
                       padding: EdgeInsets.only(top: 15.0),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(child: Text('Nomor HandPhone')),
-                            FutureBuilder<NominalList>(
-                              future: _apiService.getNominal(),
-                              builder: (context, snapshot) {
-                                if (idProv == "") {
-                                  return Center(
-                                    child: Container(
-                                        padding: EdgeInsets.only(top: 25),
-                                        child: CircularProgressIndicator()),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Center(
-                                    child: Text(
-                                        "Something wrong with message: ${snapshot.error.toString()}"),
-                                  );
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  List<Listharga> hargaList = snapshot
-                                      .data.data[int.parse(idProv)].listharga;
-                                  return Container(
-                                    height: 200.0,
-                                    child: _simpleList(hargaList),
-                                  );
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              },
-                            ),
-                          ]),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(child: Text('Nomor HandPhone')),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Row(children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  height: 65.0,
+                                  decoration: BoxDecoration(
+                                    border: btn1
+                                        ? Border.all(
+                                            width: 1, color: Colors.green)
+                                        : Border.all(
+                                            width: 1, color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          btn1 = !btn1;
+                                          if (btn1 == true) {
+                                            btn2 = false;
+                                            btn3 = false;
+                                            btn4 = false;
+                                            btn5 = false;
+                                            btn6 = false;
+                                            inputNominal = "10000";
+                                            hargaNominal = "11500";
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(right: 40),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '10.000',
+                                              style: btn1
+                                                  ? TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.green)
+                                                  : TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.black),
+                                            ),
+                                            Text('Harga Rp11.500')
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 65.0,
+                                  margin: EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                    border: btn2
+                                        ? Border.all(
+                                            width: 1, color: Colors.green)
+                                        : Border.all(
+                                            width: 1, color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          btn2 = !btn2;
+                                          if (btn2 == true) {
+                                            btn1 = false;
+                                            btn3 = false;
+                                            btn4 = false;
+                                            btn5 = false;
+                                            btn6 = false;
+                                            inputNominal = "20000";
+                                            hargaNominal = "21500";
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(right: 40),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '20.000',
+                                              style: btn2
+                                                  ? TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.green)
+                                                  : TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.black),
+                                            ),
+                                            Text('Harga Rp21.500')
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ]),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Row(children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  height: 65.0,
+                                  decoration: BoxDecoration(
+                                    border: btn3
+                                        ? Border.all(
+                                            width: 1, color: Colors.green)
+                                        : Border.all(
+                                            width: 1, color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          btn3 = !btn3;
+                                          if (btn3 == true) {
+                                            btn1 = false;
+                                            btn2 = false;
+                                            btn4 = false;
+                                            btn5 = false;
+                                            btn6 = false;
+                                            inputNominal = "50000";
+                                            hargaNominal = "51500";
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(right: 40),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '50.000',
+                                              style: btn3
+                                                  ? TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.green)
+                                                  : TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.black),
+                                            ),
+                                            Text('Harga Rp51.500')
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 65.0,
+                                  margin: EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                    border: btn4
+                                        ? Border.all(
+                                            width: 1, color: Colors.green)
+                                        : Border.all(
+                                            width: 1, color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          btn4 = !btn4;
+                                          if (btn4 == true) {
+                                            btn1 = false;
+                                            btn2 = false;
+                                            btn3 = false;
+                                            btn5 = false;
+                                            btn6 = false;
+                                            inputNominal = "100000";
+                                            hargaNominal = "101500";
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(right: 40),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '100.000',
+                                              style: btn4
+                                                  ? TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.green)
+                                                  : TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.black),
+                                            ),
+                                            Text('Harga Rp101.500')
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ]),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12.0),
+                            child: Row(children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  height: 65.0,
+                                  decoration: BoxDecoration(
+                                    border: btn5
+                                        ? Border.all(
+                                            width: 1, color: Colors.green)
+                                        : Border.all(
+                                            width: 1, color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          btn5 = !btn5;
+                                          if (btn5 == true) {
+                                            btn1 = false;
+                                            btn2 = false;
+                                            btn3 = false;
+                                            btn4 = false;
+                                            btn6 = false;
+                                            inputNominal = "150000";
+                                            hargaNominal = "151500";
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(right: 40),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '150.000',
+                                              style: btn5
+                                                  ? TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.green)
+                                                  : TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.black),
+                                            ),
+                                            Text('Harga Rp151.500')
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 65.0,
+                                  margin: EdgeInsets.only(left: 10),
+                                  decoration: BoxDecoration(
+                                    border: btn6
+                                        ? Border.all(
+                                            width: 1, color: Colors.green)
+                                        : Border.all(
+                                            width: 1, color: Colors.grey),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  child: FlatButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          btn6 = !btn6;
+                                          if (btn6 == true) {
+                                            btn1 = false;
+                                            btn2 = false;
+                                            btn3 = false;
+                                            btn4 = false;
+                                            btn5 = false;
+                                            inputNominal = "300000";
+                                            hargaNominal = "301500";
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.only(right: 40),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              '300.000',
+                                              style: btn6
+                                                  ? TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.green)
+                                                  : TextStyle(
+                                                      fontSize: 27.0,
+                                                      color: Colors.black),
+                                            ),
+                                            Text('Harga Rp301.500')
+                                          ],
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       height: 300.0,
@@ -216,7 +512,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                           btn4 ||
                                           btn5 ||
                                           btn6
-                                      ? inputNominal
+                                      ? hargaNominal
                                       : ""),
                                 ])
                               ],
@@ -374,8 +670,9 @@ class _PulsaPageState extends State<PulsaPage> {
       // setState(() => _isLoading = true);
       String nomor = inputNomor.toString();
       int nominal = int.parse(inputNominal.toString());
-      if (nomor != null || nominal != null) {
-        Post post = Post(noHp: nomor, nominal: nominal, userId: 1, walletId: 1);
+      String namaProv = mobi.toString();
+      if (nomor != null || nominal != null || namaProv != null) {
+        Post post = Post(noHp: nomor, nominal: nominal, userId: 1, walletId: 1, provider: namaProv);
         _apiService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
             // _statePrabayar.currentState.showSnackBar(SnackBar(
@@ -387,15 +684,20 @@ class _PulsaPageState extends State<PulsaPage> {
             _apiService.saveNameId(userUid).then((bool committed) {
               print(userUid);
             });
+            print("INI KOID : " + koId);
+            print("INI RESPONSE :" + response.body);
+            print("NI PROVIDER : " + namaProv);
             // await new Future.delayed(
             //     const Duration(seconds: 2));
             Navigator.push(context,
-                new MaterialPageRoute(builder: (__) => new DetailPage(koId)));
+                new MaterialPageRoute(builder: (__) => new DetailPage(koId, namaProv)));
             // setState(() => _isLoading = false);
           } else {
             print("INI STATUS CODE : " + response.statusCode.toString());
           }
         });
+      } else {
+        print("error");
       }
     } else {
       setState(() {

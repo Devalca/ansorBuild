@@ -1,9 +1,9 @@
+//Detail Pembayaran Prabayar
 import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import '../selseai_screen.dart';
 
 Future<Wallet> getSaldo() async {
@@ -30,7 +30,8 @@ class Wallet {
 
 class DetailPage extends StatefulWidget {
   final String koId;
-  DetailPage(this.koId);
+  final String namaProv;
+  DetailPage(this.koId, this.namaProv);
 
   @override
   _DetailPageState createState() => _DetailPageState();
@@ -59,24 +60,26 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar( 
         elevation: 0.1,
         iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
-          ),
+          color: Colors.black, //change your color here
+        ),
         backgroundColor: Colors.white,
-        title: Text('Detail Pembayaran Page', style: TextStyle(color: Colors.black),),
+        title: Text(
+          'Detail Pembayaran Page',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Container(
         child: FutureBuilder<Album>(
           future: futureAlbum,
           builder: (context, snapshot) {
-           if (snapshot.hasData) {
-                return Container(
+            if (snapshot.hasData) {
+              return Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -89,7 +92,8 @@ class _DetailPageState extends State<DetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  margin: EdgeInsets.symmetric(horizontal:12.0 ),
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 12.0),
                                   height: 90.0,
                                   width: 90.0,
                                   child:
@@ -103,7 +107,7 @@ class _DetailPageState extends State<DetailPage> {
                                     children: <Widget>[
                                       Text('Pulsa'),
                                       Text(snapshot.data.data[0].noHp),
-                                     Text(snapshot.data.data[0].provider)
+                                      Text(snapshot.data.data[0].provider)
                                     ],
                                   ),
                                 )
@@ -115,64 +119,68 @@ class _DetailPageState extends State<DetailPage> {
                             children: <Widget>[
                               Container(
                                 padding: EdgeInsets.only(left: 16.0),
-                            child: Text('Detail Pembayaran'),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(16.0),
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1.0, color: Colors.grey[200]),
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                child: Text('Detail Pembayaran'),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1.0, color: Colors.grey[200]),
+                                ),
+                                child: Column(
                                   children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 16.0),
-                                      child: Text('Total Harga'),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(bottom: 16.0),
+                                          child: Text('Total Harga'),
+                                        ),
+                                        Container(
+                                            child: Text("Rp" +
+                                                snapshot.data.data[0].totalHarga
+                                                    .toString())),
+                                      ],
                                     ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(bottom: 16.0),
+                                          child: Text('Biaya Pelayanan'),
+                                        ),
+                                        Container(
+                                          // snapshot.data.data[0].adminFee.toString()
+                                          child: Text("Rp0"),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(),
                                     Container(
-                                      child: Text("Rp"+snapshot.data.data[0].totalHarga.toString())
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Container(
+                                            child: Text('Total'),
+                                          ),
+                                          Container(
+                                            child: Text("Rp" +
+                                                snapshot.data.data[0].totalHarga
+                                                    .toString()),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 16.0),
-                                      child: Text('Biaya Pelayanan'),
-                                    ),
-                                    Container(
-                                      // snapshot.data.data[0].adminFee.toString()
-                                      child: Text("Rp0"),
-                                    ),
-                                  ],
-                                ),
-                                Divider(),
-                                Container(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        
-                                        child: Text('Total'),
-                                      ),
-                                      Container(
-                                        child: Text("Rp"+snapshot.data.data[0].totalHarga.toString()),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                              ),
                             ],
                           ),
 
@@ -196,7 +204,10 @@ class _DetailPageState extends State<DetailPage> {
                                       child: Text('Unity'),
                                     ),
                                     Container(
-                                      child: Icon(Icons.more_vert, color: Colors.green,),
+                                      child: Icon(
+                                        Icons.more_vert,
+                                        color: Colors.green,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -209,12 +220,19 @@ class _DetailPageState extends State<DetailPage> {
                                       child: Row(
                                         children: <Widget>[
                                           Container(
-                                            padding: EdgeInsets.only(right: 10.0),
+                                            padding:
+                                                EdgeInsets.only(right: 10.0),
                                             child: Icon(
-                                                Icons.account_balance_wallet, color: Colors.green,),
+                                              Icons.account_balance_wallet,
+                                              color: Colors.green,
+                                            ),
                                           ),
                                           Container(
-                                            child: Text('Saldo Unity', style: TextStyle(color: Colors.green),),
+                                            child: Text(
+                                              'Saldo Unity',
+                                              style: TextStyle(
+                                                  color: Colors.green),
+                                            ),
                                           )
                                         ],
                                       ),
@@ -224,8 +242,9 @@ class _DetailPageState extends State<DetailPage> {
                                       future: getSaldo(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          return Text("Rp"+snapshot.data.saldoAkhir
-                                              .toString());
+                                          return Text("Rp" +
+                                              snapshot.data.saldoAkhir
+                                                  .toString());
                                         } else if (snapshot.hasError) {
                                           return Text("${snapshot.error}");
                                         }
@@ -243,7 +262,6 @@ class _DetailPageState extends State<DetailPage> {
                     Container(
                       height: 250.0,
                     ),
-                    
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -266,21 +284,24 @@ class _DetailPageState extends State<DetailPage> {
                                   noHp: nomorHp,
                                   nominal: nominal,
                                   userId: 1,
-                                  walletId: 1);
-                              _apiService.createPay(post).then((response) async {
+                                  walletId: 1,
+                                  provider: widget.namaProv);
+                              _apiService
+                                  .createPay(post)
+                                  .then((response) async {
                                 if (response.statusCode == 200) {
                                   Map blok = jsonDecode(response.body);
                                   var userUid = blok['id'].toString();
                                   var koId = userUid;
-                                  _apiService.saveNameId(userUid).then((bool committed) {
-                                    print(userUid);
-                                  });
-
-                                  print(snapshot.hasError);
+                                  // _apiService.saveNameId(userUid).then((bool committed) {
+                                  //   print(userUid);
+                                  // });
                                   // //  await new Future.delayed(const Duration(seconds: 5));
-                                   Navigator.pushReplacement(context, MaterialPageRoute(builder: 
-                                   (context) => SesPulsaPage(koId)
-                                   ));
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SesPulsaPage(koId)));
                                   //   print(post);
                                   // setState(() => _isLoading = false);
                                 } else {
@@ -288,7 +309,10 @@ class _DetailPageState extends State<DetailPage> {
                                 }
                               });
                             },
-                            child: Text('BAYAR', style: TextStyle(color: Colors.white),),
+                            child: Text(
+                              'BAYAR',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ],
@@ -305,11 +329,11 @@ class _DetailPageState extends State<DetailPage> {
                   ],
                 ),
               );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-            },
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            return CircularProgressIndicator();
+          },
         ),
       ),
     );

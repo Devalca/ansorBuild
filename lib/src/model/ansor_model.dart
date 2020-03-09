@@ -253,7 +253,7 @@ class DataDetail {
   String provider;
   int totalHarga;
   int transactionId;
-
+  DateTime periode;
 
   DataDetail({
     this.id,
@@ -263,7 +263,8 @@ class DataDetail {
     this.adminFee,
     this.provider,
     this.totalHarga,
-    int transactionId
+    int transactionId,
+    this.periode,
 
   });
 
@@ -275,7 +276,8 @@ class DataDetail {
         adminFee: json["admin_fee"],
         provider: json["provider"],
         totalHarga: json["total_harga"],
-        transactionId: json["transactionId"]
+        transactionId: json["transactionId"],
+        periode: DateTime.parse(json["periode"]),
  
       );
 
@@ -287,7 +289,8 @@ class DataDetail {
         "admin_fee": adminFee,
         "provider": provider,
         "total_harga": totalHarga,
-        "transactionId" : transactionId
+        "transactionId" : transactionId,
+        "periode": periode.toIso8601String(),
  
       };
 }
