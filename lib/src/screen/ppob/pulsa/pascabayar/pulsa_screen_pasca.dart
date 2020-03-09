@@ -30,7 +30,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               color: Colors.white,
-              height: 730.0,
+              height: 580.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.stretch,

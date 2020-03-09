@@ -282,7 +282,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ),
                     Container(
-                      height: 250.0,
+                      height: 90.0,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
