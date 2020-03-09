@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik_pascabayar.dart' as pascabayar;
 import 'package:ansor_build/src/screen/ppob/pln/listrik_prabayar.dart' as prabayar;
 
-class PlnScreen extends StatefulWidget {
+class Listrik extends StatefulWidget {
 
   @override
-    _PlnScreenState createState() => _PlnScreenState();
+    _ListrikState createState() => _ListrikState();
   }
 
-class _PlnScreenState extends State<PlnScreen> with SingleTickerProviderStateMixin{
+class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
 
   TabController controller;
 
@@ -28,7 +28,11 @@ class _PlnScreenState extends State<PlnScreen> with SingleTickerProviderStateMix
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Listrik PLN'),
+        // backgroundColor: Colors.white,
+        title: Text(
+          'Listrik PLN',
+          style: TextStyle(color: Colors.white),
+        ),
         bottom: new TabBar(
           controller: controller,
           indicatorColor: Colors.green,
