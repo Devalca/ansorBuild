@@ -4,6 +4,9 @@ import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
+import 'package:ansor_build/src/screen/testing.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa_new.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
@@ -27,7 +30,7 @@ class _BerandaPageState extends State<BerandaPage> {
     _ppobServiceList
         .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
     _ppobServiceList
-        .add(PpobService(image: Icons.directions_car, title: "PPOB"));
+        .add(PpobService(image: Icons.directions_car, title: "Listrik PLN"));
     _ppobServiceList
         .add(PpobService(image: Icons.restaurant, title: "PPOB"));
     _ppobServiceList
@@ -240,7 +243,10 @@ class _BerandaPageState extends State<BerandaPage> {
               context, MaterialPageRoute(builder: (context) => PdamPage()));
         } else if (ppobService.title == "PULSA") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainPulsa()));
+              context, MaterialPageRoute(builder: (context) => PulsaPage()));
+        } else if (ppobService.title == "Listrik PLN") {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Listrik()));
           // Navigator.pushNamed(context, Routes.Pascabayar);
         } else {
           print('Under Maintence');
