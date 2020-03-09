@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/beranda_service.dart';
+import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 import 'package:ansor_build/src/screen/testing.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa_new.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -29,15 +32,15 @@ class _BerandaPageState extends State<BerandaPage> {
     _ppobServiceList
         .add(PpobService(image: Icons.directions_car, title: "Listrik PLN"));
     _ppobServiceList
-        .add(PpobService(image: Icons.restaurant, title: "Merasuki"));
+        .add(PpobService(image: Icons.restaurant, title: "PPOB"));
     _ppobServiceList
         .add(PpobService(image: Icons.directions_bike, title: "PDAM"));
     _ppobServiceList
         .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
     _ppobServiceList
-        .add(PpobService(image: Icons.directions_car, title: "Entah"));
+        .add(PpobService(image: Icons.directions_car, title: "PPOB"));
     _ppobServiceList
-        .add(PpobService(image: Icons.restaurant, title: "Merasuki"));
+        .add(PpobService(image: Icons.restaurant, title: "PPOB"));
   }
 
   @override
@@ -148,7 +151,7 @@ class _BerandaPageState extends State<BerandaPage> {
                                 child: Row(
                                   children: <Widget>[
                                      Text('Rp. ', style: TextStyle(fontSize: 40.0),),
-                              Text(snapshot.data.saldo_akhir
+                              Text(snapshot.data.saldoAkhir
                                   .toString(),
                                   style: TextStyle(
                                     fontSize: 40.0
@@ -172,7 +175,11 @@ class _BerandaPageState extends State<BerandaPage> {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.only(right: 10.0),
-                        child: Icon(Icons.refresh),
+                        child: IconButton(icon: Icon(Icons.refresh), onPressed: () {
+                            setState(() {
+                              getSaldo();
+                            });
+                          })
                       ),
                       RaisedButton(
                         onPressed: () {
@@ -181,7 +188,7 @@ class _BerandaPageState extends State<BerandaPage> {
                               MaterialPageRoute(
                                   builder: (context) => TopupPage()));
                         },
-                        child: Text('Saldo'),
+                        child: Text('Isi Saldo'),
                       )
                     ],
                   ),
@@ -240,6 +247,7 @@ class _BerandaPageState extends State<BerandaPage> {
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Listrik()));
+          // Navigator.pushNamed(context, Routes.Pascabayar);
         } else {
           print('Under Maintence');
         }
@@ -343,7 +351,7 @@ class _BerandaPageState extends State<BerandaPage> {
   }
 
   Future<Wallet> getSaldo() async {
-    String url = 'http://192.168.10.31:3000/users/wallet/1';
+    String url = 'http://192.168.10.11:3000/users/wallet/1';
     final response =
         await http.get(url, headers: {"Accept": "application/json"});
 
@@ -357,12 +365,12 @@ class _BerandaPageState extends State<BerandaPage> {
 
 class Wallet {
   final int walletId;
-  final int saldo_akhir;
+  final int saldoAkhir;
 
-  Wallet({this.walletId, this.saldo_akhir});
+  Wallet({this.walletId, this.saldoAkhir});
 
   factory Wallet.fromJson(Map<String, dynamic> json) {
-    return Wallet(saldo_akhir: json['data'][0]['saldo_akhir']);
+    return Wallet(saldoAkhir: json['data'][0]['saldo_akhir']);
   }
 }
 

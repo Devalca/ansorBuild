@@ -1,7 +1,6 @@
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
-import 'beranda/landing_screen.dart';
 
 class LauncherPage extends StatefulWidget {
   @override

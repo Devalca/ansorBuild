@@ -1,6 +1,8 @@
+import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'src/screen/launcher_screen.dart';
+import 'src/routes/routes.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -11,7 +13,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: LauncherPage(),   
+      home: BerandaPage(),
+      routes: Routes.getRoutes(),   
     );
   }
 }
