@@ -4,7 +4,6 @@ import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 final GlobalKey<ScaffoldState> _statePascabayar = GlobalKey<ScaffoldState>();
 
@@ -16,6 +15,8 @@ class PulsaPascaPage extends StatefulWidget {
 class _PulsaPascaPageState extends State<PulsaPascaPage> {
   var _controller = new TextEditingController();
   bool _isLoading = false;
+  String mobi = "";
+  String logoProv = "";
   ApiService _apiService = ApiService();
   bool _isFieldNomor;
   TextEditingController _controllerNomor = TextEditingController();
@@ -31,25 +32,25 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               color: Colors.white,
               height: 580.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Container(
-                      color: Colors.white,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(top:12.0),
-                            child: Text('Nomor Handphone'),
-                          ),
-                          Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(top: 12.0),
+                          child: Text('Nomor Handphone'),
+                        ),
+                        Container(
                             decoration: BoxDecoration(
-                              border: Border(
-                                bottom:  BorderSide(width: 1.0, color: Colors.black),
-                              )
-                            ),
+                                border: Border(
+                              bottom:
+                                  BorderSide(width: 1.0, color: Colors.black),
+                            )),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
@@ -59,11 +60,16 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                 ),
                                 Container(
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
-                                        child: Icon(Icons.no_sim),
+                                        child: Container(
+                                          height: 30.0,
+                                          width: 30.0,
+                                          child: Image.network(logoProv),
+                                        )
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
@@ -72,99 +78,102 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                         color: Colors.black,
                                       ),
                                       Container(
-                                        child: Icon(Icons.perm_contact_calendar),
+                                        child:
+                                            Icon(Icons.perm_contact_calendar),
                                       )
                                     ],
                                   ),
                                 )
                               ],
-                            )
-                          ),
-                        ],
-                      ),
+                            )),
+                      ],
                     ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Divider(
-                            color: Colors.black
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text('Total'),
-                                    Text('Rp')
-                                  ],
-                                ),
+                  ),
+                  Container(
+                    child: Column(
+                      children: <Widget>[
+                        Divider(color: Colors.black),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[Text('Total'), Text('Rp')],
                               ),
-                              Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: RaisedButton(
-                              onPressed: () {
-                                if (_isFieldNomor == null ||
-                                    !_isFieldNomor ) {
-                                  _statePascabayar.currentState.showSnackBar(
-                                    SnackBar(
-                                      content: Text("LENGKAPI DATA"),
-                                    ),
-                                  );
-                                  return;
-                                }
-                                // setState(() => _isLoading = true);
-                                String nomor = _controllerNomor.text.toString();
-                                Post post = Post(noHp: nomor, userId: 1, walletId: 1);
-                                _apiService.createPostPasca(post).then((response) async {
-                                  if (response.statusCode == 200) {
-                                    Map blok = jsonDecode(response.body);
-                                    var userUid = blok['id'].toString();
-                                    var koId = userUid;
-                                    print(userUid);
-                                    if(userUid == "null"){
-                                       _statePascabayar.currentState.showSnackBar(SnackBar(
-                                        duration: Duration(milliseconds: 30),
-                                        content: Text("Nomor Yang Anda Masukan Tidak Terdaftar!")));
-                                    } else {
-                                       _apiService
-                                        .saveNameId(userUid)
-                                        .then((bool committed) {
-                                    });
-                                    await new Future.delayed(
-                                        const Duration(seconds: 5));
-                                    Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                            builder: (__) => new DetailPage(koId)));
-                                    setState(() => _isLoading = false);
-                                    }
-                                  } else {
-                                    print("INI STATUS CODE: " + response.statusCode.toString());
-                                  }
-                                });
-                              },
-                              child: Text(
-                                "beli".toUpperCase(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              color: Colors.green,
                             ),
-                          ),
+                            Container(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: RaisedButton(
+                                  onPressed: () {
+                                    if (_isFieldNomor == null ||
+                                        !_isFieldNomor) {
+                                      _statePascabayar.currentState
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text("LENGKAPI DATA"),
+                                        ),
+                                      );
+                                      return;
+                                    }
+                                    // setState(() => _isLoading = true);
+                                    String nomor =
+                                        _controllerNomor.text.toString();
+                                    Post post = Post(
+                                        noHp: nomor, userId: 1, walletId: 1);
+                                    _apiService
+                                        .createPostPasca(post)
+                                        .then((response) async {
+                                      if (response.statusCode == 200) {
+                                        Map blok = jsonDecode(response.body);
+                                        var userUid = blok['id'].toString();
+                                        var koId = userUid;
+                                        print(userUid);
+                                        if (userUid == "null") {
+                                          _statePascabayar.currentState
+                                              .showSnackBar(SnackBar(
+                                                  duration: Duration(
+                                                      milliseconds: 30),
+                                                  content: Text(
+                                                      "Nomor Yang Anda Masukan Tidak Terdaftar!")));
+                                        } else {
+                                          _apiService
+                                              .saveNameId(userUid)
+                                              .then((bool committed) {});
+                                          await new Future.delayed(
+                                              const Duration(seconds: 5));
+                                          Navigator.push(
+                                              context,
+                                              new MaterialPageRoute(
+                                                  builder: (__) =>
+                                                      new DetailPage(koId)));
+                                          setState(() => _isLoading = false);
+                                        }
+                                      } else {
+                                        print("INI STATUS CODE: " +
+                                            response.statusCode.toString());
+                                      }
+                                    });
+                                  },
+                                  child: Text(
+                                    "beli".toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              
+                  )
+                ],
+              ),
             ),
             _isLoading
                 ? Stack(
@@ -182,38 +191,46 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   }
 
   Widget _buildTextFieldNomor() {
-    return TextField(
-      controller: _controllerNomor,
-      keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
-         border: InputBorder.none,
-        errorText:
-            _isFieldNomor == null || _isFieldNomor ? null : "Tidak Boleh Kosong"
-      ),
-      onChanged: (value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _isFieldNomor) {
-          setState(() => _isFieldNomor = isFieldValid);
-        }
-      },
-    );
+    return FutureBuilder<ProviderCall>(
+        future: _apiService.getProvider(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            List<Datum> providers = snapshot.data.data;
+            return TextFormField(
+              controller: _controllerNomor,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  errorText: _isFieldNomor == null || _isFieldNomor
+                      ? null
+                      : "Tidak Boleh Kosong"),
+              onChanged: (value) {
+                bool isFieldValid = value.trim().isNotEmpty;
+                for (var i = 0; i < snapshot.data.data.length; i++) {
+                  if (value.length == 4) {
+                     if (isFieldValid != _isFieldNomor) {
+                          setState(() => _isFieldNomor = isFieldValid);
+                        } else if (value == providers[i].kodeProvider) {
+                          setState(() {
+                          mobi = providers[i].namaProvider;
+                          logoProv = providers[i].file.toString();
+                      });
+                    }
+                  } else if (value.length == 3) {
+                    setState(() {
+                      mobi = "";
+                      logoProv = "";
+                    });
+                  }
+                }
+               
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          return CircularProgressIndicator();
+        });
   }
 
-  // Widget _buildTextFieldNominal() {
-  //   return TextField(
-  //     controller: _controllerNominal,
-  //     keyboardType: TextInputType.number,
-  //     decoration: InputDecoration(
-  //       labelText: "Nominal",
-  //       errorText:
-  //           _isFieldNominal == null || _isFieldNominal ? null : "WOYYY 1!1!1!",
-  //     ),
-  //     onChanged: (value) {
-  //       bool isFieldValid = value.trim().isNotEmpty;
-  //       if (isFieldValid != _isFieldNominal) {
-  //         setState(() => _isFieldNominal = isFieldValid);
-  //       }
-  //     },
-  //   );
-  // }
 }
