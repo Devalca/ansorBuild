@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -7,7 +8,7 @@ import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 
 class PembayaranBerhasil extends StatefulWidget {
   @override
-    _PembayaranBerhasilState createState() => _PembayaranBerhasilState();
+  _PembayaranBerhasilState createState() => _PembayaranBerhasilState();
 }
 
 class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
@@ -271,7 +272,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                   color: Colors.white,
                                   onPressed: () {
                                     setState(() => _isLoading = true);
-                                    Navigator.push(context, new MaterialPageRoute(builder: (__) => new Listrik()));
+                                    Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
                                     setState(() => _isLoading = false);
                                   },
                                 ),
@@ -284,7 +285,6 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                   }else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-
                   return CircularProgressIndicator();
                 }
               )
