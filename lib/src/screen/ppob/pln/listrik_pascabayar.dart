@@ -155,7 +155,12 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                   )
                 ),
 
-                Container( height: 8 ),
+                Container( height: 200 ),
+
+                Divider(
+                  height: 12,
+                  color: Colors.black,
+                ),
 
                 SizedBox(
                   width :double.infinity,

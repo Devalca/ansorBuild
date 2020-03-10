@@ -4,9 +4,9 @@ import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
+// import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
-import 'package:ansor_build/src/screen/testing.dart';
+// import 'package:ansor_build/src/screen/testing.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa_new.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
@@ -243,7 +243,7 @@ class _BerandaPageState extends State<BerandaPage> {
               context, MaterialPageRoute(builder: (context) => PdamPage()));
         } else if (ppobService.title == "PULSA") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PulsaPage()));
+              context, MaterialPageRoute(builder: (context) => MainPulsa()));
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Listrik()));

@@ -16,7 +16,13 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
   PlnServices _plnServices = PlnServices();
   String url = "";
   String total = "";
-  bool press = true;
+  bool press1 = false;
+  bool press2 = false;
+  bool press3 = false;
+  bool press4 = false;
+  bool press5 = false;
+  bool press6 = false;
+  String nominal = "";
   
   TextEditingController _noMeterController = TextEditingController();
   TextEditingController _nominalController = TextEditingController();
@@ -25,12 +31,12 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
   @override
   Widget build(BuildContext context) {
     var _onPressed;
-    if (press){
+    if (press1 || press2 || press3 || press4 || press5 || press6){
       _onPressed = (){
         setState(() => _isLoading = true);
 
         String noMeter = _noMeterController.text.toString();
-        String nominal = _nominalController.text.toString();
+        // String nominal = _nominalController.text.toString();
 
         PostPrabayar prabayar = PostPrabayar(noMeter: noMeter, nominal: nominal, userId: 1, walletId: 1);
 
@@ -75,7 +81,9 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: _isLoading ? Center(child: CircularProgressIndicator()) :  Column(
@@ -90,9 +98,9 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
               TextField(
                 controller: _noMeterController,
                 keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: 'Contoh: 123456789',
-                  // errorText: _fieldNoMeter == null || _fieldNoMeter ? null : "Kolom Nommor Meter harus diisi",
+                  errorText: _fieldNoMeter == null || _fieldNoMeter ? null : "Kolom Nommor Meter harus diisi",
                 ),
                 style: new TextStyle(fontSize:  14.0),
                 onChanged: (value) {
@@ -110,264 +118,247 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                 style: new TextStyle(fontSize: 14.0) 
               ),
 
-              TextField(
-                controller: _nominalController,
-                decoration: const InputDecoration(
-                  hintText: 'Contoh: 20000',
-                ),
-                style: new TextStyle(fontSize:  14.0)
+              // TextField(
+              //   controller: _nominalController,
+              //   decoration: const InputDecoration(
+              //     hintText: 'Contoh: 20000',
+              //   ),
+              //   style: new TextStyle(fontSize:  14.0)
+              // ),
+
+              Container( height: 8 ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  new GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        this.press1 = !press1;
+                        this.press2 = false;
+                        this.press3 = false;
+                        this.press4 = false;
+                        this.press5 = false;
+                        this.press6 = false;
+                        this.total= "21.500";
+                        this.nominal= "20000";
+                      });
+                    },
+                    child: new Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: new BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
+                      ),
+                      width: 160,
+                      height: 57,
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
+                          new Text ("Harga Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                        ],
+                      )
+                    )
+                  ),
+                  new GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        this.press2 = !press2;
+                        this.press1 = false;
+                        this.press3 = false;
+                        this.press4 = false;
+                        this.press5 = false;
+                        this.press6 = false;
+                        this.total = "51.500";
+                        this.nominal = "50000";
+                      });
+                    },
+                    child: new Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: new BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
+                      ),
+                      width: 160,
+                      height: 57,
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
+                          new Text ("Harga Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                        ],
+                      )
+                    )
+                  ),
+                ],
               ),
 
-              Container( height: 8 ),
+              Container( height: 5 ),
 
-              // Container(
-              //   height: 50.0,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: <Widget>[
-              //       new GestureDetector(
-              //         onTap: (){
-              //           setState(() {
-              //             this.press = !press;
-              //             this.total= "21.500";
-              //           });
-              //         },
-              //         child: new Container(
-              //           decoration: BoxDecoration(
-              //             shape: BoxShape.rectangle,
-              //             borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //             border: Border.all(color: press ? Colors.green : Colors.grey[300], width: 1)
-              //           ),
-              //           width: 160,
-              //           height: 60,
-              //           padding: const EdgeInsets.all(10.0),
-              //           child: new Column(
-              //             children: <Widget>[
-              //               new Text ("20.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Colors.green : Colors.black)),
-              //               new Text ("Harga Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //             ],
-              //           )
-              //         )
-              //       ),
-              //       new GestureDetector(
-              //         onTap: (){
-              //           setState(() {
-              //             this.press = !press;
-              //             this.total= "51.500";
-              //           });
-              //         },
-              //         child: new Container(
-              //           decoration: BoxDecoration(
-              //             shape: BoxShape.rectangle,
-              //             borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //             border: Border.all(color: press ? Colors.green : Colors.grey[300], width: 1)
-              //           ),
-              //           width: 160,
-              //           height: 60,
-              //           padding: const EdgeInsets.all(10.0),
-              //           child: new Column(
-              //             children: <Widget>[
-              //               new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Colors.green : Colors.black)),
-              //               new Text ("Harga Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //             ],
-              //           )
-              //         )
-              //       ),
-              //       Container(
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.rectangle,
-              //           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //           border: Border.all(color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.grey[300], width: 1)
-              //         ),
-              //         child: SizedBox(
-              //           width: 160,
-              //           child: RaisedButton(
-              //             padding: const EdgeInsets.all(10.0),
-              //             color: Colors.white,
-              //             child: new Column (
-              //               children: <Widget>[
-              //                 new Text ("20.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.black)),
-              //                 new Text ("Harga Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //               ],
-              //             ),
-              //             onPressed: () {
-              //               setState(() {
-              //                 this.press = !press;
-              //                 this.total= "21.500";
-              //               });
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //       Container(
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.rectangle,
-              //           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //           border: Border.all(color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.grey[300], width: 1)
-              //         ),
-              //         child: SizedBox(
-              //           width: 160,
-              //           child: RaisedButton(
-              //             padding: const EdgeInsets.all(10.0),
-              //             color: Colors.white,
-              //             child: new Column (
-              //               children: <Widget>[
-              //                 new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.black)),
-              //                 new Text ("Harga Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //               ],
-              //             ),
-              //             onPressed: () {
-              //               setState(() {
-              //                 this.press = !press;
-              //                 this.total= "51.500";
-              //               });
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  new GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        this.press3 = !press3;
+                        this.press1 = false;
+                        this.press2 = false;
+                        this.press4 = false;
+                        this.press5 = false;
+                        this.press6 = false;
+                        this.total= "101.500";
+                        this.nominal= "100000";
+                      });
+                    },
+                    child: new Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: new BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
+                      ),
+                      width: 160,
+                      height: 57,
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
+                          new Text ("Harga Rp. 101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                        ],
+                      )
+                    )
+                  ),
+                  new GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        this.press4 = !press4;
+                        this.press1 = false;
+                        this.press2 = false;
+                        this.press3 = false;
+                        this.press5 = false;
+                        this.press6 = false;
+                        this.total= "251.500";
+                        this.nominal= "250000";
+                      });
+                    },
+                    child: new Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: new BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
+                      ),
+                      width: 160,
+                      height: 57,
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
+                          new Text ("Harga Rp. 251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                        ],
+                      )
+                    )
+                  ),
+                ],
+              ),
 
-              Container( height: 8 ),
+              Container( height: 5 ),
 
-              // Container(
-              //   height: 50.0,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: <Widget>[
-              //       Container(
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.rectangle,
-              //           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //           border: Border.all(color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.grey[300], width: 1)
-              //         ),
-              //         child: SizedBox(
-              //           width: 160,
-              //           child: RaisedButton(
-              //             padding: const EdgeInsets.all(10.0),
-              //             color: Colors.white,
-              //             child: new Column (
-              //               children: <Widget>[
-              //                 new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.black)),
-              //                 new Text ("Harga Rp. 101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //               ],
-              //             ),
-              //             onPressed: () {
-              //               setState(() {
-              //                 this.press = !press;
-              //                 this.total= "101.500";
-              //               });
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //       Container(
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.rectangle,
-              //           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //           border: Border.all(color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.grey[300], width: 1)
-              //         ),
-              //         child: SizedBox(
-              //           width: 160,
-              //           child: RaisedButton(
-              //             padding: const EdgeInsets.all(10.0),
-              //             color: Colors.white,
-              //             child: new Column (
-              //               children: <Widget>[
-              //                 new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.black)),
-              //                 new Text ("Harga Rp. 251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //               ],
-              //             ),
-              //             onPressed: () {
-              //               setState(() {
-              //                 this.press = !press;
-              //                 this.total= "201.500";
-              //               });
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  new GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        this.press5 = !press5;
+                        this.press1 = false;
+                        this.press2 = false;
+                        this.press3 = false;
+                        this.press4 = false;
+                        this.press6 = false;
+                        this.total= "501.500";
+                        this.nominal= "500000";
+                      });
+                    },
+                    child: new Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: new BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
+                      ),
+                      width: 160,
+                      height: 57,
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
+                          new Text ("Harga Rp. 501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                        ],
+                      )
+                    )
+                  ),
+                  new GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        this.press6 = !press6;
+                        this.press1 = false;
+                        this.press2 = false;
+                        this.press3 = false;
+                        this.press4 = false;
+                        this.press5 = false;
+                        this.total= "1.001.500";
+                        this.nominal= "1000000";
+                      });
+                    },
+                    child: new Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: new BorderRadius.all(Radius.circular(10.0)),
+                        border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
+                      ),
+                      width: 160,
+                      height: 57,
+                      padding: const EdgeInsets.all(10.0),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
+                          new Text ("Harga Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                        ],
+                      )
+                    )
+                  ),
+                ],
+              ),
 
-              Container( height: 8 ),
+              Container( height: 60 ),
 
-              // Container(
-              //   height: 50.0,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: <Widget>[
-              //       Container(
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.rectangle,
-              //           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //           border: Border.all(color: press ? Color.fromARGB(1, 0, 128, 0) : Colors.grey[300], width: 1)
-              //         ),
-              //         child: SizedBox(
-              //           width: 160,
-              //           child: RaisedButton(
-              //             padding: const EdgeInsets.all(10.0),
-              //             color: Colors.white,
-              //             child: new Column (
-              //               children: <Widget>[
-              //                 new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.black)),
-              //                 new Text ("Harga Rp. 501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //               ],
-              //             ),
-              //             onPressed: () {
-              //               setState(() {
-              //                 this.press = !press;
-              //                 this.total= "501.500";
-              //               });
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //       Container(
-              //         decoration: BoxDecoration(
-              //           shape: BoxShape.rectangle,
-              //           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
-              //           border: Border.all(color: press ? Color.fromARGB(1, 0, 128, 0) : Colors.grey[300], width: 1)
-              //         ),
-              //         child: SizedBox(
-              //           width: 160,
-              //           child: RaisedButton(
-              //             padding: const EdgeInsets.all(10.0),
-              //             color: Colors.white,
-              //             child: new Column (
-              //               children: <Widget>[
-              //                 new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, color: press ? Color.fromARGB(1, 11, 156, 49) : Colors.black)),
-              //                 new Text ("Harga Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-              //               ],
-              //             ),
-              //             onPressed: () {
-              //               setState(() {
-              //                 this.press = !press;
-              //                 this.total= "1.001.500";
-              //               });
-              //             },
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
-              Container( height: 8 ),
+              Divider(
+                height: 12,
+                color: Colors.black,
+              ),
 
               Container(
                 height: 50.0,
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
                       child: new Column (
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          // new Text ("Total", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-                          // new Text ("Rp. " + total, textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
-                          new Text ("", textAlign: TextAlign.left, style: TextStyle(fontSize : 12))
+                          new Text ("Total", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                          press1 || press2 || press3 || press4 || press5 || press6 ? 
+                          new Text ("Rp. " + total, textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
+                          : new Text ("Rp. 0", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
+                          // new Text ("", textAlign: TextAlign.left, style: TextStyle(fontSize : 12))
                         ],
                       ),
                     ),
