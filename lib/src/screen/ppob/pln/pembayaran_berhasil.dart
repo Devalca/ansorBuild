@@ -7,7 +7,7 @@ import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 
 class PembayaranBerhasil extends StatefulWidget {
   @override
-    _PembayaranBerhasilState createState() => _PembayaranBerhasilState();
+  _PembayaranBerhasilState createState() => _PembayaranBerhasilState();
 }
 
 class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
@@ -284,7 +284,6 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                   }else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-
                   return CircularProgressIndicator();
                 }
               )

@@ -98,7 +98,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Contoh: 123456789',
-                    errorText: _fieldNoMeter == null || _fieldNoMeter ? null : "Kolom Nommor Meter harus diisi",
+                    errorText: _fieldNoMeter == null || _fieldNoMeter ? null : "Kolom Nomor Meter harus diisi",
                   ),
                   style: new TextStyle(fontSize:  14.0),
                   onChanged: (value) {
