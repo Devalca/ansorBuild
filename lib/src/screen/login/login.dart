@@ -141,11 +141,17 @@ class _LoginState extends State<Login> {
                           print(response.statusCode);
 
                           Map data = jsonDecode(response.body);
-                          sessionId = data["sessionId"].toString();
-                          print("sessionId: " + sessionId);
+                          walletId = data["walletId"].toString();
+                          userId = data["userId"].toString();
+                          print("walletId: " + walletId);
+                          print("userId: " + userId);
 
-                          _loginServices.saveSessionId(sessionId).then((bool committed){
-                            print(sessionId);
+                          _loginServices.saveWalletId(walletId).then((bool committed){
+                            print(walletId);
+                          });
+
+                          _loginServices.saveUserId(userId).then((bool committed){
+                            print(userId);
                           });
 
                           Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
