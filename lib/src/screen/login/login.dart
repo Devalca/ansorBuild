@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/login_model.dart';
+import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 
-final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+// final GlobalKey<ScaffoldState> _notifLogin = GlobalKey<ScaffoldState>();
 
 class Login extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
+      // key: _notifLogin,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -142,11 +143,11 @@ class _LoginState extends State<Login> {
                           Map data = jsonDecode(response.body);
                           message = data["message"].toString();
 
-                          _scaffoldState.currentState.showSnackBar(
-                            SnackBar(
-                              content: Text(message)
-                            )
-                          );
+                          // _notifLogin.currentState.showSnackBar(
+                          //   SnackBar(
+                          //     content: Text(message)
+                          //   )
+                          // );
                         }
                       });
                     },
@@ -178,7 +179,7 @@ class _LoginState extends State<Login> {
 
                     new GestureDetector(
                       onTap: () {
-                        Navigator.push(context, new MaterialPageRoute(builder: (__) => new Login()));
+                        Navigator.push(context, new MaterialPageRoute(builder: (__) => new RegisterPage()));
                       },
                       child: Container(
                         child: Text(

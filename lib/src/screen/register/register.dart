@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/model/user_model.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -235,16 +236,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   _controllerEmail.clear();
                   _controllerNomor.clear();
                   _controllerPsd.clear();
+                   Navigator.push(context, MaterialPageRoute(builder: 
+                (context) => Login()
+                ));
                 }
                 // _statePrabayar.currentState.showSnackBar(SnackBar(
                 //     duration: Duration(minutes: 5),
                 //     content: Text("SEDANG PROSES")));
                 // await new Future.delayed(
                 //     const Duration(seconds: 2));
-                // Navigator.push(
-                //     context,
-                //     new MaterialPageRoute(
-                //         builder: (__) => new DetailPage(koId, namaProv)));
                 // setState(() => _isLoading = false);
               } else {
                 print("INI STATUS CODE : " + response.statusCode.toString());
