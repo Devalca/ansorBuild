@@ -20,6 +20,21 @@ class _LoginState extends State<Login> {
   TextEditingController _passwordController = TextEditingController();
   LoginServices _loginServices = LoginServices();
 
+  createAlertDialog(BuildContext context){
+    return showDialog(context: context, builder: (context){
+      return AlertDialog(
+        content: Text("No HP atau Password anda Salah!!!"),
+        actions: <Widget>[
+          MaterialButton(
+            elevation: 5.0,
+            child: Text("OK"),
+            onPressed: (){},
+          )
+        ],
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,11 +157,26 @@ class _LoginState extends State<Login> {
                           Map data = jsonDecode(response.body);
                           message = data["message"].toString();
 
-                          _scaffoldState.currentState.showSnackBar(
-                            SnackBar(
-                              content: Text(message)
-                            )
-                          );
+                          // _scaffoldState.currentState.showSnackBar(
+                          //   SnackBar(
+                          //     content: Text(message)
+                          //   )
+                          // );
+
+                          showDialog(context: context, builder: (context){
+                            return AlertDialog(
+                              content: Text("No HP atau Password anda Salah!!!"),
+                              actions: <Widget>[
+                                MaterialButton(
+                                  elevation: 5.0,
+                                  child: Text("OK"),
+                                  onPressed: (){
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          });
                         }
                       });
                     },
