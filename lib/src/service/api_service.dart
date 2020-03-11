@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/model/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,15 +34,14 @@ class ApiService {
     }
   }
 
-
-  // Future<ProviderCall> getAllProvider() async {
-  //   var response = await http.get(
-  //     '$baseUrl/master-data/namaprovider',
-  //     headers: {"accept": "application/json"},
-  //   );
-  //   print(response.body);
-  //   return providerCallFromJson(response.body);
-  // }
+   Future<http.Response> postRegist(Users users) async {
+    var response = await http.post(
+      '$baseUrl/members/regist/',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: usersToJson(users),
+    );
+    return response;
+  }
 
   Future<http.Response> createPost(Post post) async {
     var response = await http.post(
@@ -52,8 +52,7 @@ class ApiService {
     return response;
   }
 
-
-    Future<http.Response> createPostPasca(Post post) async {
+  Future<http.Response> createPostPasca(Post post) async {
     var response = await http.post(
       '$baseUrl/ppob/pulsa/pascabayar',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},

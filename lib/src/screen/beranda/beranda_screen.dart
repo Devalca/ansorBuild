@@ -1,13 +1,8 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/beranda_service.dart';
-import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
-// import 'package:ansor_build/src/screen/ppob/pulsa/pulsa_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
-// import 'package:ansor_build/src/screen/testing.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa_new.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:http/http.dart' as http;
@@ -150,11 +145,11 @@ class _BerandaPageState extends State<BerandaPage> {
                               Container(
                                 child: Row(
                                   children: <Widget>[
-                                     Text('Rp. ', style: TextStyle(fontSize: 40.0),),
+                                     Text('Rp. ', style: TextStyle(fontSize: 24.0)),
                               Text(snapshot.data.saldoAkhir
                                   .toString(),
                                   style: TextStyle(
-                                    fontSize: 40.0
+                                    fontSize: 24.0
                                   ),
                                   ),
                                   ],
@@ -242,12 +237,12 @@ class _BerandaPageState extends State<BerandaPage> {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PdamPage()));
         } else if (ppobService.title == "PULSA") {
+          // Navigator.pushNamed(context, Routes.Pascabayar);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MainPulsa()));
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Listrik()));
-          // Navigator.pushNamed(context, Routes.Pascabayar);
         } else {
           print('Under Maintence');
         }

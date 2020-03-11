@@ -91,6 +91,7 @@ class Datum {
     JenisProvider jenisProvider;
     String namaProvider;
     String kodeProvider;
+    String file;
 
     Datum({
         this.providerId,
@@ -98,6 +99,7 @@ class Datum {
         this.jenisProvider,
         this.namaProvider,
         this.kodeProvider,
+        this.file
     });
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
@@ -106,6 +108,7 @@ class Datum {
         jenisProvider: jenisProviderValues.map[json["jenis_provider"]],
         namaProvider: json["nama_provider"],
         kodeProvider: json["kode_provider"],
+        file: json["file"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -114,6 +117,7 @@ class Datum {
         "jenis_provider": jenisProviderValues.reverse[jenisProvider],
         "nama_provider": namaProvider,
         "kode_provider": kodeProvider,
+         "file": file,
     };
 }
 
@@ -253,7 +257,7 @@ class DataDetail {
   String provider;
   int totalHarga;
   int transactionId;
-
+  DateTime periode;
 
   DataDetail({
     this.id,
@@ -263,7 +267,8 @@ class DataDetail {
     this.adminFee,
     this.provider,
     this.totalHarga,
-    int transactionId
+    int transactionId,
+    this.periode,
 
   });
 
@@ -275,7 +280,8 @@ class DataDetail {
         adminFee: json["admin_fee"],
         provider: json["provider"],
         totalHarga: json["total_harga"],
-        transactionId: json["transactionId"]
+        transactionId: json["transactionId"],
+        periode: DateTime.parse(json["periode"]),
  
       );
 
@@ -287,7 +293,8 @@ class DataDetail {
         "admin_fee": adminFee,
         "provider": provider,
         "total_harga": totalHarga,
-        "transactionId" : transactionId
+        "transactionId" : transactionId,
+        "periode": periode.toIso8601String(),
  
       };
 }
@@ -342,75 +349,4 @@ class Post {
         "transactionId": transactionId,
         "userId": userId
       };
-}
-
-class Profile {
-  int id;
-  String name;
-  String email;
-  int age;
-
-  Profile({this.id = 0, this.name, this.email, this.age});
-
-  factory Profile.fromJson(Map<String, dynamic> map) {
-    return Profile(
-        id: map["id"], name: map["name"], email: map["email"], age: map["age"]);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {"id": id, "name": name, "email": email, "age": age};
-  }
-
-  @override
-  String toString() {
-    return 'Profile{id: $id, name: $name, email: $email, age: $age}';
-  }
-}
-
-List<Profile> profileFromJson(String jsonData) {
-  final data = json.decode(jsonData);
-  return List<Profile>.from(data.map((item) => Profile.fromJson(item)));
-}
-
-String profileToJson(Profile data) {
-  final jsonData = data.toJson();
-  return json.encode(jsonData);
-}
-
-class ScPdam {
-  int id;
-  String namaWilayah;
-  int noPelanggan;
-
-  ScPdam({this.id = 0, this.namaWilayah, this.noPelanggan});
-
-  factory ScPdam.fromJson(Map<String, dynamic> map) {
-    return ScPdam(
-        id: map["id"],
-        namaWilayah: map["nama_wilayah"],
-        noPelanggan: map["no_pelanggan"]);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "nama_wilayah": namaWilayah,
-      "no_pelanggan": noPelanggan
-    };
-  }
-
-  @override
-  String toString() {
-    return 'Wilayah{id: $id, nama_wilayah: $namaWilayah, no_pelanggan: $noPelanggan}';
-  }
-}
-
-List<ScPdam> scPdamFromJson(String jsonData) {
-  final data = json.decode(jsonData);
-  return List<ScPdam>.from(data.map((item) => ScPdam.fromJson(item)));
-}
-
-String scPdamToJson(ScPdam data) {
-  final jsonData = data.toJson();
-  return json.encode(jsonData);
 }

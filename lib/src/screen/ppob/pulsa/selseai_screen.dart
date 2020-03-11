@@ -198,7 +198,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                           color: Colors.black,
                         ),
                         Container(
-                          height: 45.0,
+                          height: 40.0,
                           margin: EdgeInsets.only(
                               left: 16.0, right: 16.0, bottom: 20.0),
                           decoration: BoxDecoration(

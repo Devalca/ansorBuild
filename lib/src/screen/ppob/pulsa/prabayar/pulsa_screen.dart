@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'detail_screen.dart';
-
-final GlobalKey<ScaffoldState> _statePrabayar = GlobalKey<ScaffoldState>();
-final GlobalKey<FormState> _key = GlobalKey();
 
 class PulsaPage extends StatefulWidget {
   @override
@@ -15,23 +13,21 @@ class PulsaPage extends StatefulWidget {
 }
 
 class _PulsaPageState extends State<PulsaPage> {
+  GlobalKey<FormState> _key = GlobalKey();
   ApiService _apiService = ApiService();
   bool _validate = true;
-  String inputNomor, inputNominal;
-  String _jsonContent = "";
+  String inputNomor, inputNominal, hargaNominal;
+  int _nominalIndex = -1;
   var mobi = "";
   var idProv = "";
+  var logoProv = "";
   bool btn1 = false;
   bool btn2 = false;
   bool btn3 = false;
   bool btn4 = false;
   bool btn5 = false;
   bool btn6 = false;
-  // bool _isLoading = false;
-  // bool _isFieldNomor;
-  // bool _isFieldNominal;
   TextEditingController _controllerNomor = TextEditingController();
-  // TextEditingController _controllerNominal = TextEditingController();
 
   @override
   void initState() {
@@ -43,22 +39,16 @@ class _PulsaPageState extends State<PulsaPage> {
     super.dispose();
   }
 
-  //  var moBi= snapshot.data.data.length;
-  //               if (value == moBi) {
-  //                 print(snapshot.data.data[0].jenisProvider.toString());
-  //               }
-  //               print(moBi);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _statePrabayar,
-      body: SingleChildScrollView(
-        child: Form(
+      resizeToAvoidBottomPadding: false,
+      body: Form(
           key: _key,
           autovalidate: _validate,
-          child: formInputPulsa(),
-        ),
+          child: SingleChildScrollView(
+            child: formInputPulsa(),
+          )
       ),
     );
   }
@@ -87,6 +77,9 @@ class _PulsaPageState extends State<PulsaPage> {
                               Positioned(
                                 child: Container(
                                   child: TextFormField(
+                                      inputFormatters: [
+                                        LengthLimitingTextInputFormatter(12)
+                                      ],
                                       controller: _controllerNomor,
                                       onChanged: (String value) async {
                                         for (var i = 0;
@@ -101,11 +94,15 @@ class _PulsaPageState extends State<PulsaPage> {
                                                 idProv = providers[i]
                                                     .operatorId
                                                     .toString();
+                                                logoProv = providers[i]
+                                                    .file
+                                                    .toString();
                                               });
                                             }
                                           } else if (value.length == 3) {
                                             setState(() {
                                               mobi = "";
+                                              logoProv = "";
                                             });
                                           }
                                         }
@@ -118,16 +115,19 @@ class _PulsaPageState extends State<PulsaPage> {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(340, 12, 0, 16),
+                                padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
                                 child: Container(
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Container(
-                                        margin: EdgeInsets.only(right: 12.0),
-                                        child: Icon(Icons.no_sim),
-                                      ),
+                                          margin: EdgeInsets.only(right: 12.0),
+                                          child: Container(
+                                            height: 30.0,
+                                            width: 30.0,
+                                            child: Image.network(logoProv),
+                                          )),
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
                                         height: 30.0,
@@ -148,56 +148,45 @@ class _PulsaPageState extends State<PulsaPage> {
                       ),
                     ),
                     Container(
+                      height: 450.0,
                       padding: EdgeInsets.only(top: 15.0),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Container(child: Text('Nomor HandPhone')),
                             FutureBuilder<NominalList>(
                               future: _apiService.getNominal(),
                               builder: (context, snapshot) {
-                                if (idProv == "") {
-                                  return Center(
-                                    child: Container(
-                                        padding: EdgeInsets.only(top: 25),
-                                        child: CircularProgressIndicator()),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Center(
-                                    child: Text(
-                                        "Something wrong with message: ${snapshot.error.toString()}"),
-                                  );
-                                } else if (snapshot.connectionState ==
+                                if (snapshot.connectionState ==
                                     ConnectionState.done) {
-                                  List<Listharga> hargaList = snapshot
-                                      .data.data[int.parse(idProv)].listharga;
-                                  return Container(
-                                    height: 200.0,
-                                    child: _simpleList(hargaList),
-                                  );
-                                } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
+                                  for (var i = 0;
+                                      i < snapshot.data.data.length;
+                                      i++) {
+                                    if (idProv == "") {
+                                     return Container();
+                                    } else if (idProv ==
+                                        snapshot.data.data[i].operatorId
+                                            .toString()) {
+                                      List<Listharga> hargaList =
+                                          snapshot.data.data[i].listharga;
+                                      return Container(
+                                        height: 430.0,
+                                        child: _btnListView(hargaList),
+                                      );
+                                    }
+                                  }
                                 }
+                                return Container();
                               },
                             ),
                           ]),
                     ),
                     Container(
-                      height: 300.0,
+                      height: 100.0,
                     ),
                     Divider(
                       height: 12,
                       color: Colors.black,
                     ),
-                    // TextFormField(
-                    //     decoration: InputDecoration(hintText: 'Nominal'),
-                    //     keyboardType: TextInputType.number,
-                    //     validator: validateNominal,
-                    //     onSaved: (String val) {
-                    //       inputNominal = val;
-                    //     }),
                     Container(
                       child: Row(
                         children: <Widget>[
@@ -210,14 +199,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                 ),
                                 Row(children: <Widget>[
                                   Text('Rp'),
-                                  Text(btn1 ||
-                                          btn2 ||
-                                          btn3 ||
-                                          btn4 ||
-                                          btn5 ||
-                                          btn6
-                                      ? inputNominal
-                                      : ""),
+                                  Text(hargaNominal == null ?  "" : hargaNominal),
                                 ])
                               ],
                             ),
@@ -249,99 +231,67 @@ class _PulsaPageState extends State<PulsaPage> {
     );
   }
 
-  Widget _simpleList(List<Listharga> hargaList) {
+  Widget _btnListView(List<Listharga> hargaList) {
     return GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
         itemCount: hargaList == null ? 0 : hargaList.length,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 2.9,
+        ),
         itemBuilder: (BuildContext context, int index) {
+          bool isSelected = _nominalIndex == index;
+          int a = hargaList[index].nominalPulsa;
+          int b = 1500;
           return GestureDetector(
-            child: Card(
-              elevation: 5.0,
-              child: Container(
-                alignment: Alignment.center,
-                child: Text(hargaList[index].nominalPulsa.toString()),
+            child: Container(
+              padding: EdgeInsets.all(12.0),
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                    color: isSelected
+                        ? Colors.green.withOpacity(0.8)
+                        : Colors.grey[700].withOpacity(0.5)),
+                color: Colors.white,
               ),
-            ),
-            onTap: () {
-              // showDialog(
-              //   barrierDismissible: false,
-              //   context: context,
-              //   child: new AlertDialog(
-              //     title: new Column(
-              //       children: <Widget>[
-              //         new Text("GridView"),
-              //         new Icon(
-              //           Icons.favorite,
-              //           color: Colors.green,
-              //         ),
-              //       ],
-              //     ),
-              //     content: new Text("Selected Item $index"),
-              //     actions: <Widget>[
-              //       new FlatButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop();
-              //           },
-              //           child: new Text("OK"))
-              //     ],
-              //   ),
-              // );
-            },
-          );
-        });
-  }
-
-  Widget _buildListView(List<Listharga> hargaList) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          Listharga harga = hargaList[index];
-          return Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              child: Container(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      harga.nominalPulsa.toString(),
-                      style: Theme.of(context).textTheme.title,
+                      hargaList[index].nominalPulsa.toString(),
+                      style: TextStyle(
+                          fontSize: 28, color: isSelected ? Colors.green : null),
                     ),
-                    Text(harga.nominalPulsa.toString()),
-                    Text(harga.nominalPulsa.toString()),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                          },
-                          child: Text(
-                            "Delete",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                          },
-                          child: Text(
-                            "Edit",
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ],
-                    ),
+                    Text(
+                      "Harga Rp.${a+b}",
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    )
                   ],
                 ),
               ),
             ),
+            onTap: () {
+              setState(() {
+                _nominalIndex = index;
+              });
+              if (_nominalIndex == index) {
+                  inputNominal = hargaList[index].nominalPulsa.toString();
+                  hargaNominal = 'Rp.${a+b}';
+                  print(index);
+                  print(_nominalIndex);
+                  print(inputNominal);
+                }
+            },
           );
-        },
-        itemCount: hargaList.length,
-      ),
-    );
+        });
   }
 
   String validateNomor(String value) {
@@ -374,8 +324,14 @@ class _PulsaPageState extends State<PulsaPage> {
       // setState(() => _isLoading = true);
       String nomor = inputNomor.toString();
       int nominal = int.parse(inputNominal.toString());
-      if (nomor != null || nominal != null) {
-        Post post = Post(noHp: nomor, nominal: nominal, userId: 1, walletId: 1);
+      String namaProv = mobi.toString();
+      if (nomor != null || nominal != null || namaProv != null) {
+        Post post = Post(
+            noHp: nomor,
+            nominal: nominal,
+            userId: 1,
+            walletId: 1,
+            provider: namaProv);
         _apiService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
             // _statePrabayar.currentState.showSnackBar(SnackBar(
@@ -387,15 +343,23 @@ class _PulsaPageState extends State<PulsaPage> {
             _apiService.saveNameId(userUid).then((bool committed) {
               print(userUid);
             });
+            print("INI KOID : " + koId);
+            print("INI RESPONSE :" + response.body);
+            print("NI PROVIDER : " + namaProv);
             // await new Future.delayed(
             //     const Duration(seconds: 2));
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (__) => new DetailPage(koId)));
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (__) => new DetailPage(koId, namaProv)));
+                     _key.currentState.reset();
             // setState(() => _isLoading = false);
           } else {
             print("INI STATUS CODE : " + response.statusCode.toString());
           }
         });
+      } else {
+        print("error");
       }
     } else {
       setState(() {
