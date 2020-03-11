@@ -104,9 +104,9 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     // if(snapshot.data.data.length == 0) {
-                    // if(snapshot.data == null) {
-                    //   return Text("Tidak ada Data");
-                    // }else{
+                    if(snapshot.data == null) {
+                      return Text("Tidak ada Data");
+                    }else{
                       return (
                         Container(
                           child: Column(
@@ -397,7 +397,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                           ),
                         )
                       );  
-                    // }
+                    }
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }

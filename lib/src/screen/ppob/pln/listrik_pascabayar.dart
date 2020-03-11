@@ -98,7 +98,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Contoh: 123456789',
-                    errorText: _fieldNoMeter == null || _fieldNoMeter ? null : "Kolom Nommor Meter harus diisi",
+                    errorText: _fieldNoMeter == null || _fieldNoMeter ? null : "Kolom Nomor Meter harus diisi",
                   ),
                   style: new TextStyle(fontSize:  14.0),
                   onChanged: (value) {
@@ -170,50 +170,59 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                     color: Colors.green,
                     onPressed: () {
 
-                      setState(() => _isLoading = true);
-
-                      String noMeter = _noMeterController.text.toString();
-
-                      PostPascabayar pascabayar = PostPascabayar(noMeter: noMeter, userId: 1, walletId: 1);
-
-                      _plnServices.postPascabayar(pascabayar).then((response) async {
-                        if (response.statusCode == 302){
-                          print("berhasil body: " + response.body);
-                          print(response.statusCode);
-
-                          url = response.headers['location'];
-                          print("url: " + url);
-                          print('dataUrl' + url);
-
-                          _plnServices.saveTransactionId(url).then((bool committed) {
-                            print(url);
-                          });
-
-                          Navigator.push(context, new MaterialPageRoute(builder: (__) => new ListrikPembayaran(status: "pascabayar")));
-                          setState(() => _isLoading = false);
-
-                        }else if(response.statusCode == 200) {
-                          print("berhasil body: " + response.body);
-                          print(response.statusCode);
-
-                          Map data = jsonDecode(response.body);
-                          transactionId = data['transactionId'].toString();
-                          print("transactionId: " + transactionId);
-                          
-                          url = '/ppob/pln/' + transactionId;
-                          print("url: " + url);
-
-                          _plnServices.saveTransactionId(url).then((bool committed) {
-                            print(url);
-                          });
-               
-                          Navigator.push(context, new MaterialPageRoute(builder: (__) => new ListrikPembayaran(status: "pascabayar")));
-                          setState(() => _isLoading = false);
-                        } else {
-                          print("error: " + response.body);
-                          print(response.statusCode);
-                        }
+                      setState(() { 
+                        _isLoading = true; 
                       });
+
+                      if(_noMeterController.text.isEmpty){
+                        setState(() {
+                          _isLoading = false; 
+                          _fieldNoMeter = false; 
+                        });
+                      }else{
+                        String noMeter = _noMeterController.text.toString();
+
+                        PostPascabayar pascabayar = PostPascabayar(noMeter: noMeter, userId: 1, walletId: 1);
+
+                        _plnServices.postPascabayar(pascabayar).then((response) async {
+                          if (response.statusCode == 302){
+                            print("berhasil body: " + response.body);
+                            print(response.statusCode);
+
+                            url = response.headers['location'];
+                            print("url: " + url);
+                            print('dataUrl' + url);
+
+                            _plnServices.saveTransactionId(url).then((bool committed) {
+                              print(url);
+                            });
+
+                            Navigator.push(context, new MaterialPageRoute(builder: (__) => new ListrikPembayaran(status: "pascabayar")));
+                            setState(() => _isLoading = false);
+
+                          }else if(response.statusCode == 200) {
+                            print("berhasil body: " + response.body);
+                            print(response.statusCode);
+
+                            Map data = jsonDecode(response.body);
+                            transactionId = data['transactionId'].toString();
+                            print("transactionId: " + transactionId);
+                            
+                            url = '/ppob/pln/' + transactionId;
+                            print("url: " + url);
+
+                            _plnServices.saveTransactionId(url).then((bool committed) {
+                              print(url);
+                            });
+                
+                            Navigator.push(context, new MaterialPageRoute(builder: (__) => new ListrikPembayaran(status: "pascabayar")));
+                            setState(() => _isLoading = false);
+                          } else {
+                            print("error: " + response.body);
+                            print(response.statusCode);
+                          }
+                        });
+                      }
 
                       // PostResult.connectToAPI(_noMeterController.text).then((value){
                       //   postResult = value;
@@ -334,7 +343,6 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
           //       return CircularProgressIndicator();
           //     },
           //   ),
-        
       )
     );
   }
