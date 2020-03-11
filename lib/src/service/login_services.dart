@@ -4,7 +4,7 @@ import 'package:ansor_build/src/model/login_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-String sessionId, message;
+String walletId, userId, message;
 
 class LoginServices{
   String baseUrl = "http://192.168.10.11:3000";
@@ -18,9 +18,15 @@ class LoginServices{
     return response;
   }
 
-  Future<bool> saveSessionId(String transactionId) async {
+  Future<bool> saveWalletId(String walletId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("sessionId", sessionId);
+    prefs.setString("sessionId", walletId);
+    return prefs.commit();
+  }
+
+  Future<bool> saveUserId(String userId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("sessionId", userId);
     return prefs.commit();
   }
 }
