@@ -28,16 +28,16 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         title: Text(
           'Listrik PLN',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
         bottom: new TabBar(
           controller: controller,
           indicatorColor: Colors.green,
           indicatorWeight: 4,
-          labelColor: Colors.green,
+          labelColor: Colors.black,
           unselectedLabelColor: Colors.black38,
           tabs: <Widget>[
             new Tab(text: "Prabayar"),
