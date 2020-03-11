@@ -66,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Text('Ok'),
                 onPressed: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => BerandaPage()));
+                      MaterialPageRoute(builder: (context) => Login()));
                 },
               ),
             ],
@@ -236,9 +236,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   _controllerEmail.clear();
                   _controllerNomor.clear();
                   _controllerPsd.clear();
-                   Navigator.push(context, MaterialPageRoute(builder: 
-                (context) => Login()
-                ));
                 }
                 // _statePrabayar.currentState.showSnackBar(SnackBar(
                 //     duration: Duration(minutes: 5),
