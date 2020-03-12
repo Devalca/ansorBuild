@@ -55,13 +55,44 @@ class _DetailPageState extends State<DetailPage> {
   Future<Album> fetchAlbum() async {
     String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
     final response = await http.get(baseUrl + widget.koId);
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       print("SATATUS CODENYA: " + response.statusCode.toString());
       return albumFromJson(response.body);
     } else {
       print("SATATUS CODENYA: " + response.statusCode.toString());
       throw Exception('Failed to load album');
     }
+  }
+
+  static Future<void> _showLoadingDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: SimpleDialog(
+                  backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Center(
+                      child: Column(children: [
+                        CircularProgressIndicator(
+                          backgroundColor: Colors.green,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Mohon Tunggu....",
+                          style: TextStyle(color: Colors.green),
+                        )
+                      ]),
+                    )
+                  ]));
+        });
   }
 
   @override
@@ -148,8 +179,8 @@ class _DetailPageState extends State<DetailPage> {
                                           child: Text('Periode'),
                                         ),
                                         Container(
-                                child: Text(formatterDate.toString()),
-                              ),
+                                          child: Text(formatterDate.toString()),
+                                        ),
                                       ],
                                     ),
                                     Row(
@@ -295,6 +326,7 @@ class _DetailPageState extends State<DetailPage> {
                           child: RaisedButton(
                             color: Colors.green,
                             onPressed: () {
+                              _showLoadingDialog(context);
                               // setState(() => _isLoading = true);
                               int transactionId = int.parse(_id.toString());
                               String nomorHp =
@@ -314,17 +346,13 @@ class _DetailPageState extends State<DetailPage> {
                                   Map blok = jsonDecode(response.body);
                                   var userUid = blok['id'].toString();
                                   var koId = userUid;
-                                  // _apiService.saveNameId(userUid).then((bool committed) {
-                                  //   print(userUid);
-                                  // });
-                                  await new Future.delayed(const Duration(seconds: 10));
+                                  await new Future.delayed(
+                                      const Duration(seconds: 5));
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               SesPulsaPage(koId)));
-                                  //   print(post);
-                                  // setState(() => _isLoading = false);
                                 } else {
                                   print(response.statusCode);
                                 }
@@ -365,22 +393,4 @@ class _DetailPageState extends State<DetailPage> {
       this._id = transId;
     });
   }
-
-  // Widget _detailPembayaran() {
-  //   return TextField(
-  //     controller: _controllerNominal,
-  //     keyboardType: TextInputType.number,
-  //     decoration: InputDecoration(
-  //       labelText: "Nominal",
-  //       errorText:
-  //           _isFieldNominal == null || _isFieldNominal ? null : "WOYYY 1!1!1!",
-  //     ),
-  //     onChanged: (value) {
-  //       bool isFieldValid = value.trim().isNotEmpty;
-  //       if (isFieldValid != _isFieldNominal) {
-  //         setState(() => _isFieldNominal = isFieldValid);
-  //       }
-  //     },
-  //   );
-  // }
 }

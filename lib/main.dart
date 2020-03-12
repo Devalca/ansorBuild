@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: Login(),
+      home: BerandaPage(),
       routes: Routes.getRoutes(),
     );
   }

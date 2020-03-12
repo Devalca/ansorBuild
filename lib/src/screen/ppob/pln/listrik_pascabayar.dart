@@ -6,7 +6,7 @@ import 'package:ansor_build/src/screen/ppob/pln/listrik_pembayaran.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 
-final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+// final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
 Future<Bayar> createPascabayar(String noMeter) async {
   final http.Response response = await http.post(
@@ -77,7 +77,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldState,
+      // key: _scaffoldState,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),

@@ -4,6 +4,7 @@ import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 final GlobalKey<ScaffoldState> _statePascabayar = GlobalKey<ScaffoldState>();
 
@@ -21,6 +22,35 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   bool _isFieldNomor;
   TextEditingController _controllerNomor = TextEditingController();
 
+  static Future<void> _showLoadingDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: SimpleDialog(
+                  backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Center(
+                      child: Column(children: [
+                        CircularProgressIndicator(backgroundColor: Colors.green,),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Mohon Tunggu....",
+                          style: TextStyle(color: Colors.green),
+                        )
+                      ]),
+                    )
+                  ]));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +61,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 16.0),
               color: Colors.white,
-              height: 580.0,
+              height: 700.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,32 +75,27 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                           margin: EdgeInsets.only(top: 12.0),
                           child: Text('Nomor Handphone'),
                         ),
-                        Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                              bottom:
-                                  BorderSide(width: 1.0, color: Colors.black),
-                            )),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                  width: 250.0,
+                        Stack(
+                            children: <Widget>[
+                              Positioned(
+                                child: Container(
                                   child: _buildTextFieldNomor(),
                                 ),
-                                Container(
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
+                                child: Container(
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Container(
-                                        margin: EdgeInsets.only(right: 12.0),
-                                        child: Container(
-                                          height: 30.0,
-                                          width: 30.0,
-                                          child: Image.network(logoProv),
-                                        )
-                                      ),
+                                          margin: EdgeInsets.only(right: 12.0),
+                                          child: Container(
+                                            height: 30.0,
+                                            width: 30.0,
+                                            child: Image.network(logoProv),
+                                          )),
                                       Container(
                                         margin: EdgeInsets.only(right: 12.0),
                                         height: 30.0,
@@ -83,9 +108,10 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                       )
                                     ],
                                   ),
-                                )
-                              ],
-                            )),
+                                ),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                   ),
@@ -108,6 +134,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: RaisedButton(
                                   onPressed: () {
+                                    _showLoadingDialog(context);
                                     if (_isFieldNomor == null ||
                                         !_isFieldNomor) {
                                       _statePascabayar.currentState
@@ -118,7 +145,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                       );
                                       return;
                                     }
-                                    // setState(() => _isLoading = true);
                                     String nomor =
                                         _controllerNomor.text.toString();
                                     Post post = Post(
@@ -149,7 +175,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                               new MaterialPageRoute(
                                                   builder: (__) =>
                                                       new DetailPage(koId)));
-                                          setState(() => _isLoading = false);
                                         }
                                       } else {
                                         print("INI STATUS CODE: " +
@@ -197,10 +222,12 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           if (snapshot.hasData) {
             List<Datum> providers = snapshot.data.data;
             return TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(12),
+              ],
               controller: _controllerNomor,
               keyboardType: TextInputType.phone,
               decoration: InputDecoration(
-                  border: InputBorder.none,
                   errorText: _isFieldNomor == null || _isFieldNomor
                       ? null
                       : "Tidak Boleh Kosong"),
@@ -208,12 +235,12 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                 bool isFieldValid = value.trim().isNotEmpty;
                 for (var i = 0; i < snapshot.data.data.length; i++) {
                   if (value.length == 4) {
-                     if (isFieldValid != _isFieldNomor) {
-                          setState(() => _isFieldNomor = isFieldValid);
-                        } else if (value == providers[i].kodeProvider) {
-                          setState(() {
-                          mobi = providers[i].namaProvider;
-                          logoProv = providers[i].file.toString();
+                    if (isFieldValid != _isFieldNomor) {
+                      setState(() => _isFieldNomor = isFieldValid);
+                    } else if (value == providers[i].kodeProvider) {
+                      setState(() {
+                        mobi = providers[i].namaProvider;
+                        logoProv = providers[i].file.toString();
                       });
                     }
                   } else if (value.length == 3) {
@@ -223,14 +250,12 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                     });
                   }
                 }
-               
               },
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          return CircularProgressIndicator();
+          return Container();
         });
   }
-
 }

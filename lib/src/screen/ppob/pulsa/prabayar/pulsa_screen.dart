@@ -21,12 +21,6 @@ class _PulsaPageState extends State<PulsaPage> {
   var mobi = "";
   var idProv = "";
   var logoProv = "";
-  bool btn1 = false;
-  bool btn2 = false;
-  bool btn3 = false;
-  bool btn4 = false;
-  bool btn5 = false;
-  bool btn6 = false;
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
@@ -48,8 +42,7 @@ class _PulsaPageState extends State<PulsaPage> {
           autovalidate: _validate,
           child: SingleChildScrollView(
             child: formInputPulsa(),
-          )
-      ),
+          )),
     );
   }
 
@@ -162,7 +155,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                       i < snapshot.data.data.length;
                                       i++) {
                                     if (idProv == "") {
-                                     return Container();
+                                      return Container();
                                     } else if (idProv ==
                                         snapshot.data.data[i].operatorId
                                             .toString()) {
@@ -199,7 +192,8 @@ class _PulsaPageState extends State<PulsaPage> {
                                 ),
                                 Row(children: <Widget>[
                                   Text('Rp'),
-                                  Text(hargaNominal == null ?  "" : hargaNominal),
+                                  Text(
+                                      hargaNominal == null ? "" : hargaNominal),
                                 ])
                               ],
                             ),
@@ -226,7 +220,7 @@ class _PulsaPageState extends State<PulsaPage> {
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
-            return CircularProgressIndicator();
+            return Container();
           }),
     );
   }
@@ -240,7 +234,7 @@ class _PulsaPageState extends State<PulsaPage> {
           crossAxisCount: 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 2.9,
+          childAspectRatio: 2,
         ),
         itemBuilder: (BuildContext context, int index) {
           bool isSelected = _nominalIndex == index;
@@ -266,10 +260,11 @@ class _PulsaPageState extends State<PulsaPage> {
                     Text(
                       hargaList[index].nominalPulsa.toString(),
                       style: TextStyle(
-                          fontSize: 28, color: isSelected ? Colors.green : null),
+                          fontSize: 28,
+                          color: isSelected ? Colors.green : null),
                     ),
                     Text(
-                      "Harga Rp.${a+b}",
+                      "Harga Rp.${a + b}",
                       style: TextStyle(
                         fontSize: 14,
                       ),
@@ -283,12 +278,12 @@ class _PulsaPageState extends State<PulsaPage> {
                 _nominalIndex = index;
               });
               if (_nominalIndex == index) {
-                  inputNominal = hargaList[index].nominalPulsa.toString();
-                  hargaNominal = 'Rp.${a+b}';
-                  print(index);
-                  print(_nominalIndex);
-                  print(inputNominal);
-                }
+                inputNominal = hargaList[index].nominalPulsa.toString();
+                hargaNominal = 'Rp.${a + b}';
+                print(index);
+                print(_nominalIndex);
+                print(inputNominal);
+              }
             },
           );
         });
@@ -334,9 +329,6 @@ class _PulsaPageState extends State<PulsaPage> {
             provider: namaProv);
         _apiService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
-            // _statePrabayar.currentState.showSnackBar(SnackBar(
-            //     duration: Duration(minutes: 5),
-            //     content: Text("SEDANG PROSES")));
             Map blok = jsonDecode(response.body);
             var userUid = blok['id'].toString();
             var koId = userUid;
@@ -346,14 +338,11 @@ class _PulsaPageState extends State<PulsaPage> {
             print("INI KOID : " + koId);
             print("INI RESPONSE :" + response.body);
             print("NI PROVIDER : " + namaProv);
-            // await new Future.delayed(
-            //     const Duration(seconds: 2));
             Navigator.push(
                 context,
                 new MaterialPageRoute(
                     builder: (__) => new DetailPage(koId, namaProv)));
-                     _key.currentState.reset();
-            // setState(() => _isLoading = false);
+            _key.currentState.reset();
           } else {
             print("INI STATUS CODE : " + response.statusCode.toString());
           }

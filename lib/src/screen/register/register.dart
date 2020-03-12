@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> _glDialog(BuildContext context) {
     return showDialog<void>(
-      context: context,
+      context: context, 
       barrierDismissible: false,
       builder: (BuildContext context) {
         return WillPopScope(
@@ -225,6 +225,7 @@ class _RegisterPageState extends State<RegisterPage> {
             _apiService.postRegist(users).then((response) async {
               if (response.statusCode == 200) {
                 if (response.body == "already existed!") {
+                  print("MOBIL SETAN: " +  response.body);
                   _glDialog(context);
                   _controllerNama.clear();
                   _controllerEmail.clear();
