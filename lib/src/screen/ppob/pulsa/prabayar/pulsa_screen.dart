@@ -23,6 +23,8 @@ class _PulsaPageState extends State<PulsaPage> {
   var logoProv = "";
   TextEditingController _controllerNomor = TextEditingController();
 
+
+
   @override
   void initState() {
     super.initState();
@@ -274,6 +276,7 @@ class _PulsaPageState extends State<PulsaPage> {
               ),
             ),
             onTap: () {
+              FocusScope.of(context).requestFocus(new FocusNode());
               setState(() {
                 _nominalIndex = index;
               });
@@ -330,7 +333,7 @@ class _PulsaPageState extends State<PulsaPage> {
         _apiService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
-            var userUid = blok['id'].toString();
+            userUid = blok['id'].toString();
             var koId = userUid;
             _apiService.saveNameId(userUid).then((bool committed) {
               print(userUid);

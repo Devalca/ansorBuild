@@ -1,34 +1,13 @@
 //Detail Pembayaran Pascabayar
 import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import '../selseai_screen.dart';
-
-Future<Wallet> getSaldo() async {
-  String url = 'http://192.168.10.11:3000/users/wallet/1';
-  final response = await http.get(url, headers: {"Accept": "application/json"});
-
-  if (response.statusCode == 200) {
-    return Wallet.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load post');
-  }
-}
-
-class Wallet {
-  final int walletId;
-  final int saldoAkhir;
-
-  Wallet({this.walletId, this.saldoAkhir});
-
-  factory Wallet.fromJson(Map<String, dynamic> json) {
-    return Wallet(saldoAkhir: json['data'][0]['saldo_akhir']);
-  }
-}
 
 class DetailPage extends StatefulWidget {
   final String koId;
@@ -292,11 +271,11 @@ class _DetailPageState extends State<DetailPage> {
                                     ),
                                     Container(
                                         child: FutureBuilder<Wallet>(
-                                      future: getSaldo(),
+                                      future: _apiService.getSaldo(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
                                           return Text("Rp" +
-                                              snapshot.data.saldoAkhir
+                                              snapshot.data.data[0].saldoAkhir
                                                   .toString());
                                         } else if (snapshot.hasError) {
                                           return Text("${snapshot.error}");

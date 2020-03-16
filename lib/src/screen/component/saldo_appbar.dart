@@ -9,7 +9,7 @@ class SaldoAppBar extends AppBar {
 
   static Widget _buildSaldoAppBar() {
     return Container(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+      padding: EdgeInsets.all(16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

@@ -1,13 +1,13 @@
-import 'dart:convert';
-
 import 'package:ansor_build/src/model/beranda_service.dart';
+import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa_new.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
-import 'package:http/http.dart' as http;
+import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BerandaPage extends StatefulWidget {
   @override
@@ -15,12 +15,12 @@ class BerandaPage extends StatefulWidget {
 }
 
 class _BerandaPageState extends State<BerandaPage> {
+  ApiService _apiService = ApiService();
   List<PpobService> _ppobServiceList = [];
 
   @override
   void initState() {
     super.initState();
-
     _ppobServiceList
         .add(PpobService(image: Icons.directions_bike, title: "PDAM"));
     _ppobServiceList
@@ -41,6 +41,14 @@ class _BerandaPageState extends State<BerandaPage> {
 
   @override
   Widget build(BuildContext context) {
+   SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.white, 
+      statusBarIconBrightness: Brightness.dark, 
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    )
+  );
     return SafeArea(
       child: Scaffold(
         appBar: SaldoAppBar(),
@@ -117,6 +125,8 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
+  // KUMPULAN WIDGET UNTUK HOME PAGE
+
   Widget _buildSaldoForm() {
     return Container(
       color: Colors.white,
@@ -137,9 +147,10 @@ class _BerandaPageState extends State<BerandaPage> {
                 Container(
                   child: FutureBuilder<Wallet>(
                     future:
-                        getSaldo(), 
+                       _apiService.getSaldo(), 
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasData) 
                         return Center(
                           child: Column(
                             children: <Widget>[
@@ -147,7 +158,7 @@ class _BerandaPageState extends State<BerandaPage> {
                                 child: Row(
                                   children: <Widget>[
                                      Text('Rp. ', style: TextStyle(fontSize: 24.0)),
-                              Text(snapshot.data.saldoAkhir
+                              Text(snapshot.data.data[0].saldoAkhir
                                   .toString(),
                                   style: TextStyle(
                                     fontSize: 24.0
@@ -162,7 +173,7 @@ class _BerandaPageState extends State<BerandaPage> {
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
-                      return CircularProgressIndicator();
+                      return Text('MOHON TUNGGU...');
                     },
                   ),
                 ),
@@ -173,7 +184,7 @@ class _BerandaPageState extends State<BerandaPage> {
                         padding: const EdgeInsets.only(right: 10.0),
                         child: IconButton(icon: Icon(Icons.refresh), onPressed: () {
                             setState(() {
-                              getSaldo();
+                              _apiService.getSaldo();
                             });
                           })
                       ),
@@ -238,7 +249,6 @@ class _BerandaPageState extends State<BerandaPage> {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PdamPage()));
         } else if (ppobService.title == "PULSA") {
-          // Navigator.pushNamed(context, Routes.Pascabayar);
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MainPulsa()));
         } else if (ppobService.title == "Listrik PLN") {
@@ -344,29 +354,6 @@ class _BerandaPageState extends State<BerandaPage> {
             ],
           ),
         ));
-  }
-
-  Future<Wallet> getSaldo() async {
-    String url = 'http://192.168.10.11:3000/users/wallet/1';
-    final response =
-        await http.get(url, headers: {"Accept": "application/json"});
-
-    if (response.statusCode == 200) {
-      return Wallet.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load post');
-    }
-  }
-}
-
-class Wallet {
-  final int walletId;
-  final int saldoAkhir;
-
-  Wallet({this.walletId, this.saldoAkhir});
-
-  factory Wallet.fromJson(Map<String, dynamic> json) {
-    return Wallet(saldoAkhir: json['data'][0]['saldo_akhir']);
   }
 }
 

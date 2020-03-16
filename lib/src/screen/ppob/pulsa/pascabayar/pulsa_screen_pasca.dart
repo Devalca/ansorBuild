@@ -154,7 +154,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                         .then((response) async {
                                       if (response.statusCode == 200) {
                                         Map blok = jsonDecode(response.body);
-                                        var userUid = blok['id'].toString();
+                                        userUid = blok['id'].toString();
                                         var koId = userUid;
                                         print(userUid);
                                         if (userUid == "null") {

@@ -146,8 +146,6 @@ class EnumValues<T> {
     }
 }
 
-
-
 PostTrans postTransFromJson(String str) => PostTrans.fromJson(json.decode(str));
 
 String postTransToJson(PostTrans data) => json.encode(data.toJson());
