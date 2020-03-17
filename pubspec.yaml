@@ -24,7 +24,7 @@ dependencies:
   get_it: ^3.0.3
   shared_preferences: ^0.5.6+2
   intl : ^0.16.1
-  flutter_form_bloc: ^0.10.2
+  carousel_slider: ^1.4.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -48,6 +48,15 @@ flutter:
   assets:
     - lib/src/assets/hack.png
     - lib/src/assets/qr-code.png
+    - lib/src/assets/BANNER_PULSA.jpg
+    - lib/src/assets/BANNER_ATAS.jpg
+    - lib/src/assets/BANNER_BAWAH.jpg
+    - lib/src/assets/BPJS.png
+    - lib/src/assets/LISTRIK.png
+    - lib/src/assets/PDAM.png
+    - lib/src/assets/PULSA.png
+    - lib/src/assets/lapak_sahabat.png
+    - lib/src/assets/XMLID_2.svg
     
   # To add assets to your application, add an assets section, like this:
   # assets:

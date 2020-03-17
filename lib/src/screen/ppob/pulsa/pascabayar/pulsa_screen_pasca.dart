@@ -37,7 +37,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                   children: <Widget>[
                     Center(
                       child: Column(children: [
-                        CircularProgressIndicator(backgroundColor: Colors.green,),
+                        CircularProgressIndicator(
+                          backgroundColor: Colors.green,
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -54,164 +56,155 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       key: _statePascabayar,
-      body: SingleChildScrollView(
-        child: Stack(
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
               color: Colors.white,
-              height: 700.0,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    color: Colors.white,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(top: 12.0),
-                          child: Text('Nomor Handphone'),
+                    margin: EdgeInsets.only(top: 12.0),
+                    child: Text('Nomor Handphone'),
+                  ),
+                  Stack(
+                    children: <Widget>[
+                      Positioned(
+                        child: Container(
+                          child: _buildTextFieldNomor(),
                         ),
-                        Stack(
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
+                        child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Positioned(
-                                child: Container(
-                                  child: _buildTextFieldNomor(),
-                                ),
+                              Container(
+                                  margin: EdgeInsets.only(right: 12.0),
+                                  child: Container(
+                                    height: 30.0,
+                                    width: 30.0,
+                                    child: Image.network(logoProv),
+                                  )),
+                              Container(
+                                margin: EdgeInsets.only(right: 12.0),
+                                height: 30.0,
+                                width: 1.0,
+                                color: Colors.black,
                               ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
-                                child: Container(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                          margin: EdgeInsets.only(right: 12.0),
-                                          child: Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            child: Image.network(logoProv),
-                                          )),
-                                      Container(
-                                        margin: EdgeInsets.only(right: 12.0),
-                                        height: 30.0,
-                                        width: 1.0,
-                                        color: Colors.black,
-                                      ),
-                                      Container(
-                                        child:
-                                            Icon(Icons.perm_contact_calendar),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
+                             Image.asset(
+                               "lib/src/assets/qr-code.png", 
+                               height: 30.0, 
+                               width: 30.0,),
                             ],
                           ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    child: Column(
-                      children: <Widget>[
-                        Divider(color: Colors.black),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[Text('Total'), Text('Rp')],
-                              ),
-                            ),
-                            Container(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: RaisedButton(
-                                  onPressed: () {
-                                    _showLoadingDialog(context);
-                                    if (_isFieldNomor == null ||
-                                        !_isFieldNomor) {
-                                      _statePascabayar.currentState
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text("LENGKAPI DATA"),
-                                        ),
-                                      );
-                                      return;
-                                    }
-                                    String nomor =
-                                        _controllerNomor.text.toString();
-                                    Post post = Post(
-                                        noHp: nomor, userId: 1, walletId: 1);
-                                    _apiService
-                                        .createPostPasca(post)
-                                        .then((response) async {
-                                      if (response.statusCode == 200) {
-                                        Map blok = jsonDecode(response.body);
-                                        userUid = blok['id'].toString();
-                                        var koId = userUid;
-                                        print(userUid);
-                                        if (userUid == "null") {
-                                          _statePascabayar.currentState
-                                              .showSnackBar(SnackBar(
-                                                  duration: Duration(
-                                                      milliseconds: 30),
-                                                  content: Text(
-                                                      "Nomor Yang Anda Masukan Tidak Terdaftar!")));
-                                        } else {
-                                          _apiService
-                                              .saveNameId(userUid)
-                                              .then((bool committed) {});
-                                          await new Future.delayed(
-                                              const Duration(seconds: 5));
-                                          Navigator.push(
-                                              context,
-                                              new MaterialPageRoute(
-                                                  builder: (__) =>
-                                                      new DetailPage(koId)));
-                                        }
-                                      } else {
-                                        print("INI STATUS CODE: " +
-                                            response.statusCode.toString());
-                                      }
-                                    });
-                                  },
-                                  child: Text(
-                                    "beli".toUpperCase(),
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  color: Colors.green,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
-                      ],
-                    ),
-                  )
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
-            _isLoading
-                ? Stack(
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Column(
+                children: <Widget>[
+                  Divider(color: Colors.black),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Center(
-                        child: CircularProgressIndicator(),
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[Text('Total'), Text('Rp')],
+                        ),
+                      ),
+                      Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: RaisedButton(
+                            onPressed: () {
+                              _showLoadingDialog(context);
+                              if (_isFieldNomor == null || !_isFieldNomor) {
+                                _statePascabayar.currentState.showSnackBar(
+                                  SnackBar(
+                                    content: Text("LENGKAPI DATA"),
+                                  ),
+                                );
+                                return;
+                              }
+                              String nomor = _controllerNomor.text.toString();
+                              Post post =
+                                  Post(noHp: nomor, userId: 1, walletId: 1);
+                              _apiService
+                                  .createPostPasca(post)
+                                  .then((response) async {
+                                if (response.statusCode == 200) {
+                                  Map blok = jsonDecode(response.body);
+                                  userUid = blok['id'].toString();
+                                  var koId = userUid;
+                                  print(userUid);
+                                  if (userUid == "null") {
+                                    _statePascabayar.currentState.showSnackBar(
+                                        SnackBar(
+                                            duration:
+                                                Duration(milliseconds: 30),
+                                            content: Text(
+                                                "Nomor Yang Anda Masukan Tidak Terdaftar!")));
+                                  } else {
+                                    _apiService
+                                        .saveNameId(userUid)
+                                        .then((bool committed) {});
+                                    await new Future.delayed(
+                                        const Duration(seconds: 5));
+                                    Navigator.push(
+                                        context,
+                                        new MaterialPageRoute(
+                                            builder: (__) =>
+                                                new DetailPage(koId)));
+                                  }
+                                } else {
+                                  print("INI STATUS CODE: " +
+                                      response.statusCode.toString());
+                                }
+                              });
+                            },
+                            child: Text(
+                              "beli".toUpperCase(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            color: Colors.green,
+                          ),
+                        ),
                       ),
                     ],
-                  )
-                : Container(),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
+      // _isLoading
+      //     ? Stack(
+      //         children: <Widget>[
+      //           Center(
+      //             child: CircularProgressIndicator(),
+      //           ),
+      //         ],
+      //       )
+      //     : Container(),
     );
   }
 
@@ -253,7 +246,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
               },
             );
           } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
+            return Text("Jaringan Bermasalah");
           }
           return Container();
         });
