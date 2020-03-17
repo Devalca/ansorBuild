@@ -100,10 +100,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                 width: 1.0,
                                 color: Colors.black,
                               ),
-                             Image.asset(
-                               "lib/src/assets/qr-code.png", 
-                               height: 30.0, 
-                               width: 30.0,),
+                              Container(
+                                child: Icon(Icons.contacts)
+                              )
                             ],
                           ),
                         ),

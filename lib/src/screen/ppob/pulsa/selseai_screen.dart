@@ -6,6 +6,7 @@ import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class SesPulsaPage extends StatefulWidget {
@@ -17,10 +18,10 @@ class SesPulsaPage extends StatefulWidget {
 }
 
 class _SesPulsaPageState extends State<SesPulsaPage> {
+  String _id = "";
   Future<PostTrans> futureTrans;
   ApiService _apiService = ApiService();
-  String _id = "";
-
+  final cF = NumberFormat.currency(locale: 'ID');
   @override
   void initState() {
     super.initState();
@@ -45,7 +46,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          elevation: 0.1,
+          elevation: 0.0,
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
             color: Colors.black, //change your color here
@@ -56,9 +57,10 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
           future: futureTrans,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              int dotUang = snapshot.data.data[0].totalHarga;
               DateTime dateTime = snapshot.data.data[0].periode;
-              var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
-              var formatterTime = DateFormat('HH.mm').format(dateTime);
+              // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
+              // var formatterTime = DateFormat('HH.mm').format(dateTime);
               return Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,10 +73,9 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                               Container(
                                 margin:
                                     EdgeInsets.only(top: 60.0, bottom: 15.0),
-                                height: 130.0,
-                                width: 130.0,
-                                child:
-                                    Image.asset("lib/src/assets/qr-code.png"),
+                                height: 100.0,
+                                width: 100.0,
+                                color: Colors.grey[300],
                               ),
                               Container(
                                 margin: EdgeInsets.all(12.0),
@@ -85,8 +86,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 ),
                               ),
                               Container(
-                                child: Text(
-                                    "${formatterDate.toString()} ${formatterTime.toString()}"),
+                                child: Text(tanggal(dateTime)),
                               ),
                               Container(
                                 child: Text('via Unity'),
@@ -176,9 +176,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                                 .toString()),
                                           ),
                                           Container(
-                                            child: Text(snapshot
-                                                .data.data[0].totalHarga
-                                                .toString()),
+                                            child: Text(cF.format(dotUang).replaceAll("IDR", "Rp. ")),
                                           ),
                                         ],
                                       ),
@@ -198,7 +196,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                           color: Colors.black,
                         ),
                         Container(
-                          height: 40.0,
+                          height: 50.0,
                           margin: EdgeInsets.only(
                               left: 16.0, right: 16.0, bottom: 20.0),
                           decoration: BoxDecoration(

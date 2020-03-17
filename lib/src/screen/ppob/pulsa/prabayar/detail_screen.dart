@@ -26,24 +26,24 @@ class _DetailPageState extends State<DetailPage> {
   void initState() {
     super.initState();
     _apiService.getNameId().then(updateId);
-    futureAlbum = _apiService.fetchAlbum();
+    futureAlbum = fetchAlbum();
   }
 
-  // Future<Album> fetchAlbum() async {
-  //   String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
-  //   final response = await http.get(baseUrl + widget.koId);
-  //   if (response.statusCode == 200) {
-  //     return albumFromJson(response.body);
-  //   } else {
-  //     throw Exception('Failed to load album');
-  //   }
-  // }
+  Future<Album> fetchAlbum() async {
+    String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
+    final response = await http.get(baseUrl + widget.koId);
+    if (response.statusCode == 200) {
+      return albumFromJson(response.body);
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( 
-        elevation: 0.1,
+        elevation: 1,
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
         ),
@@ -76,7 +76,7 @@ class _DetailPageState extends State<DetailPage> {
                                   height: 90.0,
                                   width: 90.0,
                                   child:
-                                      Image.asset("lib/src/assets/qr-code.png"),
+                                      Image.asset("lib/src/assets/PULSA.png"),
                                 ),
                                 Container(
                                   padding: const EdgeInsets.only(top: 5.0),

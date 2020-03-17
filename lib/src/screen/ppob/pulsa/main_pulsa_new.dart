@@ -11,6 +11,7 @@ class MainPulsa extends StatelessWidget {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
             appBar: AppBar(
               iconTheme: IconThemeData(
                 color: Colors.black, //change your color here
@@ -55,6 +56,7 @@ class MainPulsa extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 210, left: 16.0, right: 16.0),
                   child: Scaffold(
+                    resizeToAvoidBottomPadding: false,
                     appBar: AppBar(
                       elevation: 0.0,
                       backgroundColor: Colors.white,
@@ -86,6 +88,7 @@ class MainPulsa extends StatelessWidget {
                       ),
                     ),
                     body: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
                       children: <Widget>[
                         PulsaPage(),
                         PulsaPascaPage(),
