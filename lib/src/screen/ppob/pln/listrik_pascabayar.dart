@@ -223,126 +223,12 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                           }
                         });
                       }
-
-                      // PostResult.connectToAPI(_noMeterController.text).then((value){
-                      //   postResult = value;
-                      //   setState((){});
-                      // });
-
-                      // setState(() {
-                      //   _futureBayar = createPascabayar(_noMeterController.text);
-                      // });
-
-                      // Navigator.of(context)
-                      //   .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-
-                      // if (transId != null) {
-                      //   Navigator.of(context)
-                      //     .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-                      // }else{
-                        
-                      // }
                     },
                   ),
                 ),
-
-                Container( height: 8 ),
-
-                // FutureBuilder<Bayar>(
-                //   future: _futureBayar,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       saveData(snapshot.data.transactionId.toString());
-
-                //       Navigator.of(context)
-                //           .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-
-                //       // return Text(snapshot.data.transactionId.toString());
-                //       // setState(() {
-                //       //   transId = snapshot.data.transactionId.toString();
-                //       // });
-                //     } else if (snapshot.hasError) {
-                //       return Text("${snapshot.error}");
-                //     }
-                //     return Text("");
-                //     // return CircularProgressIndicator();
-                //     // return null;
-                //   },
-                // ),
-                
-                Container( height: 8 ),
-
-                // RaisedButton(onPressed:()=> readData("transactionId"), child: Text('Read Data')),
-                // Text('$text_to_show'),
-                
-                // SizedBox(
-                //   width :double.infinity,
-                //   height: 35,
-                //   child: RaisedButton(
-                //     child: Text('LANJUT', style: TextStyle(color: Colors.white)),
-                //     color: Colors.green,
-                //     onPressed: () async{
-                //       print(_noMeterController.text);
-
-                //       setState(() {
-                //         _isLoading = false;
-                //       });
-
-                //       final pascabayar = PascaBayarInsert(
-                //         noMeter: _noMeterController.text, 
-                //       );
-                //       final result = await pascabayarService.createPascabayar(pascabayar);
-                        
-                //       setState(() {
-                //         _isLoading = false;
-                //       });
-
-                //       final title = "Done";
-                //       final text = result.error ? (result.errorMessage ?? 'An error occurred') : "Data was inserted";
-
-                //       showDialog(
-                //         context: context,
-                //         builder: (_) => AlertDialog(
-                //           title: Text(title),
-                //           content: Text(text),
-                //           actions: <Widget>[
-                //             FlatButton(
-                //               child: Text('OK'),
-                //               onPressed: () {
-                //                 Navigator.push(
-                //                   // Navigator.of(context).pop();
-                //                   context, MaterialPageRoute(builder: (context) => ListrikPembayaran())
-                //                 );
-                //               },
-                //             )
-                //           ],
-                //         )
-                //       )
-                //       .then((data) {
-                //         if (result.data) {
-                //           Navigator.of(context).pop();
-                //         }
-                //       });
-                //     },
-                //   ),
-                // ),
               ]
             )
           )
-
-          // : FutureBuilder<Bayar>(
-          //     future: _futureBayar,
-          //     builder: (context, snapshot) {
-          //       if (snapshot.hasData) {
-          //         return next(snapshot.data.transactionId.toString());
-          //         // Navigator.of(context)
-          //         //   .push(MaterialPageRoute(builder: (context) => ListrikPembayaran(transactionId: '10')));
-          //       } else if (snapshot.hasError) {
-          //         return Text("${snapshot.error}");
-          //       }
-          //       return CircularProgressIndicator();
-          //     },
-          //   ),
       )
     );
   }

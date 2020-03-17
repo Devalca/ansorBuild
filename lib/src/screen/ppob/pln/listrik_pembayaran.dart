@@ -103,7 +103,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                 future: fetchAlbum(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    // if(snapshot.data.data.length == 0) {
                     if(snapshot.data == null) {
                       return Text("Tidak ada Data");
                     }else{
@@ -117,8 +116,10 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                 child: Row(
                                   children: <Widget>[
                                     Container(
-                                      width: 100,
-                                      child: Text(widget.status == null ? "kosong" : widget.status),
+                                      margin: EdgeInsets.symmetric(horizontal: 12.0),
+                                      height: 90.0,
+                                      width: 90.0,
+                                      child: Image.asset("lib/src/assets/LISTRIK.png"),
                                     ),
                                     Container(
                                       child: Text(
@@ -327,7 +328,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
                                               
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else if(response.statusCode == 200){
                                               print('Berhasil');
@@ -341,7 +342,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
 
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else{
                                               print("Gagal");

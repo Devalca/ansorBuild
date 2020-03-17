@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: BerandaPage(),
+      home: Login(),
       routes: Routes.getRoutes(),
     );
   }

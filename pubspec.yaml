@@ -48,6 +48,8 @@ flutter:
   assets:
     - lib/src/assets/hack.png
     - lib/src/assets/qr-code.png
+    - lib/src/assets/lapakSahabat.png
+    - lib/src/assets/LISTRIK.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:
