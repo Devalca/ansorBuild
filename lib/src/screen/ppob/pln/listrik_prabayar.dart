@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik_pembayaran.dart';
-import 'package:intl/intl.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 final _formPrabayar = GlobalKey<FormState>();
@@ -386,8 +385,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           children: <Widget>[
                             new Text ("Total", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             press1 || press2 || press3 || press4 || press5 || press6 ? 
-                            new Text (NumberFormat.simpleCurrency(locale: 'id').format(total), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
-                            : new Text (NumberFormat.simpleCurrency(locale: 'id').format(0), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
+                            new Text ("Rp. " + total, textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
+                            : new Text ("Rp. 0", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
