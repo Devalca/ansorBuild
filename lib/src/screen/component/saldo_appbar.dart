@@ -15,7 +15,7 @@ class SaldoAppBar extends AppBar {
         children: <Widget>[
           Text("Lapak Sahabat",
           style: TextStyle(
-            fontSize: 25.0
+            fontSize: 20.0
           ),
           ),
           Container(

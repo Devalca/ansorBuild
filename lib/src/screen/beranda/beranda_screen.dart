@@ -54,6 +54,7 @@ class _BerandaPageState extends State<BerandaPage> {
         appBar: SaldoAppBar(),
         body: SingleChildScrollView(
           child: Container(
+            padding: EdgeInsets.only(top:10),
             color: Colors.white,
             child: Column(
               children: <Widget>[
