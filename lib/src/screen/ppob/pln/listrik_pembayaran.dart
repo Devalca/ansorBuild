@@ -161,7 +161,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Biaya Pelayanan"),
                                           ),
                                           Container(
-                                            child: Text("Rp. 0"),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(0)),
                                           ),
                                         ],
                                       ),
@@ -178,7 +178,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Total"),
                                           ),
                                           Container(
-                                            child: Text("Rp." + snapshot.data.total.toString()),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total.toString())),
                                           ),
                                         ],
                                       ),
@@ -240,7 +240,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                               future: _apiService.getSaldo(),
                                               builder: (context, snapshot) {
                                                 if (snapshot.hasData) {
-                                                  return Text("Rp. " + snapshot.data.data[0].saldoAkhir.toString());
+                                                  return Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.data[0].saldoAkhir.toString()));
                                                 } else if (snapshot.hasError) {
                                                   return Text("${snapshot.error}");
                                                 }

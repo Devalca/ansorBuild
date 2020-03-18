@@ -23,7 +23,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
   bool press4 = false;
   bool press5 = false;
   bool press6 = false;
-  String nominal = "";
+  int nominal = 0;
   
   TextEditingController _noMeterController = TextEditingController();
   TextEditingController _nominalController = TextEditingController();

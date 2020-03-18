@@ -288,7 +288,7 @@ class PostPrabayar {
   String status;
   String tarif;
   String daya;
-  String nominal;
+  int nominal;
   int total;
   String createdAt;
   int userId;
