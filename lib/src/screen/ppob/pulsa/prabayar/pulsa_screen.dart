@@ -19,6 +19,7 @@ class _PulsaPageState extends State<PulsaPage> {
   bool _validate = true;
   String inputNomor, inputNominal, hargaNominal;
   int _nominalIndex = -1;
+  double rupiahNominal;
   final cF = NumberFormat.currency(locale: 'ID');
   var mobi = "";
   var idProv = "";
@@ -113,7 +114,9 @@ class _PulsaPageState extends State<PulsaPage> {
                           )
                         ),
                         Expanded(
-                          child: Container()
+                          child: Container(
+                            width: 5.0,
+                          )
                         ),
                         Expanded(
                           child: Container(
@@ -201,13 +204,15 @@ class _PulsaPageState extends State<PulsaPage> {
                                       Container(
                                         child: Text(hargaNominal == null
                                             ? ""
-                                            : cF.format(hargaNominal).replaceAll("IDR", "Rp. ")),
+                                            : cF.format(rupiahNominal).replaceAll("IDR", "Rp. ").toString()),
                                       )
                                     ],
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                Expanded(child: Container()),
+                                Expanded(child: Container(
+                                )),
+                                Expanded(child: Container(
+                                )),
                                 Expanded(
                                   child: Container(
                                     child: RaisedButton(
@@ -293,9 +298,11 @@ class _PulsaPageState extends State<PulsaPage> {
               if (_nominalIndex == index) {
                 inputNominal = hargaList[index].nominalPulsa.toString();
                 hargaNominal = '${a + b}';
+                rupiahNominal = '${a + b}' as double;
                 print(index);
                 print(_nominalIndex);
                 print(inputNominal);
+                print("INI LOGO PROVIDER : " + logoProv.toString());
               }
             },
           );
