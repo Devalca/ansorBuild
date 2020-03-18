@@ -31,7 +31,17 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     _apiService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
-    futureWallet = _apiService.getSaldo();
+    futureWallet = getSaldo();
+  }
+
+  Future<Wallet> getSaldo() async {
+  String url = 'http://192.168.10.11:3000/users/wallet/1';
+  final response = await http.get(url, headers: {"Accept": "application/json"});
+  if (response.statusCode == 200) {
+    return Wallet.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('Failed to load post');
+  }
   }
 
   Future<Album> fetchAlbum() async {
@@ -282,7 +292,7 @@ class _DetailPageState extends State<DetailPage> {
                                     _apiService.saveNameId(userUid).then((bool committed) {
                                       print(userUid);
                                     });
-                                    // //  await new Future.delayed(const Duration(seconds: 5));
+                                     await new Future.delayed(const Duration(seconds: 5));
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -319,7 +329,7 @@ class _DetailPageState extends State<DetailPage> {
             } else if (snapshot.hasError) {
               return CircularProgressIndicator();
             }
-            return CircularProgressIndicator();
+            return Container();
           },
         ),
       ),

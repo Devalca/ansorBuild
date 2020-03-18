@@ -136,13 +136,11 @@ class _BerandaPageState extends State<BerandaPage> {
           Container(
             padding: const EdgeInsets.only(left: 16),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Icon(Icons.account_balance_wallet, color: Colors.green),
               Container(
-                padding: EdgeInsets.only(left: 2.0),
-                child: Text("Saldo", style: TextStyle(fontSize: 11.0),),
+                padding: EdgeInsets.only(left: 5.0),
+                child: Text("Saldo"),
               )
             ],
           )),
@@ -188,16 +186,15 @@ class _BerandaPageState extends State<BerandaPage> {
                   child: Column(
                     children: <Widget>[
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.only(right: 5.0),
-                            child: IconButton(icon: Icon(Icons.refresh, color: Colors.green,), 
+                         IconButton(icon: Icon(Icons.refresh, color: Colors.green,), 
                             onPressed: () {
                                 setState(() {
                                   _apiService.getSaldo();
                                 });
-                              })
-                          ),
+                              }),
                           FlatButton(
                             onPressed: () {
                               Navigator.push(
@@ -214,8 +211,8 @@ class _BerandaPageState extends State<BerandaPage> {
                                 ),
                                 borderRadius: BorderRadius.circular(5.0)
                               ), 
-                              padding: EdgeInsets.all(10.0),
-                              child: Text('ISI SALDO', style: TextStyle(color: Colors.white),)),
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('ISI SALDO', style: TextStyle(fontSize: 10.0, color: Colors.white),)),
                           )
                         ],
                       ),
