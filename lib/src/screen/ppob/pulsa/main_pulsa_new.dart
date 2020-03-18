@@ -54,7 +54,7 @@ class MainPulsa extends StatelessWidget {
                       ],
                     )),
                 Container(
-                  margin: EdgeInsets.only(top: 210, left: 16.0, right: 16.0),
+                  margin: EdgeInsets.only(top: 180, left: 16.0, right: 16.0),
                   child: Scaffold(
                     resizeToAvoidBottomPadding: false,
                     appBar: AppBar(
