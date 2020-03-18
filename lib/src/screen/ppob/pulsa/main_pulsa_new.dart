@@ -24,81 +24,79 @@ class MainPulsa extends StatelessWidget {
                 style: TextStyle(color: Colors.black),
               ),
             ),
-            body: SingleChildScrollView(
-                          child: Stack(
-                fit: StackFit.expand,
-                overflow: Overflow.clip,
-                children: <Widget>[
-                  Container(
-                    color: Colors.white,
-                  ),
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            height: 220,
-                            color: Colors.white,
-                          ),
-                          Positioned(
-                            top: 16,
-                            left: 0,
-                            right: 0,
-                            bottom: 16,
-                            child: Container(
-                              height: 150,
-                              child: CarouselWithIndicator(),
-                            ),
-                          )
-                        ],
-                      )),
-                  Container(
-                    margin: EdgeInsets.only(top: 210, left: 16.0, right: 16.0),
-                    child: Scaffold(
-                      resizeToAvoidBottomPadding: false,
-                      appBar: AppBar(
-                        elevation: 0.0,
-                        backgroundColor: Colors.white,
-                        bottom: PreferredSize(
-                          preferredSize: Size(0.5, 0.5),
+            body: Stack(
+              fit: StackFit.expand,
+              overflow: Overflow.clip,
+              children: <Widget>[
+                Container(
+                  color: Colors.white,
+                ),
+                Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          height: 220,
+                          color: Colors.white,
+                        ),
+                        Positioned(
+                          top: 16,
+                          left: 0,
+                          right: 0,
+                          bottom: 16,
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 7.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.white
+                            height: 150,
+                            child: CarouselWithIndicator(),
+                          ),
+                        )
+                      ],
+                    )),
+                Container(
+                  margin: EdgeInsets.only(top: 210, left: 16.0, right: 16.0),
+                  child: Scaffold(
+                    resizeToAvoidBottomPadding: false,
+                    appBar: AppBar(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                      bottom: PreferredSize(
+                        preferredSize: Size(0.5, 0.5),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 7.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            border: Border.all(
+                              width: 1,
+                              color: Colors.white
+                            ),
+                            borderRadius: new BorderRadius.circular(6.0),
+                          ),
+                          child: TabBar(
+                            labelColor: Colors.green,
+                            indicatorColor: Colors.green,
+                            tabs: [
+                              Container(
+                                child: Tab(text: 'Prabayar'),
                               ),
-                              borderRadius: new BorderRadius.circular(6.0),
-                            ),
-                            child: TabBar(
-                              labelColor: Colors.green,
-                              indicatorColor: Colors.green,
-                              tabs: [
-                                Container(
-                                  child: Tab(text: 'Prabayar'),
-                                ),
-                                Container(
-                                  child: Tab(text: 'Pascabayar'),
-                                ),
-                              ],
-                            ),
+                              Container(
+                                child: Tab(text: 'Pascabayar'),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      body: TabBarView(
-                        physics: NeverScrollableScrollPhysics(),
-                        children: <Widget>[
-                          PulsaPage(),
-                          PulsaPascaPage(),
-                        ],
-                      ),
                     ),
-                  )
-                ],
-              ),
+                    body: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        SingleChildScrollView(child: PulsaPage()),
+                        SingleChildScrollView(child: PulsaPascaPage()),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             )),
       ),
     );
