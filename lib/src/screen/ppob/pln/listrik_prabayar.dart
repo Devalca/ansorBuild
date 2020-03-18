@@ -87,21 +87,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
           });
         }
       };
-    }else{
-      showDialog(context: context, builder: (context){
-        return AlertDialog(
-          content: Text("Nominal wajib diPilih!!!"),
-          actions: <Widget>[
-            MaterialButton(
-              elevation: 5.0,
-              child: Text("OK"),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      });
     }
 
     return Scaffold(

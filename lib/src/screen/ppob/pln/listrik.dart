@@ -44,7 +44,7 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
           unselectedLabelColor: Colors.black38,
           tabs: <Widget>[
             new Tab(text: "Prabayar"),
-            new Tab(text: "Pasca Bayar",),
+            new Tab(text: "Pascabayar",),
           ],
         ),
       ),
