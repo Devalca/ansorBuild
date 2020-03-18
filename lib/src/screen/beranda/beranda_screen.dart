@@ -29,40 +29,49 @@ class _BerandaPageState extends State<BerandaPage> {
         .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
     _ppobServiceList
         .add(PpobService(image: Icons.directions_car, title: "Listrik PLN"));
-    _ppobServiceList
-        .add(PpobService(image: Icons.restaurant, title: "PPOB"));
+    _ppobServiceList.add(PpobService(image: Icons.restaurant, title: "PPOB"));
     _ppobServiceList
         .add(PpobService(image: Icons.directions_bike, title: "PDAM"));
     _ppobServiceList
         .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
     _ppobServiceList
         .add(PpobService(image: Icons.directions_car, title: "PPOB"));
-    _ppobServiceList
-        .add(PpobService(image: Icons.restaurant, title: "PPOB"));
+    _ppobServiceList.add(PpobService(image: Icons.restaurant, title: "PPOB"));
   }
 
   @override
   Widget build(BuildContext context) {
-   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: Colors.white, 
-      statusBarIconBrightness: Brightness.dark, 
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
       systemNavigationBarColor: Colors.white,
       systemNavigationBarIconBrightness: Brightness.dark,
-    )
-  );
+    ));
     return SafeArea(
       child: Scaffold(
         appBar: SaldoAppBar(),
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.only(top:10),
+            padding: EdgeInsets.only(top: 10),
             color: Colors.white,
             child: Column(
               children: <Widget>[
                 _buildSaldoForm(),
                 _buildIklanOne(),
-                _buildServiceIslamic(),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Text('Layanan Islami'),
+                      ),
+                      Container(
+                        child: _buildServicePembayaran(),
+                      ),
+                    ],
+                  ),
+                ),
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,47 +145,46 @@ class _BerandaPageState extends State<BerandaPage> {
       child: Column(
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.only(left: 16),
-            child: Row(
-            children: <Widget>[
-              Icon(Icons.account_balance_wallet, color: Colors.green),
-              Container(
-                padding: EdgeInsets.only(left: 5.0),
-                child: Text("Saldo"),
-              )
-            ],
-          )),
+              padding: const EdgeInsets.only(left: 16),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.account_balance_wallet, color: Colors.green),
+                  Container(
+                    padding: EdgeInsets.only(left: 5.0),
+                    child: Text("Saldo"),
+                  )
+                ],
+              )),
           Container(
-                  padding: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
                   child: FutureBuilder<Wallet>(
-                    future:
-                       _apiService.getSaldo(), 
+                    future: _apiService.getSaldo(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData) 
-                        return Center(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                     Text('Rp. ', style: TextStyle(fontSize: 24.0)),
-                              Text(snapshot.data.data[0].saldoAkhir
-                                  .toString(),
-                                  style: TextStyle(
-                                    fontSize: 24.0
+                        if (snapshot.hasData)
+                          return Center(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text('Rp. ',
+                                          style: TextStyle(fontSize: 24.0)),
+                                      Text(
+                                        snapshot.data.data[0].saldoAkhir
+                                            .toString(),
+                                        style: TextStyle(fontSize: 24.0),
+                                      ),
+                                    ],
                                   ),
-                                  ),
-                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
+                              ],
+                            ),
+                          );
                       } else if (snapshot.hasError) {
                         return Text("${snapshot.error}");
                       }
@@ -191,8 +199,12 @@ class _BerandaPageState extends State<BerandaPage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                         IconButton(icon: Icon(Icons.refresh, color: Colors.green,), 
-                            onPressed: () {
+                          IconButton(
+                              icon: Icon(
+                                Icons.refresh,
+                                color: Colors.green,
+                              ),
+                              onPressed: () {
                                 setState(() {
                                   _apiService.getSaldo();
                                 });
@@ -205,16 +217,17 @@ class _BerandaPageState extends State<BerandaPage> {
                                       builder: (context) => TopupPage()));
                             },
                             child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                border: Border.all(
-                                  width: 1.0,
-                                  color: Colors.green
-                                ),
-                                borderRadius: BorderRadius.circular(5.0)
-                              ), 
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('ISI SALDO', style: TextStyle(fontSize: 10.0, color: Colors.white),)),
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    border: Border.all(
+                                        width: 1.0, color: Colors.green),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'ISI SALDO',
+                                  style: TextStyle(
+                                      fontSize: 10.0, color: Colors.white),
+                                )),
                           )
                         ],
                       ),
@@ -233,9 +246,8 @@ class _BerandaPageState extends State<BerandaPage> {
   Widget _buildIklanOne() {
     return InkWell(
       child: Container(
-                            height: 180,
-                            child: IklanHome(),
-                          ),
+        child: IklanHome(),
+      ),
     );
   }
 
