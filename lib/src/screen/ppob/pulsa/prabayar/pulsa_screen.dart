@@ -49,7 +49,7 @@ class _PulsaPageState extends State<PulsaPage> {
 
   Widget formInputPulsa() {
     return SingleChildScrollView(
-        child: Container(
+      child: Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: FutureBuilder<ProviderCall>(
@@ -67,15 +67,16 @@ class _PulsaPageState extends State<PulsaPage> {
                           children: <Widget>[
                             Container(
                                 margin: EdgeInsets.only(top: 16.0),
-                                child: Text('Nomor Handphone $logoProv')),
+                                child: Text('Nomor Handphone')),
                             Padding(
-                     padding: const EdgeInsets.only(top: 12.0),
-                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: <Widget>[
-                         Expanded(
-                          child: Container(
-                            child: TextFormField(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                      child: Container(
+                                    child: TextFormField(
                                         inputFormatters: [
                                           LengthLimitingTextInputFormatter(12)
                                         ],
@@ -97,7 +98,8 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       .file
                                                       .toString();
                                                 });
-                                                print("LOGO PROVIDER: " + logoProv);
+                                                print("LOGO PROVIDER: " +
+                                                    logoProv);
                                               }
                                             } else if (value.length == 3) {
                                               setState(() {
@@ -112,35 +114,33 @@ class _PulsaPageState extends State<PulsaPage> {
                                         onSaved: (String val) {
                                           inputNomor = val;
                                         }),
-                          )
-                        ),
-                        Expanded(
-                          child: Container(
-                            width: 50.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                  margin: EdgeInsets.only(right: 12.0),
-                                  child: Container(
-                                    child: Image.network(logoProv),
                                   )),
-                              Container(
-                                margin: EdgeInsets.only(right: 12.0),
-                                height: 30.0,
-                                width: 1.0,
-                                color: Colors.black,
+                                  Expanded(
+                                      child: Container(
+                                    width: 50.0,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                            margin:
+                                                EdgeInsets.only(right: 12.0),
+                                            child: Container(
+                                              child: Image.network(logoProv),
+                                            )),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 12.0),
+                                          height: 30.0,
+                                          width: 1.0,
+                                          color: Colors.black,
+                                        ),
+                                        Container(child: Icon(Icons.contacts))
+                                      ],
+                                    ),
+                                  ))
+                                ],
                               ),
-                              Container(
-                                child: Icon(Icons.contacts)
-                              )
-                            ],
-                          ),
-                          )
-                        )
-                       ],
-                     ),
-                  ),
+                            ),
                             Container(
                               height: 450.0,
                               padding: EdgeInsets.only(top: 15.0),
@@ -161,7 +161,8 @@ class _PulsaPageState extends State<PulsaPage> {
                                                 snapshot.data.data[i].operatorId
                                                     .toString()) {
                                               List<Listharga> hargaList =
-                                                  snapshot.data.data[i].listharga;
+                                                  snapshot
+                                                      .data.data[i].listharga;
                                               return Container(
                                                 height: 430.0,
                                                 child: _btnListView(hargaList),
@@ -189,7 +190,8 @@ class _PulsaPageState extends State<PulsaPage> {
                               children: <Widget>[
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
                                         child: Text('Total'),
@@ -202,10 +204,8 @@ class _PulsaPageState extends State<PulsaPage> {
                                     ],
                                   ),
                                 ),
-                                Expanded(child: Container(
-                                )),
-                                Expanded(child: Container(
-                                )),
+                                Expanded(child: Container()),
+                                Expanded(child: Container()),
                                 Expanded(
                                   child: Container(
                                     child: RaisedButton(
@@ -294,7 +294,11 @@ class _PulsaPageState extends State<PulsaPage> {
                 print(index);
                 print(_nominalIndex);
                 print(inputNominal);
-                print("INI DOT FORMAT : " + cF.format(hargaNominal).replaceAll("IDR", "Rp. ").toString());
+                print("INI DOT FORMAT : " +
+                    cF
+                        .format(hargaNominal)
+                        .replaceAll("IDR", "Rp. ")
+                        .toString());
                 print("INI LOGO PROVIDER : " + logoProv.toString());
               }
             },
@@ -352,8 +356,7 @@ class _PulsaPageState extends State<PulsaPage> {
             print("INI KOID : " + koId);
             print("INI RESPONSE :" + response.body);
             print("NI PROVIDER : " + namaProv);
-              await new Future.delayed(
-                                        const Duration(seconds: 5));
+            await new Future.delayed(const Duration(seconds: 5));
             Navigator.push(
                 context,
                 new MaterialPageRoute(

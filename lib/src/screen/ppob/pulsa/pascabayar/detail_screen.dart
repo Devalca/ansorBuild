@@ -5,6 +5,7 @@ import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 import '../selseai_screen.dart';
@@ -84,7 +85,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          'Detail Pembayaran Page',
+          'Pembayaran',
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -109,13 +110,13 @@ class _DetailPageState extends State<DetailPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 12.0),
-                                  height: 90.0,
-                                  width: 90.0,
-                                  child:
-                                      Image.asset("lib/src/assets/qr-code.png"),
-                                ),
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    height: 90.0,
+                                    width: 90.0,
+                                    child:
+                                        Image.asset("lib/src/assets/PULSA.png"),
+                                  ),
                                 Container(
                                   padding: const EdgeInsets.only(top: 5.0),
                                   child: Column(
@@ -158,7 +159,7 @@ class _DetailPageState extends State<DetailPage> {
                                           child: Text('Periode'),
                                         ),
                                         Container(
-                                          child: Text(formatterDate.toString()),
+                                          child: Text(tanggal(dateTime).toString()),
                                         ),
                                       ],
                                     ),
@@ -233,7 +234,7 @@ class _DetailPageState extends State<DetailPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Container(
-                                      child: Text('Unity'),
+                                      child: Text('Un1ty'),
                                     ),
                                     Container(
                                       child: Icon(
@@ -261,7 +262,7 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                           Container(
                                             child: Text(
-                                              'Saldo Unity',
+                                              'Saldo Un1ty',
                                               style: TextStyle(
                                                   color: Colors.green),
                                             ),

@@ -243,7 +243,7 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ), 
                                        Container(
-                                        child: FutureBuilder<WalletGenks>(
+                                      child: FutureBuilder<WalletGenks>(
                                       future: getSaldo(),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {

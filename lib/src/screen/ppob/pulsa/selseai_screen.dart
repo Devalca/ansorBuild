@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:http/http.dart' as http;
@@ -52,7 +53,12 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
           iconTheme: IconThemeData(
             color: Colors.black, //change your color here
           ),
-          leading: Icon(Icons.close),
+          leading: new IconButton(
+              icon: new Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => LandingPage()));
+              }),
         ),
         body: FutureBuilder<PostTrans>(
           future: futureTrans,
@@ -63,7 +69,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
               // var formatterTime = DateFormat('HH.mm').format(dateTime);
               return SingleChildScrollView(
-                              child: Container(
+                child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -167,8 +173,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text(
-                                                  snapshot.data.data[0].provider),
+                                              child: Text(snapshot
+                                                  .data.data[0].provider),
                                             ),
                                             Container(
                                               margin:
@@ -178,7 +184,9 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                                   .toString()),
                                             ),
                                             Container(
-                                              child: Text(cF.format(dotUang).replaceAll("IDR", "Rp. ")),
+                                              child: Text(cF
+                                                  .format(dotUang)
+                                                  .replaceAll("IDR", "Rp. ")),
                                             ),
                                           ],
                                         ),
@@ -202,14 +210,15 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                             margin: EdgeInsets.only(
                                 left: 16.0, right: 16.0, bottom: 20.0),
                             decoration: BoxDecoration(
-                                border: Border.all(width: 1, color: Colors.green),
+                                border:
+                                    Border.all(width: 1, color: Colors.green),
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: FlatButton(
                               onPressed: () {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => BerandaPage()));
+                                        builder: (context) => LandingPage()));
                               },
                               child: Text(
                                 'Selesai'.toUpperCase(),

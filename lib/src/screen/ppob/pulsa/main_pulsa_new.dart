@@ -11,12 +11,16 @@ class MainPulsa extends StatelessWidget {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomPadding: false,
             appBar: AppBar(
               iconTheme: IconThemeData(
                 color: Colors.black, //change your color here
               ),
-              leading: Icon(Icons.arrow_back_ios),
+              leading: new IconButton(
+                  icon: new Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  }),
               elevation: 0.2,
               backgroundColor: Colors.white,
               title: Text(
@@ -66,10 +70,7 @@ class MainPulsa extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 7.0),
                           decoration: BoxDecoration(
                             color: Colors.grey[300],
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.white
-                            ),
+                            border: Border.all(width: 1, color: Colors.white),
                             borderRadius: new BorderRadius.circular(6.0),
                           ),
                           child: TabBar(

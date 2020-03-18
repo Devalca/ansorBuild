@@ -92,7 +92,7 @@ class _IklanHomeState extends State<IklanHome> {
               ),
             ),
             Container(
-              child: Text('Lihat Semua', style: TextStyle(color: Colors.green[200]),),
+              child: Text('Lihat Semua', style: TextStyle(color: Colors.green),),
             )
           ],
         ),

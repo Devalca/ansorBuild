@@ -5,6 +5,7 @@ import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'src/routes/routes.dart';
+import 'src/screen/launcher/launcher_screen.dart';
 import 'src/screen/ppob/pulsa/main_pulsa_new.dart';
 import 'src/screen/ppob/pulsa/selseai_screen.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: BerandaPage(),
+      home: LauncherPage(),
       routes: Routes.getRoutes(),
     );
   }

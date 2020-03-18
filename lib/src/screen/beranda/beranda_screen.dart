@@ -1,6 +1,7 @@
 import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/iklan_home.dart';
+import 'package:ansor_build/src/screen/component/iklan_kecil.dart';
 import 'package:ansor_build/src/screen/component/iklan_ppob.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
@@ -19,24 +20,32 @@ class BerandaPage extends StatefulWidget {
 class _BerandaPageState extends State<BerandaPage> {
   ApiService _apiService = ApiService();
   List<PpobService> _ppobServiceList = [];
+  List<IslamService> _islamServiceList = [];
 
   @override
   void initState() {
     super.initState();
-    _ppobServiceList
-        .add(PpobService(image: Icons.directions_bike, title: "PDAM"));
-    _ppobServiceList
-        .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
-    _ppobServiceList
-        .add(PpobService(image: Icons.directions_car, title: "Listrik PLN"));
-    _ppobServiceList.add(PpobService(image: Icons.restaurant, title: "PPOB"));
-    _ppobServiceList
-        .add(PpobService(image: Icons.directions_bike, title: "PDAM"));
-    _ppobServiceList
-        .add(PpobService(image: Icons.local_car_wash, title: "PULSA"));
-    _ppobServiceList
-        .add(PpobService(image: Icons.directions_car, title: "PPOB"));
-    _ppobServiceList.add(PpobService(image: Icons.restaurant, title: "PPOB"));
+    _ppobServiceList.add(PpobService(
+        image: Image.asset('lib/src/assets/PDAM.png'), title: "PDAM"));
+    _ppobServiceList.add(PpobService(
+        image: Image.asset('lib/src/assets/PULSA.png'), title: "PULSA"));
+    _ppobServiceList.add(PpobService(
+        image: Image.asset('lib/src/assets/LISTRIK.png'),
+        title: "Listrik PLN"));
+    _ppobServiceList.add(PpobService(
+        image: Image.asset('lib/src/assets/BPJS.png'), title: "BPJS"));
+    _ppobServiceList.add(PpobService(
+        image: Image.asset('lib/src/assets/PULSA.png'), title: "PDAM"));
+    _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/CARI_MASJID.png'), title: "Cari Masjid"));
+    _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/JADWAL_KAJIAN.png'), title: "Jadwal Kajian"));
+    _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/JAM_SOLAT.png'), title: "Jam Solat"));
+    _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/KIBLAT.png'), title: "Kiblat"));
+    _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/QURAN.png'), title: "Quran"));
   }
 
   @override
@@ -67,7 +76,7 @@ class _BerandaPageState extends State<BerandaPage> {
                         child: Text('Layanan Islami'),
                       ),
                       Container(
-                        child: _buildServicePembayaran(),
+                        child: _buildServiceIslamic(),
                       ),
                     ],
                   ),
@@ -99,7 +108,7 @@ class _BerandaPageState extends State<BerandaPage> {
                               child: Text('Produk Daerah'),
                             ),
                             Container(
-                              child: Text('Lihat Semuanya'),
+                              child: Text('Lihat Semuanya', style: TextStyle(color: Colors.green),),
                             ),
                           ],
                         ),
@@ -120,12 +129,70 @@ class _BerandaPageState extends State<BerandaPage> {
                               child: Text('Produk National'),
                             ),
                             Container(
-                              child: Text('Lihat Semuanya'),
+                              child: Text('Lihat Semuanya', style: TextStyle(color: Colors.green)),
                             ),
                           ],
                         ),
                       ),
                       _buildBarangService()
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0, ),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(bottom: 16.0),
+                              child: Text('Donasi'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey[200]
+                          )
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              child: Image.asset('lib/src/assets/BANNER_ATAS.jpg'),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12.0),
+                              height: 50,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    child: Text('Donasi Ansor'),
+                                  ),
+                                  Container(
+                                    height: 30,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.green
+                                      ),
+                                      borderRadius: BorderRadius.circular(5.0)
+                                    ),
+                                    child: FlatButton(onPressed: null, child: Text('Donasi', style: TextStyle(color: Colors.white),))
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -251,13 +318,26 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
-  Widget _buildServiceIslamic() {
-    return Container(
-      height: 100.0,
-      width: 400.0,
-      color: Colors.white,
-      child: Center(child: Text('Service Islamic')),
+    Widget _buildIklanTwo() {
+      return InkWell(
+      child: Container(
+        child: IklanKecil(),
+      ),
     );
+  }
+
+  Widget _buildServiceIslamic() {
+    return SizedBox(
+        width: double.infinity,
+        height: 120.0,
+        child: Container(
+            margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: _islamServiceList.length,
+                itemBuilder: (context, position) {
+                  return _rowIslamService(_islamServiceList[position]);
+                })));
   }
 
   Widget _buildServicePembayaran() {
@@ -272,6 +352,36 @@ class _BerandaPageState extends State<BerandaPage> {
                 itemBuilder: (context, position) {
                   return _rowPpobService(_ppobServiceList[position]);
                 })));
+  }
+
+  Widget _rowIslamService(IslamService islamService) {
+    return InkWell(
+      onTap: () {
+        if (islamService.title == "ISlam") {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PdamPage()));
+        } else {
+          print('Under Maintence');
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child:  Container(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: islamService.image),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 6.0),
+            ),
+            Text(islamService.title, style: TextStyle(fontSize: 10.0))
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _rowPpobService(PpobService ppobService) {
@@ -296,16 +406,8 @@ class _BerandaPageState extends State<BerandaPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1.0),
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              padding: EdgeInsets.all(12.0),
-              child: Icon(
-                ppobService.image,
-                color: ppobService.color,
-                size: 32.0,
-              ),
-            ),
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: ppobService.image),
             Padding(
               padding: EdgeInsets.only(top: 6.0),
             ),
@@ -313,15 +415,6 @@ class _BerandaPageState extends State<BerandaPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildIklanTwo() {
-    return Container(
-      height: 100.0,
-      width: 400.0,
-      color: Colors.white,
-      child: Center(child: Text('INI IKLAN KE DUA')),
     );
   }
 
@@ -392,15 +485,15 @@ class _BerandaPageState extends State<BerandaPage> {
 Future<List<BarangService>> fetchBarangService() async {
   List<BarangService> _goBarangServiceFeaturedList = [];
   _goBarangServiceFeaturedList.add(
-      BarangService(title: "Steak Andakar", image: "lib/src/assets/hack.png"));
+      BarangService(title: "Steak Andakar", image: "lib/src/assets/produk.jpeg"));
   _goBarangServiceFeaturedList.add(BarangService(
-      title: "Mie Ayam Tumini", image: "lib/src/assets/hack.png"));
+      title: "Mie Ayam Tumini", image: "lib/src/assets/produk.jpeg"));
   _goBarangServiceFeaturedList.add(BarangService(
-      title: "Tengkleng Hohah", image: "lib/src/assets/hack.png"));
+      title: "Tengkleng Hohah", image: "lib/src/assets/produk.jpeg"));
   _goBarangServiceFeaturedList.add(
-      BarangService(title: "Warung Steak", image: "lib/src/assets/hack.png"));
+      BarangService(title: "Warung Steak", image: "lib/src/assets/produk.jpeg"));
   _goBarangServiceFeaturedList.add(BarangService(
-      title: "Kindai Warung Banjar", image: "lib/src/assets/hack.png"));
+      title: "Kindai Warung Banjar", image: "lib/src/assets/produk.jpeg"));
 
   return Future.delayed(Duration(seconds: 1), () {
     return _goBarangServiceFeaturedList;

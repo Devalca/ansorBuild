@@ -4,56 +4,130 @@ import 'beranda_screen.dart';
 
 class LandingPage extends StatefulWidget {
   @override
-  _LandingPageState createState() => new _LandingPageState();
+  _LandingPageState createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
-    new BerandaPage(),
+    BerandaPage(),
+    BerandaPage(),
+    BerandaPage(),
+    BerandaPage(),
+    BerandaPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: _container[_bottomNavCurrentIndex],
-      bottomNavigationBar: _buildBottomNavigation()
-    );
+    return Scaffold(
+        body: _container[_bottomNavCurrentIndex],
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Container(
+          height: 80.0,
+          width: 80.0,
+          child: FittedBox(
+            child: FloatingActionButton(
+              backgroundColor: Colors.green,
+              child: Container(
+                padding: EdgeInsets.only(top: 12),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      height: 25,
+                      width: 25,
+                      child: Image.asset('lib/src/assets/qr-code.png'),
+                    ),
+                    Container(
+                      child: Text(
+                        'Scan Qr',
+                        style: TextStyle(fontSize: 8.0),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              onPressed: () {},
+            ),
+          ),
+        ),
+        bottomNavigationBar: _buildBottomNavigation());
   }
 
-  Widget _buildBottomNavigation(){
-  return new BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          setState(() {
-            _bottomNavCurrentIndex = index;
-          });
-        },
-        currentIndex: _bottomNavCurrentIndex,
-        items: [
-          BottomNavigationBarItem(
-            activeIcon: new Icon(
-              Icons.home,
-            ),
-            icon: new Icon(
-              Icons.home,
-              color: Colors.grey,
-            ),
-            title: new Text(
-              'Beranda',
-            ),
+  void navigationTapped(int index) {
+    if (index == 2) {
+      return;
+    } else {
+      setState(() {
+        _bottomNavCurrentIndex = index;
+      });
+    }
+  }
+
+  Widget _buildBottomNavigation() {
+    return BottomNavigationBar(
+      backgroundColor: Colors.white,
+      type: BottomNavigationBarType.fixed,
+      onTap: navigationTapped,
+      currentIndex: _bottomNavCurrentIndex,
+      items: [
+        BottomNavigationBarItem(
+          activeIcon: Icon(
+            Icons.home,
+            color: Colors.green,
           ),
-          BottomNavigationBarItem(
-            activeIcon: new Icon(
-              Icons.assignment,
-            ),
-            icon: new Icon(
-              Icons.assignment,
-              color: Colors.grey,
-            ),
-            title: new Text('Lainnya'),
+          icon: Icon(
+            Icons.home,
+            color: Colors.grey,
           ),
-        ],
-      );
+          title: Text("Home", style: TextStyle(color: Colors.black)),
+        ),
+        BottomNavigationBarItem(
+          activeIcon: Icon(
+            Icons.home,
+            color: Colors.green,
+          ),
+          icon: Icon(
+            Icons.home,
+            color: Colors.grey,
+          ),
+          title: Text('Transfer', style: TextStyle(color: Colors.black)),
+        ),
+        BottomNavigationBarItem(
+          activeIcon: Icon(
+            Icons.close,
+          ),
+          icon: Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+          title: Text(
+            'Lainnya',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        BottomNavigationBarItem(
+          activeIcon: Icon(
+            Icons.assignment,
+            color: Colors.green,
+          ),
+          icon: Icon(
+            Icons.assignment,
+            color: Colors.grey,
+          ),
+          title: Text('Histori', style: TextStyle(color: Colors.black)),
+        ),
+        BottomNavigationBarItem(
+          activeIcon: Icon(
+            Icons.assignment,
+            color: Colors.green,
+          ),
+          icon: Icon(
+            Icons.assignment,
+            color: Colors.grey,
+          ),
+          title: Text('Profile', style: TextStyle(color: Colors.black)),
+        ),
+      ],
+    );
   }
 }
