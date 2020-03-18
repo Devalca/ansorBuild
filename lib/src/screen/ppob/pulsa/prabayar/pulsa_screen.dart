@@ -4,6 +4,7 @@ import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import 'detail_screen.dart';
 
@@ -18,6 +19,7 @@ class _PulsaPageState extends State<PulsaPage> {
   bool _validate = true;
   String inputNomor, inputNominal, hargaNominal;
   int _nominalIndex = -1;
+  final cF = NumberFormat.currency(locale: 'ID');
   var mobi = "";
   var idProv = "";
   var logoProv = "";
@@ -46,7 +48,7 @@ class _PulsaPageState extends State<PulsaPage> {
 
   Widget formInputPulsa() {
     return SingleChildScrollView(
-          child: Container(
+        child: Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: FutureBuilder<ProviderCall>(
@@ -65,11 +67,14 @@ class _PulsaPageState extends State<PulsaPage> {
                             Container(
                                 margin: EdgeInsets.only(top: 16.0),
                                 child: Text('Nomor HandPhone $mobi')),
-                            Stack(
-                              children: <Widget>[
-                                Positioned(
-                                  child: Container(
-                                    child: TextFormField(
+                            Padding(
+                     padding: const EdgeInsets.only(top: 12.0),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: <Widget>[
+                         Expanded(
+                          child: Container(
+                            child: TextFormField(
                                         inputFormatters: [
                                           LengthLimitingTextInputFormatter(12)
                                         ],
@@ -105,38 +110,41 @@ class _PulsaPageState extends State<PulsaPage> {
                                         onSaved: (String val) {
                                           inputNomor = val;
                                         }),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
+                          )
+                        ),
+                        Expanded(
+                          child: Container()
+                        ),
+                        Expanded(
+                          child: Container(
+                            child: Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                  margin: EdgeInsets.only(right: 12.0),
                                   child: Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                            margin: EdgeInsets.only(right: 12.0),
-                                            child: Container(
-                                              height: 30.0,
-                                              width: 30.0,
-                                              child: Image.network(logoProv),
-                                            )),
-                                        Container(
-                                          margin: EdgeInsets.only(right: 12.0),
-                                          height: 30.0,
-                                          width: 1.0,
-                                          color: Colors.black,
-                                        ),
-                                        Container(
-                                          child:
-                                              Icon(Icons.perm_contact_calendar),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                    height: 30.0,
+                                    width: 30.0,
+                                    child: Image.network(logoProv),
+                                  )),
+                              Container(
+                                margin: EdgeInsets.only(right: 12.0),
+                                height: 30.0,
+                                width: 1.0,
+                                color: Colors.black,
+                              ),
+                              Container(
+                                child: Icon(Icons.contacts)
+                              )
+                            ],
+                          ),
+                        ),
+                          )
+                        )
+                       ],
+                     ),
+                  ),
                             Container(
                               height: 450.0,
                               padding: EdgeInsets.only(top: 15.0),
@@ -181,6 +189,7 @@ class _PulsaPageState extends State<PulsaPage> {
                               color: Colors.black,
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Expanded(
                                   child: Column(
@@ -189,18 +198,18 @@ class _PulsaPageState extends State<PulsaPage> {
                                       Container(
                                         child: Text('Total'),
                                       ),
-                                      Row(children: <Widget>[
-                                        Text('Rp'),
-                                        Text(hargaNominal == null
+                                      Container(
+                                        child: Text(hargaNominal == null
                                             ? ""
-                                            : hargaNominal),
-                                      ])
+                                            : cF.format(hargaNominal).replaceAll("IDR", "Rp. ")),
+                                      )
                                     ],
                                   ),
                                 ),
+                                Expanded(child: Container()),
+                                Expanded(child: Container()),
                                 Expanded(
                                   child: Container(
-                                    margin: EdgeInsets.only(left: 100.0),
                                     child: RaisedButton(
                                       color: Colors.green,
                                       onPressed: _sendToServer,
@@ -263,13 +272,13 @@ class _PulsaPageState extends State<PulsaPage> {
                     Text(
                       hargaList[index].nominalPulsa.toString(),
                       style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 20,
                           color: isSelected ? Colors.green : null),
                     ),
                     Text(
                       "Rp.${a + b}",
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                       ),
                     )
                   ],
@@ -283,7 +292,7 @@ class _PulsaPageState extends State<PulsaPage> {
               });
               if (_nominalIndex == index) {
                 inputNominal = hargaList[index].nominalPulsa.toString();
-                hargaNominal = 'Rp.${a + b}';
+                hargaNominal = '${a + b}';
                 print(index);
                 print(_nominalIndex);
                 print(inputNominal);

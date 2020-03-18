@@ -51,7 +51,7 @@ class _DetailPageState extends State<DetailPage> {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          'Detail Pembayaran Page',
+          'Pembayaran',
           style: TextStyle(color: Colors.black),
         ),
       ),

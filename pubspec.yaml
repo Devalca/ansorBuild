@@ -58,6 +58,7 @@ flutter:
     - lib/src/assets/PULSA.png
     - lib/src/assets/lapak_sahabat.png
     - lib/src/assets/XMLID_2.svg
+    - lib/src/assets/produk.jpeg
     
   # To add assets to your application, add an assets section, like this:
   # assets:

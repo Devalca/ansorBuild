@@ -74,16 +74,22 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                     margin: EdgeInsets.only(top: 12.0),
                     child: Text('Nomor Handphone'),
                   ),
-                  Stack(
-                    children: <Widget>[
-                      Positioned(
-                        child: Container(
-                          child: _buildTextFieldNomor(),
+                  Padding(
+                     padding: const EdgeInsets.only(top: 12.0),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       children: <Widget>[
+                         Expanded(
+                          child: Container(
+                            child: _buildTextFieldNomor()
+                          )
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
-                        child: Container(
+                        Expanded(
+                          child: Container()
+                        ),
+                        Expanded(
+                          child: Container(
+                            child: Container(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -106,8 +112,10 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                          )
+                        )
+                       ],
+                     ),
                   ),
                 ],
               ),
