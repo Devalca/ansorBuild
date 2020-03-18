@@ -310,7 +310,7 @@ class _PulsaPageState extends State<PulsaPage> {
     // if (value.length == 4) {
     // } else
     if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Harus 12";
+      return "Format Nomor Tidak Sesuai";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }
