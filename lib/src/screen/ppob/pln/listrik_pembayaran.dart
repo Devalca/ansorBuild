@@ -147,7 +147,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Total Tagihan"),
                                           ),
                                           Container(
-                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total.toString())),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total)),
                                           ),
                                         ],
                                       ),

@@ -168,7 +168,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 55,
                         padding: const EdgeInsets.all(10.0),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +199,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 55,
                         padding: const EdgeInsets.all(10.0),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,7 +238,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 55,
                         padding: const EdgeInsets.all(10.0),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +269,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 55,
                         padding: const EdgeInsets.all(10.0),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -308,7 +308,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 55,
                         padding: const EdgeInsets.all(10.0),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +339,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 55,
                         padding: const EdgeInsets.all(10.0),
                         child: new Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
