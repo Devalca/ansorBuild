@@ -185,21 +185,32 @@ class _BerandaPageState extends State<BerandaPage> {
                   child: Row(
                     children: <Widget>[
                       Container(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: IconButton(icon: Icon(Icons.refresh), onPressed: () {
+                        padding: const EdgeInsets.only(right: 5.0),
+                        child: IconButton(icon: Icon(Icons.refresh, color: Colors.green,), 
+                        onPressed: () {
                             setState(() {
                               _apiService.getSaldo();
                             });
                           })
                       ),
-                      RaisedButton(
+                      FlatButton(
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => TopupPage()));
                         },
-                        child: Text('Isi Saldo'),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            border: Border.all(
+                              width: 1.0,
+                              color: Colors.green
+                            ),
+                            borderRadius: BorderRadius.circular(5.0)
+                          ), 
+                          padding: EdgeInsets.all(10.0),
+                          child: Text('ISI SALDO', style: TextStyle(color: Colors.white),)),
                       )
                     ],
                   ),
