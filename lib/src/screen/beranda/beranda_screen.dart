@@ -138,7 +138,10 @@ class _BerandaPageState extends State<BerandaPage> {
               child: Row(
             children: <Widget>[
               Icon(Icons.account_balance_wallet),
-              Text("Saldo")
+              Container(
+                padding: EdgeInsets.only(left: 5.0),
+                child: Text("Saldo"),
+              )
             ],
           )),
           Container(

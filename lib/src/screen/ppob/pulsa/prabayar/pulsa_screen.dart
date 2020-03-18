@@ -67,7 +67,7 @@ class _PulsaPageState extends State<PulsaPage> {
                           children: <Widget>[
                             Container(
                                 margin: EdgeInsets.only(top: 16.0),
-                                child: Text('Nomor HandPhone $mobi')),
+                                child: Text('Nomor HandPhone $logoProv')),
                             Padding(
                      padding: const EdgeInsets.only(top: 12.0),
                      child: Row(
@@ -97,6 +97,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                                       .file
                                                       .toString();
                                                 });
+                                                print("LOGO PROVIDER: " + logoProv);
                                               }
                                             } else if (value.length == 3) {
                                               setState(() {
@@ -354,6 +355,8 @@ class _PulsaPageState extends State<PulsaPage> {
             print("INI KOID : " + koId);
             print("INI RESPONSE :" + response.body);
             print("NI PROVIDER : " + namaProv);
+              await new Future.delayed(
+                                        const Duration(seconds: 5));
             Navigator.push(
                 context,
                 new MaterialPageRoute(
