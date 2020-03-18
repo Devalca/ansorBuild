@@ -228,7 +228,8 @@ class _DetailPageState extends State<DetailPage> {
                                           if (snapshot.hasData) {
                                             return Text(cF.format(dotUang).replaceAll("IDR", "Rp. "));
                                           } else if (snapshot.hasError) {
-                                            return Text("${snapshot.error}");
+                                            print("${snapshot.error}");
+                                            return CircularProgressIndicator();
                                           }
                                           return CircularProgressIndicator();
                                         },
