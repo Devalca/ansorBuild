@@ -214,16 +214,11 @@ class _LoginState extends State<Login> {
                             ]
                           ),
                         )
-                        // child: Text(
-                        //   "Belum Punya Akun? Daftar", 
-                        //   style: new TextStyle(fontSize: 12.0, color: Colors.black), 
-                        //   textAlign: TextAlign.center
-                        // )
                       ),
                     )
                   ]
                 )
-              )
+              ),
             ]
           )
         ),

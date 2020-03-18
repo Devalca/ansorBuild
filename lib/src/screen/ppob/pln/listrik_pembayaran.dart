@@ -2,34 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
+import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
-
-Future<Wallet> getWallet() async {
-  String url = 'http://192.168.10.11:3000/users/wallet/1';
-  final response = await http.get(url, headers: {"Accept": "application/json"});
-
-  if (response.statusCode == 200) {
-    return Wallet.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load wallet');
-  }
-}
-
-class Wallet {
-  final int walletId;
-  final int saldoAkhir;
-
-  Wallet({this.walletId, this.saldoAkhir});
-
-  factory Wallet.fromJson(Map<String, dynamic> json) {
-    return Wallet(saldoAkhir: json['data'][0]['saldo_akhir']);
-  }
-}
+import 'package:ansor_build/src/service/api_service.dart';
 
 class ListrikPembayaran extends StatefulWidget {
   final String status;
@@ -41,7 +20,10 @@ class ListrikPembayaran extends StatefulWidget {
 
 class _ListrikPembayaranState extends State<ListrikPembayaran> {
   bool _isLoading = false;
+
   PlnServices _plnServices = PlnServices();
+  ApiService _apiService = ApiService();
+  
   String _transactionId = "";
   String url = "";
 
@@ -53,8 +35,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
   @override
   void initState() {
     super.initState();
-
-    readData("transactionId");
 
     _plnServices.getTransactionId().then(updateId);
   }
@@ -75,18 +55,14 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
     }
   }
 
-  readData(String text) async{
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      text_to_show = prefs.getString(text);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.white,
         title: Text(
           'Pembayaran',
           style: TextStyle(color: Colors.white),
@@ -123,7 +99,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                     ),
                                     Container(
                                       child: Text(
-                                        // "Token Listrik PLN\n" + snapshot.data.data[0].nama_pelanggan + "\n" + "Nomor "+ snapshot.data.data[0].no_meter
                                         "Token Listrik PLN\n" + snapshot.data.nama_pelanggan + "\n" + "Nomor "+ snapshot.data.no_meter
                                       ),
                                     ),
@@ -158,8 +133,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Periode"),
                                           ),
                                           Container(
-                                            // child: Text(snapshot.data.data[0].createdAt),
-                                            child: Text(DateFormat('dd M yyyy').format(snapshot.data.createdAt)),
+                                            child: Text(DateFormat('dd MMMM yyyy').format(snapshot.data.createdAt)),
                                           ),
                                         ],
                                       ),
@@ -173,7 +147,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Total Tagihan"),
                                           ),
                                           Container(
-                                            // child: Text("Rp." + snapshot.data.data[0].total.toString()),
                                             child: Text("Rp." + snapshot.data.total.toString()),
                                           ),
                                         ],
@@ -203,7 +176,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Total"),
                                           ),
                                           Container(
-                                            // child: Text("Rp." + snapshot.data.data[0].total.toString()),
                                             child: Text("Rp." + snapshot.data.total.toString()),
                                           ),
                                         ],
@@ -261,10 +233,10 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                           ),
                                           Container(
                                             child: FutureBuilder<Wallet>(
-                                              future: getWallet(),
+                                              future: _apiService.getSaldo(),
                                               builder: (context, snapshot) {
                                                 if (snapshot.hasData) {
-                                                  return Text("Rp. " + snapshot.data.saldoAkhir.toString());
+                                                  return Text("Rp. " + snapshot.data.data[0].saldoAkhir.toString());
                                                 } else if (snapshot.hasError) {
                                                   return Text("${snapshot.error}");
                                                 }
@@ -294,7 +266,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                         setState(() => _isLoading = true);
                                         String id = _transactionId;
                                         String transactionId = id.substring(10);
-                                        // String noMeter = snapshot.data.data[0].no_meter;
                                         String noMeter = snapshot.data.no_meter;
                                         int nominal = snapshot.data.nominal;
 

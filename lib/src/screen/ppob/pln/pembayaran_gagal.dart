@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 
@@ -13,10 +14,14 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '',
-          style: TextStyle(color: Colors.white),
-        )
+        leading: new IconButton(
+          icon: new Icon(Icons.close),
+          onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage())),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -46,7 +51,7 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                         setState(() => _isLoading = true);
 
                         Navigator.push(context, new MaterialPageRoute(builder: (__) => new Listrik()));
-                          setState(() => _isLoading = false);
+                        setState(() => _isLoading = false);
                       },
                     ),
                   ),

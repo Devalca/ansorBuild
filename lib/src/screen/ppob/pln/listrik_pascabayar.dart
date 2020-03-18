@@ -1,45 +1,8 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik_pembayaran.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
-
-// final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
-
-Future<Bayar> createPascabayar(String noMeter) async {
-  final http.Response response = await http.post(
-    'http://192.168.10.11:3000/ppob/pln/pascabayar',
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'no_meter': noMeter,
-    }),
-  );
-  if (response.statusCode == 200) {
-    return Bayar.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load album');
-  }
-}
-
-class Bayar {
-  final int transactionId;
-  final String noMeter;
-  final String status;
-
-  Bayar({this.transactionId, this.noMeter, this.status});
-
-  factory Bayar.fromJson(Map<String, dynamic> json) {
-    return Bayar(
-      transactionId: json['transactionId'],
-      noMeter: json['no_meter'],
-      status: json['status']
-    );
-  }
-}
 
 class ListrikPascabayar extends StatefulWidget {
   @override
@@ -47,37 +10,18 @@ class ListrikPascabayar extends StatefulWidget {
 }
 
 class _ListrikPascabayarState extends State<ListrikPascabayar> {
-  String id = "";
-  String transId = "0";
-  String text_to_show = "";
-  bool _fieldNoMeter;
-  PlnServices _plnServices = PlnServices();
   String url = "";
 
-  @override
-  void initState() {
-    super.initState();
-    getId();
-  }
-
-  getId() async{
-
-    final prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      id = prefs.getString('id');
-    });
-  }
-  
-  TextEditingController _noMeterController = TextEditingController();
-  Future<Bayar> _futureBayar;
-
   bool _isLoading = false;
+  bool _fieldNoMeter;
+
+  PlnServices _plnServices = PlnServices();
+
+  TextEditingController _noMeterController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldState,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -231,19 +175,5 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
           )
       )
     );
-  }
-
-  saveData(String id) async {
-    final prefs = await SharedPreferences.getInstance();
-    
-    prefs.setString("transactionId", id);
-  }
-
-  readData(String text) async{
-    final prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      text_to_show = prefs.getString(text);
-    });
   }
 }

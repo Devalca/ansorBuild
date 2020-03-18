@@ -29,6 +29,9 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
         title: Text(
           'Listrik PLN',
           style: TextStyle(color: Colors.black),

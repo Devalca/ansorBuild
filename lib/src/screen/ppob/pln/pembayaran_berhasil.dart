@@ -31,16 +31,6 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     });
   }
 
-  // Future<Detail> fetchDetail() async {
-  //   final response = await http.get('http://192.168.10.11:3000/ppob/detail/pln/' + _id);
-
-  //   if (response.statusCode == 200) {
-  //     return detailFromJson(response.body);
-  //   } else {
-  //     throw Exception('Failed to load Detail transaction');
-  //   }
-  // }
-
   Future<Detail> fetchDetail() async {
     final response = await http.get('http://192.168.10.11:3000' + _url);
 
@@ -55,10 +45,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '',
-          style: TextStyle(color: Colors.white),
-        )
+        leading: new IconButton(
+          icon: new Icon(Icons.close),
+          onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage())),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -93,7 +87,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                             
                             Container( height: 15 ),
                             
-                            Text(DateFormat('dd M yyyy').format(snapshot.data.createdAt), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                            Text(DateFormat('dd MMMM yyyy').format(snapshot.data.createdAt), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                             Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
 
                             Container( height: 25 ),
