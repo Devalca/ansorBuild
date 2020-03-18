@@ -175,7 +175,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
-                              new Text ("Harga Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -208,7 +208,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
-                              new Text ("Harga Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -249,7 +249,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
-                              new Text ("Harga Rp. 101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("Rp. 101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -282,7 +282,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
-                              new Text ("Harga Rp. 251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("Rp. 251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -323,7 +323,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                              new Text ("Harga Rp. 501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("Rp. 501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -356,7 +356,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
-                              new Text ("Harga Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
