@@ -206,7 +206,7 @@ class _DetailPageState extends State<DetailPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Container(
-                                        child: Text('Unity'),
+                                        child: Text('Un1ty'),
                                       ),
                                       Container(
                                         child: Icon(
@@ -234,7 +234,7 @@ class _DetailPageState extends State<DetailPage> {
                                             ),
                                             Container(
                                               child: Text(
-                                                'Saldo Unity',
+                                                'Saldo Un1ty',
                                                 style: TextStyle(
                                                     color: Colors.green),
                                               ),

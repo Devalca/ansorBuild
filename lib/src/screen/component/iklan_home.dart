@@ -15,7 +15,7 @@ final List child = map<Widget>(
   homeIklan,
   (index, i) {
     return Container(
-      margin: EdgeInsets.all(5.0),
+      margin: EdgeInsets.symmetric(horizontal: 16.0),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Stack(children: <Widget>[
@@ -60,7 +60,7 @@ class _IklanHomeState extends State<IklanHome> {
         items: child,
         enableInfiniteScroll: false,
         autoPlay: false,
-        viewportFraction: 0.9,
+        viewportFraction: 1.0,
         enlargeCenterPage: false,
         aspectRatio: 3.8,
         onPageChanged: (index) {
@@ -70,7 +70,7 @@ class _IklanHomeState extends State<IklanHome> {
         },
       ),
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 26.0),
+        padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 10.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

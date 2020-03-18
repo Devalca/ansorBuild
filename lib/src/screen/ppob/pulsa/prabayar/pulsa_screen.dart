@@ -67,7 +67,7 @@ class _PulsaPageState extends State<PulsaPage> {
                           children: <Widget>[
                             Container(
                                 margin: EdgeInsets.only(top: 16.0),
-                                child: Text('Nomor HandPhone $logoProv')),
+                                child: Text('Nomor Handphone $logoProv')),
                             Padding(
                      padding: const EdgeInsets.only(top: 12.0),
                      child: Row(
@@ -123,8 +123,6 @@ class _PulsaPageState extends State<PulsaPage> {
                               Container(
                                   margin: EdgeInsets.only(right: 12.0),
                                   child: Container(
-                                    height: 30.0,
-                                    width: 30.0,
                                     child: Image.network(logoProv),
                                   )),
                               Container(
