@@ -1,4 +1,4 @@
-import 'package:ansor_build/src/screen/component/iklan_slide.dart';
+import 'package:ansor_build/src/screen/component/iklan_ppob.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class MainPulsa extends StatelessWidget {
                           bottom: 16,
                           child: Container(
                             height: 150,
-                            child: CarouselWithIndicator(),
+                            child: IklanPpob(),
                           ),
                         )
                       ],

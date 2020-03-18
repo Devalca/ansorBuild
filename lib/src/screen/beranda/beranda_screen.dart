@@ -1,5 +1,7 @@
 import 'package:ansor_build/src/model/beranda_service.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/iklan_home.dart';
+import 'package:ansor_build/src/screen/component/iklan_ppob.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
@@ -231,11 +233,9 @@ class _BerandaPageState extends State<BerandaPage> {
   Widget _buildIklanOne() {
     return InkWell(
       child: Container(
-        height: 100.0,
-        width: 400.0,
-        color: Colors.white,
-        child: Center(child: Text('INI IKLAN')),
-      ),
+                            height: 180,
+                            child: IklanHome(),
+                          ),
     );
   }
 
