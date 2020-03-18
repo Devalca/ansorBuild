@@ -5,6 +5,7 @@ import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import '../selseai_screen.dart';
 
 class DetailPage extends StatefulWidget {
@@ -21,6 +22,7 @@ class _DetailPageState extends State<DetailPage> {
   bool _isLoading = false;
   ApiService _apiService = ApiService();
   String _id = "";
+  final cF = NumberFormat.currency(locale: 'ID');
 
   @override
   void initState() {
@@ -215,15 +217,14 @@ class _DetailPageState extends State<DetailPage> {
                                           )
                                         ],
                                       ),
-                                    ),
+                                    ), 
                                     Container(
-                                        child: FutureBuilder<Wallet>(
+                                      child: FutureBuilder<Wallet>(
                                       future: _apiService.getSaldo(),
                                       builder: (context, snapshot) {
+                                        int dotUang =  snapshot.data.data[0].saldoAkhir;
                                         if (snapshot.hasData) {
-                                          return Text("Rp" +
-                                              snapshot.data.data[0].saldoAkhir
-                                                  .toString());
+                                          return Text(cF.format(dotUang).replaceAll("IDR", "Rp. "));
                                         } else if (snapshot.hasError) {
                                           return Text("${snapshot.error}");
                                         }
