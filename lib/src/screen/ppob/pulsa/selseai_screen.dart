@@ -206,7 +206,6 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: FlatButton(
                               onPressed: () {
-                                LoadingServices.loadingDialog(context);
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

@@ -116,7 +116,7 @@ class _PulsaPageState extends State<PulsaPage> {
                         ),
                         Expanded(
                           child: Container(
-                            child: Container(
+                            width: 50.0,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -138,7 +138,6 @@ class _PulsaPageState extends State<PulsaPage> {
                               )
                             ],
                           ),
-                        ),
                           )
                         )
                        ],
