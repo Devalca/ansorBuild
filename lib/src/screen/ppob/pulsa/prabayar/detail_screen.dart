@@ -20,6 +20,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   Future<Album> futureAlbum;
+  Future<Wallet> futureWallet;
   bool _isLoading = false;
   ApiService _apiService = ApiService();
   String _id = "";
@@ -30,6 +31,7 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     _apiService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
+    futureWallet = _apiService.getSaldo();
   }
 
   Future<Album> fetchAlbum() async {
@@ -222,7 +224,7 @@ class _DetailPageState extends State<DetailPage> {
                                       ), 
                                       Container(
                                         child: FutureBuilder<Wallet>(
-                                        future: _apiService.getSaldo(),
+                                        future: futureWallet,
                                         builder: (context, snapshot) {
                                           int dotUang =  snapshot.data.data[0].saldoAkhir;
                                           if (snapshot.hasData) {

@@ -131,11 +131,11 @@ class _BerandaPageState extends State<BerandaPage> {
   Widget _buildSaldoForm() {
     return Container(
       color: Colors.white,
-      padding: const EdgeInsets.only(left: 16, right: 16),
       child: Column(
         children: <Widget>[
           Container(
-              child: Row(
+            padding: const EdgeInsets.only(left: 16),
+            child: Row(
             children: <Widget>[
               Icon(Icons.account_balance_wallet, color: Colors.green),
               Container(
@@ -145,6 +145,7 @@ class _BerandaPageState extends State<BerandaPage> {
             ],
           )),
           Container(
+                  padding: const EdgeInsets.only(left: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -182,42 +183,47 @@ class _BerandaPageState extends State<BerandaPage> {
                   ),
                 ),
                 Container(
-                  child: Row(
+                  child: Column(
                     children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.only(right: 5.0),
-                        child: IconButton(icon: Icon(Icons.refresh, color: Colors.green,), 
-                        onPressed: () {
-                            setState(() {
-                              _apiService.getSaldo();
-                            });
-                          })
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.only(right: 5.0),
+                            child: IconButton(icon: Icon(Icons.refresh, color: Colors.green,), 
+                            onPressed: () {
+                                setState(() {
+                                  _apiService.getSaldo();
+                                });
+                              })
+                          ),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TopupPage()));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                border: Border.all(
+                                  width: 1.0,
+                                  color: Colors.green
+                                ),
+                                borderRadius: BorderRadius.circular(5.0)
+                              ), 
+                              padding: EdgeInsets.all(10.0),
+                              child: Text('ISI SALDO', style: TextStyle(color: Colors.white),)),
+                          )
+                        ],
                       ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TopupPage()));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            border: Border.all(
-                              width: 1.0,
-                              color: Colors.green
-                            ),
-                            borderRadius: BorderRadius.circular(5.0)
-                          ), 
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('ISI SALDO', style: TextStyle(color: Colors.white),)),
-                      )
                     ],
                   ),
                 ),
               ],
             ),
-          )
+          ),
+          Divider()
         ],
       ),
     );
