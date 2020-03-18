@@ -135,7 +135,6 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
 
                             url = response.headers['location'];
                             print("url: " + url);
-                            print('dataUrl' + url);
 
                             _plnServices.saveTransactionId(url).then((bool committed) {
                               print(url);

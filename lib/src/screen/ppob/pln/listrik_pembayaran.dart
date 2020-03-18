@@ -65,7 +65,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
         backgroundColor: Colors.white,
         title: Text(
           'Pembayaran',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         )
       ),
       body: SingleChildScrollView(
@@ -88,7 +88,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                height: 50.0,
+                                height: 70.0,
                                 child: Row(
                                   children: <Widget>[
                                     Container(
@@ -147,7 +147,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Total Tagihan"),
                                           ),
                                           Container(
-                                            child: Text("Rp." + snapshot.data.total.toString()),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total.toString())),
                                           ),
                                         ],
                                       ),
@@ -166,6 +166,8 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                         ],
                                       ),
                                     ),
+
+                                    Divider( height: 12, color: Colors.black ),
 
                                     Expanded(
                                       child: Row(
@@ -220,6 +222,8 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                         ],
                                       ),
                                     ),
+
+                                    Divider( height: 12, color: Colors.black ),
 
                                     Expanded(
                                       child: Row(
