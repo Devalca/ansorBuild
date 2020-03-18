@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: MainPulsa(),
+      home: BerandaPage(),
       routes: Routes.getRoutes(),
     );
   }
