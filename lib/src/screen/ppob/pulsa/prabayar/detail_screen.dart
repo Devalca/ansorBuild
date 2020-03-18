@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -253,6 +254,7 @@ class _DetailPageState extends State<DetailPage> {
                           child: RaisedButton(
                             color: Colors.green,
                             onPressed: () {
+                              LoadingServices.loadingDialog(context);
                               // setState(() => _isLoading = true);
                               int transactionId = int.parse(_id.toString());
                               String nomorHp =

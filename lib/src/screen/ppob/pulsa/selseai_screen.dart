@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -205,6 +206,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: FlatButton(
                               onPressed: () {
+                                LoadingServices.loadingDialog(context);
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(

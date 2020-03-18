@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -328,6 +329,7 @@ class _PulsaPageState extends State<PulsaPage> {
   }
 
   _sendToServer() {
+    LoadingServices.loadingDialog(context);
     if (_key.currentState.validate()) {
       _key.currentState.save();
       // setState(() => _isLoading = true);
