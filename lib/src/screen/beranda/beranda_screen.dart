@@ -136,11 +136,13 @@ class _BerandaPageState extends State<BerandaPage> {
           Container(
             padding: const EdgeInsets.only(left: 16),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Icon(Icons.account_balance_wallet, color: Colors.green),
               Container(
-                padding: EdgeInsets.only(left: 5.0),
-                child: Text("Saldo"),
+                padding: EdgeInsets.only(left: 2.0),
+                child: Text("Saldo", style: TextStyle(fontSize: 11.0),),
               )
             ],
           )),
