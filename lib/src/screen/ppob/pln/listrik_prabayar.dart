@@ -201,7 +201,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 55,
+                        height: 57,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -242,7 +242,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 55,
+                        height: 57,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -275,7 +275,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 55,
+                        height: 57,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -316,7 +316,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 55,
+                        height: 57,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -349,7 +349,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 55,
+                        height: 57,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
