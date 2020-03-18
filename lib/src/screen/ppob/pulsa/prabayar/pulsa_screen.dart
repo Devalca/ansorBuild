@@ -45,184 +45,186 @@ class _PulsaPageState extends State<PulsaPage> {
   }
 
   Widget formInputPulsa() {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      child: FutureBuilder<ProviderCall>(
-          future: _apiService.getProvider(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Datum> providers = snapshot.data.data;
-              return Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                              margin: EdgeInsets.only(top: 16.0),
-                              child: Text('Nomor HandPhone $mobi')),
-                          Stack(
-                            children: <Widget>[
-                              Positioned(
-                                child: Container(
-                                  child: TextFormField(
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(12)
-                                      ],
-                                      controller: _controllerNomor,
-                                      onChanged: (String value) async {
-                                        for (var i = 0;
-                                            i < snapshot.data.data.length;
-                                            i++) {
-                                          if (value.length == 4) {
-                                            if (value ==
-                                                providers[i].kodeProvider) {
+    return SingleChildScrollView(
+          child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: FutureBuilder<ProviderCall>(
+            future: _apiService.getProvider(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Datum> providers = snapshot.data.data;
+                return Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                                margin: EdgeInsets.only(top: 16.0),
+                                child: Text('Nomor HandPhone $mobi')),
+                            Stack(
+                              children: <Widget>[
+                                Positioned(
+                                  child: Container(
+                                    child: TextFormField(
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(12)
+                                        ],
+                                        controller: _controllerNomor,
+                                        onChanged: (String value) async {
+                                          for (var i = 0;
+                                              i < snapshot.data.data.length;
+                                              i++) {
+                                            if (value.length == 4) {
+                                              if (value ==
+                                                  providers[i].kodeProvider) {
+                                                setState(() {
+                                                  mobi =
+                                                      providers[i].namaProvider;
+                                                  idProv = providers[i]
+                                                      .operatorId
+                                                      .toString();
+                                                  logoProv = providers[i]
+                                                      .file
+                                                      .toString();
+                                                });
+                                              }
+                                            } else if (value.length == 3) {
                                               setState(() {
-                                                mobi =
-                                                    providers[i].namaProvider;
-                                                idProv = providers[i]
-                                                    .operatorId
-                                                    .toString();
-                                                logoProv = providers[i]
-                                                    .file
-                                                    .toString();
+                                                mobi = "";
+                                                logoProv = "";
                                               });
                                             }
-                                          } else if (value.length == 3) {
-                                            setState(() {
-                                              mobi = "";
-                                              logoProv = "";
-                                            });
+                                          }
+                                        },
+                                        keyboardType: TextInputType.phone,
+                                        validator: validateNomor,
+                                        onSaved: (String val) {
+                                          inputNomor = val;
+                                        }),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                            margin: EdgeInsets.only(right: 12.0),
+                                            child: Container(
+                                              height: 30.0,
+                                              width: 30.0,
+                                              child: Image.network(logoProv),
+                                            )),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 12.0),
+                                          height: 30.0,
+                                          width: 1.0,
+                                          color: Colors.black,
+                                        ),
+                                        Container(
+                                          child:
+                                              Icon(Icons.perm_contact_calendar),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 450.0,
+                              padding: EdgeInsets.only(top: 15.0),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    FutureBuilder<NominalList>(
+                                      future: _apiService.getNominal(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.done) {
+                                          for (var i = 0;
+                                              i < snapshot.data.data.length;
+                                              i++) {
+                                            if (idProv == "") {
+                                              return Container();
+                                            } else if (idProv ==
+                                                snapshot.data.data[i].operatorId
+                                                    .toString()) {
+                                              List<Listharga> hargaList =
+                                                  snapshot.data.data[i].listharga;
+                                              return Container(
+                                                height: 430.0,
+                                                child: _btnListView(hargaList),
+                                              );
+                                            }
                                           }
                                         }
+                                        return Container();
                                       },
-                                      keyboardType: TextInputType.phone,
-                                      validator: validateNomor,
-                                      onSaved: (String val) {
-                                        inputNomor = val;
-                                      }),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
-                                child: Container(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    ),
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            Divider(
+                              height: 12,
+                              color: Colors.black,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                          margin: EdgeInsets.only(right: 12.0),
-                                          child: Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            child: Image.network(logoProv),
-                                          )),
-                                      Container(
-                                        margin: EdgeInsets.only(right: 12.0),
-                                        height: 30.0,
-                                        width: 1.0,
-                                        color: Colors.black,
+                                        child: Text('Total'),
                                       ),
-                                      Container(
-                                        child:
-                                            Icon(Icons.perm_contact_calendar),
-                                      )
+                                      Row(children: <Widget>[
+                                        Text('Rp'),
+                                        Text(hargaNominal == null
+                                            ? ""
+                                            : hargaNominal),
+                                      ])
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            height: 450.0,
-                            padding: EdgeInsets.only(top: 15.0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  FutureBuilder<NominalList>(
-                                    future: _apiService.getNominal(),
-                                    builder: (context, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.done) {
-                                        for (var i = 0;
-                                            i < snapshot.data.data.length;
-                                            i++) {
-                                          if (idProv == "") {
-                                            return Container();
-                                          } else if (idProv ==
-                                              snapshot.data.data[i].operatorId
-                                                  .toString()) {
-                                            List<Listharga> hargaList =
-                                                snapshot.data.data[i].listharga;
-                                            return Container(
-                                              height: 430.0,
-                                              child: _btnListView(hargaList),
-                                            );
-                                          }
-                                        }
-                                      }
-                                      return Container();
-                                    },
-                                  ),
-                                ]),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Divider(
-                            height: 12,
-                            color: Colors.black,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text('Total'),
-                                    ),
-                                    Row(children: <Widget>[
-                                      Text('Rp'),
-                                      Text(hargaNominal == null
-                                          ? ""
-                                          : hargaNominal),
-                                    ])
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 100.0),
-                                  child: RaisedButton(
-                                    color: Colors.green,
-                                    onPressed: _sendToServer,
-                                    child: Text(
-                                      'BELI',
-                                      style: TextStyle(color: Colors.white),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(left: 100.0),
+                                    child: RaisedButton(
+                                      color: Colors.green,
+                                      onPressed: _sendToServer,
+                                      child: Text(
+                                        'BELI',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return Container();
-          }),
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              return Container();
+            }),
+      ),
     );
   }
 

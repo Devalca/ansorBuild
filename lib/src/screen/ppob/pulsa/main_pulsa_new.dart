@@ -90,8 +90,8 @@ class MainPulsa extends StatelessWidget {
                     body: TabBarView(
                       physics: NeverScrollableScrollPhysics(),
                       children: <Widget>[
-                        SingleChildScrollView(child: PulsaPage()),
-                        SingleChildScrollView(child: PulsaPascaPage()),
+                        PulsaPage(),
+                        PulsaPascaPage(),
                       ],
                     ),
                   ),
