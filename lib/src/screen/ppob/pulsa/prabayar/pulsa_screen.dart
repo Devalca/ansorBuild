@@ -265,7 +265,7 @@ class _PulsaPageState extends State<PulsaPage> {
                           color: isSelected ? Colors.green : null),
                     ),
                     Text(
-                      "Harga Rp.${a + b}",
+                      "Rp.${a + b}",
                       style: TextStyle(
                         fontSize: 14,
                       ),
