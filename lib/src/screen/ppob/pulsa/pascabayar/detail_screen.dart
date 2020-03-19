@@ -53,7 +53,7 @@ class _DetailPageState extends State<DetailPage> {
           Future.delayed(Duration(seconds: 5), () {
             Navigator.of(context).pop(true);
           });
-          return new WillPopScope(
+          return WillPopScope(
               onWillPop: () async => false,
               child: SimpleDialog(
                   backgroundColor: Colors.white,
@@ -82,8 +82,13 @@ class _DetailPageState extends State<DetailPage> {
       appBar: AppBar(
         elevation: 0.1,
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.black,
         ),
+         leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context,true);
+              }),
         backgroundColor: Colors.white,
         title: Text(
           'Pembayaran',
@@ -322,7 +327,7 @@ class _DetailPageState extends State<DetailPage> {
                                     Map blok = jsonDecode(response.body);
                                     var userUid = blok['id'].toString();
                                     var koId = userUid;
-                                    await new Future.delayed(
+                                    await Future.delayed(
                                         const Duration(seconds: 5));
                                     Navigator.pushReplacement(
                                         context,

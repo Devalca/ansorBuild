@@ -14,10 +14,10 @@ class MainPulsa extends StatelessWidget {
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
               iconTheme: IconThemeData(
-                color: Colors.black, //change your color here
+                color: Colors.black,
               ),
-              leading: new IconButton(
-                  icon: new Icon(Icons.arrow_back),
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
                   onPressed: () {
                     Navigator.pop(context, true);
                   }),
@@ -71,7 +71,7 @@ class MainPulsa extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: Colors.grey[300],
                             border: Border.all(width: 1, color: Colors.white),
-                            borderRadius: new BorderRadius.circular(6.0),
+                            borderRadius: BorderRadius.circular(6.0),
                           ),
                           child: TabBar(
                             labelColor: Colors.green,

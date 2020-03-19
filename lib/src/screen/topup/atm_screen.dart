@@ -6,7 +6,7 @@ void main() {
 }
 
 class AtmPage extends StatelessWidget {
-   final List<String> lokasi = [
+  final List<String> namaBank = [
     'BCA',
     'MANDIRI',
     'BRI',
@@ -15,14 +15,37 @@ class AtmPage extends StatelessWidget {
     'CIMB NIAGA',
     'MAYBANK',
     'LAINNYA'
+  ];
+
+  final List<String> iconBank = [
+  'lib/src/assets/BANNER_ATAS.jpg',
+  'lib/src/assets/BANNER_ATAS.jpg',
+  'lib/src/assets/BANNER_ATAS.jpg'
+  'lib/src/assets/BANNER_ATAS.jpg',
+  'lib/src/assets/BANNER_ATAS.jpg',
+   'lib/src/assets/BANNER_ATAS.jpg',
+  'lib/src/assets/BANNER_ATAS.jpg',
+  'lib/src/assets/BANNER_ATAS.jpg'
 ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("ATM"),
-        elevation: 0,
+        elevation: 0.0,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context, true);
+            }),
+        backgroundColor: Colors.white,
+        title: Text(
+          'ATM',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Stack(
         children: <Widget>[
@@ -31,44 +54,42 @@ class AtmPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Center(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 50.0),
-                  height: 150.0,
-                  width: 250.0,
-                  color: Colors.grey,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 50.0),
+                    height: 150.0,
+                    width: 250.0,
+                    color: Colors.grey[200],
+                  ),
                 ),
-              ),
-                Container(),
               ],
             ),
           ),
-            
-              Container(
-                margin: EdgeInsets.only(top:220.0),
-                   child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return ExpandableListView(title: lokasi[index]);
-          },
-          itemCount: lokasi.length,
-        ),
-              ),
-    
+          Container(
+            margin: EdgeInsets.only(top: 230.0),
+            child: ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return ListTopupPage(title: namaBank[index], iconBank: namaBank[index],);
+              },
+              itemCount: namaBank.length,
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
-class ExpandableListView extends StatefulWidget {
+class ListTopupPage extends StatefulWidget {
   final String title;
+  final String iconBank;
 
-  const ExpandableListView({Key key, this.title}) : super(key: key);
+  const ListTopupPage({Key key, this.title, this.iconBank}) : super(key: key);
 
   @override
-  _ExpandableListViewState createState() => _ExpandableListViewState();
+  _ListTopupPageState createState() => _ListTopupPageState();
 }
 
-class _ExpandableListViewState extends State<ExpandableListView> {
+class _ListTopupPageState extends State<ListTopupPage> {
   bool expandFlag = false;
 
   @override
@@ -89,6 +110,7 @@ class _ExpandableListViewState extends State<ExpandableListView> {
                       IconButton(
                           padding: EdgeInsets.symmetric(vertical: 5.0),
                           icon: Container(
+                            margin: EdgeInsets.only(right: 10.0),
                             height: 50.0,
                             width: 40.0,
                             decoration: BoxDecoration(
@@ -111,15 +133,15 @@ class _ExpandableListViewState extends State<ExpandableListView> {
                       Container(
                         height: 30.0,
                         width: 50.0,
-                        color: Colors.red,
                         padding: EdgeInsets.only(left: 10.0),
+                        // child: Image.asset(widget.iconBank),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
                         child: Text(
                           widget.title,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.red),
+                              fontWeight: FontWeight.bold),
                         ),
                       )
                     ],
@@ -132,9 +154,7 @@ class _ExpandableListViewState extends State<ExpandableListView> {
               expanded: expandFlag,
               child: ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    
-                  );
+                  return Container();
                 },
               ))
         ],
@@ -152,7 +172,7 @@ class ExpandableContainer extends StatelessWidget {
   ExpandableContainer({
     @required this.child,
     this.collapsedHeight = 0.0,
-    this.expandedHeight = 300.0,
+    this.expandedHeight = 400.0,
     this.expanded = true,
   });
 
@@ -160,7 +180,7 @@ class ExpandableContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 5),
       curve: Curves.easeInOut,
       width: screenWidth,
       height: expanded ? expandedHeight : collapsedHeight,
@@ -176,7 +196,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Masukan Kartu ATM dan PIN ATM Kamu')
                 ],
               ),
@@ -184,7 +208,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Pilih menu transaksi lainya')
                 ],
               ),
@@ -192,7 +220,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Pilih menu transfer')
                 ],
               ),
@@ -200,7 +232,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Pilih Menu ke rek Bank Virtual Account')
                 ],
               ),
@@ -208,7 +244,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Masukan 12345+ Nomor ponsel kamu : 12345 08xx-xxx-xxx')
                 ],
               ),
@@ -216,7 +256,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Masukan Nominal Topup')
                 ],
               ),
@@ -224,7 +268,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Ikuti tatacara menyelesaikan transaksi')
                 ],
               ),
@@ -236,7 +284,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Minimum Top Up Rp 100.000')
                 ],
               ),
@@ -244,7 +296,11 @@ class ExpandableContainer extends StatelessWidget {
             Container(
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.crop_square),
+                  Container(
+                    child: Center(
+                      child: _boxDot(),
+                    ),
+                  ),
                   Text('Biaya Top-Up Rp 2.500')
                 ],
               ),
@@ -254,6 +310,24 @@ class ExpandableContainer extends StatelessWidget {
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(width: 1.0, color: Colors.grey[200]))),
+      ),
+    );
+  }
+
+  Widget _boxDot() {
+    return Container(
+      margin: EdgeInsets.only(right: 10, bottom: 10, top: 10),
+      height: 10,
+      width: 10,
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 1,
+          color: Colors.grey
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(4)
+        ),
+        color: Colors.grey
       ),
     );
   }

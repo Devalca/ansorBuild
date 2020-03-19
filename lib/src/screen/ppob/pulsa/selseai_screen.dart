@@ -51,10 +51,10 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
           elevation: 0.0,
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
-            color: Colors.black, //change your color here
+            color: Colors.black,
           ),
-          leading: new IconButton(
-              icon: new Icon(Icons.arrow_back),
+          leading: IconButton(
+              icon: Icon(Icons.close),
               onPressed: () {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => LandingPage()));
@@ -70,6 +70,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               // var formatterTime = DateFormat('HH.mm').format(dateTime);
               return SingleChildScrollView(
                 child: Container(
+                  color: Colors.white,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[

@@ -50,8 +50,13 @@ class _DetailPageState extends State<DetailPage> {
       appBar: AppBar( 
         elevation: 1,
         iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
+          color: Colors.black,
         ),
+         leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context,true);
+              }),
         backgroundColor: Colors.white,
         title: Text(
           'Pembayaran',
@@ -277,7 +282,7 @@ class _DetailPageState extends State<DetailPage> {
                                     _apiService.saveNameId(userUid).then((bool committed) {
                                       print(userUid);
                                     });
-                                     await new Future.delayed(const Duration(seconds: 5));
+                                     await Future.delayed(const Duration(seconds: 5));
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
