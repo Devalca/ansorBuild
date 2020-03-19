@@ -27,6 +27,7 @@ class AtmPage extends StatelessWidget {
   'lib/src/assets/BANNER_ATAS.jpg',
   'lib/src/assets/BANNER_ATAS.jpg'
 ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +69,7 @@ class AtmPage extends StatelessWidget {
             margin: EdgeInsets.only(top: 230.0),
             child: ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return ListTopupPage(title: namaBank[index], iconBank: namaBank[index],);
+                return ListTopupPage(title: namaBank[index]);
               },
               itemCount: namaBank.length,
             ),
@@ -134,7 +135,7 @@ class _ListTopupPageState extends State<ListTopupPage> {
                         height: 30.0,
                         width: 50.0,
                         padding: EdgeInsets.only(left: 10.0),
-                        // child: Image.asset(widget.iconBank),
+                        color: Colors.grey[200],
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),

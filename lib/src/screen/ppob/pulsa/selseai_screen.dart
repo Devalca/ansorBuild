@@ -187,7 +187,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                             Container(
                                               child: Text(cF
                                                   .format(dotUang)
-                                                  .replaceAll("IDR", "Rp. ")),
+                                                  .replaceAll("IDR", "Rp")),
                                             ),
                                           ],
                                         ),
