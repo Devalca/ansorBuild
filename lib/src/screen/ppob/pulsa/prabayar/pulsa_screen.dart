@@ -204,8 +204,6 @@ class _PulsaPageState extends State<PulsaPage> {
                                     ],
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                Expanded(child: Container()),
                                 Expanded(
                                   child: Container(
                                     child: RaisedButton(
@@ -307,7 +305,7 @@ class _PulsaPageState extends State<PulsaPage> {
     // if (value.length == 4) {
     // } else
     if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Format Nomor Tidak Sesuai";
+      return "Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }

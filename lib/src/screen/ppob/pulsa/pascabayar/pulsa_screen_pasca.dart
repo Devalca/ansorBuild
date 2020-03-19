@@ -224,7 +224,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
     if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Format Nomor Tidak Sesuai";
+      return "Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }

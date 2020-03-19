@@ -27,7 +27,7 @@ class _BerandaPageState extends State<BerandaPage> {
   @override
   void initState() {
     super.initState();
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +89,10 @@ class _BerandaPageState extends State<BerandaPage> {
                               child: Text('Produk Daerah'),
                             ),
                             Container(
-                              child: Text('Lihat Semuanya', style: TextStyle(color: Colors.green),),
+                              child: Text(
+                                'Lihat Semuanya',
+                                style: TextStyle(color: Colors.green),
+                              ),
                             ),
                           ],
                         ),
@@ -110,7 +113,8 @@ class _BerandaPageState extends State<BerandaPage> {
                               child: Text('Produk National'),
                             ),
                             Container(
-                              child: Text('Lihat Semuanya', style: TextStyle(color: Colors.green)),
+                              child: Text('Lihat Semuanya',
+                                  style: TextStyle(color: Colors.green)),
                             ),
                           ],
                         ),
@@ -120,7 +124,11 @@ class _BerandaPageState extends State<BerandaPage> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0, ),
+                  padding: EdgeInsets.only(
+                    left: 16.0,
+                    right: 16.0,
+                    bottom: 16.0,
+                  ),
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -136,38 +144,40 @@ class _BerandaPageState extends State<BerandaPage> {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey[200]
-                          )
-                        ),
+                            border:
+                                Border.all(width: 1, color: Colors.grey[200])),
                         child: Column(
                           children: <Widget>[
                             Container(
-                              child: Image.asset('lib/src/assets/BANNER_ATAS.jpg'),
+                              child:
+                                  Image.asset('lib/src/assets/BANNER_ATAS.jpg'),
                             ),
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 12.0),
                               height: 50,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
                                     child: Text('Donasi Ansor'),
                                   ),
                                   Container(
-                                    height: 30,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Colors.green
-                                      ),
-                                      borderRadius: BorderRadius.circular(5.0)
-                                    ),
-                                    child: FlatButton(onPressed: null, child: Text('Donasi', style: TextStyle(color: Colors.white),))
-                                  )
+                                      height: 30,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          border: Border.all(
+                                              width: 1, color: Colors.green),
+                                          borderRadius:
+                                              BorderRadius.circular(5.0)),
+                                      child: FlatButton(
+                                          onPressed: null,
+                                          child: Text(
+                                            'Donasi',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )))
                                 ],
                               ),
                             )
@@ -220,7 +230,11 @@ class _BerandaPageState extends State<BerandaPage> {
                                 Container(
                                   child: Row(
                                     children: <Widget>[
-                                      Text(cF.format(snapshot.data.data[0].saldoAkhir).replaceAll("IDR", "Rp"),
+                                      Text(
+                                          cF
+                                              .format(snapshot
+                                                  .data.data[0].saldoAkhir)
+                                              .replaceAll("IDR", "Rp"),
                                           style: TextStyle(fontSize: 24.0)),
                                     ],
                                   ),
@@ -294,8 +308,8 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
-    Widget _buildIklanTwo() {
-      return InkWell(
+  Widget _buildIklanTwo() {
+    return InkWell(
       child: Container(
         child: IklanKecil(),
       ),
@@ -307,28 +321,28 @@ class _BerandaPageState extends State<BerandaPage> {
         width: double.infinity,
         height: 120.0,
         child: Container(
-            margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-            child: FutureBuilder<List>(
-                future: _berandaService.fetchIslamService(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data.length,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return _rowIslamService(snapshot.data[index]);
-                      },
-                    );
-                  }
-                  return Center(
-                    child: SizedBox(
-                        width: 40.0,
-                        height: 40.0,
-                        child: const CircularProgressIndicator()),
+          margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+          child: FutureBuilder<List>(
+              future: _berandaService.fetchIslamService(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    physics: ClampingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return _rowIslamService(snapshot.data[index]);
+                    },
                   );
-                }),
-              ));
+                }
+                return Center(
+                  child: SizedBox(
+                      width: 40.0,
+                      height: 40.0,
+                      child: const CircularProgressIndicator()),
+                );
+              }),
+        ));
   }
 
   Widget _buildServicePembayaran() {
@@ -336,28 +350,28 @@ class _BerandaPageState extends State<BerandaPage> {
         width: double.infinity,
         height: 120.0,
         child: Container(
-            margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
-            child: FutureBuilder<List>(
-                future: _berandaService.fetchPpobService(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data.length,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return _rowPpobService(snapshot.data[index]);
-                      },
-                    );
-                  }
-                  return Center(
-                    child: SizedBox(
-                        width: 40.0,
-                        height: 40.0,
-                        child: const CircularProgressIndicator()),
+          margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+          child: FutureBuilder<List>(
+              future: _berandaService.fetchPpobService(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    physics: ClampingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return _rowPpobService(snapshot.data[index]);
+                    },
                   );
-                }),
-              ));
+                }
+                return Center(
+                  child: SizedBox(
+                      width: 40.0,
+                      height: 40.0,
+                      child: const CircularProgressIndicator()),
+                );
+              }),
+        ));
   }
 
   Widget _rowIslamService(IslamService islamService) {
@@ -376,9 +390,9 @@ class _BerandaPageState extends State<BerandaPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              child:  Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: islamService.image),
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  child: islamService.image),
             ),
             Padding(
               padding: EdgeInsets.only(top: 6.0),
@@ -432,26 +446,54 @@ class _BerandaPageState extends State<BerandaPage> {
         children: <Widget>[
           SizedBox(
             height: 172.0,
-            child: FutureBuilder<List>(
-                future: _berandaService.fetchBarangService(),
+            child: FutureBuilder<KatalogService>(
+                future: _berandaService.getKatalog(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
-                      itemCount: snapshot.data.length,
+                      itemCount: snapshot.data.data.length,
                       padding: EdgeInsets.only(top: 12.0),
                       physics: ClampingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        return _rowBarangService(snapshot.data[index]);
-                      },
-                    );
-                  }
-                  return Center(
-                    child: SizedBox(
+                        if (snapshot.hasData) {
+                          return InkWell(
+                              onTap: () {
+                                print('INI BARANG');
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(right: 16.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.network(
+                                        snapshot.data.data[index].products[index].photos[1].toString(),
+                                        width: 132.0,
+                                        height: 132.0,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 8.0),
+                                    ),
+                                    Text(
+                                      snapshot.data.data[index].products[index].namaProduk,
+                                    ),
+                                  ],
+                                ),
+                              ));
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+                        return Center(
+                        child: SizedBox(
                         width: 40.0,
                         height: 40.0,
                         child: const CircularProgressIndicator()),
                   );
+                      },
+                    );
+                  }
                 }),
           ),
         ],
@@ -487,5 +529,3 @@ class _BerandaPageState extends State<BerandaPage> {
         ));
   }
 }
-
-
