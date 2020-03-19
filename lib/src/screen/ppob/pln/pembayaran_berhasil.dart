@@ -129,7 +129,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(token(snapshot.data.noToken), style: new TextStyle(fontSize: 14.0)),
+                                            child: Text(snapshot.data.noToken, style: new TextStyle(fontSize: 14.0)),
                                           ),
                                           Container(
                                             child: Text("Salin", style: new TextStyle(fontSize: 12.0, color: Colors.green)),
