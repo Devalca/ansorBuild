@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
@@ -28,7 +29,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
   String url = "";
 
   Future<Album> futureAlbum;
-  String text_to_show = "";
 
   TextEditingController _namaController = TextEditingController();
 
@@ -79,6 +79,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                 future: fetchAlbum(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    DateTime periode = snapshot.data.createdAt;
                     if(snapshot.data == null) {
                       return Text("Tidak ada Data");
                     }else{
@@ -133,7 +134,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Periode"),
                                           ),
                                           Container(
-                                            child: Text(DateFormat('dd MMMM yyyy').format(snapshot.data.createdAt)),
+                                            child: Text(tanggal(periode)),
                                           ),
                                         ],
                                       ),
@@ -378,7 +379,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                     return Text("${snapshot.error}");
                   }
 
-                  return CircularProgressIndicator();
+                  return Center(child:CircularProgressIndicator());
                 },
               ),
             ]

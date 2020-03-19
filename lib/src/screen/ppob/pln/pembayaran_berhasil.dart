@@ -2,6 +2,7 @@ import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 
@@ -64,10 +65,11 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                 future: fetchDetail(),
                 builder: (context, snapshot) {
 
-                  if (snapshot.hasData && widget.status == "prabayar") {
+                  if (snapshot.hasData) {
+                    DateTime periode = snapshot.data.createdAt;
                     if(snapshot.data == null) {
                       return Text("Tidak ada Data");
-                    }else{
+                    }else if(widget.status == "prabayar"){
                       return(
                         Container(
                           child: Column(
@@ -90,7 +92,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               
                               Container( height: 15 ),
                               
-                              Text(DateFormat('dd MMMM yyyy').format(snapshot.data.createdAt), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                              Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
 
                               Container( height: 25 ),
@@ -131,7 +133,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 15 ),
 
-                              Text("Detail", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
 
                               Container( height: 10 ),
 
@@ -161,7 +163,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Token Listrik Rp. " + snapshot.data.nominal.toString(), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -245,7 +247,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Total Tagihan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Rp." + snapshot.data.total.toString(), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -282,11 +284,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                           )
                         )
                       );
-                    }
-                  }else if(snapshot.hasData && widget.status == "pascabayar"){
-                    if(snapshot.data == null) {
-                      return Text("Tidak ada Data");
-                    }else{
+                    }else if(widget.status == "pascabayar"){
                       return(
                         Container(
                           child: Column(
@@ -314,7 +312,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 25 ),
 
-                              Text("Detail", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
 
                               Container( height: 10 ),
 
@@ -469,7 +467,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                   }else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
-                  return CircularProgressIndicator();
+                  return Center(child:CircularProgressIndicator());
                 }
               )
             ]
