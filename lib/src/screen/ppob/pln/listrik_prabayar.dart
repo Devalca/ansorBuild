@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik_pembayaran.dart';
+import 'package:intl/intl.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 final _formPrabayar = GlobalKey<FormState>();
@@ -174,8 +175,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
-                              new Text ("Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("20000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(21500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -207,8 +208,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
-                              new Text ("Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("50000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(51500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -248,8 +249,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
-                              new Text ("Rp. 101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("100000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(101500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -281,8 +282,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
-                              new Text ("Rp. 251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("250000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(251500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -322,8 +323,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                              new Text ("Rp. 501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("500000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(501500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -355,8 +356,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
-                              new Text ("Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("1000000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(1001500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -385,8 +386,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           children: <Widget>[
                             new Text ("Total", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             press1 || press2 || press3 || press4 || press5 || press6 ? 
-                            new Text ("Rp. " + total, textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
-                            : new Text ("Rp. 0", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
+                            new Text (NumberFormat.simpleCurrency(locale: 'id').format(int.parse(total)), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
+                            : new Text (NumberFormat.simpleCurrency(locale: 'id').format(0), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
