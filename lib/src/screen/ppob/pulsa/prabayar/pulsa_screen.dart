@@ -206,6 +206,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                 ),
                                 Expanded(
                                   child: Container(
+                                    width: 100.0,
                                     child: RaisedButton(
                                       color: Colors.green,
                                       onPressed: _sendToServer,

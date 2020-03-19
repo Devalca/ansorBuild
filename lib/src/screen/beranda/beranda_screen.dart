@@ -457,43 +457,20 @@ class _BerandaPageState extends State<BerandaPage> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         if (snapshot.hasData) {
-                          return InkWell(
-                              onTap: () {
-                                print('INI BARANG');
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(right: 16.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.network(
-                                        snapshot.data.data[index].products[index].photos[1].toString(),
-                                        width: 132.0,
-                                        height: 132.0,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 8.0),
-                                    ),
-                                    Text(
-                                      snapshot.data.data[index].products[index].namaProduk,
-                                    ),
-                                  ],
-                                ),
-                              ));
+                          _rowBarangService(snapshot.data.data[index]);
                         } else if (snapshot.hasError) {
                           return Text("${snapshot.error}");
                         }
-                        return Center(
-                        child: SizedBox(
+                        return CircularProgressIndicator();
+                      },
+                    );
+                  }
+                  return Center(
+                    child: SizedBox(
                         width: 40.0,
                         height: 40.0,
                         child: const CircularProgressIndicator()),
                   );
-                      },
-                    );
-                  }
                 }),
           ),
         ],
@@ -501,7 +478,7 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
-  Widget _rowBarangService(BarangService barangService) {
+  Widget _rowBarangService(Katalog katalog) {
     return InkWell(
         onTap: () {
           print('INI BARANG');
@@ -512,8 +489,8 @@ class _BerandaPageState extends State<BerandaPage> {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: Image.asset(
-                  barangService.image,
+                child: Container(
+                  color: Colors.green,
                   width: 132.0,
                   height: 132.0,
                 ),
@@ -522,7 +499,7 @@ class _BerandaPageState extends State<BerandaPage> {
                 padding: EdgeInsets.only(top: 8.0),
               ),
               Text(
-                barangService.title,
+                katalog.products[0].namaProduk,
               ),
             ],
           ),
