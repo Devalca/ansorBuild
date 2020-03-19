@@ -89,280 +89,282 @@ class _DetailPageState extends State<DetailPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(
-        color: Colors.white,
-        child: FutureBuilder<Album>(
-          future: futureAlbum,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              dateTime = snapshot.data.data[0].periode;
-              var formatterDate = DateFormat('MMMM yyyy').format(dateTime);
-              return Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            child: Row(
+      body: SingleChildScrollView(
+              child: Container(
+          color: Colors.white,
+          child: FutureBuilder<Album>(
+            future: futureAlbum,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                dateTime = snapshot.data.data[0].periode;
+                var formatterDate = DateFormat('MMMM yyyy').format(dateTime);
+                return Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 12.0),
+                                      height: 90.0,
+                                      width: 90.0,
+                                      child:
+                                          Image.asset("lib/src/assets/PULSA.png"),
+                                    ),
+                                  Container(
+                                    padding: const EdgeInsets.only(top: 5.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text('Pulsa Pasca Bayar'),
+                                        Text('Nomor ' +
+                                            snapshot.data.data[0].noHp),
+                                        Text(snapshot.data.data[0].provider)
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 12.0),
-                                    height: 90.0,
-                                    width: 90.0,
-                                    child:
-                                        Image.asset("lib/src/assets/PULSA.png"),
-                                  ),
-                                Container(
-                                  padding: const EdgeInsets.only(top: 5.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text('Pulsa Pasca Bayar'),
-                                      Text('Nomor ' +
-                                          snapshot.data.data[0].noHp),
-                                      Text(snapshot.data.data[0].provider)
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.only(left: 16.0),
-                                child: Text('Detail Pembayaran'),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.all(16.0),
-                                padding: const EdgeInsets.all(16.0),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1.0, color: Colors.grey[200]),
+                                  padding: EdgeInsets.only(left: 16.0),
+                                  child: Text('Detail Pembayaran'),
                                 ),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          padding:
-                                              EdgeInsets.only(bottom: 16.0),
-                                          child: Text('Periode'),
-                                        ),
-                                        Container(
-                                          child: Text(tanggal(dateTime).toString()),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          padding:
-                                              EdgeInsets.only(bottom: 16.0),
-                                          child: Text('Total Tagihan'),
-                                        ),
-                                        Container(
-                                            child: Text("Rp" +
-                                                snapshot.data.data[0].totalHarga
-                                                    .toString())),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          padding:
-                                              EdgeInsets.only(bottom: 16.0),
-                                          child: Text('Biaya Pelayanan'),
-                                        ),
-                                        Container(
-                                          // snapshot.data.data[0].adminFee.toString()
-                                          child: Text("Rp0"),
-                                        ),
-                                      ],
-                                    ),
-                                    Divider(),
-                                    Container(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: Row(
+                                Container(
+                                  margin: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.all(16.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1.0, color: Colors.grey[200]),
+                                  ),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                            child: Text('Total'),
+                                            padding:
+                                                EdgeInsets.only(bottom: 16.0),
+                                            child: Text('Periode'),
                                           ),
                                           Container(
-                                            child: Text("Rp" +
-                                                snapshot.data.data[0].totalHarga
-                                                    .toString()),
+                                            child: Text(tanggal(dateTime).toString()),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          // Container ke dua
-
-                          Container(
-                            margin: const EdgeInsets.all(16.0),
-                            padding: const EdgeInsets.all(16.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              border: Border.all(
-                                  width: 1.0, color: Colors.grey[200]),
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text('Un1ty'),
-                                    ),
-                                    Container(
-                                      child: Icon(
-                                        Icons.more_vert,
-                                        color: Colors.green,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Row(
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
                                             padding:
-                                                EdgeInsets.only(right: 10.0),
-                                            child: Icon(
-                                              Icons.account_balance_wallet,
-                                              color: Colors.green,
-                                            ),
+                                                EdgeInsets.only(bottom: 16.0),
+                                            child: Text('Total Tagihan'),
                                           ),
                                           Container(
-                                            child: Text(
-                                              'Saldo Un1ty',
-                                              style: TextStyle(
-                                                  color: Colors.green),
-                                            ),
-                                          )
+                                              child: Text("Rp" +
+                                                  snapshot.data.data[0].totalHarga
+                                                      .toString())),
                                         ],
                                       ),
-                                    ),
-                                    Container(
-                                        child: FutureBuilder<Wallet>(
-                                      future: _apiService.getSaldo(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return Text("Rp" +
-                                              snapshot.data.data[0].saldoAkhir
-                                                  .toString());
-                                        } else if (snapshot.hasError) {
-                                          return Text("${snapshot.error}");
-                                        }
-                                        return CircularProgressIndicator();
-                                      },
-                                    )),
-                                  ],
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Container(
+                                            padding:
+                                                EdgeInsets.only(bottom: 16.0),
+                                            child: Text('Biaya Pelayanan'),
+                                          ),
+                                          Container(
+                                            // snapshot.data.data[0].adminFee.toString()
+                                            child: Text("Rp0"),
+                                          ),
+                                        ],
+                                      ),
+                                      Divider(),
+                                      Container(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text('Total'),
+                                            ),
+                                            Container(
+                                              child: Text("Rp" +
+                                                  snapshot.data.data[0].totalHarga
+                                                      .toString()),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
+                            ),
+
+                            // Container ke dua
+
+                            Container(
+                              margin: const EdgeInsets.all(16.0),
+                              padding: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                border: Border.all(
+                                    width: 1.0, color: Colors.grey[200]),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text('Un1ty'),
+                                      ),
+                                      Container(
+                                        child: Icon(
+                                          Icons.more_vert,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Divider(),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 10.0),
+                                              child: Icon(
+                                                Icons.account_balance_wallet,
+                                                color: Colors.green,
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                'Saldo Un1ty',
+                                                style: TextStyle(
+                                                    color: Colors.green),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                          child: FutureBuilder<Wallet>(
+                                        future: _apiService.getSaldo(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return Text("Rp" +
+                                                snapshot.data.data[0].saldoAkhir
+                                                    .toString());
+                                          } else if (snapshot.hasError) {
+                                            return Text("${snapshot.error}");
+                                          }
+                                          return CircularProgressIndicator();
+                                        },
+                                      )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 90.0,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Divider(
+                            color: Colors.black,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: RaisedButton(
+                              color: Colors.green,
+                              onPressed: () {
+                                _showLoadingDialog(context);
+                                // setState(() => _isLoading = true);
+                                int transactionId = int.parse(_id.toString());
+                                String nomorHp =
+                                    snapshot.data.data[0].noHp.toString();
+                                int nominal = int.parse(
+                                    snapshot.data.data[0].nominal.toString());
+                                Post post = Post(
+                                    transactionId: transactionId,
+                                    noHp: nomorHp,
+                                    nominal: nominal,
+                                    userId: 1,
+                                    walletId: 1);
+                                _apiService
+                                    .createPayPasca(post)
+                                    .then((response) async {
+                                  if (response.statusCode == 200) {
+                                    Map blok = jsonDecode(response.body);
+                                    var userUid = blok['id'].toString();
+                                    var koId = userUid;
+                                    await new Future.delayed(
+                                        const Duration(seconds: 5));
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SesPulsaPage(koId)));
+                                  } else {
+                                    print(response.statusCode);
+                                  }
+                                });
+                              },
+                              child: Text(
+                                'BAYAR',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      height: 90.0,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Divider(
-                          color: Colors.black,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: RaisedButton(
-                            color: Colors.green,
-                            onPressed: () {
-                              _showLoadingDialog(context);
-                              // setState(() => _isLoading = true);
-                              int transactionId = int.parse(_id.toString());
-                              String nomorHp =
-                                  snapshot.data.data[0].noHp.toString();
-                              int nominal = int.parse(
-                                  snapshot.data.data[0].nominal.toString());
-                              Post post = Post(
-                                  transactionId: transactionId,
-                                  noHp: nomorHp,
-                                  nominal: nominal,
-                                  userId: 1,
-                                  walletId: 1);
-                              _apiService
-                                  .createPayPasca(post)
-                                  .then((response) async {
-                                if (response.statusCode == 200) {
-                                  Map blok = jsonDecode(response.body);
-                                  var userUid = blok['id'].toString();
-                                  var koId = userUid;
-                                  await new Future.delayed(
-                                      const Duration(seconds: 5));
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SesPulsaPage(koId)));
-                                } else {
-                                  print(response.statusCode);
-                                }
-                              });
-                            },
-                            child: Text(
-                              'BAYAR',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    _isLoading
-                        ? Stack(
-                            children: <Widget>[
-                              Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ],
-                          )
-                        : Container(),
-                  ],
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return CircularProgressIndicator();
-          },
+                      _isLoading
+                          ? Stack(
+                              children: <Widget>[
+                                Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              return CircularProgressIndicator();
+            },
+          ),
         ),
       ),
     );

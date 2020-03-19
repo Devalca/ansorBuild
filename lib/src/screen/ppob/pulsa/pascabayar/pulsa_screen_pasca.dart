@@ -93,7 +93,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         children: <Widget>[
                           Expanded(
                               child: Container(child: _buildTextFieldNomor())),
-                          Expanded(child: Container()),
                           Expanded(
                               child: Container(
                             child: Container(
