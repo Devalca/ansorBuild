@@ -23,6 +23,7 @@ class _DetailPageState extends State<DetailPage> {
   Future<Album> futureAlbum;
   bool _isLoading = false;
   ApiService _apiService = ApiService();
+  final cF = NumberFormat.currency(locale: 'ID');
   String _id = "";
 
   @override
@@ -174,9 +175,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Tagihan'),
                                           ),
                                           Container(
-                                              child: Text("Rp" +
-                                                  snapshot.data.data[0].totalHarga
-                                                      .toString())),
+                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp"))),
                                         ],
                                       ),
                                       Row(
@@ -205,9 +204,7 @@ class _DetailPageState extends State<DetailPage> {
                                               child: Text('Total'),
                                             ),
                                             Container(
-                                              child: Text("Rp" +
-                                                  snapshot.data.data[0].totalHarga
-                                                      .toString()),
+                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -272,13 +269,11 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ),
                                       Container(
-                                          child: FutureBuilder<Wallet>(
+                                        child: FutureBuilder<Wallet>(
                                         future: _apiService.getSaldo(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
-                                            return Text("Rp" +
-                                                snapshot.data.data[0].saldoAkhir
-                                                    .toString());
+                                            return Text(cF.format(snapshot.data.data[0].saldoAkhir).replaceAll("IDR", "Rp"));
                                           } else if (snapshot.hasError) {
                                             return Text("${snapshot.error}");
                                           }

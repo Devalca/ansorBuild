@@ -11,6 +11,7 @@ import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class BerandaPage extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class BerandaPage extends StatefulWidget {
 
 class _BerandaPageState extends State<BerandaPage> {
   ApiService _apiService = ApiService();
+  final cF = NumberFormat.currency(locale: 'ID');
   List<PpobService> _ppobServiceList = [];
   List<IslamService> _islamServiceList = [];
 
@@ -239,13 +241,8 @@ class _BerandaPageState extends State<BerandaPage> {
                                 Container(
                                   child: Row(
                                     children: <Widget>[
-                                      Text('Rp. ',
+                                      Text(cF.format(snapshot.data.data[0].saldoAkhir).replaceAll("IDR", "Rp"),
                                           style: TextStyle(fontSize: 24.0)),
-                                      Text(
-                                        snapshot.data.data[0].saldoAkhir
-                                            .toString(),
-                                        style: TextStyle(fontSize: 24.0),
-                                      ),
                                     ],
                                   ),
                                 ),

@@ -79,7 +79,7 @@ class _LandingPageState extends State<LandingPage> {
             Icons.home,
             color: Colors.grey,
           ),
-          title: Text("Home", style: TextStyle(color: Colors.black)),
+          title: Text("Beranda", style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
           activeIcon: Icon(
@@ -125,7 +125,7 @@ class _LandingPageState extends State<LandingPage> {
             Icons.assignment,
             color: Colors.grey,
           ),
-          title: Text('Profile', style: TextStyle(color: Colors.black)),
+          title: Text('Profil', style: TextStyle(color: Colors.black)),
         ),
       ],
     );

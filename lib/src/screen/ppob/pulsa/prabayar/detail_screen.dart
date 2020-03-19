@@ -8,16 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import '../selseai_screen.dart';
-class WalletGenks {
-  final int walletId;
-  final int saldoAkhir;
-
-  WalletGenks({this.walletId, this.saldoAkhir});
-
-  factory WalletGenks.fromJson(Map<String, dynamic> json) {
-    return WalletGenks(saldoAkhir: json['data'][0]['saldo_akhir']);
-  }
-}
 
 class DetailPage extends StatefulWidget {
   final String koId;
@@ -30,7 +20,7 @@ class DetailPage extends StatefulWidget {
 
 class _DetailPageState extends State<DetailPage> {
   Future<Album> futureAlbum;
-  Future<WalletGenks> futureWallet;
+  Future<Wallet> futureWallet;
   bool _isLoading = false;
   ApiService _apiService = ApiService();
   String _id = "";
@@ -41,17 +31,7 @@ class _DetailPageState extends State<DetailPage> {
     super.initState();
     _apiService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
-    futureWallet = getSaldo();
-  }
-
-  Future<WalletGenks> getSaldo() async {
-  String url = 'http://192.168.10.11:3000/users/wallet/1';
-  final response = await http.get(url, headers: {"Accept": "application/json"});
-  if (response.statusCode == 200) {
-    return WalletGenks.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load post');
-  }
+    futureWallet = _apiService.getSaldo();
   }
 
   Future<Album> fetchAlbum() async {
@@ -145,9 +125,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Harga'),
                                           ),
                                           Container(
-                                              child: Text("Rp" +
-                                                  snapshot.data.data[0].totalHarga
-                                                      .toString())),
+                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp"))),
                                         ],
                                       ),
                                       Row(
@@ -176,9 +154,7 @@ class _DetailPageState extends State<DetailPage> {
                                               child: Text('Total'),
                                             ),
                                             Container(
-                                              child: Text("Rp" +
-                                                  snapshot.data.data[0].totalHarga
-                                                      .toString()),
+                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -242,34 +218,19 @@ class _DetailPageState extends State<DetailPage> {
                                           ],
                                         ),
                                       ), 
-                                       Container(
-                                      child: FutureBuilder<WalletGenks>(
-                                      future: getSaldo(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return Text("Rp" +
-                                              snapshot.data.saldoAkhir
-                                                  .toString());
-                                        } else if (snapshot.hasError) {
-                                          return Text("${snapshot.error}");
-                                        }
-                                        return CircularProgressIndicator();
-                                      },
-                                    )),
-                                      // Container(
-                                      //   child: FutureBuilder<Wallet>(
-                                      //   future: futureWallet,
-                                      //   builder: (context, snapshot) {
-                                      //     int dotUang =  snapshot.data.data[0].saldoAkhir;
-                                      //     if (snapshot.hasData) {
-                                      //       return Text(cF.format(dotUang).replaceAll("IDR", "Rp. "));
-                                      //     } else if (snapshot.hasError) {
-                                      //       print("${snapshot.error}");
-                                      //       return CircularProgressIndicator();
-                                      //     }
-                                      //     return CircularProgressIndicator();
-                                      //   },
-                                      // )),
+                                      Container(
+                                        child: FutureBuilder<Wallet>(
+                                        future: futureWallet,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            return Text(cF.format(snapshot.data.data[0].saldoAkhir).replaceAll("IDR", "Rp"));
+                                          } else if (snapshot.hasError) {
+                                            print("${snapshot.error}");
+                                            return CircularProgressIndicator();
+                                          }
+                                          return CircularProgressIndicator();
+                                        },
+                                      )),
                                     ],
                                   ),
                                 ],
