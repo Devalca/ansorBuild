@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import 'detail_screen.dart';
 
@@ -18,12 +20,11 @@ class _PulsaPageState extends State<PulsaPage> {
   bool _validate = true;
   String inputNomor, inputNominal, hargaNominal;
   int _nominalIndex = -1;
+  final cF = NumberFormat.currency(locale: 'ID');
   var mobi = "";
   var idProv = "";
   var logoProv = "";
   TextEditingController _controllerNomor = TextEditingController();
-
-
 
   @override
   void initState() {
@@ -39,191 +40,198 @@ class _PulsaPageState extends State<PulsaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Form(
-          key: _key,
-          autovalidate: _validate,
-          child: SingleChildScrollView(
-            child: formInputPulsa(),
-          )),
+      body: Container(
+        child:
+            Form(key: _key, autovalidate: _validate, child: formInputPulsa()),
+      ),
     );
   }
 
   Widget formInputPulsa() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
-      child: FutureBuilder<ProviderCall>(
-          future: _apiService.getProvider(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Datum> providers = snapshot.data.data;
-              return Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Container(
-                              margin: EdgeInsets.only(top: 16.0),
-                              child: Text('Nomor HandPhone $mobi')),
-                          Stack(
-                            children: <Widget>[
-                              Positioned(
-                                child: Container(
-                                  child: TextFormField(
-                                      inputFormatters: [
-                                        LengthLimitingTextInputFormatter(12)
-                                      ],
-                                      controller: _controllerNomor,
-                                      onChanged: (String value) async {
-                                        for (var i = 0;
-                                            i < snapshot.data.data.length;
-                                            i++) {
-                                          if (value.length == 4) {
-                                            if (value ==
-                                                providers[i].kodeProvider) {
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: FutureBuilder<ProviderCall>(
+            future: _apiService.getProvider(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Datum> providers = snapshot.data.data;
+                return Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Container(
+                                margin: EdgeInsets.only(top: 16.0),
+                                child: Text('Nomor Handphone')),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                      child: Container(
+                                    child: TextFormField(
+                                        inputFormatters: [
+                                          LengthLimitingTextInputFormatter(12)
+                                        ],
+                                        controller: _controllerNomor,
+                                        onChanged: (String value) async {
+                                          for (var i = 0;
+                                              i < snapshot.data.data.length;
+                                              i++) {
+                                            if (value.length == 4) {
+                                              if (value ==
+                                                  providers[i].kodeProvider) {
+                                                setState(() {
+                                                  mobi =
+                                                      providers[i].namaProvider;
+                                                  idProv = providers[i]
+                                                      .operatorId
+                                                      .toString();
+                                                  logoProv = providers[i]
+                                                      .file
+                                                      .toString();
+                                                });
+                                                print("LOGO PROVIDER: " +
+                                                    logoProv);
+                                              }
+                                            } else if (value.length == 3) {
                                               setState(() {
-                                                mobi =
-                                                    providers[i].namaProvider;
-                                                idProv = providers[i]
-                                                    .operatorId
-                                                    .toString();
-                                                logoProv = providers[i]
-                                                    .file
-                                                    .toString();
+                                                mobi = "";
+                                                logoProv = "";
                                               });
                                             }
-                                          } else if (value.length == 3) {
-                                            setState(() {
-                                              mobi = "";
-                                              logoProv = "";
-                                            });
+                                          }
+                                        },
+                                        keyboardType: TextInputType.phone,
+                                        validator: validateNomor,
+                                        onSaved: (String val) {
+                                          inputNomor = val;
+                                        }),
+                                  )),
+                                  Expanded(
+                                      child: Container(
+                                    width: 50.0,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                            margin:
+                                                EdgeInsets.only(right: 12.0),
+                                            child: Container(
+                                              child: Image.network(logoProv),
+                                            )),
+                                        Container(
+                                          margin: EdgeInsets.only(right: 12.0),
+                                          height: 30.0,
+                                          width: 1.0,
+                                          color: Colors.black,
+                                        ),
+                                        Container(child: Icon(Icons.contacts))
+                                      ],
+                                    ),
+                                  ))
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 450.0,
+                              padding: EdgeInsets.only(top: 15.0),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    FutureBuilder<NominalList>(
+                                      future: _apiService.getNominal(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.done) {
+                                          for (var i = 0;
+                                              i < snapshot.data.data.length;
+                                              i++) {
+                                            if (idProv == "") {
+                                              return Container();
+                                            } else if (idProv ==
+                                                snapshot.data.data[i].operatorId
+                                                    .toString()) {
+                                              List<Listharga> hargaList =
+                                                  snapshot
+                                                      .data.data[i].listharga;
+                                              return Container(
+                                                height: 430.0,
+                                                child: _btnListView(hargaList),
+                                              );
+                                            }
                                           }
                                         }
+                                        return Container();
                                       },
-                                      keyboardType: TextInputType.phone,
-                                      validator: validateNomor,
-                                      onSaved: (String val) {
-                                        inputNomor = val;
-                                      }),
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(240, 12, 0, 16),
-                                child: Container(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    ),
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Column(
+                          children: <Widget>[
+                            Divider(
+                              height: 12,
+                              color: Colors.black,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Container(
-                                          margin: EdgeInsets.only(right: 12.0),
-                                          child: Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            child: Image.network(logoProv),
-                                          )),
-                                      Container(
-                                        margin: EdgeInsets.only(right: 12.0),
-                                        height: 30.0,
-                                        width: 1.0,
-                                        color: Colors.black,
+                                        child: Text('Total'),
                                       ),
                                       Container(
-                                        child:
-                                            Icon(Icons.perm_contact_calendar),
+                                        child: Text(hargaNominal == null
+                                            ? ""
+                                            : hargaNominal),
                                       )
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 450.0,
-                      padding: EdgeInsets.only(top: 15.0),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            FutureBuilder<NominalList>(
-                              future: _apiService.getNominal(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  for (var i = 0;
-                                      i < snapshot.data.data.length;
-                                      i++) {
-                                    if (idProv == "") {
-                                      return Container();
-                                    } else if (idProv ==
-                                        snapshot.data.data[i].operatorId
-                                            .toString()) {
-                                      List<Listharga> hargaList =
-                                          snapshot.data.data[i].listharga;
-                                      return Container(
-                                        height: 430.0,
-                                        child: _btnListView(hargaList),
-                                      );
-                                    }
-                                  }
-                                }
-                                return Container();
-                              },
-                            ),
-                          ]),
-                    ),
-                    Container(
-                      height: 100.0,
-                    ),
-                    Divider(
-                      height: 12,
-                      color: Colors.black,
-                    ),
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Text('Total'),
-                                ),
-                                Row(children: <Widget>[
-                                  Text('Rp'),
-                                  Text(
-                                      hargaNominal == null ? "" : hargaNominal),
-                                ])
+                                Expanded(child: Container()),
+                                Expanded(child: Container()),
+                                Expanded(
+                                  child: Container(
+                                    child: RaisedButton(
+                                      color: Colors.green,
+                                      onPressed: _sendToServer,
+                                      child: Text(
+                                        'BELI',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(left: 100.0),
-                              child: RaisedButton(
-                                color: Colors.green,
-                                onPressed: _sendToServer,
-                                child: Text(
-                                  'BELI',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return Container();
-          }),
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              return Container();
+            }),
+      ),
     );
   }
 
@@ -242,6 +250,7 @@ class _PulsaPageState extends State<PulsaPage> {
           bool isSelected = _nominalIndex == index;
           int a = hargaList[index].nominalPulsa;
           int b = 1500;
+          var jmh = a + b;
           return GestureDetector(
             child: Container(
               padding: EdgeInsets.all(12.0),
@@ -262,13 +271,13 @@ class _PulsaPageState extends State<PulsaPage> {
                     Text(
                       hargaList[index].nominalPulsa.toString(),
                       style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 20,
                           color: isSelected ? Colors.green : null),
                     ),
                     Text(
-                      "Harga Rp.${a + b}",
+                      cF.format(jmh).replaceAll("IDR", "Rp"),
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                       ),
                     )
                   ],
@@ -282,7 +291,7 @@ class _PulsaPageState extends State<PulsaPage> {
               });
               if (_nominalIndex == index) {
                 inputNominal = hargaList[index].nominalPulsa.toString();
-                hargaNominal = 'Rp.${a + b}';
+                hargaNominal = cF.format(jmh).replaceAll("IDR", "Rp");
                 print(index);
                 print(_nominalIndex);
                 print(inputNominal);
@@ -297,8 +306,8 @@ class _PulsaPageState extends State<PulsaPage> {
     RegExp regExp = RegExp(patttern);
     // if (value.length == 4) {
     // } else
-    if (value.length != 12) {
-      return "Harus 12";
+    if (value.length != 11 && value.length != 12 && value.length != 13) {
+      return "Format Nomor Tidak Sesuai";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }
@@ -317,6 +326,7 @@ class _PulsaPageState extends State<PulsaPage> {
   }
 
   _sendToServer() {
+    LoadingServices.loadingDialog(context);
     if (_key.currentState.validate()) {
       _key.currentState.save();
       // setState(() => _isLoading = true);
@@ -341,6 +351,7 @@ class _PulsaPageState extends State<PulsaPage> {
             print("INI KOID : " + koId);
             print("INI RESPONSE :" + response.body);
             print("NI PROVIDER : " + namaProv);
+            await new Future.delayed(const Duration(seconds: 5));
             Navigator.push(
                 context,
                 new MaterialPageRoute(

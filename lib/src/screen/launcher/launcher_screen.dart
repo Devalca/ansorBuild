@@ -28,7 +28,7 @@ class _LauncherPageState extends State<LauncherPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Lapak Sahabat')
+        child: Image.asset('lib/src/assets/lapak_sahabat.png', height: 200, width: 200,)
         ),
       );
   }
