@@ -250,6 +250,7 @@ class _PulsaPageState extends State<PulsaPage> {
           bool isSelected = _nominalIndex == index;
           int a = hargaList[index].nominalPulsa;
           int b = 1500;
+          var jmh = a + b;
           return GestureDetector(
             child: Container(
               padding: EdgeInsets.all(12.0),
@@ -274,7 +275,7 @@ class _PulsaPageState extends State<PulsaPage> {
                           color: isSelected ? Colors.green : null),
                     ),
                     Text(
-                      "Rp.${a + b}",
+                      cF.format(jmh).replaceAll("IDR", "Rp"),
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -290,16 +291,10 @@ class _PulsaPageState extends State<PulsaPage> {
               });
               if (_nominalIndex == index) {
                 inputNominal = hargaList[index].nominalPulsa.toString();
-                hargaNominal = '${a + b}';
+                hargaNominal = cF.format(jmh).replaceAll("IDR", "Rp");
                 print(index);
                 print(_nominalIndex);
                 print(inputNominal);
-                print("INI DOT FORMAT : " +
-                    cF
-                        .format(hargaNominal)
-                        .replaceAll("IDR", "Rp. ")
-                        .toString());
-                print("INI LOGO PROVIDER : " + logoProv.toString());
               }
             },
           );
