@@ -6,8 +6,6 @@ import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 
-// final GlobalKey<ScaffoldState> _notifLogin = GlobalKey<ScaffoldState>();
-
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -39,7 +37,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _notifLogin,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -50,14 +47,10 @@ class _LoginState extends State<Login> {
 
               Center(
                 child: Container(
-                  width: 100.0,
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    border: Border.all(color: Colors.grey[300], width: 1)
-                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 12.0),
+                  height: 80.0,
+                  width: 190.0,
+                  child: Image.asset('lib/src/assets/lapakSahabat.png')
                 ),
               ),
 
@@ -164,12 +157,6 @@ class _LoginState extends State<Login> {
                           Map data = jsonDecode(response.body);
                           message = data["message"].toString();
 
-                          // _scaffoldState.currentState.showSnackBar(
-                          //   SnackBar(
-                          //     content: Text(message)
-                          //   )
-                          // );
-
                           showDialog(context: context, builder: (context){
                             return AlertDialog(
                               content: Text("No HP atau Password anda Salah!!!"),
@@ -218,16 +205,20 @@ class _LoginState extends State<Login> {
                         Navigator.push(context, new MaterialPageRoute(builder: (__) => new RegisterPage()));
                       },
                       child: Container(
-                        child: Text(
-                          "Belum Punya Akun? Daftar", 
-                          style: new TextStyle(fontSize: 12.0, color: Colors.black), 
-                          textAlign: TextAlign.center
+                        child: RichText(
+                          text: TextSpan(
+                            text: "Belum Punya Akun?",
+                            style: new TextStyle(fontSize: 12.0, color: Colors.black), 
+                            children: <TextSpan>[
+                              TextSpan(text: " Daftar", style: TextStyle(fontSize: 12.0, color: Colors.green)),
+                            ]
+                          ),
                         )
                       ),
                     )
                   ]
                 )
-              )
+              ),
             ]
           )
         ),

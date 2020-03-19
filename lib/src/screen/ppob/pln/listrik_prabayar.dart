@@ -32,7 +32,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
   @override
   Widget build(BuildContext context) {
     var _onPressed;
-    if (press1 || press2 || press3 || press4 || press5 || press6){
+    if (press1 || press2 || press3 || press4 || press5 || press6 == true){
       _onPressed = (){
         setState(() => _isLoading = true);
 
@@ -43,6 +43,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
           });
         }else{
           String noMeter = _noMeterController.text.toString();
+          // String nominal = this.nominal;
           // String nominal = _nominalController.text.toString();
 
           PostPrabayar prabayar = PostPrabayar(noMeter: noMeter, nominal: nominal, userId: 1, walletId: 1);
@@ -116,7 +117,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Contoh: 123456789',
-                    errorText: _fieldNoMeter == null || _fieldNoMeter ? "Kolom Nomor Meter harus diisi" : null,
+                    errorText: _fieldNoMeter == null || _fieldNoMeter ? null : "Kolom Nomor Meter harus diisi",
                   ),
                   style: new TextStyle(fontSize:  14.0),
                   onChanged: (value) {
@@ -167,14 +168,16 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 57,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
-                            new Text ("Harga Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-                          ],
+                        child: SingleChildScrollView(
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
+                              new Text ("Rp. 21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                            ],
+                          )
                         )
                       )
                     ),
@@ -198,14 +201,16 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 57,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
-                            new Text ("Harga Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-                          ],
+                        child: SingleChildScrollView(
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
+                              new Text ("Rp. 51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                            ],
+                          )
                         )
                       )
                     ),
@@ -237,14 +242,16 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 57,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
-                            new Text ("Harga Rp. 101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-                          ],
+                        child: SingleChildScrollView(
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
+                              new Text ("Rp. 101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                            ],
+                          )
                         )
                       )
                     ),
@@ -268,14 +275,16 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 57,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
-                            new Text ("Harga Rp. 251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-                          ],
+                        child: SingleChildScrollView(
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
+                              new Text ("Rp. 251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                            ],
+                          )
                         )
                       )
                     ),
@@ -307,14 +316,16 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 57,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                            new Text ("Harga Rp. 501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-                          ],
+                        child: SingleChildScrollView(
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
+                              new Text ("Rp. 501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                            ],
+                          )
                         )
                       )
                     ),
@@ -338,14 +349,16 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 57,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
-                            new Text ("Harga Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
-                          ],
+                        child: SingleChildScrollView(
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
+                              new Text ("Rp. 1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                            ],
+                          )
                         )
                       )
                     ),
@@ -374,7 +387,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             press1 || press2 || press3 || press4 || press5 || press6 ? 
                             new Text ("Rp. " + total, textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
                             : new Text ("Rp. 0", textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
-                            // new Text ("", textAlign: TextAlign.left, style: TextStyle(fontSize : 12))
                           ],
                         ),
                       ),
@@ -386,212 +398,12 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             child: Text('LANJUT', style: TextStyle(color: Colors.white)),
                             color: Colors.green,
                             onPressed: _onPressed,
-
-                            // onPressed: () {
-                            //   PostResult.connectToAPI(_noMeterController.text).then((value){
-                            //     postResult = value;
-                            //     setState((){});
-                            //   });
-
-                            //   setState(() {
-                            //     _futureBayar = createPascabayar(_noMeterController.text);
-                            //   });
-
-                            //   Navigator.of(context)
-                            //     .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-
-                            //   if (transId != null) {
-                            //     Navigator.of(context)
-                            //       .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-                            //   }else{
-                                
-                            //   }
-                            // },
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                Container( height: 8 ),
-
-                // Container(
-                //   height: 50.0,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: <Widget>[
-                //       Container(
-                //         child: SizedBox(
-                //           width: 150,
-                //           height: 35,
-                //           child: RaisedButton(
-                //             child: Text(
-                //               '20.000', 
-                //               style: TextStyle(color: Colors.black)
-                //             ),
-                //             color: Colors.white,
-                //             onPressed: () async{
-                //               print("clicked");
-                //             },
-                //           ),
-                //         ),
-                //       ),
-                //       Container(
-                //         child: SizedBox(
-                //           width: 150,
-                //           height: 35,
-                //           child: RaisedButton(
-                //             child: Text(
-                //               '50.000', 
-                //               style: TextStyle(color: Colors.black)
-                //             ),
-                //             color: Colors.white,
-                //             onPressed: () async{
-                //               print("clicked");
-                //             },
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                // Container(
-                //   height: 50.0,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: <Widget>[
-                //       Container(
-                //         child: SizedBox(
-                //           width: 150,
-                //           height: 35,
-                //           child: RaisedButton(
-                //             child: Text(
-                //               '100.000', 
-                //               style: TextStyle(color: Colors.black)
-                //             ),
-                //             color: Colors.white,
-                //             onPressed: () async{
-                //               print("clicked");
-                //             },
-                //           ),
-                //         ),
-                //       ),
-                //       Container(
-                //         child: SizedBox(
-                //           width: 150,
-                //           height: 35,
-                //           child: RaisedButton(
-                //             child: Text(
-                //               '250.000', 
-                //               style: TextStyle(color: Colors.black)
-                //             ),
-                //             color: Colors.white,
-                //             onPressed: () async{
-                //               print("clicked");
-                //             },
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                // Container(
-                //   height: 50.0,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: <Widget>[
-                //       Container(
-                //         child: SizedBox(
-                //           width: 150,
-                //           height: 35,
-                //           child: RaisedButton(
-                //             child: Text(
-                //               '500.000', 
-                //               style: TextStyle(color: Colors.black)
-                //             ),
-                //             color: Colors.white,
-                //             onPressed: () async{
-                //               print("clicked");
-                //             },
-                //           ),
-                //         ),
-                //       ),
-                //       Container(
-                //         child: SizedBox(
-                //           width: 150,
-                //           height: 35,
-                //           child: RaisedButton(
-                //             child: Text(
-                //               '1.000.000', 
-                //               style: TextStyle(color: Colors.black)
-                //             ),
-                //             color: Colors.white,
-                //             onPressed: () async{
-                //               print("clicked");
-                //             },
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-
-                // SizedBox(
-                //   width :double.infinity,
-                //   height: 35,
-                //   child: RaisedButton(
-                //     child: Text(
-                //       'BELI', 
-                //       style: TextStyle(color: Colors.white)
-                //     ),
-                //     color: Colors.green,
-                //     onPressed: () async{
-                //       print(_noMeterController.text);
-                //       print(_nominalController.text);
-
-                //       setState(() {
-                //         _isLoading = false;
-                //       });
-
-                //       final prabayar = PrabayarInsert(
-                //         noMeter: _noMeterController.text, 
-                //         nominal: int.parse(_nominalController.text)
-                //       );
-                //       final result = await prabayarService.createPrabayar(prabayar);
-                      
-                //       setState(() {
-                //         _isLoading = false;
-                //       });
-
-                //       final title = 'Done';
-                //       final text = result.error ? (result.errorMessage ?? 'An error occurred') : 'Your data was inserted';
-
-                //       showDialog(
-                //         context: context,
-                //         builder: (_) => AlertDialog(
-                //           title: Text(title),
-                //           content: Text(text),
-                //           actions: <Widget>[
-                //             FlatButton(
-                //               child: Text('OK'),
-                //               onPressed: () {
-                //                 Navigator.of(context).pop();
-                //               },
-                //             )
-                //           ],
-                //         )
-                //       )
-                //       .then((data) {
-                //         if (result.data) {
-                //           Navigator.of(context).pop();
-                //         }
-                //       });
-                //     },
-                //   ),
-                // ),
               ]
             )
           ),

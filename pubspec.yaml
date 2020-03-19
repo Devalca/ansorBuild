@@ -49,6 +49,8 @@ flutter:
   assets:
     - lib/src/assets/hack.png
     - lib/src/assets/qr-code.png
+    - lib/src/assets/lapakSahabat.png
+    - lib/src/assets/LISTRIK.png
     - lib/src/assets/BANNER_PULSA.jpg
     - lib/src/assets/BANNER_ATAS.jpg
     - lib/src/assets/BANNER_BAWAH.jpg

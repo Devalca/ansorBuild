@@ -2,34 +2,14 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
+import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
-
-Future<Wallet> getWallet() async {
-  String url = 'http://192.168.10.11:3000/users/wallet/1';
-  final response = await http.get(url, headers: {"Accept": "application/json"});
-
-  if (response.statusCode == 200) {
-    return Wallet.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load wallet');
-  }
-}
-
-class Wallet {
-  final int walletId;
-  final int saldoAkhir;
-
-  Wallet({this.walletId, this.saldoAkhir});
-
-  factory Wallet.fromJson(Map<String, dynamic> json) {
-    return Wallet(saldoAkhir: json['data'][0]['saldo_akhir']);
-  }
-}
+import 'package:ansor_build/src/service/api_service.dart';
 
 class ListrikPembayaran extends StatefulWidget {
   final String status;
@@ -41,20 +21,20 @@ class ListrikPembayaran extends StatefulWidget {
 
 class _ListrikPembayaranState extends State<ListrikPembayaran> {
   bool _isLoading = false;
+
   PlnServices _plnServices = PlnServices();
+  ApiService _apiService = ApiService();
+  
   String _transactionId = "";
   String url = "";
 
   Future<Album> futureAlbum;
-  String text_to_show = "";
 
   TextEditingController _namaController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
-    readData("transactionId");
 
     _plnServices.getTransactionId().then(updateId);
   }
@@ -75,21 +55,17 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
     }
   }
 
-  readData(String text) async{
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      text_to_show = prefs.getString(text);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        backgroundColor: Colors.white,
         title: Text(
           'Pembayaran',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         )
       ),
       body: SingleChildScrollView(
@@ -103,7 +79,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                 future: fetchAlbum(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    // if(snapshot.data.data.length == 0) {
+                    DateTime periode = snapshot.data.createdAt;
                     if(snapshot.data == null) {
                       return Text("Tidak ada Data");
                     }else{
@@ -113,16 +89,17 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                height: 50.0,
+                                height: 70.0,
                                 child: Row(
                                   children: <Widget>[
                                     Container(
-                                      width: 100,
-                                      child: Text(widget.status == null ? "kosong" : widget.status),
+                                      margin: EdgeInsets.symmetric(horizontal: 12.0),
+                                      height: 90.0,
+                                      width: 90.0,
+                                      child: Image.asset("lib/src/assets/LISTRIK.png"),
                                     ),
                                     Container(
                                       child: Text(
-                                        // "Token Listrik PLN\n" + snapshot.data.data[0].nama_pelanggan + "\n" + "Nomor "+ snapshot.data.data[0].no_meter
                                         "Token Listrik PLN\n" + snapshot.data.nama_pelanggan + "\n" + "Nomor "+ snapshot.data.no_meter
                                       ),
                                     ),
@@ -157,8 +134,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Periode"),
                                           ),
                                           Container(
-                                            // child: Text(snapshot.data.data[0].createdAt),
-                                            child: Text(DateFormat('dd M yyyy').format(snapshot.data.createdAt)),
+                                            child: Text(tanggal(periode)),
                                           ),
                                         ],
                                       ),
@@ -172,8 +148,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Total Tagihan"),
                                           ),
                                           Container(
-                                            // child: Text("Rp." + snapshot.data.data[0].total.toString()),
-                                            child: Text("Rp." + snapshot.data.total.toString()),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total)),
                                           ),
                                         ],
                                       ),
@@ -187,11 +162,13 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Biaya Pelayanan"),
                                           ),
                                           Container(
-                                            child: Text("Rp. 0"),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(0)),
                                           ),
                                         ],
                                       ),
                                     ),
+
+                                    Divider( height: 12, color: Colors.black ),
 
                                     Expanded(
                                       child: Row(
@@ -202,8 +179,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Total"),
                                           ),
                                           Container(
-                                            // child: Text("Rp." + snapshot.data.data[0].total.toString()),
-                                            child: Text("Rp." + snapshot.data.total.toString()),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total)),
                                           ),
                                         ],
                                       ),
@@ -248,6 +224,8 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                       ),
                                     ),
 
+                                    Divider( height: 12, color: Colors.black ),
+
                                     Expanded(
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -260,10 +238,10 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                           ),
                                           Container(
                                             child: FutureBuilder<Wallet>(
-                                              future: getWallet(),
+                                              future: _apiService.getSaldo(),
                                               builder: (context, snapshot) {
                                                 if (snapshot.hasData) {
-                                                  return Text("Rp. " + snapshot.data.saldoAkhir.toString());
+                                                  return Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.data[0].saldoAkhir));
                                                 } else if (snapshot.hasError) {
                                                   return Text("${snapshot.error}");
                                                 }
@@ -293,7 +271,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                         setState(() => _isLoading = true);
                                         String id = _transactionId;
                                         String transactionId = id.substring(10);
-                                        // String noMeter = snapshot.data.data[0].no_meter;
                                         String noMeter = snapshot.data.no_meter;
                                         int nominal = snapshot.data.nominal;
 
@@ -327,7 +304,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
                                               
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else if(response.statusCode == 200){
                                               print('Berhasil');
@@ -341,7 +318,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
 
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else{
                                               print("Gagal");
@@ -363,7 +340,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
                                               
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else if(response.statusCode == 200){
                                               print('Berhasil');
@@ -377,7 +354,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
 
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else{
                                               print("Gagal");
@@ -402,7 +379,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                     return Text("${snapshot.error}");
                   }
 
-                  return CircularProgressIndicator();
+                  return Center(child:CircularProgressIndicator());
                 },
               ),
             ]

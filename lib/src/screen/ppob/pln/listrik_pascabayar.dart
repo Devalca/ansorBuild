@@ -1,45 +1,8 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik_pembayaran.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
-
-// final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
-
-Future<Bayar> createPascabayar(String noMeter) async {
-  final http.Response response = await http.post(
-    'http://192.168.10.11:3000/ppob/pln/pascabayar',
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, String>{
-      'no_meter': noMeter,
-    }),
-  );
-  if (response.statusCode == 200) {
-    return Bayar.fromJson(json.decode(response.body));
-  } else {
-    throw Exception('Failed to load album');
-  }
-}
-
-class Bayar {
-  final int transactionId;
-  final String noMeter;
-  final String status;
-
-  Bayar({this.transactionId, this.noMeter, this.status});
-
-  factory Bayar.fromJson(Map<String, dynamic> json) {
-    return Bayar(
-      transactionId: json['transactionId'],
-      noMeter: json['no_meter'],
-      status: json['status']
-    );
-  }
-}
 
 class ListrikPascabayar extends StatefulWidget {
   @override
@@ -47,37 +10,18 @@ class ListrikPascabayar extends StatefulWidget {
 }
 
 class _ListrikPascabayarState extends State<ListrikPascabayar> {
-  String id = "";
-  String transId = "0";
-  String text_to_show = "";
-  bool _fieldNoMeter;
-  PlnServices _plnServices = PlnServices();
   String url = "";
 
-  @override
-  void initState() {
-    super.initState();
-    getId();
-  }
-
-  getId() async{
-
-    final prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      id = prefs.getString('id');
-    });
-  }
-  
-  TextEditingController _noMeterController = TextEditingController();
-  Future<Bayar> _futureBayar;
-
   bool _isLoading = false;
+  bool _fieldNoMeter;
+
+  PlnServices _plnServices = PlnServices();
+
+  TextEditingController _noMeterController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // key: _scaffoldState,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -191,7 +135,6 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
 
                             url = response.headers['location'];
                             print("url: " + url);
-                            print('dataUrl' + url);
 
                             _plnServices.saveTransactionId(url).then((bool committed) {
                               print(url);
@@ -223,141 +166,13 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                           }
                         });
                       }
-
-                      // PostResult.connectToAPI(_noMeterController.text).then((value){
-                      //   postResult = value;
-                      //   setState((){});
-                      // });
-
-                      // setState(() {
-                      //   _futureBayar = createPascabayar(_noMeterController.text);
-                      // });
-
-                      // Navigator.of(context)
-                      //   .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-
-                      // if (transId != null) {
-                      //   Navigator.of(context)
-                      //     .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-                      // }else{
-                        
-                      // }
                     },
                   ),
                 ),
-
-                Container( height: 8 ),
-
-                // FutureBuilder<Bayar>(
-                //   future: _futureBayar,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       saveData(snapshot.data.transactionId.toString());
-
-                //       Navigator.of(context)
-                //           .push(MaterialPageRoute(builder: (_) => ListrikPembayaran()));
-
-                //       // return Text(snapshot.data.transactionId.toString());
-                //       // setState(() {
-                //       //   transId = snapshot.data.transactionId.toString();
-                //       // });
-                //     } else if (snapshot.hasError) {
-                //       return Text("${snapshot.error}");
-                //     }
-                //     return Text("");
-                //     // return CircularProgressIndicator();
-                //     // return null;
-                //   },
-                // ),
-                
-                Container( height: 8 ),
-
-                // RaisedButton(onPressed:()=> readData("transactionId"), child: Text('Read Data')),
-                // Text('$text_to_show'),
-                
-                // SizedBox(
-                //   width :double.infinity,
-                //   height: 35,
-                //   child: RaisedButton(
-                //     child: Text('LANJUT', style: TextStyle(color: Colors.white)),
-                //     color: Colors.green,
-                //     onPressed: () async{
-                //       print(_noMeterController.text);
-
-                //       setState(() {
-                //         _isLoading = false;
-                //       });
-
-                //       final pascabayar = PascaBayarInsert(
-                //         noMeter: _noMeterController.text, 
-                //       );
-                //       final result = await pascabayarService.createPascabayar(pascabayar);
-                        
-                //       setState(() {
-                //         _isLoading = false;
-                //       });
-
-                //       final title = "Done";
-                //       final text = result.error ? (result.errorMessage ?? 'An error occurred') : "Data was inserted";
-
-                //       showDialog(
-                //         context: context,
-                //         builder: (_) => AlertDialog(
-                //           title: Text(title),
-                //           content: Text(text),
-                //           actions: <Widget>[
-                //             FlatButton(
-                //               child: Text('OK'),
-                //               onPressed: () {
-                //                 Navigator.push(
-                //                   // Navigator.of(context).pop();
-                //                   context, MaterialPageRoute(builder: (context) => ListrikPembayaran())
-                //                 );
-                //               },
-                //             )
-                //           ],
-                //         )
-                //       )
-                //       .then((data) {
-                //         if (result.data) {
-                //           Navigator.of(context).pop();
-                //         }
-                //       });
-                //     },
-                //   ),
-                // ),
               ]
             )
           )
-
-          // : FutureBuilder<Bayar>(
-          //     future: _futureBayar,
-          //     builder: (context, snapshot) {
-          //       if (snapshot.hasData) {
-          //         return next(snapshot.data.transactionId.toString());
-          //         // Navigator.of(context)
-          //         //   .push(MaterialPageRoute(builder: (context) => ListrikPembayaran(transactionId: '10')));
-          //       } else if (snapshot.hasError) {
-          //         return Text("${snapshot.error}");
-          //       }
-          //       return CircularProgressIndicator();
-          //     },
-          //   ),
       )
     );
-  }
-
-  saveData(String id) async {
-    final prefs = await SharedPreferences.getInstance();
-    
-    prefs.setString("transactionId", id);
-  }
-
-  readData(String text) async{
-    final prefs = await SharedPreferences.getInstance();
-
-    setState(() {
-      text_to_show = prefs.getString(text);
-    });
   }
 }
