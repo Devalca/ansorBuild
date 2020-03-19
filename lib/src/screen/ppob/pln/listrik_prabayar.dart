@@ -23,7 +23,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
   bool press4 = false;
   bool press5 = false;
   bool press6 = false;
-  int nominal = 0;
+  String nominal = "";
   
   TextEditingController _noMeterController = TextEditingController();
   TextEditingController _nominalController = TextEditingController();
@@ -158,7 +158,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press5 = false;
                           this.press6 = false;
                           this.total= "21.500";
-                          this.nominal= 20000;
+                          this.nominal= "20000";
                         });
                       },
                       child: new Container(
@@ -168,7 +168,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -191,7 +191,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press5 = false;
                           this.press6 = false;
                           this.total = "51.500";
-                          this.nominal = 50000;
+                          this.nominal = "50000";
                         });
                       },
                       child: new Container(
@@ -201,7 +201,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -232,7 +232,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press5 = false;
                           this.press6 = false;
                           this.total= "101.500";
-                          this.nominal= 100000;
+                          this.nominal= "100000";
                         });
                       },
                       child: new Container(
@@ -242,7 +242,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -265,7 +265,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press5 = false;
                           this.press6 = false;
                           this.total= "251.500";
-                          this.nominal= 250000;
+                          this.nominal= "250000";
                         });
                       },
                       child: new Container(
@@ -275,7 +275,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -306,7 +306,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press6 = false;
                           this.total= "501.500";
-                          this.nominal= 500000;
+                          this.nominal= "500000";
                         });
                       },
                       child: new Container(
@@ -316,7 +316,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -339,7 +339,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press5 = false;
                           this.total= "1.001.500";
-                          this.nominal= 1000000;
+                          this.nominal= "1000000";
                         });
                       },
                       child: new Container(
@@ -349,7 +349,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
                         width: 160,
-                        height: 60,
+                        height: 62,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(

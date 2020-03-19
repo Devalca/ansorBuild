@@ -340,7 +340,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
                                               
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else if(response.statusCode == 200){
                                               print('Berhasil');
@@ -354,7 +354,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                 print(url);
                                               });
 
-                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil()));
+                                              Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(status: widget.status)));
                                               setState(() => _isLoading = false);
                                             }else{
                                               print("Gagal");
