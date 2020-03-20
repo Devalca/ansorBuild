@@ -376,7 +376,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                       );  
                     }
                   } else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
+                    return Text("Tidak ada Data, hasError");
                   }
 
                   return Center(child:CircularProgressIndicator());

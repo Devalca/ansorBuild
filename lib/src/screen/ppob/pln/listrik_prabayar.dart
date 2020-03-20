@@ -97,7 +97,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
         child: Form(
           key: _formPrabayar,
           child: Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(0.0),
             child: _isLoading ? Center(child: CircularProgressIndicator()) :  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -168,15 +168,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 160,
-                        height: 62,
+                        width: 148,
+                        height: 60,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("20000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(21500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
+                              new Text ("Rp21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -201,15 +201,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 160,
-                        height: 62,
+                        width: 148,
+                        height: 60,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("50000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(51500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
+                              new Text ("Rp51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -242,15 +242,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 160,
-                        height: 62,
+                        width: 148,
+                        height: 60,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("100000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(101500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
+                              new Text ("Rp101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -275,15 +275,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 160,
-                        height: 62,
+                        width: 148,
+                        height: 60,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("250000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(251500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
+                              new Text ("Rp251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -316,15 +316,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 160,
-                        height: 62,
+                        width: 148,
+                        height: 60,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("500000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(501500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
+                              new Text ("Rp501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -349,15 +349,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 160,
-                        height: 62,
+                        width: 148,
+                        height: 60,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("1000000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(1001500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
+                              new Text ("Rp1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -366,7 +366,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                   ],
                 ),
 
-                Container( height: 60 ),
+                Container( height: 160 ),
 
                 Divider(
                   height: 12,
