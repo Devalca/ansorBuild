@@ -76,6 +76,7 @@ class _TopupPageState extends State<TopupPage> {
                                 child: Column(
                                   children: <Widget>[
                                     Container(
+                                      alignment: Alignment.centerRight,
                                       child: Row(
                                         children: <Widget>[
                                           Text(
@@ -83,7 +84,7 @@ class _TopupPageState extends State<TopupPage> {
                                                   .format(snapshot
                                                       .data.data[0].saldoAkhir)
                                                   .replaceAll("IDR", "Rp"),
-                                              style: TextStyle(fontSize: 20.0)),
+                                              style: TextStyle(fontSize: 16.0)),
                                         ],
                                       ),
                                     ),
@@ -122,7 +123,7 @@ class _TopupPageState extends State<TopupPage> {
                       ],
                     ),
                     Container(
-                      height: 250.0,
+                      height: 200.0,
                       child: Center(
                           child: Image.asset("lib/src/assets/qr-code.png")),
                     ),
@@ -171,14 +172,14 @@ class _TopupPageState extends State<TopupPage> {
                                             width: 1, color: Colors.grey[200]),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
-                                    height: 45.0,
-                                    width: 45.0,
+                                    height: 35.0,
+                                    width: 35.0,
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(left: 10.0),
                                     child: Text(
                                       'ATM',
-                                      style: TextStyle(fontSize: 20.0),
+                                      style: TextStyle(fontSize: 12.0),
                                     ),
                                   ),
                                 ],
@@ -220,14 +221,14 @@ class _TopupPageState extends State<TopupPage> {
                                             width: 1, color: Colors.grey[200]),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
-                                    height: 45.0,
-                                    width: 45.0,
+                                    height: 35.0,
+                                    width: 35.0,
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(left: 10.0),
                                     child: Text(
                                       'Internet/Mobile Banking',
-                                      style: TextStyle(fontSize: 20.0),
+                                      style: TextStyle(fontSize: 12.0),
                                     ),
                                   ),
                                 ],

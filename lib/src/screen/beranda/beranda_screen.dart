@@ -489,7 +489,8 @@ class _BerandaPageState extends State<BerandaPage> {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: Container(
+                child: Image.asset(
+                  katalog.products[0].photos[0].photo.toString(),
                   color: Colors.green,
                   width: 132.0,
                   height: 132.0,
