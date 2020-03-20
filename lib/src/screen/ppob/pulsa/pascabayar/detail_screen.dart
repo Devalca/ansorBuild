@@ -130,7 +130,7 @@ class _DetailPageState extends State<DetailPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Text('Pulsa Pasca Bayar'),
+                                        Text('Pulsa Pascabayar'),
                                         Text('Nomor ' +
                                             snapshot.data.data[0].noHp),
                                         Text(snapshot.data.data[0].provider)

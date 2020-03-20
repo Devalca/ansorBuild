@@ -5,6 +5,7 @@ import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 import 'detail_screen.dart';
@@ -268,13 +269,13 @@ class _PulsaPageState extends State<PulsaPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      hargaList[index].nominalPulsa.toString(),
+                      rupiah(hargaList[index].nominalPulsa).replaceAll("Rp", "").toString(),
                       style: TextStyle(
                           fontSize: 20,
                           color: isSelected ? Colors.green : null),
                     ),
                     Text(
-                      cF.format(jmh).replaceAll("IDR", "Rp"),
+                      rupiah(jmh),
                       style: TextStyle(
                         fontSize: 12,
                       ),
