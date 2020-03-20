@@ -47,6 +47,9 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     arr[1]=data.slice(4,8);
     arr[2]=data.slice(8,12);
     arr[3]=data.slice(12,16);
+    // for(var i=0; i<=3; i+=4){
+    //   arr[i]=data.slice(i,i+4);
+    // }
     return arr.join("-");
   }
 
