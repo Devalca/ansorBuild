@@ -41,6 +41,15 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     }
   }
 
+  token(data){
+    var arr = [];
+    arr[0]=data.slice(0,4);
+    arr[1]=data.slice(4,8);
+    arr[2]=data.slice(8,12);
+    arr[3]=data.slice(12,16);
+    return arr.join("-");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +138,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(snapshot.data.noToken, style: new TextStyle(fontSize: 14.0)),
+                                            child: Text(token(snapshot.data.noToken), style: new TextStyle(fontSize: 14.0)),
                                           ),
                                           Container(
                                             child: Text("Salin", style: new TextStyle(fontSize: 12.0, color: Colors.green)),
