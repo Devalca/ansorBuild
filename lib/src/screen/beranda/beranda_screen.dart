@@ -486,7 +486,7 @@ class _BerandaPageState extends State<BerandaPage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.asset(
-                        katalog.products[index].photos[0].photo,
+                        "lib/src/assets/LAINNYA.png",
                         color: Colors.green,
                         width: 132.0,
                         height: 132.0,
@@ -496,7 +496,7 @@ class _BerandaPageState extends State<BerandaPage> {
                       padding: EdgeInsets.only(top: 8.0),
                     ),
                     Text(
-                      katalog.products[0].namaProduk,
+                      katalog.products[index].namaProduk,
                     ),
                   ],
                 ),
