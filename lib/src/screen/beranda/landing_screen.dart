@@ -39,7 +39,7 @@ class _LandingPageState extends State<LandingPage> {
                     ),
                     Container(
                       child: Text(
-                        'Scan Qr',
+                        'Scan QR',
                         style: TextStyle(fontSize: 8.0),
                       ),
                     )

@@ -10,16 +10,17 @@ class BerandaService {
   Future<List<PpobService>> fetchPpobService() async {
     List<PpobService> _ppobServiceList = [];
     _ppobServiceList.add(PpobService(
-        image: Image.asset('lib/src/assets/PDAM.png'), title: "PDAM"));
-    _ppobServiceList.add(PpobService(
         image: Image.asset('lib/src/assets/PULSA.png'), title: "PULSA"));
     _ppobServiceList.add(PpobService(
         image: Image.asset('lib/src/assets/LISTRIK.png'),
         title: "Listrik PLN"));
     _ppobServiceList.add(PpobService(
+        image: Image.asset('lib/src/assets/PDAM.png'), title: "Air PDAM"));
+
+    _ppobServiceList.add(PpobService(
         image: Image.asset('lib/src/assets/BPJS.png'), title: "BPJS"));
     _ppobServiceList.add(PpobService(
-        image: Image.asset('lib/src/assets/PULSA.png'), title: "PDAM"));
+        image: Image.asset('lib/src/assets/LAINNYA.png'), title: "Lainnya"));
 
     return Future.delayed(Duration(seconds: 1), () {
       return _ppobServiceList;
@@ -29,18 +30,18 @@ class BerandaService {
   Future<List<IslamService>> fetchIslamService() async {
     List<IslamService> _islamServiceList = [];
     _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/KIBLAT.png'), title: "Kiblat"));
+    _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/JAM_SOLAT.png'),
+        title: "Jam Sholat"));
+    _islamServiceList.add(IslamService(
         image: Image.asset('lib/src/assets/CARI_MASJID.png'),
         title: "Cari Masjid"));
     _islamServiceList.add(IslamService(
+        image: Image.asset('lib/src/assets/QURAN.png'), title: "Quran & Doa"));
+    _islamServiceList.add(IslamService(
         image: Image.asset('lib/src/assets/JADWAL_KAJIAN.png'),
         title: "Jadwal Kajian"));
-    _islamServiceList.add(IslamService(
-        image: Image.asset('lib/src/assets/JAM_SOLAT.png'),
-        title: "Jam Solat"));
-    _islamServiceList.add(IslamService(
-        image: Image.asset('lib/src/assets/KIBLAT.png'), title: "Kiblat"));
-    _islamServiceList.add(IslamService(
-        image: Image.asset('lib/src/assets/QURAN.png'), title: "Quran"));
 
     return Future.delayed(Duration(seconds: 1), () {
       return _islamServiceList;
@@ -48,16 +49,16 @@ class BerandaService {
   }
 
   Future<KatalogService> getKatalog() async {
-      var response = await http.get(
-        '$baseUrl/master-data/katalog-produk',
-        headers: {"accept": "application/json"},
-      );
-      if (response.statusCode == 200) {
-        return katalogServiceFromJson(response.body);
-      } else {
-        return null;
-      }
+    var response = await http.get(
+      '$baseUrl/master-data/katalog-produk',
+      headers: {"accept": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      return katalogServiceFromJson(response.body);
+    } else {
+      return null;
     }
+  }
 
   Future<List<BarangService>> fetchBarangService() async {
     List<BarangService> _goBarangServiceFeaturedList = [];
