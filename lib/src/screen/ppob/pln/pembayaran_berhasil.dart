@@ -41,6 +41,18 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     }
   }
 
+  token(data){
+    var arr = [];
+    arr[0]=data.slice(0,4);
+    arr[1]=data.slice(4,8);
+    arr[2]=data.slice(8,12);
+    arr[3]=data.slice(12,16);
+    // for(var i=0; i<=3; i+=4){
+    //   arr[i]=data.slice(i,i+4);
+    // }
+    return arr.join("-");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,31 +85,41 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                       return(
                         Container(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-
-                              Container(
-                                width: 100.0,
-                                height: 100.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                                  border: Border.all(color: Colors.grey[300], width: 1)
+                              
+                              Center(
+                                child: Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                    border: Border.all(color: Colors.grey[300], width: 1)
+                                  ),
                                 ),
                               ),
 
                               Container( height: 10 ),
 
-                              Text("Transaksi Berhasil", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.green)),
+                              Center(
+                                child: Text("Transaksi Berhasil", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.green)),
+                              ),
                               
                               Container( height: 15 ),
                               
-                              Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
-                              Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                              Center(
+                                child: Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                              ),
 
+                              Center(
+                                child: Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                              ),
+                              
                               Container( height: 25 ),
 
-                              Text("Nomor Token", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
 
                               Container( height: 10 ),
 
@@ -119,7 +141,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                            child: Text(snapshot.data.noToken, style: new TextStyle(fontSize: 14.0)),
+                                            child: Text(token(snapshot.data.noToken), style: new TextStyle(fontSize: 14.0)),
                                           ),
                                           Container(
                                             child: Text("Salin", style: new TextStyle(fontSize: 12.0, color: Colors.green)),
@@ -163,7 +185,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -247,7 +269,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Total Tagihan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -288,27 +310,37 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                       return(
                         Container(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
 
-                              Container(
-                                width: 100.0,
-                                height: 100.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                                  border: Border.all(color: Colors.grey[300], width: 1)
+                              Center(
+                                child: Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                    border: Border.all(color: Colors.grey[300], width: 1)
+                                  ),
                                 ),
                               ),
 
                               Container( height: 10 ),
 
-                              Text("Transaksi Berhasil", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.green)),
-                              
+                              Center(
+                                child: Text("Transaksi Berhasil", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.green)),
+                              ),
+
                               Container( height: 15 ),
                               
-                              Text(DateFormat('dd MMMM yyyy').format(snapshot.data.createdAt), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
-                              Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                              Center(
+                                child: Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                              ),
+
+                              Center(
+                                child: Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                              ),
 
                               Container( height: 25 ),
 
@@ -342,7 +374,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Token Listrik Rp. " + snapshot.data.nominal.toString(), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text("Token Listrik Rp. " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -426,7 +458,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Total Tagihan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Rp." + snapshot.data.total.toString(), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),

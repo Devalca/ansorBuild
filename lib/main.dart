@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: LauncherPage(),
+      home: BerandaPage(),
       routes: Routes.getRoutes(),
     );
   }
