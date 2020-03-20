@@ -81,7 +81,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                               children: <Widget>[
                                 Container(
                                   margin:
-                                      EdgeInsets.only(top: 60.0, bottom: 15.0),
+                                  EdgeInsets.only(top: 30.0, bottom: 15.0),
                                   height: 100.0,
                                   width: 100.0,
                                   color: Colors.grey[300],

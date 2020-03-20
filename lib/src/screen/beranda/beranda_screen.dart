@@ -445,13 +445,14 @@ class _BerandaPageState extends State<BerandaPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           SizedBox(
-            height: 172.0,
+            height: 185.0,
             child: FutureBuilder<KatalogService>(
                 future: _berandaService.getKatalog(),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    KatalogService katalogService = snapshot.data;
-                    return _katalogListItem(katalogService);
+                  for (int i = 0; i < snapshot.data.data.length; i ++) {
+                     if (snapshot.hasData) {
+                    List<Product> productService = snapshot.data.data[i].products;
+                    return _katalogListItem(productService);}
                   }
                   return Center(
                     child: SizedBox(
@@ -466,16 +467,18 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
-  Widget _katalogListItem(KatalogService katalogService) {
+  Widget _katalogListItem(List<Product> productService) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: ListView.builder(
         padding: EdgeInsets.only(top: 12.0),
         physics: ClampingScrollPhysics(),
         scrollDirection: Axis.horizontal,
+        itemCount: productService == null ? 0 : productService.length,
         itemBuilder: (context, index) {
-          Katalog katalog = katalogService.data[index];
-          return InkWell(
+          for (int i = 0; i < productService.length; i++) {
+            if (productService != null) {
+            return InkWell(
               onTap: () {
                 print('INI BARANG');
               },
@@ -496,13 +499,17 @@ class _BerandaPageState extends State<BerandaPage> {
                       padding: EdgeInsets.only(top: 8.0),
                     ),
                     Text(
-                      katalog.products[index].namaProduk,
+                      productService[i].namaProduk
                     ),
                   ],
                 ),
               ));
+          } else {
+            return Text('Tidak Ada Product');
+          }
+          }
+          return CircularProgressIndicator();
         },
-        itemCount: katalogService.data.length,
       ),
     );
   }

@@ -274,7 +274,7 @@ class _PulsaPageState extends State<PulsaPage> {
                           fontSize: 20,
                           color: isSelected ? Colors.green : null),
                     ),
-                    Text(
+                    Text("" +
                       rupiah(jmh),
                       style: TextStyle(
                         fontSize: 12,
