@@ -185,7 +185,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -269,7 +269,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Total Tagihan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text(NumberFormat.simpleCurrency(locale: 'id').format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -335,7 +335,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child:Text(DateFormat(tanggal(periode)).format(snapshot.data.createdAt), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -374,7 +374,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Token Listrik Rp. " + snapshot.data.nominal.toString(), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text("Token Listrik Rp. " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
@@ -458,7 +458,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Total Tagihan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Rp." + snapshot.data.total.toString(), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),

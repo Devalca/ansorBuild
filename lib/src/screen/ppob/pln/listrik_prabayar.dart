@@ -176,7 +176,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("20000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(21500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(21500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -209,7 +209,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("50000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(51500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(51500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -250,7 +250,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("100000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(101500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(101500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -283,7 +283,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("250000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(251500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(251500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -324,7 +324,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("500000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(501500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(501500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -357,7 +357,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("1000000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id').format(1001500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(1001500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -386,8 +386,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           children: <Widget>[
                             new Text ("Total", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             press1 || press2 || press3 || press4 || press5 || press6 ? 
-                            new Text (NumberFormat.simpleCurrency(locale: 'id').format(int.parse(total)), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
-                            : new Text (NumberFormat.simpleCurrency(locale: 'id').format(0), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
+                            new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(int.parse(total)), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
+                            : new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(0), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),
