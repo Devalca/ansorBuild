@@ -450,20 +450,8 @@ class _BerandaPageState extends State<BerandaPage> {
                 future: _berandaService.getKatalog(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return ListView.builder(
-                      itemCount: snapshot.data.data.length,
-                      padding: EdgeInsets.only(top: 12.0),
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        if (snapshot.hasData) {
-                          _rowBarangService(snapshot.data.data[index]);
-                        } else if (snapshot.hasError) {
-                          return Text("${snapshot.error}");
-                        }
-                        return CircularProgressIndicator();
-                      },
-                    );
+                    KatalogService katalogService = snapshot.data;
+                    return _katalogListItem(katalogService);
                   }
                   return Center(
                     child: SizedBox(
@@ -474,6 +462,47 @@ class _BerandaPageState extends State<BerandaPage> {
                 }),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _katalogListItem(KatalogService katalogService) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: ListView.builder(
+        padding: EdgeInsets.only(top: 12.0),
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          Katalog katalog = katalogService.data[index];
+          return InkWell(
+              onTap: () {
+                print('INI BARANG');
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 16.0),
+                child: Column(
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.asset(
+                        katalog.products[index].photos[0].photo,
+                        color: Colors.green,
+                        width: 132.0,
+                        height: 132.0,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.0),
+                    ),
+                    Text(
+                      katalog.products[0].namaProduk,
+                    ),
+                  ],
+                ),
+              ));
+        },
+        itemCount: katalogService.data.length,
       ),
     );
   }
