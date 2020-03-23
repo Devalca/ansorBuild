@@ -497,7 +497,7 @@ class _BerandaPageState extends State<BerandaPage> {
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),
                         ),
-                        Text(productService[i].namaProduk),
+                        Text(productService[index].namaProduk),
                       ],
                     ),
                   ));
