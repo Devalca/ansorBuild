@@ -256,7 +256,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                 ),
                               ),
 
-                              Container( height: 15 ),
+                              Container( height: 60 ),
 
                               Container(
                                 alignment: Alignment.bottomCenter,
