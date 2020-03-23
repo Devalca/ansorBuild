@@ -126,10 +126,11 @@ class _PulsaPageState extends State<PulsaPage> {
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                              child: Container(
+                                            child: Container(
                                             height: 30.0,
                                             width: 30.0,
-                                            child: Image.network(logoProv),
+                                            child: Text(logoProv == "" ? "" : "Provider"),
+                                            // child: Image.network(logoProv),
                                           )),
                                           Container(
                                             height: 30.0,

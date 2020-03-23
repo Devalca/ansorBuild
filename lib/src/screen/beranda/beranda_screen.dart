@@ -487,8 +487,9 @@ class _BerandaPageState extends State<BerandaPage> {
                       children: <Widget>[
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            productService[i].photos[1].photo,
+                          child: Image.asset(
+                            "lib/src/assets/produk.jpeg",
+                            // productService[i].photos[1].photo,
                             width: 132.0,
                             height: 132.0,
                           ),
