@@ -4,12 +4,12 @@ import 'package:ansor_build/src/screen/ppob/pln/listrik_pembayaran.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 
-class ListrikPascabayar extends StatefulWidget {
+class BpjsKesehatan extends StatefulWidget {
   @override
-  _ListrikPascabayarState createState() => _ListrikPascabayarState();
+  _BpjsKesehatanState createState() => _BpjsKesehatanState();
 }
 
-class _ListrikPascabayarState extends State<ListrikPascabayar> {
+class _BpjsKesehatanState extends State<BpjsKesehatan> {
   String url = "";
 
   bool _isLoading = false;
@@ -79,7 +79,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                   },
                 ),
 
-                Container( height: 250 ),
+                // Container( height: 250 ),
 
                 Divider(
                   height: 12,
@@ -150,6 +150,33 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                       // }
                     },
                   ),
+                ),
+
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      color: Colors.orangeAccent,
+                      height: 250,
+                    ),
+                    Positioned(
+                      bottom: 40.0,
+                      child: Container(
+                        height: 50,
+                        width: 250,
+                        color: Colors.black38,
+                        child: Center(
+                          child: Text(
+                            "Stack & Positioned",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ]
             )
