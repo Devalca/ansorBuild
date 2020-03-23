@@ -84,13 +84,8 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(top: 12.0),
-                      child: Text('Nomor Handphone' + logoProv.toString()),
+                      child: Text('Nomor Handphone'),
                     ),
-                    Container(
-                        height: 100.0,
-                        width: 100.0,
-                        child: Image.network(logoProv),
-                      ),
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
                       child: Row(

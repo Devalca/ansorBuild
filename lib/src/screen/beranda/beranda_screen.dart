@@ -454,16 +454,11 @@ class _BerandaPageState extends State<BerandaPage> {
                       List<Product> productService =
                           snapshot.data.data[i].products;
                       return _katalogListItem(productService);
-                    } else if (snapshot.hasData == null) {
-                      return Container();
-                    }
+                    } 
                   }
-                  return Center(
-                    child: SizedBox(
-                        width: 40.0,
-                        height: 40.0,
-                        child: const CircularProgressIndicator()),
-                  );
+                 return Text(
+            'No value yet!',
+          );
                 }),
           ),
         ],
