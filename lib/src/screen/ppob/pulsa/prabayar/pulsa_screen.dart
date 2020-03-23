@@ -77,8 +77,7 @@ class _PulsaPageState extends State<PulsaPage> {
                             Padding(
                               padding: const EdgeInsets.only(top: 12.0),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
                                       flex: 3,
