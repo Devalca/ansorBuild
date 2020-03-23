@@ -3,6 +3,7 @@ import 'package:ansor_build/src/screen/topup/atm_screen.dart';
 import 'package:ansor_build/src/screen/topup/banking_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class TopupPage extends StatefulWidget {
@@ -79,11 +80,7 @@ class _TopupPageState extends State<TopupPage> {
                                       alignment: Alignment.centerRight,
                                       child: Row(
                                         children: <Widget>[
-                                          Text(
-                                              cF
-                                                  .format(snapshot
-                                                      .data.data[0].saldoAkhir)
-                                                  .replaceAll("IDR", "Rp"),
+                                          Text(rupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ","Rp"),
                                               style: TextStyle(fontSize: 16.0)),
                                         ],
                                       ),
@@ -131,7 +128,7 @@ class _TopupPageState extends State<TopupPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
                       child: Center(
                         child: Text(
-                          'asd sadsa dsad sadsadsadsa sadsa asdsad sadsa dsads adsa das dsa dsa d sad sa dsa ds adsadsadsadsa dsa dsa dsa dasdsadsad sadsad saddas dsad sad sa das das d asd sad sad sa dsa dsa dsa das das d',
+                          "QR Code ini di gunakan jika kamu ingin Top Up melalui merchant dengan cara menunjukan QR Code kepada merchant, kemudian Top Up sesuai dengan nominal yang kamu inginkan",
                           style: TextStyle(color: Colors.black45),
                           textAlign: TextAlign.center,
                         ),
