@@ -43,10 +43,10 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
   token(data){
     var arr = [];
-    arr[0]=data.slice(0,4);
-    arr[1]=data.slice(4,8);
-    arr[2]=data.slice(8,12);
-    arr[3]=data.slice(12,16);
+    arr[0]=data.substring(0,4);
+    arr[1]=data.substring(4,8);
+    arr[2]=data.substring(8,12);
+    arr[3]=data.substring(12,16);
     return arr.join("-");
   }
 
