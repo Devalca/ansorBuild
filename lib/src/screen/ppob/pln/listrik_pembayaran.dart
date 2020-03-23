@@ -100,7 +100,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                     ),
                                     Container(
                                       child: Text(
-                                        "Token Listrik PLN\n" + snapshot.data.nama_pelanggan + " - " + snapshot.data.tarif + '/' + snapshot.data.daya +"\n" + "Nomor "+ snapshot.data.no_meter
+                                        "Token Listrik PLN\n" + snapshot.data.nama_pelanggan + " - " + "Nomor "+ snapshot.data.no_meter + "\n" + snapshot.data.tarif + '/' + snapshot.data.daya
                                       ),
                                     ),
                                   ]
