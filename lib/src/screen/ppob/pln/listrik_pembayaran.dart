@@ -376,7 +376,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                       );  
                     }
                   } else if (snapshot.hasError) {
-                    return Text("Tidak ada Data, hasError");
+                    return Text("Nomor Meter yang Anda Masukkan Tidak Terdaftar");
                   }
 
                   return Center(child:CircularProgressIndicator());

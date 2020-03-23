@@ -17,7 +17,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
   bool _fieldNoMeter;
   PlnServices _plnServices = PlnServices();
   String url = "";
-  String total = "";
+  int total = 0;
   bool press1 = false;
   bool press2 = false;
   bool press3 = false;
@@ -158,7 +158,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total= "21.500";
+                          this.total= 21500;
                           this.nominal= "20000";
                         });
                       },
@@ -176,7 +176,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
-                              new Text ("Rp21.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(21500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -191,7 +191,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total = "51.500";
+                          this.total = 51500;
                           this.nominal = "50000";
                         });
                       },
@@ -209,7 +209,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
-                              new Text ("Rp51.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(51500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -232,7 +232,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total= "101.500";
+                          this.total= 101500;
                           this.nominal= "100000";
                         });
                       },
@@ -250,7 +250,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
-                              new Text ("Rp101.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(101500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -265,7 +265,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press3 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total= "251.500";
+                          this.total= 251500;
                           this.nominal= "250000";
                         });
                       },
@@ -283,7 +283,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
-                              new Text ("Rp251.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(251500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -306,7 +306,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press3 = false;
                           this.press4 = false;
                           this.press6 = false;
-                          this.total= "501.500";
+                          this.total= 501500;
                           this.nominal= "500000";
                         });
                       },
@@ -324,7 +324,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                              new Text ("Rp501.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(501500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -339,7 +339,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press3 = false;
                           this.press4 = false;
                           this.press5 = false;
-                          this.total= "1.001.500";
+                          this.total= 1001500;
                           this.nominal= "1000000";
                         });
                       },
@@ -357,7 +357,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
-                              new Text ("Rp1.001.500", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(1001500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -386,7 +386,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           children: <Widget>[
                             new Text ("Total", textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             press1 || press2 || press3 || press4 || press5 || press6 ? 
-                            new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(int.parse(total)), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
+                            new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(total), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)) 
                             : new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(0), textAlign: TextAlign.left, style: TextStyle(fontSize : 14, fontWeight: FontWeight.bold)),
                           ],
                         ),
