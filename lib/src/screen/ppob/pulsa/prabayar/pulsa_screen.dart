@@ -5,6 +5,7 @@ import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 import 'detail_screen.dart';
@@ -204,10 +205,9 @@ class _PulsaPageState extends State<PulsaPage> {
                                     ],
                                   ),
                                 ),
-                                Expanded(child: Container()),
-                                Expanded(child: Container()),
                                 Expanded(
                                   child: Container(
+                                    width: 100.0,
                                     child: RaisedButton(
                                       color: Colors.green,
                                       onPressed: _sendToServer,
@@ -269,13 +269,13 @@ class _PulsaPageState extends State<PulsaPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      hargaList[index].nominalPulsa.toString(),
+                      rupiah(hargaList[index].nominalPulsa).replaceAll("Rp", "").toString(),
                       style: TextStyle(
                           fontSize: 20,
                           color: isSelected ? Colors.green : null),
                     ),
-                    Text(
-                      cF.format(jmh).replaceAll("IDR", "Rp"),
+                    Text("" +
+                      rupiah(jmh),
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -307,7 +307,7 @@ class _PulsaPageState extends State<PulsaPage> {
     // if (value.length == 4) {
     // } else
     if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Format Nomor Tidak Sesuai";
+      return "Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }

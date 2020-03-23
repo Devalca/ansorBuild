@@ -67,7 +67,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               int dotUang = snapshot.data.data[0].totalHarga;
               DateTime dateTime = snapshot.data.data[0].periode;
               // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
-              // var formatterTime = DateFormat('HH.mm').format(dateTime);
+              var formatterTime = DateFormat('HH.mm').format(dateTime);
               return SingleChildScrollView(
                 child: Container(
                   color: Colors.white,
@@ -81,7 +81,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                               children: <Widget>[
                                 Container(
                                   margin:
-                                      EdgeInsets.only(top: 60.0, bottom: 15.0),
+                                  EdgeInsets.only(top: 30.0, bottom: 15.0),
                                   height: 100.0,
                                   width: 100.0,
                                   color: Colors.grey[300],
@@ -95,7 +95,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                   ),
                                 ),
                                 Container(
-                                  child: Text(tanggal(dateTime)),
+                                  child: Text("${tanggal(dateTime)} ${formatterTime.toString()}"),
                                 ),
                                 Container(
                                   child: Text('via Un1ty'),

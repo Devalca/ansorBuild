@@ -2,13 +2,12 @@
 import 'dart:convert';
 import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
-
-import '../selseai_screen.dart';
 
 class DetailPage extends StatefulWidget {
   final String koId;
@@ -122,7 +121,7 @@ class _DetailPageState extends State<DetailPage> {
                                       height: 90.0,
                                       width: 90.0,
                                       child:
-                                          Image.asset("lib/src/assets/PULSA.png"),
+                                          Image.asset("lib/src/assets/PDAM.png"),
                                     ),
                                   Container(
                                     padding: const EdgeInsets.only(top: 5.0),
@@ -130,7 +129,7 @@ class _DetailPageState extends State<DetailPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        Text('Pulsa Pascabayar'),
+                                        Text('Air Bandung Kota Bandung'),
                                         Text('Nomor ' +
                                             snapshot.data.data[0].noHp),
                                         Text(snapshot.data.data[0].provider)

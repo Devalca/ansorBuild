@@ -66,6 +66,7 @@ flutter:
     - lib/src/assets/JAM_SOLAT.png
     - lib/src/assets/KIBLAT.png
     - lib/src/assets/QURAN.png
+    - lib/src/assets/LAINNYA.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:
