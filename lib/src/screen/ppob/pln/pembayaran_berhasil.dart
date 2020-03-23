@@ -53,6 +53,11 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     return arr.join("-");
   }
 
+  time(data){
+    var newTime = data.slice(11,16);
+    return newTime;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +115,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode) + ", " + time(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -374,7 +379,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                             child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
                                           ),
                                           Container(
-                                            child: Text("Token Listrik Rp. " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
+                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
                                           ),
                                         ],
                                       ),
