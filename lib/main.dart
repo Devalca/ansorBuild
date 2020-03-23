@@ -1,7 +1,7 @@
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:flutter/material.dart';
 
 import 'src/routes/routes.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
 
       ),
-      home: BerandaPage(),
+      home: Bpjs(),
       routes: Routes.getRoutes(),
     );
   }

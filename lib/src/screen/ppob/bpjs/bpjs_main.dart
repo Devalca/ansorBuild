@@ -1,16 +1,16 @@
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ansor_build/src/screen/ppob/pln/listrik_pascabayar.dart' as pascabayar;
-import 'package:ansor_build/src/screen/ppob/pln/listrik_prabayar.dart' as prabayar;
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_kesehatan.dart' as kesehatan;
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_ketenagakerjaan.dart' as ketenagakerjaan;
 
-class Listrik extends StatefulWidget {
+class Bpjs extends StatefulWidget {
 
   @override
-    _ListrikState createState() => _ListrikState();
+    _BpjsState createState() => _BpjsState();
   }
 
-class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
+class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin{
 
   TabController controller;
 
@@ -89,8 +89,8 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
                   body: TabBarView(
                     physics: NeverScrollableScrollPhysics(),
                     children: <Widget>[
-                      prabayar.ListrikPrabayar(),
-                      pascabayar.ListrikPascabayar(),
+                      kesehatan.BpjsKesehatan(),
+                      ketenagakerjaan.BpjsKetenagakerjaan(),
                     ],
                   ),
                 ),
