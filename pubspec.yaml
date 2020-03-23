@@ -76,6 +76,7 @@ flutter:
     - lib/src/assets/TRANSFER.png
     - lib/src/assets/XMLID_2.png
     - lib/src/assets/scan_qr.png
+    - lib/src/assets/apidummy/wilayah.json
     
   # To add assets to your application, add an assets section, like this:
   # assets:

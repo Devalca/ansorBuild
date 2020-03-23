@@ -1,4 +1,6 @@
+import 'package:ansor_build/src/screen/ppob/pdam/list_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,7 +13,6 @@ class PdamPage extends StatefulWidget {
 
 class _PdamPageState extends State<PdamPage> {
   final GlobalKey<FormState> _key = GlobalKey();
-  ApiService _apiService = ApiService();
   bool _validate = true;
   bool _isFieldWilayah;
   bool _isFieldNomor;
@@ -21,6 +22,7 @@ class _PdamPageState extends State<PdamPage> {
 
   @override
   Widget build(BuildContext context) {
+    getWilayah();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -75,7 +77,7 @@ class _PdamPageState extends State<PdamPage> {
                     child: RaisedButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: 
-                        (context) => DetailPage("1")
+                        (context) => ListWilayah()
                         ));
                       },
                       child: Text(
@@ -150,3 +152,4 @@ class _PdamPageState extends State<PdamPage> {
     );
   }
 }
+

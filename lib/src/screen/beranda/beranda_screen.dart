@@ -407,15 +407,15 @@ class _BerandaPageState extends State<BerandaPage> {
   Widget _rowPpobService(PpobService ppobService) {
     return InkWell(
       onTap: () {
-        if (ppobService.title == "PDAM") {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PdamPage()));
-        } else if (ppobService.title == "PULSA") {
+        if (ppobService.title == "PULSA") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MainPulsa()));
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Listrik()));
+        } else if (ppobService.title == "Air PDAM") {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PdamPage()));
         } else {
           print('Under Maintence');
         }

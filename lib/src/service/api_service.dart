@@ -56,15 +56,6 @@ void initState() {
         return null;
       }
     }
-
-  //   Future<Album> fetchAlbum() async {
-  //   final response = await http.get(baseUrl + _url);
-  //   if (response.statusCode == 200) {
-  //     return albumFromJson(response.body);
-  //   } else {
-  //     throw Exception('Failed to load album');
-  //   }
-  // }
   
      Future<http.Response> postRegist(Users users) async {
       var response = await http.post(
