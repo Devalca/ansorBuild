@@ -79,7 +79,7 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
                               child: Tab(text: 'Prabayar'),
                             ),
                             Container(
-                              child: Tab(text: 'Pasca Bayar'),
+                              child: Tab(text: 'Pascabayar'),
                             ),
                           ],
                         ),
