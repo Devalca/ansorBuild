@@ -27,25 +27,8 @@ class _LandingPageState extends State<LandingPage> {
           width: 80.0,
           child: FittedBox(
             child: FloatingActionButton(
-              backgroundColor: Colors.green,
-              child: Container(
-                padding: EdgeInsets.only(top: 12),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 25,
-                      width: 25,
-                      child: Image.asset('lib/src/assets/qr-code.png'),
-                    ),
-                    Container(
-                      child: Text(
-                        'Scan QR',
-                        style: TextStyle(fontSize: 8.0),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              backgroundColor: Colors.transparent,
+              child: Image.asset("lib/src/assets/scan_qr.png"),
               onPressed: () {},
             ),
           ),
@@ -71,60 +54,30 @@ class _LandingPageState extends State<LandingPage> {
       currentIndex: _bottomNavCurrentIndex,
       items: [
         BottomNavigationBarItem(
-          activeIcon: Icon(
-            Icons.home,
-            color: Colors.green,
-          ),
-          icon: Icon(
-            Icons.home,
-            color: Colors.grey,
-          ),
+          activeIcon: Image.asset("lib/src/assets/HOME_GREEN.png", height: 25, width: 25,),
+          icon: Image.asset("lib/src/assets/HOME.png", height: 25, width: 25,),
           title: Text("Beranda", style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
-          activeIcon: Icon(
-            Icons.home,
-            color: Colors.green,
-          ),
-          icon: Icon(
-            Icons.home,
-            color: Colors.grey,
-          ),
+          activeIcon: Image.asset("lib/src/assets/TRANSFER_GREEN.png", height: 25, width: 25,),
+          icon: Image.asset("lib/src/assets/TRANSFER.png", height: 25, width: 25,),
           title: Text('Transfer', style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
-          activeIcon: Icon(
-            Icons.close,
-          ),
-          icon: Icon(
-            Icons.close,
-            color: Colors.white,
-          ),
+          icon: Icon(Icons.close),
           title: Text(
             'Lainnya',
             style: TextStyle(color: Colors.white),
           ),
         ),
         BottomNavigationBarItem(
-          activeIcon: Icon(
-            Icons.assignment,
-            color: Colors.green,
-          ),
-          icon: Icon(
-            Icons.assignment,
-            color: Colors.grey,
-          ),
+           activeIcon: Image.asset("lib/src/assets/INBOX_GREEN.png", height: 25, width: 25,),
+          icon: Image.asset("lib/src/assets/INBOX.png", height: 25, width: 25,),
           title: Text('Histori', style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
-          activeIcon: Icon(
-            Icons.assignment,
-            color: Colors.green,
-          ),
-          icon: Icon(
-            Icons.assignment,
-            color: Colors.grey,
-          ),
+          activeIcon: Image.asset("lib/src/assets/ACCOUNT_GREEN.png", height: 25, width: 25,),
+          icon: Image.asset("lib/src/assets/ACCOUNT.png", height: 25, width: 25,),
           title: Text('Profil', style: TextStyle(color: Colors.black)),
         ),
       ],
