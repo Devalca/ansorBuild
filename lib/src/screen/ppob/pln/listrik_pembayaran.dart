@@ -109,7 +109,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
 
                               Container( height: 15 ),
 
-                              Text("Detail Pembayaran", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail Pembayaran", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 15 ),
 

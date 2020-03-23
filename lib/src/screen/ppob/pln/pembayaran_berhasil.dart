@@ -116,7 +116,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               
                               Container( height: 25 ),
 
-                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 
@@ -152,7 +152,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 15 ),
 
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 
@@ -341,7 +341,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 25 ),
 
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 
