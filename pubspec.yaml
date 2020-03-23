@@ -75,6 +75,7 @@ flutter:
     - lib/src/assets/TRANSFER_GREEN.png
     - lib/src/assets/TRANSFER.png
     - lib/src/assets/XMLID_2.png
+    - lib/src/assets/scan_qr.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:
