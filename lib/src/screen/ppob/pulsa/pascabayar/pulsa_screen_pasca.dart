@@ -84,40 +84,44 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(top: 12.0),
-                      child: Text('Nomor Handphone'),
+                      child: Text('Nomor Handphone' + logoProv.toString()),
                     ),
+                    Container(
+                        height: 100.0,
+                        width: 100.0,
+                        child: Image.network(logoProv),
+                      ),
                     Padding(
                       padding: const EdgeInsets.only(top: 12.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Expanded(
+                            flex: 3,
                               child: Container(child: _buildTextFieldNomor())),
                           Expanded(
-                              child: Container(
+                            flex: 1,
                             child: Container(
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
-                                      margin: EdgeInsets.only(right: 12.0),
                                       child: Container(
                                         height: 30.0,
                                         width: 30.0,
                                         child: Image.network(logoProv),
                                       )),
                                   Container(
-                                    margin: EdgeInsets.only(right: 12.0),
                                     height: 30.0,
                                     width: 1.0,
                                     color: Colors.black,
                                   ),
-                                  Container(child: Icon(Icons.contacts))
+                                  Container(child: Image.asset("lib/src/assets/XMLID_2.png"))
                                 ],
                               ),
                             ),
-                          ))
+                          )
                         ],
                       ),
                     ),

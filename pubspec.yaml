@@ -47,7 +47,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - lib/src/assets/hack.png
     - lib/src/assets/qr-code.png
     - lib/src/assets/lapakSahabat.png
     - lib/src/assets/LISTRIK.png
@@ -67,6 +66,15 @@ flutter:
     - lib/src/assets/KIBLAT.png
     - lib/src/assets/QURAN.png
     - lib/src/assets/LAINNYA.png
+    - lib/src/assets/ACCOUNT_GREEN.png
+    - lib/src/assets/ACCOUNT.png
+    - lib/src/assets/HOME_GREEN.png
+    - lib/src/assets/HOME.png
+    - lib/src/assets/INBOX_GREEN.png
+    - lib/src/assets/INBOX.png
+    - lib/src/assets/TRANSFER_GREEN.png
+    - lib/src/assets/TRANSFER.png
+    - lib/src/assets/XMLID_2.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -6,6 +6,7 @@ import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 import '../selseai_screen.dart';
 
@@ -130,7 +131,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Harga'),
                                           ),
                                           Container(
-                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp"))),
+                                              child: Text(rupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp"))),
                                         ],
                                       ),
                                       Row(
@@ -159,7 +160,7 @@ class _DetailPageState extends State<DetailPage> {
                                               child: Text('Total'),
                                             ),
                                             Container(
-                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp")),
+                                              child: Text(rupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -228,7 +229,7 @@ class _DetailPageState extends State<DetailPage> {
                                         future: futureWallet,
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
-                                            return Text(cF.format(snapshot.data.data[0].saldoAkhir).replaceAll("IDR", "Rp"));
+                                            return Text(rupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ", "Rp"));
                                           } else if (snapshot.hasError) {
                                             print("${snapshot.error}");
                                             return CircularProgressIndicator();
