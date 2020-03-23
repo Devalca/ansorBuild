@@ -12,6 +12,7 @@ import 'package:ansor_build/src/service/api_service.dart';
 import 'package:ansor_build/src/service/beranda_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class BerandaPage extends StatefulWidget {
@@ -231,10 +232,9 @@ class _BerandaPageState extends State<BerandaPage> {
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                          cF
-                                              .format(snapshot
+                                          rupiah(snapshot
                                                   .data.data[0].saldoAkhir)
-                                              .replaceAll("IDR", "Rp"),
+                                              .replaceAll("Rp ", "Rp"),
                                           style: TextStyle(fontSize: 24.0)),
                                     ],
                                   ),
@@ -445,14 +445,18 @@ class _BerandaPageState extends State<BerandaPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           SizedBox(
-            height: 185.0,
+            height: 200.0,
             child: FutureBuilder<KatalogService>(
                 future: _berandaService.getKatalog(),
                 builder: (context, snapshot) {
-                  for (int i = 0; i < snapshot.data.data.length; i ++) {
-                     if (snapshot.hasData) {
-                    List<Product> productService = snapshot.data.data[i].products;
-                    return _katalogListItem(productService);}
+                  for (int i = 0; i < snapshot.data.data.length; i++) {
+                    if (snapshot.hasData) {
+                      List<Product> productService =
+                          snapshot.data.data[i].products;
+                      return _katalogListItem(productService);
+                    } else if (snapshot.hasData == null) {
+                      return Container();
+                    }
                   }
                   return Center(
                     child: SizedBox(
@@ -478,35 +482,32 @@ class _BerandaPageState extends State<BerandaPage> {
         itemBuilder: (context, index) {
           for (int i = 0; i < productService.length; i++) {
             if (productService != null) {
-            return InkWell(
-              onTap: () {
-                print('INI BARANG');
-              },
-              child: Container(
-                margin: EdgeInsets.only(right: 16.0),
-                child: Column(
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.asset(
-                        "lib/src/assets/LAINNYA.png",
-                        color: Colors.green,
-                        width: 132.0,
-                        height: 132.0,
-                      ),
+              return InkWell(
+                  onTap: () {
+                    print('INI BARANG');
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 16.0),
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            productService[i].photos[1].photo,
+                            width: 132.0,
+                            height: 132.0,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8.0),
+                        ),
+                        Text(productService[i].namaProduk),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8.0),
-                    ),
-                    Text(
-                      productService[i].namaProduk
-                    ),
-                  ],
-                ),
-              ));
-          } else {
-            return Text('Tidak Ada Product');
-          }
+                  ));
+            } else {
+              return Text('Tidak Ada Product');
+            }
           }
           return CircularProgressIndicator();
         },

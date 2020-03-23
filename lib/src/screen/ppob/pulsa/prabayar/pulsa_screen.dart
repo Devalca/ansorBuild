@@ -69,6 +69,11 @@ class _PulsaPageState extends State<PulsaPage> {
                             Container(
                                 margin: EdgeInsets.only(top: 16.0),
                                 child: Text('Nomor Handphone')),
+                             Container(
+                                height: 100.0,
+                                width: 100.0,
+                                child: Image.network(logoProv),
+                              ),
                             Padding(
                               padding: const EdgeInsets.only(top: 12.0),
                               child: Row(
@@ -76,69 +81,74 @@ class _PulsaPageState extends State<PulsaPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
+                                      flex: 3,
                                       child: Container(
-                                    child: TextFormField(
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(12)
-                                        ],
-                                        controller: _controllerNomor,
-                                        onChanged: (String value) async {
-                                          for (var i = 0;
-                                              i < snapshot.data.data.length;
-                                              i++) {
-                                            if (value.length == 4) {
-                                              if (value ==
-                                                  providers[i].kodeProvider) {
-                                                setState(() {
-                                                  mobi =
-                                                      providers[i].namaProvider;
-                                                  idProv = providers[i]
-                                                      .operatorId
-                                                      .toString();
-                                                  logoProv = providers[i]
-                                                      .file
-                                                      .toString();
-                                                });
-                                                print("LOGO PROVIDER: " +
-                                                    logoProv);
+                                        child: TextFormField(
+                                            inputFormatters: [
+                                              LengthLimitingTextInputFormatter(
+                                                  12)
+                                            ],
+                                            controller: _controllerNomor,
+                                            onChanged: (String value) async {
+                                              for (var i = 0;
+                                                  i < snapshot.data.data.length;
+                                                  i++) {
+                                                if (value.length == 4) {
+                                                  if (value ==
+                                                      providers[i]
+                                                          .kodeProvider) {
+                                                    setState(() {
+                                                      mobi = providers[i]
+                                                          .namaProvider;
+                                                      idProv = providers[i]
+                                                          .operatorId
+                                                          .toString();
+                                                      logoProv = providers[i]
+                                                          .file
+                                                          .toString();
+                                                    });
+                                                    print("LOGO PROVIDER: " +
+                                                        logoProv);
+                                                  }
+                                                } else if (value.length == 3) {
+                                                  setState(() {
+                                                    mobi = "";
+                                                    logoProv = "";
+                                                  });
+                                                }
                                               }
-                                            } else if (value.length == 3) {
-                                              setState(() {
-                                                mobi = "";
-                                                logoProv = "";
-                                              });
-                                            }
-                                          }
-                                        },
-                                        keyboardType: TextInputType.phone,
-                                        validator: validateNomor,
-                                        onSaved: (String val) {
-                                          inputNomor = val;
-                                        }),
-                                  )),
+                                            },
+                                            keyboardType: TextInputType.phone,
+                                            validator: validateNomor,
+                                            onSaved: (String val) {
+                                              inputNomor = val;
+                                            }),
+                                      )),
                                   Expanded(
-                                      child: Container(
-                                    width: 50.0,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                            margin:
-                                                EdgeInsets.only(right: 12.0),
-                                            child: Container(
-                                              child: Image.network(logoProv),
-                                            )),
-                                        Container(
-                                          margin: EdgeInsets.only(right: 12.0),
-                                          height: 30.0,
-                                          width: 1.0,
-                                          color: Colors.black,
-                                        ),
-                                        Container(child: Icon(Icons.contacts))
-                                      ],
+                                    flex: 1,
+                                    child: Container(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Container(
+                                              child: Container(
+                                            height: 30.0,
+                                            width: 30.0,
+                                            child: Image.network(logoProv),
+                                          )),
+                                          Container(
+                                            height: 30.0,
+                                            width: 1.0,
+                                            color: Colors.black,
+                                          ),
+                                          Container(
+                                              child: Image.asset(
+                                                  "lib/src/assets/XMLID_2.png"))
+                                        ],
+                                      ),
                                     ),
-                                  ))
+                                  )
                                 ],
                               ),
                             ),
@@ -198,10 +208,9 @@ class _PulsaPageState extends State<PulsaPage> {
                                         child: Text('Total'),
                                       ),
                                       Container(
-                                        child: Text(hargaNominal == null
-                                            ? ""
-                                            : hargaNominal),
-                                      )
+                                          child: Text(hargaNominal == null
+                                              ? ""
+                                              : hargaNominal)),
                                     ],
                                   ),
                                 ),
@@ -269,13 +278,15 @@ class _PulsaPageState extends State<PulsaPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      rupiah(hargaList[index].nominalPulsa).replaceAll("Rp", "").toString(),
+                      rupiah(hargaList[index].nominalPulsa)
+                          .replaceAll("Rp ", "")
+                          .toString(),
                       style: TextStyle(
                           fontSize: 20,
                           color: isSelected ? Colors.green : null),
                     ),
-                    Text("" +
-                      rupiah(jmh),
+                    Text(
+                      rupiah(jmh).replaceAll("Rp ", "Rp"),
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -291,7 +302,7 @@ class _PulsaPageState extends State<PulsaPage> {
               });
               if (_nominalIndex == index) {
                 inputNominal = hargaList[index].nominalPulsa.toString();
-                hargaNominal = cF.format(jmh).replaceAll("IDR", "Rp");
+                hargaNominal = rupiah(jmh).replaceAll("Rp ", "Rp");
                 print(index);
                 print(_nominalIndex);
                 print(inputNominal);
@@ -304,8 +315,6 @@ class _PulsaPageState extends State<PulsaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    // if (value.length == 4) {
-    // } else
     if (value.length != 11 && value.length != 12 && value.length != 13) {
       return "Nomor Salah";
     } else if (!regExp.hasMatch(value)) {

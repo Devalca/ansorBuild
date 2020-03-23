@@ -180,7 +180,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Tagihan'),
                                           ),
                                           Container(
-                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp"))),
+                                              child: Text(rupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp"))),
                                         ],
                                       ),
                                       Row(
@@ -209,7 +209,7 @@ class _DetailPageState extends State<DetailPage> {
                                               child: Text('Total'),
                                             ),
                                             Container(
-                                              child: Text(cF.format(snapshot.data.data[0].totalHarga).replaceAll("IDR", "Rp")),
+                                              child: Text(rupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -278,7 +278,7 @@ class _DetailPageState extends State<DetailPage> {
                                         future: _apiService.getSaldo(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
-                                            return Text(cF.format(snapshot.data.data[0].saldoAkhir).replaceAll("IDR", "Rp"));
+                                            return Text(rupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ", "Rp"));
                                           } else if (snapshot.hasError) {
                                             return Text("${snapshot.error}");
                                           }
