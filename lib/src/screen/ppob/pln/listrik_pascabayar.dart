@@ -24,7 +24,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(0.0),
+          padding: const EdgeInsets.only(top: 12.0),
             child: _isLoading ? Center(child: CircularProgressIndicator()) :  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
