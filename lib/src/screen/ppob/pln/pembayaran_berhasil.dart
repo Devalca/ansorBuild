@@ -42,11 +42,11 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   }
 
   token(data){
-    var arr = new List(4);
+    var arr = new List(3);
     arr[0]=data.substring(0,4);
     arr[1]=data.substring(4,8);
     arr[2]=data.substring(8,12);
-    return arr.join("-");
+    return arr.join(" - ");
   }
 
   @override
