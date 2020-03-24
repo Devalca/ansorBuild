@@ -158,7 +158,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total= 21500;
+                          this.total= 21550;
                           this.nominal= "20000";
                         });
                       },
@@ -168,15 +168,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
-                        height: 61,
+                        width: 155,
+                        height: 63,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("20.000", style: TextStyle(fontSize : 18, color: press1 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(21500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(21550), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -191,8 +191,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total = 51500;
-                          this.nominal = "50000";
+                          this.total = 51550;
+                          this.nominal = "55000";
                         });
                       },
                       child: new Container(
@@ -201,15 +201,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
-                        height: 61,
+                        width: 155,
+                        height: 63,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(51500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("55.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(51550), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -232,7 +232,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press4 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total= 101500;
+                          this.total= 101550;
                           this.nominal= "100000";
                         });
                       },
@@ -242,15 +242,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
-                        height: 61,
+                        width: 155,
+                        height: 63,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("100.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press3 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(101500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(101550), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -265,8 +265,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press3 = false;
                           this.press5 = false;
                           this.press6 = false;
-                          this.total= 251500;
-                          this.nominal= "250000";
+                          this.total= 251550;
+                          this.nominal= "255000";
                         });
                       },
                       child: new Container(
@@ -275,15 +275,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
-                        height: 61,
+                        width: 155,
+                        height: 63,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(251500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("255.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(251550), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -306,8 +306,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press3 = false;
                           this.press4 = false;
                           this.press6 = false;
-                          this.total= 501500;
-                          this.nominal= "500000";
+                          this.total= 551550;
+                          this.nominal= "550000";
                         });
                       },
                       child: new Container(
@@ -316,15 +316,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
-                        height: 61,
+                        width: 155,
+                        height: 63,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(501500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("550.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(551550), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -339,7 +339,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press3 = false;
                           this.press4 = false;
                           this.press5 = false;
-                          this.total= 1001500;
+                          this.total= 1001550;
                           this.nominal= "1000000";
                         });
                       },
@@ -349,15 +349,15 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
-                        height: 61,
+                        width: 155,
+                        height: 63,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               new Text ("1.000.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press6 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(1001500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(1001550), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
@@ -374,7 +374,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                 ),
 
                 Container(
-                  height: 50.0,
+                  height: 55.0,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -393,7 +393,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                       ),
                       Container(
                         child: SizedBox(
-                          width : 150,
+                          width : 155,
                           height: 35,
                           child: RaisedButton(
                             child: Text('LANJUT', style: TextStyle(color: Colors.white)),
