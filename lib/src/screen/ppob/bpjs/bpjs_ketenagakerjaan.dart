@@ -10,26 +10,28 @@ class BpjsKetenagakerjaan extends StatefulWidget {
 }
 
 class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
-  String url = "";
-
   bool _isLoading = false;
-  bool _fieldNoPelanggan;
-
-  PlnServices _plnServices = PlnServices();
-
-  TextEditingController _noPelangganController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              bottom: 48.0,
-              child: Text("testing")
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: _isLoading ? Center(child: CircularProgressIndicator()) :  Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+
+              Container(
+                child: Text(
+                  "Nomor KTP", 
+                  style: new TextStyle(fontSize: 12.0), 
+                  textAlign: TextAlign.left
+                )
+              ),
+
+            ]
+          )
         )
       )
     );
