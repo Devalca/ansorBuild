@@ -40,6 +40,7 @@ class _PulsaPageState extends State<PulsaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Container(
         child:
@@ -223,7 +224,13 @@ class _PulsaPageState extends State<PulsaPage> {
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
-              return Container();
+              return Container(
+                height: 400,
+                alignment: Alignment.center,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             }),
       ),
     );
@@ -345,7 +352,7 @@ class _PulsaPageState extends State<PulsaPage> {
             print("INI KOID : " + koId);
             print("INI RESPONSE :" + response.body);
             print("NI PROVIDER : " + namaProv);
-            await new Future.delayed(const Duration(seconds: 5));
+            await new Future.delayed(const Duration(seconds: 4));
             Navigator.push(
                 context,
                 new MaterialPageRoute(

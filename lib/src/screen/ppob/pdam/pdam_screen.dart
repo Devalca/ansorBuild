@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/list_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
@@ -22,6 +23,37 @@ class _PdamPageState extends State<PdamPage> {
   String inputNomor, inputWilayah;
   TextEditingController _controllerWilayah = TextEditingController();
   TextEditingController _controllerNomor = TextEditingController();
+
+    static Future<void> _showLoadingDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: SimpleDialog(
+                  backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Center(
+                      child: Column(children: [
+                        CircularProgressIndicator(
+                          backgroundColor: Colors.green,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Mohon Tunggu....",
+                          style: TextStyle(color: Colors.green),
+                        )
+                      ]),
+                    )
+                  ]));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +128,14 @@ class _PdamPageState extends State<PdamPage> {
                     alignment: Alignment.centerRight,
                     child: RaisedButton(
                       onPressed: () {
-                       
+                         _showLoadingDialog(context);
+                      //           String nomor = _controllerNomor.text.toString();
+                      //           String wilayah = _controllerWilayah.text.toString();
+                      //           PostPdam postPdam =
+                      //               PostPdam(noPelanggan: nomor, id: 1, walletId: 1);
+                      //  Navigator.push(context, MaterialPageRoute(builder: 
+                      //  (context) => DetailPage(koId)
+                      //  ));
                       },
                       child: Text(
                         "LANJUT".toUpperCase(),

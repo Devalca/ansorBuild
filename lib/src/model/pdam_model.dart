@@ -44,6 +44,71 @@ class Wilayah {
     };
 }
 
+PostPdam postPdamFromJson(String str) => PostPdam.fromJson(json.decode(str));
+
+String postPdamToJson(PostPdam data) => json.encode(data.toJson());
+
+class PostPdam {
+    List<Pdam> data;
+    String message;
+
+    PostPdam({
+        this.data,
+        this.message,
+    });
+
+    factory PostPdam.fromJson(Map<String, dynamic> json) => PostPdam(
+        data: List<Pdam>.from(json["data"].map((x) => Pdam.fromJson(x))),
+        message: json["message"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
+    };
+}
+
+class Pdam {
+    int id;
+    String noPelanggan;
+    String namaPelanggan;
+    String namaWilayah;
+    int tagihan;
+    int total;
+    DateTime periode;
+
+    Pdam({
+        this.id,
+        this.noPelanggan,
+        this.namaPelanggan,
+        this.namaWilayah,
+        this.tagihan,
+        this.total,
+        this.periode,
+    });
+
+    factory Pdam.fromJson(Map<String, dynamic> json) => Pdam(
+        id: json["id"],
+        noPelanggan: json["no_pelanggan"],
+        namaPelanggan: json["nama_pelanggan"],
+        namaWilayah: json["nama_wilayah"],
+        tagihan: json["tagihan"],
+        total: json["total"],
+        periode: DateTime.parse(json["periode"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "no_pelanggan": noPelanggan,
+        "nama_pelanggan": namaPelanggan,
+        "nama_wilayah": namaWilayah,
+        "tagihan": tagihan,
+        "total": total,
+        "periode": periode.toIso8601String(),
+    };
+}
+
+
 
 
 

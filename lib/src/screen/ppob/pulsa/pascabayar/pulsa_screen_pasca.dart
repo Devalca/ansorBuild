@@ -66,6 +66,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Form(
         key: _key,
@@ -231,8 +232,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                       ),
                       Container(
                         padding: EdgeInsets.only(top: 6.0, right: 50),
-                        child: Icon(
-                            logoProv == "" ? Icons.signal_cellular_no_sim : Icons.sim_card),
+                        child: Icon(logoProv == ""
+                            ? Icons.signal_cellular_no_sim
+                            : Icons.sim_card),
                         // child: Image.network(logoProv),
                       ),
                       Container(
@@ -267,7 +269,13 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           } else if (snapshot.hasError) {
             return Text("Jaringan Bermasalah");
           }
-          return Container();
+          return Container(
+            height: 400,
+            alignment: Alignment.center,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         });
   }
 }

@@ -32,7 +32,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
   }
 
   Future<PostTrans> fetchTrans() async {
-    String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
+    // String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
+    String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/detail/pulsa/";
     final response = await http.get(baseUrl + widget.koId);
     print("SATATUS CODENYA: " + response.statusCode.toString());
     if (response.statusCode == 200) {
@@ -47,6 +48,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.white,
@@ -236,7 +238,12 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               return Text("${snapshot.error}");
             }
 
-            return CircularProgressIndicator();
+            return Container(
+              alignment: Alignment.center,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           },
         ));
   }

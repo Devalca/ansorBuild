@@ -18,6 +18,7 @@ class _TopupPageState extends State<TopupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
         iconTheme: IconThemeData(
@@ -34,9 +35,9 @@ class _TopupPageState extends State<TopupPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SingleChildScrollView(
-              child: Container(
-          color: Colors.white,
+      body: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Container(
@@ -53,8 +54,8 @@ class _TopupPageState extends State<TopupPage> {
                       child: Row(
                         children: <Widget>[
                           Container(
-                              padding:
-                                  const EdgeInsets.only(left: 16.0, right: 10.0),
+                              padding: const EdgeInsets.only(
+                                  left: 16.0, right: 10.0),
                               child: Icon(
                                 Icons.account_balance_wallet,
                                 color: Colors.green,
@@ -67,32 +68,32 @@ class _TopupPageState extends State<TopupPage> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: FutureBuilder<Wallet>(
-                        future: _apiService.getSaldo(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done) {
-                            if (snapshot.hasData)
-                              return Center(
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      alignment: Alignment.centerRight,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(rupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ","Rp"),
-                                              style: TextStyle(fontSize: 16.0)),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                          } else if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          }
-                          return Text('MOHON TUNGGU...');
-                        },
+                      child: Row(
+                        children: <Widget>[
+                          FutureBuilder<Wallet>(
+                            future: _apiService.getSaldo(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (snapshot.hasData)
+                                  return Container(
+                                     padding: const EdgeInsets.only(
+                                  right: 16.0),
+                                    child: Text(
+                                        rupiah(snapshot.data.data[0].saldoAkhir)
+                                            .replaceAll("Rp ", "Rp"),
+                                        style: TextStyle(fontSize: 16.0)),
+                                  );
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+                              return Container(
+                                padding: const EdgeInsets.only(
+                                  right: 16.0),
+                                child: Text('MOHON TUNGGU...'));
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -152,8 +153,8 @@ class _TopupPageState extends State<TopupPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.black12, width: 1.0)),
+                              bottom: BorderSide(
+                                  color: Colors.black12, width: 1.0)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -201,8 +202,8 @@ class _TopupPageState extends State<TopupPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.black12, width: 1.0)),
+                              bottom: BorderSide(
+                                  color: Colors.black12, width: 1.0)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
