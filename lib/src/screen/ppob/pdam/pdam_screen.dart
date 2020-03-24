@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'detail_screen.dart';
 
 class PdamPage extends StatefulWidget {
+  final String namaKotaKab;
+  PdamPage(this.namaKotaKab);
+
   @override
   _PdamPageState createState() => _PdamPageState();
 }
@@ -37,7 +40,7 @@ class _PdamPageState extends State<PdamPage> {
             }),
         backgroundColor: Colors.white,
         title: Text(
-          'PDAM',
+          "Air PDAM",
           style: TextStyle(color: Colors.black),
         ),
       ),
@@ -51,16 +54,33 @@ class _PdamPageState extends State<PdamPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Container(
-                 padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                      Container(
+                    Container(
                       margin: EdgeInsets.only(top: 12.0),
                       child: Text('Nama Wilayah'),
                     ),
-                    _buildTextFieldWilayah(),
-                      Container(
+                    Stack(
+                      children: <Widget>[
+                        _buildTextFieldWilayah(),
+                        Container(
+                          width: 500,
+                          height: 50,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: 
+                              (context) => ListWilayah()
+                              ));
+                            },
+                          ),
+                        ),
+                         
+                      ],
+                    ),
+                    
+                    Container(
                       margin: EdgeInsets.only(top: 12.0),
                       child: Text('Nomor Pelanggan'),
                     ),
@@ -76,9 +96,7 @@ class _PdamPageState extends State<PdamPage> {
                     alignment: Alignment.centerRight,
                     child: RaisedButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: 
-                        (context) => ListWilayah()
-                        ));
+                       
                       },
                       child: Text(
                         "LANJUT".toUpperCase(),
@@ -110,11 +128,19 @@ class _PdamPageState extends State<PdamPage> {
   }
 
   Widget _buildTextFieldWilayah() {
-    return TextField(
+    return TextFormField(
+      enabled: false,
       controller: _controllerWilayah,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
-        hintText: "Pilih Daerah",
+        suffixIcon: Icon(
+          Icons.expand_more,
+          color: Colors.grey,
+        ),
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.grey)),
+        hintText:
+            widget.namaKotaKab == "" ? "Pilih Daerah" : widget.namaKotaKab,
         errorText:
             _isFieldWilayah == null || _isFieldWilayah ? null : "Nama Wilayah",
       ),
@@ -128,28 +154,31 @@ class _PdamPageState extends State<PdamPage> {
   }
 
   Widget _buildTextFieldPelanggan() {
-    return TextFormField(
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(12),
-      ],
-      controller: _controllerNomor,
-      keyboardType: TextInputType.phone,
-      validator: validateNomor,
-      onSaved: (String val) {
-        inputNomor = val;
-      },
-      decoration: InputDecoration(
-        hintText: "Contoh : 123456",
-          errorText: _isFieldNomor == null || _isFieldNomor
-              ? null
-              : "Tidak Boleh Kosong"),
-      onChanged: (String value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _isFieldNomor) {
-          setState(() => _isFieldNomor = isFieldValid);
-        }
-      },
+    return Container(
+      child: TextFormField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(12),
+        ],
+        controller: _controllerNomor,
+        keyboardType: TextInputType.phone,
+        validator: validateNomor,
+        onSaved: (String val) {
+          inputNomor = val;
+        },
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(width: 1, color: Colors.grey)),
+            hintText: "Contoh : 123456",
+            errorText: _isFieldNomor == null || _isFieldNomor
+                ? null
+                : "Tidak Boleh Kosong"),
+        onChanged: (String value) {
+          bool isFieldValid = value.trim().isNotEmpty;
+          if (isFieldValid != _isFieldNomor) {
+            setState(() => _isFieldNomor = isFieldValid);
+          }
+        },
+      ),
     );
   }
 }
-

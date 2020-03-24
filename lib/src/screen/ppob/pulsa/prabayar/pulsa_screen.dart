@@ -71,81 +71,71 @@ class _PulsaPageState extends State<PulsaPage> {
                                 child: Text('Nomor Handphone')),
                             Padding(
                               padding: const EdgeInsets.only(top: 12.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Expanded(
-                                      flex: 3,
-                                      child: Container(
-                                        child: TextFormField(
-                                            inputFormatters: [
-                                              LengthLimitingTextInputFormatter(
-                                                  12)
-                                            ],
-                                            controller: _controllerNomor,
-                                            onChanged: (String value) async {
-                                              for (var i = 0;
-                                                  i < snapshot.data.data.length;
-                                                  i++) {
-                                                if (value.length == 4) {
-                                                  if (value ==
-                                                      providers[i]
-                                                          .kodeProvider) {
-                                                    setState(() {
-                                                      mobi = providers[i]
-                                                          .namaProvider;
-                                                      idProv = providers[i]
-                                                          .operatorId
-                                                          .toString();
-                                                      logoProv = providers[i]
-                                                          .file
-                                                          .toString();
-                                                    });
-                                                    print("LOGO PROVIDER: " +
-                                                        logoProv);
-                                                  }
-                                                } else if (value.length == 3) {
-                                                  setState(() {
-                                                    mobi = "";
-                                                    logoProv = "";
-                                                  });
-                                                }
-                                              }
-                                            },
-                                            keyboardType: TextInputType.phone,
-                                            validator: validateNomor,
-                                            onSaved: (String val) {
-                                              inputNomor = val;
-                                            }),
-                                      )),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Container(
-                                            height: 30.0,
-                                            width: 30.0,
-                                            child: Text(logoProv == "" ? "" : "Provider"),
-                                            // child: Image.network(logoProv),
-                                          )),
-                                          Container(
-                                            height: 30.0,
+                              child: TextFormField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(12)
+                                  ],
+                                  decoration: InputDecoration(
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            width: 1, color: Colors.grey)),
+                                    suffixIcon: Stack(
+                                      alignment: Alignment.topRight,
+                                      children: <Widget>[
+                                        Container(
+                                          padding: EdgeInsets.only(right: 35),
+                                          child: Container(
+                                            height: 35.0,
                                             width: 1.0,
                                             color: Colors.black,
                                           ),
-                                          Container(
-                                              child: Image.asset(
-                                                  "lib/src/assets/XMLID_2.png"))
-                                        ],
-                                      ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                              top: 6.0, right: 50),
+                                          child: Icon(logoProv == ""
+                                              ? Icons.signal_cellular_no_sim
+                                              : Icons.sim_card),
+                                          // child: Image.network(logoProv),
+                                        ),
+                                        Container(
+                                            padding: EdgeInsets.only(top: 6.0),
+                                            child: Image.asset(
+                                                "lib/src/assets/XMLID_2.png")),
+                                      ],
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ),
+                                  controller: _controllerNomor,
+                                  onChanged: (String value) async {
+                                    for (var i = 0;
+                                        i < snapshot.data.data.length;
+                                        i++) {
+                                      if (value.length == 4) {
+                                        if (value ==
+                                            providers[i].kodeProvider) {
+                                          setState(() {
+                                            mobi = providers[i].namaProvider;
+                                            idProv = providers[i]
+                                                .operatorId
+                                                .toString();
+                                            logoProv =
+                                                providers[i].file.toString();
+                                          });
+                                          print("LOGO PROVIDER: " + logoProv);
+                                        }
+                                      } else if (value.length == 3) {
+                                        setState(() {
+                                          mobi = "";
+                                          logoProv = "";
+                                        });
+                                      }
+                                    }
+                                  },
+                                  keyboardType: TextInputType.phone,
+                                  validator: validateNomor,
+                                  onSaved: (String val) {
+                                    inputNomor = val;
+                                  }),
                             ),
                             Container(
                               height: 450.0,
@@ -375,3 +365,79 @@ class _PulsaPageState extends State<PulsaPage> {
     }
   }
 }
+
+// Row(
+// mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// children: <Widget>[
+// Expanded(
+//     flex: 3,
+//     child: Container(
+//       child: TextFormField(
+//           inputFormatters: [
+//             LengthLimitingTextInputFormatter(
+//                 12)
+//           ],
+//           controller: _controllerNomor,
+//           onChanged: (String value) async {
+//             for (var i = 0;
+//                 i < snapshot.data.data.length;
+//                 i++) {
+//               if (value.length == 4) {
+//                 if (value ==
+//                     providers[i]
+//                         .kodeProvider) {
+//                   setState(() {
+//                     mobi = providers[i]
+//                         .namaProvider;
+//                     idProv = providers[i]
+//                         .operatorId
+//                         .toString();
+//                     logoProv = providers[i]
+//                         .file
+//                         .toString();
+//                   });
+//                   print("LOGO PROVIDER: " +
+//                       logoProv);
+//                 }
+//               } else if (value.length == 3) {
+//                 setState(() {
+//                   mobi = "";
+//                   logoProv = "";
+//                 });
+//               }
+//             }
+//           },
+//           keyboardType: TextInputType.phone,
+//           validator: validateNomor,
+//           onSaved: (String val) {
+//             inputNomor = val;
+//           }),
+//     )),
+// Expanded(
+//   flex: 1,
+//   child: Container(
+//     child: Row(
+//       mainAxisAlignment:
+//           MainAxisAlignment.spaceBetween,
+//       children: <Widget>[
+//         Container(
+//           child: Container(
+//           height: 30.0,
+//           width: 30.0,
+//           child: Text(logoProv == "" ? "" : "Provider"),
+//           // child: Image.network(logoProv),
+//         )),
+//         Container(
+//           height: 30.0,
+//           width: 1.0,
+//           color: Colors.black,
+//         ),
+//         Container(
+//             child: Image.asset(
+//                 "lib/src/assets/XMLID_2.png"))
+//       ],
+//     ),
+//   ),
+// )
+// ],
+// ),

@@ -379,7 +379,7 @@ class _BerandaPageState extends State<BerandaPage> {
       onTap: () {
         if (islamService.title == "ISlam") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PdamPage()));
+              context, MaterialPageRoute(builder: (context) => PdamPage("")));
         } else {
           print('Under Maintence');
         }
@@ -415,7 +415,7 @@ class _BerandaPageState extends State<BerandaPage> {
               context, MaterialPageRoute(builder: (context) => Listrik()));
         } else if (ppobService.title == "Air PDAM") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PdamPage()));
+              context, MaterialPageRoute(builder: (context) => PdamPage("")));
         } else {
           print('Under Maintence');
         }

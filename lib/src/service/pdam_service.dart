@@ -4,17 +4,6 @@ import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
-// Future<String> _loadWilayah() async {
-//   return await rootBundle.loadString('lib/src/assets/apidummy/wilayah.json');
-// }
-
-// Future loadWilayah() async {
-//   String jsonAddress = await _loadWilayah();
-//   final jsonResponse = json.decode(jsonAddress);
-//   data address = new data.fromJson(jsonResponse);
-//   print(address.streets[1]);
-// }
-
     Future<NamaWilayah> getWilayah() async {
       var response = await rootBundle.loadString('lib/src/assets/apidummy/wilayah.json');
       final jsonResponse = json.decode(response);

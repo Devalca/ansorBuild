@@ -87,40 +87,8 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                       child: Text('Nomor Handphone'),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 3,
-                              child: Container(child: _buildTextFieldNomor())),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                      child: Container(
-                                        height: 30.0,
-                                        width: 30.0,
-                                        child: Text(logoProv == "" ? "" : "Provider"),
-                                        // child: Image.network(logoProv),
-                                      )),
-                                  Container(
-                                    height: 30.0,
-                                    width: 1.0,
-                                    color: Colors.black,
-                                  ),
-                                  Container(child: Image.asset("lib/src/assets/XMLID_2.png"))
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: _buildTextFieldNomor()),
                   ],
                 ),
               ),
@@ -248,6 +216,30 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                 inputNomor = val;
               },
               decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(width: 1, color: Colors.grey)),
+                  suffixIcon: Stack(
+                    alignment: Alignment.topRight,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(right: 35),
+                        child: Container(
+                          height: 35.0,
+                          width: 1.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 6.0, right: 50),
+                        child: Icon(
+                            logoProv == "" ? Icons.signal_cellular_no_sim : Icons.sim_card),
+                        // child: Image.network(logoProv),
+                      ),
+                      Container(
+                          padding: EdgeInsets.only(top: 6.0),
+                          child: Image.asset("lib/src/assets/XMLID_2.png")),
+                    ],
+                  ),
                   errorText: _isFieldNomor == null || _isFieldNomor
                       ? null
                       : "Tidak Boleh Kosong"),
@@ -279,3 +271,39 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
         });
   }
 }
+
+// Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: <Widget>[
+//                       Expanded(
+//                           flex: 3,
+//                           child: Container(child: _buildTextFieldNomor())),
+//                       Expanded(
+//                         flex: 1,
+//                         child: Container(
+//                           child: Row(
+//                             mainAxisAlignment:
+//                                 MainAxisAlignment.spaceBetween,
+//                             children: <Widget>[
+//                               Container(
+//                                   child: Container(
+//                                 height: 30.0,
+//                                 width: 30.0,
+//                                 child:
+//                                     Text(logoProv == "" ? "" : "Provider"),
+//                                 // child: Image.network(logoProv),
+//                               )),
+//                               Container(
+//                                 height: 30.0,
+//                                 width: 1.0,
+//                                 color: Colors.black,
+//                               ),
+//                               Container(
+//                                   child: Image.asset(
+//                                       "lib/src/assets/XMLID_2.png"))
+//                             ],
+//                           ),
+//                         ),
+//                       )
+//                     ],
+//                   ),
