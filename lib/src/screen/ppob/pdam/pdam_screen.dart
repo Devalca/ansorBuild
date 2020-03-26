@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/list_screen.dart';
 import 'package:ansor_build/src/service/api_service.dart';
@@ -17,6 +19,7 @@ class PdamPage extends StatefulWidget {
 
 class _PdamPageState extends State<PdamPage> {
   final GlobalKey<FormState> _key = GlobalKey();
+  ApiService _apiService = ApiService();
   bool _validate = true;
   bool _isFieldWilayah;
   bool _isFieldNomor;
@@ -24,7 +27,7 @@ class _PdamPageState extends State<PdamPage> {
   TextEditingController _controllerWilayah = TextEditingController();
   TextEditingController _controllerNomor = TextEditingController();
 
-    static Future<void> _showLoadingDialog(BuildContext context) async {
+  static Future<void> _showLoadingDialog(BuildContext context) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -102,16 +105,15 @@ class _PdamPageState extends State<PdamPage> {
                           height: 50,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: 
-                              (context) => ListWilayah()
-                              ));
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ListWilayah()));
                             },
                           ),
                         ),
-                         
                       ],
                     ),
-                    
                     Container(
                       margin: EdgeInsets.only(top: 12.0),
                       child: Text('Nomor Pelanggan'),
@@ -128,14 +130,32 @@ class _PdamPageState extends State<PdamPage> {
                     alignment: Alignment.centerRight,
                     child: RaisedButton(
                       onPressed: () {
-                         _showLoadingDialog(context);
-                      //           String nomor = _controllerNomor.text.toString();
-                      //           String wilayah = _controllerWilayah.text.toString();
-                      //           PostPdam postPdam =
-                      //               PostPdam(noPelanggan: nomor, id: 1, walletId: 1);
-                      //  Navigator.push(context, MaterialPageRoute(builder: 
-                      //  (context) => DetailPage(koId)
-                      //  ));
+                        _showLoadingDialog(context);
+                        String nomor = _controllerNomor.text.toString();
+                        String wilayah = _controllerWilayah.text.toString();
+                        PostPdam postPdam =
+                            PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
+                        createPostPdam(postPdam).then((response) async {
+                          if (response.statusCode == 200) {
+                            Map blok = jsonDecode(response.body);
+                            userUid = blok['id'].toString();
+                            var koId = userUid;
+                            print(userUid);
+                            if (userUid == "null") {
+                              print("user id Kosong");
+                            } else {
+                              await new Future.delayed(
+                                  const Duration(seconds: 5));
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (__) => new DetailPage(koId)));
+                            }
+                          } else {
+                            print("INI STATUS CODE: " +
+                                response.statusCode.toString());
+                          }
+                        });
                       },
                       child: Text(
                         "LANJUT".toUpperCase(),

@@ -49,26 +49,6 @@ PostPdam postPdamFromJson(String str) => PostPdam.fromJson(json.decode(str));
 String postPdamToJson(PostPdam data) => json.encode(data.toJson());
 
 class PostPdam {
-    List<Pdam> data;
-    String message;
-
-    PostPdam({
-        this.data,
-        this.message,
-    });
-
-    factory PostPdam.fromJson(Map<String, dynamic> json) => PostPdam(
-        data: List<Pdam>.from(json["data"].map((x) => Pdam.fromJson(x))),
-        message: json["message"],
-    );
-
-    Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(data.map((x) => x.toJson())),
-        "message": message,
-    };
-}
-
-class Pdam {
     int id;
     String noPelanggan;
     String namaPelanggan;
@@ -77,7 +57,7 @@ class Pdam {
     int total;
     DateTime periode;
 
-    Pdam({
+    PostPdam({
         this.id,
         this.noPelanggan,
         this.namaPelanggan,
@@ -87,7 +67,7 @@ class Pdam {
         this.periode,
     });
 
-    factory Pdam.fromJson(Map<String, dynamic> json) => Pdam(
+    factory PostPdam.fromJson(Map<String, dynamic> json) => PostPdam(
         id: json["id"],
         noPelanggan: json["no_pelanggan"],
         namaPelanggan: json["nama_pelanggan"],
@@ -107,6 +87,7 @@ class Pdam {
         "periode": periode.toIso8601String(),
     };
 }
+
 
 
 
