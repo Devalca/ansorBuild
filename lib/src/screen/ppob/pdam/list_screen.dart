@@ -9,15 +9,16 @@ class ListWilayah extends StatefulWidget {
 }
 
 class _ListWilayahState extends State<ListWilayah> {
-  List<Wilayah> _notes = List<Wilayah>();
-  List<Wilayah> _notesForDisplay = List<Wilayah>();
+  PdamService _pdamService = PdamService();
+  List<Wilayah> _wilayah = List<Wilayah>();
+  List<Wilayah> _wilayahForDisplay = List<Wilayah>();
 
   @override
   void initState() {
-    getWilayah().then((value) {
+    _pdamService.getWilayah().then((value) {
       setState(() {
-        _notes.addAll(value.data);
-        _notesForDisplay = _notes;
+        _wilayah.addAll(value.data);
+        _wilayahForDisplay = _wilayah;
       });
     });
     super.initState();
@@ -50,7 +51,7 @@ class _ListWilayahState extends State<ListWilayah> {
             itemBuilder: (context, index) {
               return index == 0 ? Container() : _listKota(index - 1);
             },
-            itemCount: _notesForDisplay.length + 1,
+            itemCount: _wilayahForDisplay.length + 1,
           ),
         ),
         _searchBar()
@@ -68,9 +69,9 @@ class _ListWilayahState extends State<ListWilayah> {
         onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
-            _notesForDisplay = _notes.where((note) {
-              var noteTitle = note.namaWilayah.toLowerCase();
-              return noteTitle.contains(text);
+            _wilayahForDisplay = _wilayah.where((kota) {
+              var kotaTitle = kota.namaWilayah.toLowerCase();
+              return kotaTitle.contains(text);
             }).toList();
           });
         },
@@ -95,7 +96,7 @@ class _ListWilayahState extends State<ListWilayah> {
   }
 
   Widget _listKota(index) {
-    String namaKotaKab = _notesForDisplay[index].namaWilayah.toString();
+    String namaKotaKab = _wilayahForDisplay[index].namaWilayah.toString();
     return GestureDetector(
           onTap: () {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: 
@@ -112,7 +113,7 @@ class _ListWilayahState extends State<ListWilayah> {
               contentPadding:
                   EdgeInsets.symmetric(horizontal: 0.0, vertical: 8.0),
               title: Text(
-                 _notesForDisplay[index].namaWilayah,
+                 _wilayahForDisplay[index].namaWilayah,
                 style: TextStyle(fontSize: 16.0),
               ),
             ),

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/list_screen.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +19,8 @@ class PdamPage extends StatefulWidget {
 
 class _PdamPageState extends State<PdamPage> {
   final GlobalKey<FormState> _key = GlobalKey();
-  ApiService _apiService = ApiService();
+  LocalService _localService = LocalService();
+  PdamService _pdamService = PdamService();
   bool _validate = true;
   bool _isFieldWilayah;
   bool _isFieldNomor;
@@ -60,7 +61,6 @@ class _PdamPageState extends State<PdamPage> {
 
   @override
   Widget build(BuildContext context) {
-    getWilayah();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -132,30 +132,38 @@ class _PdamPageState extends State<PdamPage> {
                       onPressed: () {
                         _showLoadingDialog(context);
                         String nomor = _controllerNomor.text.toString();
-                        String wilayah = _controllerWilayah.text.toString();
+                        String wilayah =
+                            _controllerWilayah.text = widget.namaKotaKab;
                         PostPdam postPdam =
                             PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
-                        createPostPdam(postPdam).then((response) async {
-                          if (response.statusCode == 200) {
-                            Map blok = jsonDecode(response.body);
-                            userUid = blok['id'].toString();
-                            var koId = userUid;
-                            print(userUid);
-                            if (userUid == "null") {
-                              print("user id Kosong");
+                        if (nomor != null || wilayah != null) {
+                          _pdamService
+                              .createPostPdam(postPdam)
+                              .then((response) async {
+                            if (response.statusCode == 200) {
+                              print("part1");
+                              Map blok = jsonDecode(response.body);
+                              String userUid = blok['data'][0]['id'].toString();
+                              String koId = userUid;
+                              print(userUid);
+                              if (userUid == null) {
+                                print("user id Kosong");
+                              } else {
+                                print("part2");
+                                await new Future.delayed(
+                                    const Duration(seconds: 5));
+                                Navigator.push(context, MaterialPageRoute(builder: (__)
+                                => DetailPagePdam()
+                                ));
+                              }
                             } else {
-                              await new Future.delayed(
-                                  const Duration(seconds: 5));
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new DetailPage(koId)));
+                              print("INI STATUS CODE: " +
+                                  response.statusCode.toString());
                             }
-                          } else {
-                            print("INI STATUS CODE: " +
-                                response.statusCode.toString());
-                          }
-                        });
+                          });
+                        } else {
+                          print("part5");
+                        }
                       },
                       child: Text(
                         "LANJUT".toUpperCase(),

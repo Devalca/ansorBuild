@@ -1,9 +1,11 @@
 //Detail Pembayaran Prabayar
 import 'dart:convert';
-import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:indonesia/indonesia.dart';
@@ -23,16 +25,18 @@ class _DetailPageState extends State<DetailPage> {
   Future<Album> futureAlbum;
   Future<Wallet> futureWallet;
   bool _isLoading = false;
-  ApiService _apiService = ApiService();
+  PulsaService _pulsaService = PulsaService();
+  WalletService _walletService = WalletService();
+  LocalService _localService = LocalService();
   String _id = "";
   final cF = NumberFormat.currency(locale: 'ID');
 
   @override
   void initState() {
     super.initState();
-    _apiService.getNameId().then(updateId);
+    _localService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
-    futureWallet = _apiService.getSaldo();
+    futureWallet = _walletService.getSaldo();
   }
 
   Future<Album> fetchAlbum() async {
@@ -260,7 +264,7 @@ class _DetailPageState extends State<DetailPage> {
                             child: RaisedButton(
                               color: Colors.green,
                               onPressed: () {
-                                LoadingServices.loadingDialog(context);
+                                loadingDialog(context);
                                 // setState(() => _isLoading = true);
                                 int transactionId = int.parse(_id.toString());
                                 String nomorHp =
@@ -274,14 +278,14 @@ class _DetailPageState extends State<DetailPage> {
                                     userId: 1,
                                     walletId: 1,
                                     provider: widget.namaProv);
-                                _apiService
+                                _pulsaService
                                     .createPay(post)
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
                                     userUid = blok['id'].toString();
                                     var koId = userUid;
-                                    _apiService.saveNameId(userUid).then((bool committed) {
+                                    _localService.saveNameId(userUid).then((bool committed) {
                                       print(userUid);
                                     });
                                      await Future.delayed(const Duration(seconds: 5));

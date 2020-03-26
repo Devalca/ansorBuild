@@ -1,8 +1,10 @@
 //Detail Pembayaran Pascabayar
 import 'dart:convert';
-import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:indonesia/indonesia.dart';
@@ -22,14 +24,16 @@ class _DetailPageState extends State<DetailPage> {
   DateTime dateTime;
   Future<Album> futureAlbum;
   bool _isLoading = false;
-  ApiService _apiService = ApiService();
+  PulsaService _pulsaService = PulsaService();
+  WalletService _walletService = WalletService();
+  LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
   String _id = "";
 
   @override
   void initState() {
     super.initState();
-    _apiService.getNameId().then(updateId);
+    _localService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
   }
 
@@ -275,7 +279,7 @@ class _DetailPageState extends State<DetailPage> {
                                       ),
                                       Container(
                                         child: FutureBuilder<Wallet>(
-                                        future: _apiService.getSaldo(),
+                                        future: _walletService.getSaldo(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
                                             return Text(rupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ", "Rp"));
@@ -320,7 +324,7 @@ class _DetailPageState extends State<DetailPage> {
                                     nominal: nominal,
                                     userId: 1,
                                     walletId: 1);
-                                _apiService
+                                _pulsaService
                                     .createPayPasca(post)
                                     .then((response) async {
                                   if (response.statusCode == 200) {

@@ -55,7 +55,6 @@ class PostPdam {
     String namaWilayah;
     int tagihan;
     int total;
-    DateTime periode;
 
     PostPdam({
         this.id,
@@ -63,8 +62,7 @@ class PostPdam {
         this.namaPelanggan,
         this.namaWilayah,
         this.tagihan,
-        this.total,
-        this.periode,
+        this.total
     });
 
     factory PostPdam.fromJson(Map<String, dynamic> json) => PostPdam(
@@ -73,8 +71,7 @@ class PostPdam {
         namaPelanggan: json["nama_pelanggan"],
         namaWilayah: json["nama_wilayah"],
         tagihan: json["tagihan"],
-        total: json["total"],
-        periode: DateTime.parse(json["periode"]),
+        total: json["total"]
     );
 
     Map<String, dynamic> toJson() => {
@@ -83,10 +80,87 @@ class PostPdam {
         "nama_pelanggan": namaPelanggan,
         "nama_wilayah": namaWilayah,
         "tagihan": tagihan,
-        "total": total,
-        "periode": periode.toIso8601String(),
+        "total": total
+    };
+
+}
+
+DetailPdam detailPdamFromJson(String str) => DetailPdam.fromJson(json.decode(str));
+
+String detailPdamToJson(DetailPdam data) => json.encode(data.toJson());
+
+class DetailPdam {
+    List<DetailData> data;
+    String message;
+
+    DetailPdam({
+        this.data,
+        this.message,
+    });
+
+    factory DetailPdam.fromJson(Map<String, dynamic> json) => DetailPdam(
+        data: List<DetailData>.from(json["data"].map((x) => DetailData.fromJson(x))),
+        message: json["message"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
     };
 }
+
+class DetailData {
+    int id;
+    String namaPelanggan;
+    String noPelanggan;
+    String namaWilayah;
+    int tagihan;
+    int adminFee;
+    int total;
+    DateTime periode;
+    int walletId;
+    int userId;
+
+    DetailData({
+        this.id,
+        this.namaPelanggan,
+        this.noPelanggan,
+        this.namaWilayah,
+        this.tagihan,
+        this.adminFee,
+        this.total,
+        this.periode,
+        this.walletId,
+        this.userId
+    });
+
+    factory DetailData.fromJson(Map<String, dynamic> json) => DetailData(
+        id: json["id"],
+        namaPelanggan: json["nama_pelanggan"],
+        noPelanggan: json["no_pelanggan"],
+        namaWilayah: json["nama_wilayah"],
+        tagihan: json["tagihan"],
+        adminFee: json["admin_fee"],
+        total: json["total"],
+        periode: DateTime.parse(json["periode"]),
+        walletId: json["walletId"],
+        userId: json["userId"]
+    );
+
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "nama_pelanggan": namaPelanggan,
+        "no_pelanggan": noPelanggan,
+        "nama_wilayah": namaWilayah,
+        "tagihan": tagihan,
+        "admin_fee": adminFee,
+        "total": total,
+        "periode": periode.toIso8601String(),
+        "userId": userId,
+        "walletId": walletId
+    };
+}
+
 
 
 

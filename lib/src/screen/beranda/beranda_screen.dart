@@ -7,8 +7,8 @@ import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
-import 'package:ansor_build/src/service/api_service.dart';
 import 'package:ansor_build/src/service/beranda_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:indonesia/indonesia.dart';
@@ -20,7 +20,7 @@ class BerandaPage extends StatefulWidget {
 }
 
 class _BerandaPageState extends State<BerandaPage> {
-  ApiService _apiService = ApiService();
+  WalletService _walletService = WalletService();
   BerandaService _berandaService = BerandaService();
   final cF = NumberFormat.currency(locale: 'ID');
 
@@ -123,70 +123,7 @@ class _BerandaPageState extends State<BerandaPage> {
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(
-                    left: 16.0,
-                    right: 16.0,
-                    bottom: 16.0,
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              child: Text('Donasi'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 1, color: Colors.grey[200])),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              child:
-                                  Image.asset('lib/src/assets/BANNER_ATAS.jpg'),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 12.0),
-                              height: 50,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                    child: Text('Donasi Ansor'),
-                                  ),
-                                  Container(
-                                      height: 30,
-                                      width: 80,
-                                      decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          border: Border.all(
-                                              width: 1, color: Colors.green),
-                                          borderRadius:
-                                              BorderRadius.circular(5.0)),
-                                      child: FlatButton(
-                                          onPressed: null,
-                                          child: Text(
-                                            'Donasi',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          )))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                _donasiService()
               ],
             ),
           ),
@@ -220,7 +157,7 @@ class _BerandaPageState extends State<BerandaPage> {
               children: <Widget>[
                 Container(
                   child: FutureBuilder<Wallet>(
-                    future: _apiService.getSaldo(),
+                    future: _walletService.getSaldo(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
                         if (snapshot.hasData)
@@ -262,7 +199,7 @@ class _BerandaPageState extends State<BerandaPage> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _apiService.getSaldo();
+                                  _walletService.getSaldo();
                                 });
                               }),
                           FlatButton(
@@ -453,11 +390,11 @@ class _BerandaPageState extends State<BerandaPage> {
                       List<Product> productService =
                           snapshot.data.data[i].products;
                       return _katalogListItem(productService);
-                    } 
+                    }
                   }
-                 return Text(
-            'No value yet!',
-          );
+                  return Text(
+                    'No value yet!',
+                  );
                 }),
           ),
         ],
@@ -510,32 +447,64 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
-  Widget _rowBarangService(Katalog katalog) {
-    return InkWell(
-        onTap: () {
-          print('INI BARANG');
-        },
-        child: Container(
-          margin: EdgeInsets.only(right: 16.0),
-          child: Column(
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8.0),
-                child: Image.asset(
-                  katalog.products[0].photos[0].photo.toString(),
-                  color: Colors.green,
-                  width: 132.0,
-                  height: 132.0,
+  Widget _donasiService() {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 16.0,
+        right: 16.0,
+        bottom: 16.0,
+      ),
+      child: Column(
+        children: <Widget>[
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(bottom: 16.0),
+                  child: Text('Donasi'),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 8.0),
-              ),
-              Text(
-                katalog.products[0].namaProduk,
-              ),
-            ],
+              ],
+            ),
           ),
-        ));
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Colors.grey[200])),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Image.asset('lib/src/assets/BANNER_ATAS.jpg'),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  height: 50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Text('Donasi Ansor'),
+                      ),
+                      Container(
+                          height: 30,
+                          width: 80,
+                          decoration: BoxDecoration(
+                              color: Colors.green,
+                              border: Border.all(width: 1, color: Colors.green),
+                              borderRadius: BorderRadius.circular(5.0)),
+                          child: FlatButton(
+                              onPressed: null,
+                              child: Text(
+                                'Donasi',
+                                style: TextStyle(color: Colors.white),
+                              )))
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

@@ -13,7 +13,11 @@ class SaldoAppBar extends AppBar {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Image.asset('lib/src/assets/lapak_sahabat.png', fit: BoxFit.cover, width: 140,),
+          Image.asset(
+            'lib/src/assets/lapak_sahabat.png',
+            fit: BoxFit.cover,
+            width: 140,
+          ),
           Container(
             child: Row(
               children: <Widget>[

@@ -1,7 +1,8 @@
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/topup/atm_screen.dart';
 import 'package:ansor_build/src/screen/topup/banking_screen.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +13,8 @@ class TopupPage extends StatefulWidget {
 }
 
 class _TopupPageState extends State<TopupPage> {
-  ApiService _apiService = ApiService();
+  PulsaService _pulsaService = PulsaService();
+  WalletService _walletService = WalletService();
   final cF = NumberFormat.currency(locale: 'ID');
 
   @override
@@ -71,7 +73,7 @@ class _TopupPageState extends State<TopupPage> {
                       child: Row(
                         children: <Widget>[
                           FutureBuilder<Wallet>(
-                            future: _apiService.getSaldo(),
+                            future: _walletService.getSaldo(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {

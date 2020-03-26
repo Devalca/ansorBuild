@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoadingServices {
-
-    static Future<void> loadingDialog(BuildContext context) async {
+Future<void> loadingDialog(BuildContext context) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -31,6 +29,4 @@ class LoadingServices {
                     )
                   ]));
         });
-  }
-
 }

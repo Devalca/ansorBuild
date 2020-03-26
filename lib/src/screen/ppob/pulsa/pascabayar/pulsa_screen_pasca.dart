@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,14 +13,15 @@ class PulsaPascaPage extends StatefulWidget {
 }
 
 class _PulsaPascaPageState extends State<PulsaPascaPage> {
-  final GlobalKey<FormState> _key = GlobalKey();
+  String mobi = "";
+  String logoProv = "";
+  bool _isFieldNomor;
   bool _validate = true;
   bool _isLoading = false;
   String inputNomor, inputNominal, hargaNominal;
-  String mobi = "";
-  String logoProv = "";
-  ApiService _apiService = ApiService();
-  bool _isFieldNomor;
+  final GlobalKey<FormState> _key = GlobalKey();
+  LocalService _localService = LocalService();
+  PulsaService _pulsaService = PulsaService();
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
@@ -125,7 +127,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                 String nomor = _controllerNomor.text.toString();
                                 Post post =
                                     Post(noHp: nomor, userId: 1, walletId: 1);
-                                _apiService
+                                _pulsaService
                                     .createPostPasca(post)
                                     .then((response) async {
                                   if (response.statusCode == 200) {
@@ -141,7 +143,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                       //         content: Text(
                                       //             "Nomor Yang Anda Masukan Tidak Terdaftar!")));
                                     } else {
-                                      _apiService
+                                      _localService
                                           .saveNameId(userUid)
                                           .then((bool committed) {});
                                       await new Future.delayed(
@@ -202,7 +204,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
 
   Widget _buildTextFieldNomor() {
     return FutureBuilder<ProviderCall>(
-        future: _apiService.getProvider(),
+        future: _pulsaService.getProvider(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Datum> providers = snapshot.data.data;

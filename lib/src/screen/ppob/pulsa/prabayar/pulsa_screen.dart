@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:indonesia/indonesia.dart';
@@ -16,15 +17,16 @@ class PulsaPage extends StatefulWidget {
 }
 
 class _PulsaPageState extends State<PulsaPage> {
-  GlobalKey<FormState> _key = GlobalKey();
-  ApiService _apiService = ApiService();
-  bool _validate = true;
-  String inputNomor, inputNominal, hargaNominal;
-  int _nominalIndex = -1;
-  final cF = NumberFormat.currency(locale: 'ID');
   var mobi = "";
   var idProv = "";
   var logoProv = "";
+  bool _validate = true;
+  int _nominalIndex = -1;
+  String inputNomor, inputNominal, hargaNominal;
+  GlobalKey<FormState> _key = GlobalKey();
+  PulsaService _pulsaService = PulsaService();
+  LocalService _localService = LocalService();
+  final cF = NumberFormat.currency(locale: 'ID');
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
@@ -55,7 +57,7 @@ class _PulsaPageState extends State<PulsaPage> {
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: FutureBuilder<ProviderCall>(
-            future: _apiService.getProvider(),
+            future: _pulsaService.getProvider(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Datum> providers = snapshot.data.data;
@@ -145,7 +147,7 @@ class _PulsaPageState extends State<PulsaPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     FutureBuilder<NominalList>(
-                                      future: _apiService.getNominal(),
+                                      future: _pulsaService.getNominal(),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.done) {
@@ -327,7 +329,7 @@ class _PulsaPageState extends State<PulsaPage> {
   }
 
   _sendToServer() {
-    LoadingServices.loadingDialog(context);
+    loadingDialog(context);
     if (_key.currentState.validate()) {
       _key.currentState.save();
       // setState(() => _isLoading = true);
@@ -341,12 +343,12 @@ class _PulsaPageState extends State<PulsaPage> {
             userId: 1,
             walletId: 1,
             provider: namaProv);
-        _apiService.createPost(post).then((response) async {
+        _pulsaService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
             var koId = userUid;
-            _apiService.saveNameId(userUid).then((bool committed) {
+            _localService.saveNameId(userUid).then((bool committed) {
               print(userUid);
             });
             print("INI KOID : " + koId);

@@ -19,15 +19,13 @@ final List child = map<Widget>(
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Stack(children: <Widget>[
-         Image.asset(i, fit: BoxFit.fill, width: 1000.0),
+          Image.asset(i, fit: BoxFit.fill, width: 1000.0),
           Positioned(
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
             child: Container(
-              decoration: BoxDecoration(
-               
-              ),
+              decoration: BoxDecoration(),
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
             ),
           ),
@@ -81,7 +79,8 @@ class _IklanKecilState extends State<IklanKecil> {
                   return Container(
                     width: 8.0,
                     height: 10.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _current == index
@@ -92,7 +91,10 @@ class _IklanKecilState extends State<IklanKecil> {
               ),
             ),
             Container(
-              child: Text('Lihat Semua', style: TextStyle(color: Colors.green),),
+              child: Text(
+                'Lihat Semua',
+                style: TextStyle(color: Colors.green),
+              ),
             )
           ],
         ),

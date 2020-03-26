@@ -1,10 +1,6 @@
-import 'dart:convert';
-
-import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/model/user_model.dart';
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,7 +10,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  ApiService _apiService = ApiService();
+  PulsaService _pulsaService = PulsaService();
   final _regKey = GlobalKey<FormState>();
   bool _validate = true;
   String registNama = '';
@@ -222,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
               email: registEmail,
               password: registPsd,
             );
-            _apiService.postRegist(users).then((response) async {
+            _pulsaService.postRegist(users).then((response) async {
               if (response.statusCode == 200) {
                 if (response.body == "already existed!") {
                   print("MOBIL SETAN: " +  response.body);

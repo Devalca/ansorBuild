@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:ansor_build/src/model/ansor_model.dart';
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
-import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:indonesia/indonesia.dart';
@@ -22,12 +20,13 @@ class SelesaiPage extends StatefulWidget {
 class _SelesaiPageState extends State<SelesaiPage> {
   String _id = "";
   Future<PostTrans> futureTrans;
-  ApiService _apiService = ApiService();
+  PulsaService _pulsaService = PulsaService();
+  LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
   @override
   void initState() {
     super.initState();
-    _apiService.getNameId().then(updateId);
+    _localService.getNameId().then(updateId);
     futureTrans = fetchTrans();
   }
 

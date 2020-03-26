@@ -9,7 +9,7 @@ import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 
 class ListrikPembayaran extends StatefulWidget {
   final String status;
@@ -23,7 +23,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
   bool _isLoading = false;
 
   PlnServices _plnServices = PlnServices();
-  ApiService _apiService = ApiService();
+  WalletService _walletService = WalletService();
   
   String _transactionId = "";
   String url = "";
@@ -238,7 +238,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                           ),
                                           Container(
                                             child: FutureBuilder<Wallet>(
-                                              future: _apiService.getSaldo(),
+                                              future: _walletService.getSaldo(),
                                               builder: (context, snapshot) {
                                                 if (snapshot.hasData) {
                                                   return Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.data[0].saldoAkhir));

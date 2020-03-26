@@ -16,7 +16,6 @@ class BerandaService {
         title: "Listrik PLN"));
     _ppobServiceList.add(PpobService(
         image: Image.asset('lib/src/assets/PDAM.png'), title: "Air PDAM"));
-
     _ppobServiceList.add(PpobService(
         image: Image.asset('lib/src/assets/BPJS.png'), title: "BPJS"));
     _ppobServiceList.add(PpobService(

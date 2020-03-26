@@ -54,13 +54,29 @@ class _LandingPageState extends State<LandingPage> {
       currentIndex: _bottomNavCurrentIndex,
       items: [
         BottomNavigationBarItem(
-          activeIcon: Image.asset("lib/src/assets/HOME_GREEN.png", height: 25, width: 25,),
-          icon: Image.asset("lib/src/assets/HOME.png", height: 25, width: 25,),
+          activeIcon: Image.asset(
+            "lib/src/assets/HOME_GREEN.png",
+            height: 25,
+            width: 25,
+          ),
+          icon: Image.asset(
+            "lib/src/assets/HOME.png",
+            height: 25,
+            width: 25,
+          ),
           title: Text("Beranda", style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
-          activeIcon: Image.asset("lib/src/assets/TRANSFER_GREEN.png", height: 25, width: 25,),
-          icon: Image.asset("lib/src/assets/TRANSFER.png", height: 25, width: 25,),
+          activeIcon: Image.asset(
+            "lib/src/assets/TRANSFER_GREEN.png",
+            height: 25,
+            width: 25,
+          ),
+          icon: Image.asset(
+            "lib/src/assets/TRANSFER.png",
+            height: 25,
+            width: 25,
+          ),
           title: Text('Transfer', style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
@@ -71,13 +87,29 @@ class _LandingPageState extends State<LandingPage> {
           ),
         ),
         BottomNavigationBarItem(
-           activeIcon: Image.asset("lib/src/assets/INBOX_GREEN.png", height: 25, width: 25,),
-          icon: Image.asset("lib/src/assets/INBOX.png", height: 25, width: 25,),
+          activeIcon: Image.asset(
+            "lib/src/assets/INBOX_GREEN.png",
+            height: 25,
+            width: 25,
+          ),
+          icon: Image.asset(
+            "lib/src/assets/INBOX.png",
+            height: 25,
+            width: 25,
+          ),
           title: Text('Histori', style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
-          activeIcon: Image.asset("lib/src/assets/ACCOUNT_GREEN.png", height: 25, width: 25,),
-          icon: Image.asset("lib/src/assets/ACCOUNT.png", height: 25, width: 25,),
+          activeIcon: Image.asset(
+            "lib/src/assets/ACCOUNT_GREEN.png",
+            height: 25,
+            width: 25,
+          ),
+          icon: Image.asset(
+            "lib/src/assets/ACCOUNT.png",
+            height: 25,
+            width: 25,
+          ),
           title: Text('Profil', style: TextStyle(color: Colors.black)),
         ),
       ],
