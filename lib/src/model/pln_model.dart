@@ -225,9 +225,9 @@ class Detail {
   String status;
   String tarif;
   String daya;
+  double totalKwh;
   int nominal;
   int total;
-  double totalKwh;
   String noToken;
   String noTransaksi;
   DateTime createdAt;
@@ -239,9 +239,9 @@ class Detail {
     this.status,
     this.tarif,
     this.daya,
+    this.totalKwh,
     this.nominal,
     this.total,
-    this.totalKwh,
     this.noToken,
     this.noTransaksi,
     this.createdAt
@@ -254,9 +254,9 @@ class Detail {
     status: item['status'],
     tarif: item['tarif'],
     daya: item['daya'],
+    totalKwh: item['total_kwh'].toDouble(),
     nominal: item['nominal'],
     total: item['total'],
-    totalKwh: item['total_kwh'].toDouble(),
     noToken: item['no_token'],
     noTransaksi: item['no_transaksi'],
     createdAt: DateTime.parse(item["createdAt"]),
