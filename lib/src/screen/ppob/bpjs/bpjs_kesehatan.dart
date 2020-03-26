@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 import 'package:flutter/material.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 
 class BpjsKesehatan extends StatefulWidget {
   @override
@@ -16,6 +16,31 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                SizedBox(
+                  width : 150,
+                  height: 35,
+                  child: RaisedButton(
+                    child: Text('LANJUT', style: TextStyle(color: Colors.white)),
+                    color: Colors.green,
+                    onPressed: () {
+                      Navigator.push(context, new MaterialPageRoute(builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
+                    }
+                  ),
+                ),
+              ]
+            )
+          ),
+        
+        elevation: 0
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 12.0),
@@ -47,8 +72,20 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                 },
               ),
 
+              Container( height: 15 ),
+
               Container(
+                child: Text(
+                  "Bayar Hingga", 
+                  style: new TextStyle(fontSize: 12.0), 
+                  textAlign: TextAlign.left
+                )
+              ),
+
+              Container(
+                padding: const EdgeInsets.only(top: 10.0),
                 width: double.infinity,
+                height: 40.0,
                 child: Column(
                   children: <Widget>[
                     
@@ -57,7 +94,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(
-                            child: Text("Bayar Hingga", style: new TextStyle(fontSize: 14.0)),
+                            child: Text("Januari 2020", style: new TextStyle(fontSize: 14.0)),
                           ),
                           Container(
                             child: Icon(
@@ -69,46 +106,11 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                         ],
                       ),
                     ),
-
-                    Divider( height: 12, color: Colors.black ),
-
-                  ]
+                  ],
                 ),
               ),
 
               Divider( height: 12, color: Colors.black ),
-
-              Container(
-                height: 50.0,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: new Column (
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Text (""),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: SizedBox(
-                        width : 150,
-                        height: 35,
-                        child: RaisedButton(
-                          child: Text('LANJUT', style: TextStyle(color: Colors.white)),
-                          color: Colors.green,
-                          onPressed: () {
-                            Navigator.push(context, new MaterialPageRoute(builder: (__) => new BPJSPembayaran()));
-                          }
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
             ]
           )
