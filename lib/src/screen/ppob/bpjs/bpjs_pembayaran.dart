@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_berhasil.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -34,6 +35,33 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
           style: TextStyle(color: Colors.black),
         )
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: 333,
+                  height: 35,
+                  child: RaisedButton(
+                    child: Text('BAYAR', style: TextStyle(color: Colors.white)),
+                    color: Colors.green,
+                    onPressed: () {
+                      setState(() => _isLoading = true);
+                      Navigator.push(context, new MaterialPageRoute(builder: (__) => new PembayaranBerhasil(jenis: widget.jenis)));
+                      setState(() => _isLoading = false);
+                    },
+                  ),
+                )
+              ]
+            )
+          ),
+        
+        elevation: 0
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -68,17 +96,17 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
 
               Container( height: 15 ),
 
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                width: double.infinity,
-                height: 180.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  border: Border.all(color: Colors.grey[300],width: 1)
-                ),
-                child: widget.jenis == "kesehatan" ?  
-                  Column(
+              widget.jenis == "kesehatan" ?
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  width: double.infinity,
+                  height: 150.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    border: Border.all(color: Colors.grey[300],width: 1)
+                  ),
+                  child: Column(
                     children: <Widget>[
                       
                       Expanded(
@@ -156,8 +184,18 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                       ),
 
                     ],
-                  ) : 
-                  Column(
+                  )
+                ) :
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  width: double.infinity,
+                  height: 240.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    border: Border.all(color: Colors.grey[300],width: 1)
+                  ),
+                  child: Column(
                     children: <Widget>[
                       
                       Expanded(
@@ -264,7 +302,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
 
                     ],
                   ),
-              ),
+                ),
 
               Container( height: 15 ),
 
@@ -335,25 +373,6 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
               ),
 
               Container( height: 15 ),
-
-              Divider( height: 12, color: Colors.black ),
-
-              Container(
-                alignment: Alignment.bottomCenter,
-                child: Align(
-                  child: SizedBox(
-                    width :double.infinity,
-                    height: 35,
-                    child: RaisedButton(
-                      child: Text('BAYAR', style: TextStyle(color: Colors.white)),
-                      color: Colors.green,
-                      onPressed: () {
-                        
-                      },
-                    ),
-                  ),
-                ),
-              )
 
             ]
           )
