@@ -3,6 +3,7 @@ import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
+import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
@@ -22,10 +23,7 @@ class DetailPagePdam extends StatefulWidget {
 }
 
 class _DetailPagePdamState extends State<DetailPagePdam> {
-  String _id = "";
   DateTime dateTime;
-  Future<DetailPdam> fetchdetail;
-  PulsaService _pulsaService = PulsaService();
   PdamService _pdamService = PdamService();
   WalletService _walletService = WalletService();
   LocalService _localService = LocalService();
@@ -42,81 +40,78 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
         _detailForDisplay = _detail;
       });
     });
-    _localService.getNameId().then(updateId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.1,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context, true);
-            }),
         backgroundColor: Colors.white,
-        title: Text(
-          'Pembayaran',
-          style: TextStyle(color: Colors.black),
+        appBar: AppBar(
+          elevation: 0.1,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context, true);
+              }),
+          backgroundColor: Colors.white,
+          title: Text(
+            'Pembayaran',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-            color: Colors.white,
-            child: new FutureBuilder<DetailPdam>(
-              future: _pdamService.getDetailId(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return new Text('Press button to start');
-                  case ConnectionState.waiting:
-                    return new Text('Awaiting result...');
-                  default:
-                    if (snapshot.hasData) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
+        body: FutureBuilder<DetailPdam>(
+          future: _pdamService.getDetailId(),
+          builder: (context, snapshot) {
+            if (_detailForDisplay.length == 0) {
+              return centerLoading();
+            } else {
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Text('Press button to start');
+                case ConnectionState.waiting:
+                  return centerLoading();
+                default:
+                  if (snapshot.hasData) {
+                    return SingleChildScrollView(
+                        child: Container(
+                            color: Colors.white,
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                _detailHeader(),
-                                _detailBody(),
-                                _detailPayment(),
+                                Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      _detailHeader(),
+                                      _detailBody(),
+                                      _detailPayment(),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  height: 90.0,
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    Divider(
+                                      color: Colors.black,
+                                    ),
+                                    _detailButton()
+                                  ],
+                                ),
                               ],
-                            ),
-                          ),
-                          Container(
-                            height: 90.0,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              Divider(
-                                color: Colors.black,
-                              ),
-                              _detailButton()
-                            ],
-                          ),
-                        ],
-                      );
-                    } else {
-                      return new Text('Result: ${snapshot.error}');
-                    }
-                }
-              },
-            )),
-      ),
-    );
-  }
-
-  void updateId(String transId) {
-    setState(() {
-      this._id = transId;
-    });
+                            )));
+                  } else {
+                    return Text('Result: ${snapshot.error}');
+                  }
+              }
+            }
+          },
+        ));
   }
 
   Widget _detailHeader() {
@@ -129,14 +124,17 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
             margin: EdgeInsets.symmetric(horizontal: 12.0),
             height: 90.0,
             width: 90.0,
-            child: Image.asset("lib/src/assets/PDAM.png"),
+            child: Image.asset(
+              "lib/src/assets/PDAM.png",
+              fit: BoxFit.fill,
+            ),
           ),
           Container(
             padding: const EdgeInsets.only(top: 5.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Air Bandung Kota Bandung'),
+                Text('Air PDAM ' + _detailForDisplay[0].namaWilayah),
                 Text('Nomor ' + _detailForDisplay[0].noPelanggan),
                 Text(
                     '${_detailForDisplay[0].namaPelanggan} ${_detailForDisplay[0].noPelanggan}')
@@ -300,25 +298,19 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
         color: Colors.green,
         onPressed: () {
           loadingDialog(context);
-          int transactionId = int.parse(_id.toString());
           String nomor = _detailForDisplay[0].noPelanggan;
-          int nominal = int.parse(_detailForDisplay[0].total.toString());
-          Post post = Post(
-              transactionId: transactionId,
-              noHp: nomor,
-              nominal: nominal,
-              userId: 1,
-              walletId: 1);
-          _pulsaService.createPayPasca(post).then((response) async {
-            if (response.statusCode == 200) {
-              Map blok = jsonDecode(response.body);
-              var userUid = blok['id'].toString();
-              var koId = userUid;
-              await Future.delayed(const Duration(seconds: 5));
+          String wilayah = _detailForDisplay[0].namaWilayah;
+          PostPdam postPdam = PostPdam(
+              userId: 1, walletId: 1, noPelanggan: nomor, namaWilayah: wilayah);
+          _pdamService.createPdamPay(postPdam).then((response) async {
+            if (response.headers != null) {
+              var _headers = response.headers['location'];
+              print("INII URLNYA : $_headers");
+              _localService.saveUrlId(_headers).then((bool committed) {});
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => SesPulsaPage(koId)));
+                  MaterialPageRoute(builder: (context) => SelesaiPage("1")));
             } else {
-              print(response.statusCode);
+              return print("Hasil Response : " + response.toString());
             }
           });
         },

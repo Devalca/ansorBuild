@@ -12,7 +12,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ansorBuld',
       theme: ThemeData(
-
+        primaryColor: Colors.green,
+        primarySwatch: Colors.green
       ),
       home: LandingPage(),
       routes: Routes.getRoutes(),
