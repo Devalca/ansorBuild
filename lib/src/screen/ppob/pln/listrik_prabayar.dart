@@ -192,7 +192,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press5 = false;
                           this.press6 = false;
                           this.total = 51500;
-                          this.nominal = "55000";
+                          this.nominal = "50000";
                         });
                       },
                       child: new Container(
@@ -208,7 +208,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("55.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
+                              new Text ("50.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press2 ? Colors.green : Colors.black)),
                               new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(51500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
@@ -266,7 +266,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press5 = false;
                           this.press6 = false;
                           this.total= 251500;
-                          this.nominal= "255000";
+                          this.nominal= "250000";
                         });
                       },
                       child: new Container(
@@ -282,7 +282,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("255.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
+                              new Text ("250.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press4 ? Colors.green : Colors.black)),
                               new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(251500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
@@ -306,8 +306,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           this.press3 = false;
                           this.press4 = false;
                           this.press6 = false;
-                          this.total= 551500;
-                          this.nominal= "550000";
+                          this.total= 501500;
+                          this.nominal= "500000";
                         });
                       },
                       child: new Container(
@@ -323,8 +323,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           child: new Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              new Text ("550.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
-                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(551500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
+                              new Text ("500.000", textAlign: TextAlign.left, style: TextStyle(fontSize : 18, color: press5 ? Colors.green : Colors.black)),
+                              new Text (NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(501500), textAlign: TextAlign.left, style: TextStyle(fontSize : 12)),
                             ],
                           )
                         )
