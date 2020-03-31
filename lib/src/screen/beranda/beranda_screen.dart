@@ -97,7 +97,7 @@ class _BerandaPageState extends State<BerandaPage> {
                           ],
                         ),
                       ),
-                      // _buildBarangService()
+                      _buildBarangService()
                     ],
                   ),
                 ),
@@ -119,7 +119,7 @@ class _BerandaPageState extends State<BerandaPage> {
                           ],
                         ),
                       ),
-                      // _buildBarangService()
+                      _buildBarangService()
                     ],
                   ),
                 ),
@@ -374,33 +374,33 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
-  // Widget _buildBarangService() {
-  //   return Container(
-  //     padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 16.0),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.stretch,
-  //       children: <Widget>[
-  //         SizedBox(
-  //           height: 200.0,
-  //           child: FutureBuilder<KatalogService>(
-  //               future: _berandaService.getKatalog(),
-  //               builder: (context, snapshot) {
-  //                 for (int i = 0; i < snapshot.data.data.length; i++) {
-  //                   if (snapshot.hasData) {
-  //                     List<Product> productService =
-  //                         snapshot.data.data[i].products;
-  //                     return _katalogListItem(productService);
-  //                   }
-  //                 }
-  //                 return Text(
-  //                   'No value yet!',
-  //                 );
-  //               }),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildBarangService() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(
+            height: 200.0,
+            child: FutureBuilder<KatalogService>(
+                future: _berandaService.getKatalog(),
+                builder: (context, snapshot) {
+                  for (int i = 0; i < snapshot.data.data.length; i++) {
+                    if (snapshot.hasData) {
+                      List<Product> productService =
+                          snapshot.data.data[i].products;
+                      return _katalogListItem(productService);
+                    }
+                  }
+                  return Text(
+                    'No value yet!',
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _katalogListItem(List<Product> productService) {
     return Padding(
@@ -423,9 +423,9 @@ class _BerandaPageState extends State<BerandaPage> {
                       children: <Widget>[
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            "lib/src/assets/produk.jpeg",
-                            // productService[i].photos[1].photo,
+                          child: Image.network(
+                            // "lib/src/assets/produk.jpeg",
+                            productService[index].photos[1].photo,
                             width: 132.0,
                             height: 132.0,
                           ),

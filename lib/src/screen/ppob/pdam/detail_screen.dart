@@ -70,7 +70,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
             } else {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
-                  return Text('Press button to start');
+                  return Text('Mulai');
                 case ConnectionState.waiting:
                   return centerLoading();
                 default:
@@ -137,7 +137,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                 Text('Air PDAM ' + _detailForDisplay[0].namaWilayah),
                 Text('Nomor ' + _detailForDisplay[0].noPelanggan),
                 Text(
-                    '${_detailForDisplay[0].namaPelanggan} ${_detailForDisplay[0].noPelanggan}')
+                    '${_detailForDisplay[0].namaPelanggan} - ${_detailForDisplay[0].noPelanggan}')
               ],
             ),
           )
@@ -275,9 +275,8 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                 future: _walletService.getSaldo(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Text(cF
-                        .format(snapshot.data.data[0].saldoAkhir)
-                        .replaceAll("IDR", "Rp"));
+                    return Text(rupiah(snapshot.data.data[0].saldoAkhir)
+                        .replaceAll("Rp ", "Rp"));
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
                   }
@@ -304,11 +303,12 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
               userId: 1, walletId: 1, noPelanggan: nomor, namaWilayah: wilayah);
           _pdamService.createPdamPay(postPdam).then((response) async {
             if (response.headers != null) {
-              var _headers = response.headers['location'];
-              print("INII URLNYA : $_headers");
-              _localService.saveUrlId(_headers).then((bool committed) {});
+              // var userUid = blok['id'].toString();
+              var koId = "1";
+              var headerUrl = response.headers['location'];
+              // _localService.saveUrlId(_headers).then((bool committed) {});
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => SelesaiPage("1")));
+                  MaterialPageRoute(builder: (context) => SelesaiPage(koId, headerUrl)));
             } else {
               return print("Hasil Response : " + response.toString());
             }

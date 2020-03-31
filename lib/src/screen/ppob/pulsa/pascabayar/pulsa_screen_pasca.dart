@@ -116,14 +116,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                             child: RaisedButton(
                               onPressed: () {
                                 _showLoadingDialog(context);
-                                // if (_isFieldNomor == null || !_isFieldNomor) {
-                                //   _statePascabayar.currentState.showSnackBar(
-                                //     SnackBar(
-                                //       content: Text("LENGKAPI DATA"),
-                                //     ),
-                                //   );
-                                //   return;
-                                // }
                                 String nomor = _controllerNomor.text.toString();
                                 Post post =
                                     Post(noHp: nomor, userId: 1, walletId: 1);
@@ -136,12 +128,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                     var koId = userUid;
                                     print(userUid);
                                     if (userUid == "null") {
-                                      // _statePascabayar.currentState.showSnackBar(
-                                      //     SnackBar(
-                                      //         duration:
-                                      //             Duration(milliseconds: 30),
-                                      //         content: Text(
-                                      //             "Nomor Yang Anda Masukan Tidak Terdaftar!")));
+                                      print("NUll user");
                                     } else {
                                       _localService
                                           .saveNameId(userUid)
@@ -179,15 +166,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           ),
         ),
       ),
-      // _isLoading
-      //     ? Stack(
-      //         children: <Widget>[
-      //           Center(
-      //             child: CircularProgressIndicator(),
-      //           ),
-      //         ],
-      //       )
-      //     : Container(),
     );
   }
 
@@ -233,11 +211,12 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(top: 6.0, right: 50),
-                        child: Icon(logoProv == ""
-                            ? Icons.signal_cellular_no_sim
-                            : Icons.sim_card),
-                        // child: Image.network(logoProv),
+                        padding: EdgeInsets.only(right: 50, top: 4),
+                        height: 30,
+                        child: Image.network(logoProv),
+                        // child: Icon(logoProv == ""
+                        //     ? Icons.signal_cellular_no_sim
+                        //     : Icons.sim_card),
                       ),
                       Container(
                           padding: EdgeInsets.only(top: 6.0),

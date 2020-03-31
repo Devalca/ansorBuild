@@ -48,7 +48,16 @@ class _ListWilayahState extends State<ListWilayah> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        body: FutureBuilder<NamaWilayah>(
+        body: Stack(
+          children: <Widget>[
+            _buildFieldKota(),
+            _buildSearchBar()
+          ],
+        ));
+  }
+
+  Widget _buildFieldKota() {
+    return FutureBuilder<NamaWilayah>(
           future: _pdamService.getWilayah(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -66,22 +75,22 @@ class _ListWilayahState extends State<ListWilayah> {
                         itemBuilder: (context, index) {
                           return index == 0
                               ? Container()
-                              : _listKota(index - 1);
+                              : _buildListKota(index - 1);
                         },
                         itemCount: _wilayahForDisplay.length + 1,
                       ),
                     ),
-                    _searchBar()
+                    // _searchBar()
                   ]);
                 } else {
                   return Text('Result: ${snapshot.error}');
                 }
             }
           },
-        ));
+        );
   }
 
-  Widget _searchBar() {
+  Widget _buildSearchBar() {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -117,7 +126,7 @@ class _ListWilayahState extends State<ListWilayah> {
     );
   }
 
-  Widget _listKota(index) {
+  Widget _buildListKota(index) {
     return GestureDetector(
       onTap: () {
         setState(() {

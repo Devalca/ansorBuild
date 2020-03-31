@@ -41,7 +41,8 @@ class _DetailPageState extends State<DetailPage> {
 
   Future<Album> fetchAlbum() async {
     // String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
-    String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/pulsa/";
+    // String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/pulsa/";
+    String baseUrl = "http://103.9.125.18:3000";
     final response = await http.get(baseUrl + widget.koId);
     if (response.statusCode == 200) {
       return albumFromJson(response.body);
@@ -309,15 +310,6 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                         ],
                       ),
-                      // _isLoading
-                      //     ? Stack(
-                      //         children: <Widget>[
-                      //           Center(
-                      //             child: CircularProgressIndicator(),
-                      //           ),
-                      //         ],
-                      //       )
-                      //     : Container(),
                     ],
                   ),
                 ),

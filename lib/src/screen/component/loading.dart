@@ -15,9 +15,9 @@ Future<void> loadingDialog(BuildContext context) async {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          // Future.delayed(Duration(seconds: 5), () {
-          //   Navigator.of(context).pop(true);
-          // });
+          Future.delayed(Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
           return new WillPopScope(
               onWillPop: () async => false,
               child: SimpleDialog(

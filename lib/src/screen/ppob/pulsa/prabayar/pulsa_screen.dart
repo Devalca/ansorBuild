@@ -95,11 +95,12 @@ class _PulsaPageState extends State<PulsaPage> {
                                         ),
                                         Container(
                                           padding: EdgeInsets.only(
-                                              top: 6.0, right: 50),
-                                          child: Icon(logoProv == ""
-                                              ? Icons.signal_cellular_no_sim
-                                              : Icons.sim_card),
-                                          // child: Image.network(logoProv),
+                                              right: 50, top: 4),
+                                          height: 30,
+                                          child: Image.network(logoProv),
+                                          // child: Icon(logoProv == ""
+                                          //     ? Icons.signal_cellular_no_sim
+                                          //     : Icons.sim_card),
                                         ),
                                         Container(
                                             padding: EdgeInsets.only(top: 6.0),
@@ -351,10 +352,7 @@ class _PulsaPageState extends State<PulsaPage> {
             _localService.saveNameId(userUid).then((bool committed) {
               print(userUid);
             });
-            print("INI KOID : " + koId);
-            print("INI RESPONSE :" + response.body);
-            print("NI PROVIDER : " + namaProv);
-            await new Future.delayed(const Duration(seconds: 4));
+            await new Future.delayed(const Duration(seconds: 5));
             Navigator.push(
                 context,
                 new MaterialPageRoute(

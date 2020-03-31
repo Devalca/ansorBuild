@@ -33,11 +33,10 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
 
   Future<PostTrans> fetchTrans() async {
     // String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
-    String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/detail/pulsa/";
+    // String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/detail/pulsa/";
+    String baseUrl = "http://103.9.125.18:3000/ppob/detail/pulsa/";
     final response = await http.get(baseUrl + widget.koId);
-    print("SATATUS CODENYA: " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      print("SATATUS CODENYA: " + response.statusCode.toString());
       return postTransFromJson(response.body);
     } else {
       print("SATATUS CODENYA: " + response.statusCode.toString());
@@ -69,7 +68,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               int dotUang = snapshot.data.data[0].totalHarga;
               DateTime dateTime = snapshot.data.data[0].periode;
               // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
-              var formatterTime = DateFormat('HH.mm').format(dateTime);
+              var formatterTime = DateFormat('HH:mm').format(dateTime);
               return SingleChildScrollView(
                 child: Container(
                   color: Colors.white,

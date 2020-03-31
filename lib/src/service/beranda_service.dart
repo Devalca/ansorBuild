@@ -5,7 +5,8 @@ import 'package:ansor_build/src/model/branda_model.dart';
 import 'package:http/http.dart' as http;
 
 class BerandaService {
-  String baseUrl = "http://192.168.10.11:3000";
+  // String baseUrl = "http://192.168.10.11:3000";
+  String baseUrl = "http://103.9.125.18:3000";
 
   Future<List<PpobService>> fetchPpobService() async {
     List<PpobService> _ppobServiceList = [];
@@ -47,17 +48,17 @@ class BerandaService {
     });
   }
 
-  // Future<KatalogService> getKatalog() async {
-  //   var response = await http.get(
-  //     '$baseUrl/master-data/katalog-produk',
-  //     headers: {"accept": "application/json"},
-  //   );
-  //   if (response.statusCode == 200) {
-  //     return katalogServiceFromJson(response.body);
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  Future<KatalogService> getKatalog() async {
+    var response = await http.get(
+      '$baseUrl/master-data/katalog-produk',
+      headers: {"accept": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      return katalogServiceFromJson(response.body);
+    } else {
+      return null;
+    }
+  }
 
   Future<List<BarangService>> fetchBarangService() async {
     List<BarangService> _goBarangServiceFeaturedList = [];

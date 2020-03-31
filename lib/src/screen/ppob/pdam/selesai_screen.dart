@@ -14,23 +14,22 @@ import 'package:intl/intl.dart';
 
 class SelesaiPage extends StatefulWidget {
   final String koId;
-  SelesaiPage(this.koId);
+  final String headerUrl;
+  SelesaiPage(this.koId, this.headerUrl);
 
   @override
   _SelesaiPageState createState() => _SelesaiPageState();
 }
 
 class _SelesaiPageState extends State<SelesaiPage> {
-  String _headerUrl;
   Future<DetailTrans> futureTrans;
-  LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
 
   Future<DetailTrans> getDetailTrans() async {
-    String baseUrl = "https://afternoon-waters-38775.herokuapp.com";
-    final response = await http.get('$baseUrl$_headerUrl');
+    // String baseUrl = "https://afternoon-waters-38775.herokuapp.com";
+    String baseUrl = "http://103.9.125.18:3000";
+    final response = await http.get(baseUrl + widget.headerUrl);
     if (response.statusCode == 200) {
-      print(response.body);
       return detailTransFromJson(response.body);
     } else {
       print("SATATUS Response: " + response.toString());
@@ -41,7 +40,6 @@ class _SelesaiPageState extends State<SelesaiPage> {
   @override
   void initState() {
     super.initState();
-    _localService.getUrlId().then(onValue);
   }
 
   @override
@@ -68,7 +66,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
               int dotUang = snapshot.data.data[0].total;
               DateTime dateLunas = snapshot.data.data[0].periode;
               DateTime datePeriode = snapshot.data.data[0].tglBayar;
-              var formatterTime = DateFormat('HH.mm').format(dateLunas);
+              var formatterTime = DateFormat('HH:mm').format(dateLunas);
               return SingleChildScrollView(
                 child: Container(
                   color: Colors.white,
@@ -175,7 +173,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
                                               child: Text(
-                                                  "Tidak Ada Dalam Database"),
+                                                  'Air PDAM ' + snapshot.data.data[0].namaWilayah),
                                             ),
                                             Container(
                                               margin:
@@ -205,7 +203,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
                                               child: Text(
-                                                  "Tidak Ada Dalam Database"),
+                                                  snapshot.data.data[0].id.toString()),
                                             ),
                                             Container(
                                              child: Text(rupiah(dotUang).replaceAll("Rp ", "Rp")),
@@ -457,10 +455,4 @@ class _SelesaiPageState extends State<SelesaiPage> {
   //     ],
   //   );
   // }
-
-  void onValue(String urlId) {
-    setState(() {
-      this._headerUrl = urlId;
-    });
-  }
 }
