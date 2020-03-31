@@ -3,26 +3,20 @@ import 'package:ansor_build/src/service/bpjs_services.dart';
 import 'package:flutter/material.dart';
 
 class BpjsBulan extends StatefulWidget {
+  final String jenis;
+  BpjsBulan({this.jenis});
+
   @override
   _BpjsBulanState createState() => _BpjsBulanState();
 }
 
 class _BpjsBulanState extends State<BpjsBulan> {
   BpjsServices _bpjsServices = BpjsServices();
-
-  final array = {
-    "data": [
-      {"id": 1, "tanggal": "2020-01-01", "nama": "Januari 2020"},
-      {"id": 2, "tanggal": "2020-02-01", "nama": "Febuari 2020"},
-      {"id": 3, "tanggal": "2020-02-01", "nama": "Maret 2020"}
-    ],
-    "message": "Berhasil"
-  };
-
+  
   final data = [
-    {"id": 1, "tanggal": "2020-01-01", "nama": "Januari 2020"},
-    {"id": 2, "tanggal": "2020-02-01", "nama": "Febuari 2020"},
-    {"id": 3, "tanggal": "2020-02-01", "nama": "Maret 2020"}
+    {"id": 1, "bulan": "2020-01-01"},
+    {"id": 2, "bulan": "2020-02-01"},
+    {"id": 3, "bulan": "2020-02-01"}
   ];
 
   @override
@@ -34,7 +28,7 @@ class _BpjsBulanState extends State<BpjsBulan> {
             ),
             backgroundColor: Colors.white,
             title: Text(
-              'Bayar Hingga',
+              widget.jenis == "kesehatan" ? 'Bayar Hingga' : 'Bayar Untuk',
               style: TextStyle(color: Colors.black),
             )),
         body: Padding(
@@ -50,19 +44,50 @@ class _BpjsBulanState extends State<BpjsBulan> {
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Container(
-                            height: 30,
-                            child: Text(
-                              snapshot.data.data[i].nama,
-                              style: new TextStyle(fontSize: 16.0),
-                          )),
 
-                          Divider(
-                            height: 12,
-                            color: Colors.black,
-                          ),
+                          widget.jenis == "kesehatan" ?
 
-                          Container( height: 15 ),
+                            Container(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    height: 30,
+                                    child: Text(
+                                      snapshot.data.data[i].nama,
+                                      style: new TextStyle(fontSize: 16.0),
+                                  )),
+
+                                  Divider(
+                                    height: 12,
+                                    color: Colors.black,
+                                  ),
+
+                                  Container( height: 15 ),
+                                ]
+                              )
+                            )
+                          : 
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    height: 30,
+                                    child: Text(
+                                      snapshot.data.data[i].nama,
+                                      style: new TextStyle(fontSize: 16.0),
+                                  )),
+
+                                  Divider(
+                                    height: 12,
+                                    color: Colors.black,
+                                  ),
+
+                                  Container( height: 15 ),
+                                ]
+                              )
+                            )
+
                         ]);
                   },
                 );

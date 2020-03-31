@@ -80,7 +80,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (__) => new BpjsBulan()));
+                                        builder: (__) => new BpjsBulan(jenis: "kesehatan")));
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(top: 10.0),
