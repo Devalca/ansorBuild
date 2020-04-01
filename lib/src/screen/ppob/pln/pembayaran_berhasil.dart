@@ -32,7 +32,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   }
 
   Future<Detail> fetchDetail() async {
-    final response = await http.get('http://192.168.10.11:3000' + _url);
+    final response = await http.get('http://103.9.125.18:3000' + _url);
 
     if (response.statusCode == 200) {
       return detailFromJson(response.body);
@@ -107,7 +107,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode) + ", " + DateFormat('HH.mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
