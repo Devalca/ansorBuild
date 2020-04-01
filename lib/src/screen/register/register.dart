@@ -201,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       controller: _controllerNama,
       keyboardType: TextInputType.text,
-      decoration: InputDecoration(hintText: 'Masukan Nama Lengkap'),
+      decoration: InputDecoration(hintText: 'Masukkan Nama Lengkap'),
       validator: validateName,
       onSaved: (String value) {
         registNama = value;
@@ -223,7 +223,7 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: _controllerEmail,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        hintText: 'Masukan Email',
+        hintText: 'Masukkan Email',
       ),
       validator: validateEmail,
       onSaved: (String value) {
@@ -246,7 +246,7 @@ class _RegisterPageState extends State<RegisterPage> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(12),
       ],
-      decoration: InputDecoration(hintText: 'Masukan Nomor Handphone'),
+      decoration: InputDecoration(hintText: 'Masukkan Nomor Handphone'),
       validator: validateNomor,
       onSaved: (String value) {
         registNomor = value;
@@ -283,7 +283,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String validatePassword(String value) {
     if (value.length < 6) {
-      return 'Password Minimal 6 Karakter';
+      return 'Kata Sandi Minimal 6 Karakter';
     }
     return null;
   }
