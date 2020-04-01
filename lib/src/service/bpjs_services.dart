@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ansor_build/src/model/bpjs_model.dart';
 
+String transactionId;
+
 class BpjsServices {
   String url = "http://103.9.125.18:3000";
 
@@ -19,5 +21,26 @@ class BpjsServices {
     } else {
       throw Exception('Failed to load Bulan');
     }
+  }
+
+  Future<http.Response> postKesehatan(PostKesehatan kesehatan) async {
+    var response = await http.post(
+      '$url/ppob/bpjs/kesehatan',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: kesehatanToJson(kesehatan),
+    );
+    return response;
+  }
+
+  Future<bool> saveUrl(String url) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("url", url);
+    return prefs.commit();
+  }
+
+  Future<String> getUrl() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = prefs.getString("url");
+    return url;
   }
 }

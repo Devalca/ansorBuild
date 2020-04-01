@@ -1,4 +1,5 @@
 import 'package:ansor_build/src/model/bpjs_model.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +12,15 @@ class BpjsBulan extends StatefulWidget {
 }
 
 class _BpjsBulanState extends State<BpjsBulan> {
+  bool _isLoading = false;
+
   BpjsServices _bpjsServices = BpjsServices();
-  
-  final data = [
-    {"id": 1, "bulan": "2020-01-01"},
-    {"id": 2, "bulan": "2020-02-01"},
-    {"id": 3, "bulan": "2020-02-01"}
+
+  final bulanBpjsKerja = [
+    {"id": 1, "bulan": "1 Bulan"},
+    {"id": 2, "bulan": "3 Bulan"},
+    {"id": 3, "bulan": "6 Bulan"},
+    {"id": 4, "bulan": "12 Bulan"}
   ];
 
   @override
@@ -26,77 +30,99 @@ class _BpjsBulanState extends State<BpjsBulan> {
             iconTheme: IconThemeData(
               color: Colors.black,
             ),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                }),
             backgroundColor: Colors.white,
             title: Text(
               widget.jenis == "kesehatan" ? 'Bayar Hingga' : 'Bayar Untuk',
               style: TextStyle(color: Colors.black),
             )),
-        body: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Container(
-            child: FutureBuilder<Bulan>(
-            future: _bpjsServices.fetchBulan(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: snapshot.data.data.length,
-                  itemBuilder: (context, i) {
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-
-                          widget.jenis == "kesehatan" ?
-
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    height: 30,
-                                    child: Text(
-                                      snapshot.data.data[i].nama,
-                                      style: new TextStyle(fontSize: 16.0),
-                                  )),
-
-                                  Divider(
-                                    height: 12,
-                                    color: Colors.black,
-                                  ),
-
-                                  Container( height: 15 ),
-                                ]
-                              )
-                            )
-                          : 
-                            Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    height: 30,
-                                    child: Text(
-                                      snapshot.data.data[i].nama,
-                                      style: new TextStyle(fontSize: 16.0),
-                                  )),
-
-                                  Divider(
-                                    height: 12,
-                                    color: Colors.black,
-                                  ),
-
-                                  Container( height: 15 ),
-                                ]
-                              )
-                            )
-
-                        ]);
-                  },
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return Center(child:CircularProgressIndicator());
-            },
-          )),
-        ));
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: widget.jenis == "kesehatan"
+                    ? Container(
+                        child: FutureBuilder<Bulan>(
+                        future: _bpjsServices.fetchBulan(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                              itemCount: snapshot.data.data.length,
+                              itemBuilder: (context, i) {
+                                return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      new GestureDetector(
+                                          onTap: () {
+                                            setState(() => _isLoading = true);
+                                            Navigator.push(
+                                                context,
+                                                new MaterialPageRoute(
+                                                    builder: (__) =>
+                                                        new Bpjs(index: 0, tgl: snapshot.data.data[i].tanggal, nm: snapshot.data.data[i].nama)));
+                                            setState(() => _isLoading = false);
+                                          },
+                                          child: Container(
+                                              child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: <Widget>[
+                                                Container(
+                                                    height: 30,
+                                                    child: Text(
+                                                      snapshot
+                                                          .data.data[i].nama,
+                                                      style: new TextStyle(
+                                                          fontSize: 16.0),
+                                                    )),
+                                                Divider(
+                                                  height: 12,
+                                                  color: Colors.black,
+                                                ),
+                                                Container(height: 15),
+                                              ]))),
+                                    ]);
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text("${snapshot.error}");
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
+                      ))
+                    : Container(
+                        child: ListView.builder(
+                        itemCount: bulanBpjsKerja.length,
+                        itemBuilder: (context, i) {
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                      Container(
+                                          height: 30,
+                                          child: Text(
+                                            "bpjs",
+                                            style:
+                                                new TextStyle(fontSize: 16.0),
+                                          )),
+                                      Divider(
+                                        height: 12,
+                                        color: Colors.black,
+                                      ),
+                                      Container(height: 15),
+                                    ]))
+                              ]);
+                        },
+                      )),
+              ));
   }
 }
