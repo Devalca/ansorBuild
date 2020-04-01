@@ -2,12 +2,12 @@
 import 'dart:convert';
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 import '../selseai_screen.dart';
@@ -174,7 +174,7 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                           Container(
                                             child: Text(
-                                                tanggal(dateTime).toString()),
+                                                formatTanggal(dateTime).toString()),
                                           ),
                                         ],
                                       ),
@@ -188,7 +188,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Tagihan'),
                                           ),
                                           Container(
-                                              child: Text(rupiah(snapshot
+                                              child: Text(formatRupiah(snapshot
                                                       .data.data[0].totalHarga)
                                                   .replaceAll("Rp ", "Rp"))),
                                         ],
@@ -220,7 +220,7 @@ class _DetailPageState extends State<DetailPage> {
                                               child: Text('Total'),
                                             ),
                                             Container(
-                                              child: Text(rupiah(snapshot
+                                              child: Text(formatRupiah(snapshot
                                                       .data.data[0].totalHarga)
                                                   .replaceAll("Rp ", "Rp")),
                                             ),
@@ -291,7 +291,7 @@ class _DetailPageState extends State<DetailPage> {
                                         future: _walletService.getSaldo(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
-                                            return Text(rupiah(snapshot
+                                            return Text(formatRupiah(snapshot
                                                     .data.data[0].saldoAkhir)
                                                 .replaceAll("Rp ", "Rp"));
                                           } else if (snapshot.hasError) {

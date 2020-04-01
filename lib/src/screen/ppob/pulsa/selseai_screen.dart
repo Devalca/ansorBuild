@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:ansor_build/src/model/pulsa_model.dart';
-import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
-import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class SesPulsaPage extends StatefulWidget {
@@ -19,15 +16,11 @@ class SesPulsaPage extends StatefulWidget {
 }
 
 class _SesPulsaPageState extends State<SesPulsaPage> {
-  String _id = "";
   Future<PostTrans> futureTrans;
-  PulsaService _pulsaService = PulsaService();
-  LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
   @override
   void initState() {
     super.initState();
-    _localService.getNameId().then(updateId);
     futureTrans = fetchTrans();
   }
 
@@ -47,7 +40,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.white,
@@ -57,8 +50,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
           leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LandingPage()));
+                _toLanding();
               }),
         ),
         body: FutureBuilder<PostTrans>(
@@ -82,7 +74,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                               children: <Widget>[
                                 Container(
                                   margin:
-                                  EdgeInsets.only(top: 30.0, bottom: 15.0),
+                                      EdgeInsets.only(top: 30.0, bottom: 15.0),
                                   height: 100.0,
                                   width: 100.0,
                                   color: Colors.grey[300],
@@ -96,7 +88,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                   ),
                                 ),
                                 Container(
-                                  child: Text("${tanggal(dateTime)} ${formatterTime.toString()}"),
+                                  child: Text(
+                                      "${formatTanggal(dateTime)} ${formatterTime.toString()}"),
                                 ),
                                 Container(
                                   child: Text('via Un1ty'),
@@ -186,7 +179,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                                   .toString()),
                                             ),
                                             Container(
-                                              child: Text(rupiah(dotUang).replaceAll("Rp ", "Rp")),
+                                              child: Text(formatRupiah(dotUang)
+                                                  .replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -215,10 +209,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: FlatButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LandingPage()));
+                                _toLanding();
                               },
                               child: Text(
                                 'Selesai'.toUpperCase(),
@@ -247,9 +238,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
         ));
   }
 
-  void updateId(String transId) {
-    setState(() {
-      this._id = transId;
-    });
+  _toLanding() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.LandingScreen, (Route<dynamic> route) => false);
   }
 }

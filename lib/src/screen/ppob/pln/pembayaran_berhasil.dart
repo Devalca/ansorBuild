@@ -1,8 +1,8 @@
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 
@@ -107,7 +107,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode) + ", " + DateFormat('HH.mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(formatTanggal(periode) + ", " + DateFormat('HH.mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -332,7 +332,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(formatTanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(

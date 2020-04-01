@@ -1,15 +1,10 @@
 import 'dart:async';
 
 import 'package:ansor_build/src/model/pdam_model.dart';
-import 'package:ansor_build/src/model/pulsa_model.dart';
-import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
-import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/pdam_service.dart';
-import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class SelesaiPage extends StatefulWidget {
@@ -55,8 +50,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
           leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LandingPage()));
+                _toLanding();
               }),
         ),
         body: FutureBuilder<DetailTrans>(
@@ -64,8 +58,8 @@ class _SelesaiPageState extends State<SelesaiPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               int dotUang = snapshot.data.data[0].total;
-              DateTime dateLunas = snapshot.data.data[0].periode;
-              DateTime datePeriode = snapshot.data.data[0].tglBayar;
+              DateTime datePeriode = snapshot.data.data[0].periode;
+              DateTime dateLunas = snapshot.data.data[0].tglBayar;
               var formatterTime = DateFormat('HH:mm').format(dateLunas);
               return SingleChildScrollView(
                 child: Container(
@@ -94,7 +88,8 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                   ),
                                 ),
                                 Container(
-                                  child:  Text("${tanggal(dateLunas)} ${formatterTime.toString()}"),
+                                  child: Text(
+                                      "${formatTanggal(dateLunas)} ${formatterTime.toString()}"),
                                 ),
                                 Container(
                                   child: Text('via Un1ty'),
@@ -172,8 +167,9 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text(
-                                                  'Air PDAM ' + snapshot.data.data[0].namaWilayah),
+                                              child: Text('PDAM ' +
+                                                  snapshot.data.data[0]
+                                                      .namaWilayah),
                                             ),
                                             Container(
                                               margin:
@@ -190,23 +186,25 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text(tanggal(datePeriode)
+                                              child: Text(formatBlnTahun(datePeriode)
                                                   .toString()),
                                             ),
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text(tanggal(dateLunas)
+                                              child: Text(formatTanggal(dateLunas)
                                                   .toString()),
                                             ),
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text(
-                                                  snapshot.data.data[0].id.toString()),
+                                              child: Text(snapshot
+                                                  .data.data[0].noTransaksi
+                                                  .toString()),
                                             ),
                                             Container(
-                                             child: Text(rupiah(dotUang).replaceAll("Rp ", "Rp")),
+                                              child: Text(formatRupiah(dotUang)
+                                                  .replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -235,10 +233,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: FlatButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LandingPage()));
+                                _toLanding();
                               },
                               child: Text(
                                 'Selesai'.toUpperCase(),
@@ -265,194 +260,10 @@ class _SelesaiPageState extends State<SelesaiPage> {
             );
           },
         ));
-    // body: FutureBuilder<DetailTrans>(
-    //   future: futureTrans,
-    //   builder: (context, snapshot) {
-    //      if (_detailForDisplay.length == 0) {
-    //        print(_detailForDisplay.length);
-    //        print(snapshot.data.data[0].namaWilayah);
-    //        print(snapshot.data.data.length);
-    //       return centerLoading();
-    //     } else {
-    //     switch (snapshot.connectionState) {
-    //       case ConnectionState.none:
-    //         return Text("Koneksi Terputus");
-    //       case ConnectionState.waiting:
-    //         return centerLoading();
-    //       default:
-    //         if (snapshot.hasData) {
-    //           return SingleChildScrollView(
-    //             child: Container(
-    //               color: Colors.white,
-    //               child: Column(
-    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                 children: <Widget>[_transHeader(), _transFooter()],
-    //               ),
-    //             ),
-    //           );
-    //         } else {
-    //           return Text("${snapshot.error}");
-    //         }
-    //     }
-    //     }
-    //   },
-    // ));
   }
 
-  // Widget _transHeader() {
-  //   // int dotUang = snapshot.data.data[0].totalHarga;
-  //   DateTime datePeriode = _detailForDisplay[0].periode;
-  //   DateTime dateLunas = _detailForDisplay[0].tglBayar;
-  //   var formatterTime = DateFormat('HH.mm').format(dateLunas);
-  //   return Column(
-  //     children: <Widget>[
-  //       Container(
-  //         child: Column(
-  //           children: <Widget>[
-  //             Container(
-  //               margin: EdgeInsets.only(top: 60.0, bottom: 15.0),
-  //               height: 100.0,
-  //               width: 100.0,
-  //               color: Colors.grey[300],
-  //             ),
-  //             Container(
-  //               margin: EdgeInsets.all(12.0),
-  //               child: Text(
-  //                 'Transaksi Berhasil',
-  //                 style: TextStyle(fontSize: 20.0, color: Colors.green),
-  //               ),
-  //             ),
-  //             Container(
-  //               child: Text("-"),
-  //             ),
-  //             Container(
-  //               child: Text('via Un1ty'),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       Container(
-  //         padding: EdgeInsets.symmetric(horizontal: 16.0),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: <Widget>[
-  //             Container(
-  //               margin: EdgeInsets.only(top: 70.0),
-  //               child: Text('Detail'),
-  //             ),
-  //             Container(
-  //               margin: EdgeInsets.symmetric(vertical: 12.0),
-  //               padding: const EdgeInsets.all(16.0),
-  //               decoration: BoxDecoration(
-  //                 border: Border.all(width: 1.0, color: Colors.grey[200]),
-  //               ),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: <Widget>[
-  //                   Container(
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       children: <Widget>[
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text('Jenis Layanan'),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text('Nama Pelanggan'),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text("No Meter/ID Pelanggan"),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text('Periode'),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text('Tanggal Lunas'),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text('Nomor Transaksi'),
-  //                         ),
-  //                         Container(
-  //                           child: Text('Total Tagihan'),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                   Container(
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.end,
-  //                       children: <Widget>[
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text("Tidak Ada Dalam Database"),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text(_detailForDisplay[0].namaPelanggan),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text(_detailForDisplay[0].noPelanggan),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text(tanggal(datePeriode).toString()),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text(tanggal(dateLunas).toString()),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text("Tidak Ada Dalam Database"),
-  //                         ),
-  //                         Container(
-  //                           margin: EdgeInsets.only(bottom: 12.0),
-  //                           child: Text(_detailForDisplay[0].total.toString()),
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _transFooter() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.stretch,
-  //     children: <Widget>[
-  //       Divider(
-  //         color: Colors.black,
-  //       ),
-  //       Container(
-  //         height: 50.0,
-  //         margin: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
-  //         decoration: BoxDecoration(
-  //             border: Border.all(width: 1, color: Colors.green),
-  //             borderRadius: BorderRadius.circular(5.0)),
-  //         child: FlatButton(
-  //           onPressed: () {
-  //             Navigator.pushReplacement(context,
-  //                 MaterialPageRoute(builder: (context) => LandingPage()));
-  //           },
-  //           child: Text(
-  //             'Selesai'.toUpperCase(),
-  //             style: TextStyle(color: Colors.green, fontSize: 20.0),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
+  _toLanding() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.LandingScreen, (Route<dynamic> route) => false);
+  }
 }

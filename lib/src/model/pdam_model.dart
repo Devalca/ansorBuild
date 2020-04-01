@@ -191,6 +191,7 @@ class PdamTrans {
     int tagihan;
     int total;
     DateTime tglBayar;
+    String noTransaksi;
 
     PdamTrans({
         this.id,
@@ -201,6 +202,7 @@ class PdamTrans {
         this.tagihan,
         this.total,
         this.tglBayar,
+        this.noTransaksi,
     });
 
     factory PdamTrans.fromJson(Map<String, dynamic> json) => PdamTrans(
@@ -212,6 +214,7 @@ class PdamTrans {
         tagihan: json["tagihan"],
         total: json["total"],
         tglBayar: DateTime.parse(json["tgl_bayar"]),
+        noTransaksi: json["no_transaksi"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -223,6 +226,7 @@ class PdamTrans {
         "tagihan": tagihan,
         "total": total,
         "tgl_bayar": tglBayar.toIso8601String(),
+        "no_transaksi": noTransaksi,
     };
 }
 

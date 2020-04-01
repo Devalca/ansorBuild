@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/list_screen.dart';
-import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +19,6 @@ class PdamPage extends StatefulWidget {
 
 class _PdamPageState extends State<PdamPage> {
   final GlobalKey<FormState> _key = GlobalKey();
-  LocalService _localService = LocalService();
   PdamService _pdamService = PdamService();
   bool _validate = true;
   bool _isFieldWilayah;
@@ -118,8 +116,10 @@ class _PdamPageState extends State<PdamPage> {
                               if (userUid == null) {
                                 print("user id Kosong");
                               } else {
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (__)
-                                => DetailPagePdam()
+                                await new Future.delayed(
+                                          const Duration(seconds: 5));
+                                Navigator.push(context, MaterialPageRoute(builder: (__)
+                                => DetailPagePdam(koId)
                                 ));
                               }
                             } else {

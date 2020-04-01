@@ -2,13 +2,13 @@
 import 'dart:convert';
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 import '../selseai_screen.dart';
 
@@ -24,7 +24,6 @@ class DetailPage extends StatefulWidget {
 class _DetailPageState extends State<DetailPage> {
   Future<Album> futureAlbum;
   Future<Wallet> futureWallet;
-  bool _isLoading = false;
   PulsaService _pulsaService = PulsaService();
   WalletService _walletService = WalletService();
   LocalService _localService = LocalService();
@@ -42,11 +41,14 @@ class _DetailPageState extends State<DetailPage> {
   Future<Album> fetchAlbum() async {
     // String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
     // String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/pulsa/";
-    String baseUrl = "http://103.9.125.18:3000";
+    String baseUrl = "http://103.9.125.18:3000/ppob/pulsa/";
     final response = await http.get(baseUrl + widget.koId);
+    print(baseUrl + widget.koId);
     if (response.statusCode == 200) {
+      print(baseUrl + widget.koId);
       return albumFromJson(response.body);
     } else {
+      print(baseUrl + widget.koId);
       throw Exception('Failed to load album');
     }
   }
@@ -72,7 +74,7 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: Container(
         child: FutureBuilder<Album>(
-          future: futureAlbum,
+          future: fetchAlbum(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
@@ -137,7 +139,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Harga'),
                                           ),
                                           Container(
-                                              child: Text(rupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp"))),
+                                              child: Text(formatRupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp"))),
                                         ],
                                       ),
                                       Row(
@@ -166,7 +168,7 @@ class _DetailPageState extends State<DetailPage> {
                                               child: Text('Total'),
                                             ),
                                             Container(
-                                              child: Text(rupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp")),
+                                              child: Text(formatRupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -235,7 +237,7 @@ class _DetailPageState extends State<DetailPage> {
                                         future: futureWallet,
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
-                                            return Text(rupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ", "Rp"));
+                                            return Text(formatRupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ", "Rp"));
                                           } else if (snapshot.hasError) {
                                             print("${snapshot.error}");
                                             return CircularProgressIndicator();
@@ -318,7 +320,7 @@ class _DetailPageState extends State<DetailPage> {
               return Container(
               alignment: Alignment.center,
               child: Center(
-                child: CircularProgressIndicator(),
+                child: Text("Transaksi Gagal Silahkan Coba lagi")
               ),
             );
             }

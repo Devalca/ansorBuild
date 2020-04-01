@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/pulsa_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 import 'detail_screen.dart';
@@ -273,7 +273,7 @@ class _PulsaPageState extends State<PulsaPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      rupiah(hargaList[index].nominalPulsa)
+                      formatRupiah(hargaList[index].nominalPulsa)
                           .replaceAll("Rp ", "")
                           .toString(),
                       style: TextStyle(
@@ -281,7 +281,7 @@ class _PulsaPageState extends State<PulsaPage> {
                           color: isSelected ? Colors.green : null),
                     ),
                     Text(
-                      rupiah(jmh).replaceAll("Rp ", "Rp"),
+                      formatRupiah(jmh).replaceAll("Rp ", "Rp"),
                       style: TextStyle(
                         fontSize: 12,
                       ),
@@ -297,7 +297,7 @@ class _PulsaPageState extends State<PulsaPage> {
               });
               if (_nominalIndex == index) {
                 inputNominal = hargaList[index].nominalPulsa.toString();
-                hargaNominal = rupiah(jmh).replaceAll("Rp ", "Rp");
+                hargaNominal = formatRupiah(jmh).replaceAll("Rp ", "Rp");
                 print(index);
                 print(_nominalIndex);
                 print(inputNominal);

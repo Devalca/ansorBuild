@@ -1,7 +1,9 @@
 import 'package:ansor_build/src/model/branda_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/iklan_home.dart';
 import 'package:ansor_build/src/screen/component/iklan_kecil.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
@@ -10,8 +12,6 @@ import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:ansor_build/src/service/beranda_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class BerandaPage extends StatefulWidget {
@@ -31,12 +31,6 @@ class _BerandaPageState extends State<BerandaPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
     return SafeArea(
       child: Scaffold(
         appBar: SaldoAppBar(),
@@ -168,7 +162,7 @@ class _BerandaPageState extends State<BerandaPage> {
                                   child: Row(
                                     children: <Widget>[
                                       Text(
-                                          rupiah(snapshot
+                                          formatRupiah(snapshot
                                                   .data.data[0].saldoAkhir)
                                               .replaceAll("Rp ", "Rp"),
                                           style: TextStyle(fontSize: 24.0)),
@@ -385,16 +379,25 @@ class _BerandaPageState extends State<BerandaPage> {
             child: FutureBuilder<KatalogService>(
                 future: _berandaService.getKatalog(),
                 builder: (context, snapshot) {
-                  for (int i = 0; i < snapshot.data.data.length; i++) {
-                    if (snapshot.hasData) {
-                      List<Product> productService =
-                          snapshot.data.data[i].products;
-                      return _katalogListItem(productService);
-                    }
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return Center(
+                        child: Text("Koneksi Terputus"),
+                      );
+                    case ConnectionState.waiting:
+                      return centerLoading();
+                    default:
+                      if (snapshot.hasData) {
+                        for (int i = 0; i < snapshot.data.data.length; i++) {
+                          List<Product> productService =
+                              snapshot.data.data[i].products;
+                          return _katalogListItem(productService);
+                        }
+                      } else {
+                        return Text('Result: ${snapshot.error}');
+                      }
+                      return Text('Result: ${snapshot.error}');
                   }
-                  return Text(
-                    'No value yet!',
-                  );
                 }),
           ),
         ],
@@ -412,7 +415,7 @@ class _BerandaPageState extends State<BerandaPage> {
         itemCount: productService == null ? 0 : productService.length,
         itemBuilder: (context, index) {
           for (int i = 0; i < productService.length; i++) {
-            if (productService != null) {
+            if (productService.length != null) {
               return InkWell(
                   onTap: () {
                     print('INI BARANG');
@@ -438,7 +441,7 @@ class _BerandaPageState extends State<BerandaPage> {
                     ),
                   ));
             } else {
-              return Text('Tidak Ada Product');
+              return CircularProgressIndicator();
             }
           }
           return CircularProgressIndicator();

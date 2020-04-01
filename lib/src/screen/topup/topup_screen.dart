@@ -1,10 +1,10 @@
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/topup/atm_screen.dart';
 import 'package:ansor_build/src/screen/topup/banking_screen.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class TopupPage extends StatefulWidget {
@@ -82,7 +82,7 @@ class _TopupPageState extends State<TopupPage> {
                                      padding: const EdgeInsets.only(
                                   right: 16.0),
                                     child: Text(
-                                        rupiah(snapshot.data.data[0].saldoAkhir)
+                                        formatRupiah(snapshot.data.data[0].saldoAkhir)
                                             .replaceAll("Rp ", "Rp"),
                                         style: TextStyle(fontSize: 16.0)),
                                   );

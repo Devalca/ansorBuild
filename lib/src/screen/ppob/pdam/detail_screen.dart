@@ -1,22 +1,17 @@
-import 'dart:convert';
 import 'package:ansor_build/src/model/pdam_model.dart';
-import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
-import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
-import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class DetailPagePdam extends StatefulWidget {
-  // final String koId;
-  // DetailPagePdam(this.koId);
+  final String koId;
+  DetailPagePdam(this.koId);
 
   @override
   _DetailPagePdamState createState() => _DetailPagePdamState();
@@ -26,15 +21,28 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
   DateTime dateTime;
   PdamService _pdamService = PdamService();
   WalletService _walletService = WalletService();
-  LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
   List<DetailData> _detail = List<DetailData>();
   List<DetailData> _detailForDisplay = List<DetailData>();
 
+    Future<DetailPdam> getDetailId() async {
+    String baseUrl = "http://103.9.125.18:3000";
+    final response = await http.get(
+      '$baseUrl/ppob/pdam/1',
+    );
+    if (response.statusCode == 200) {
+      print(response.statusCode);
+      return detailPdamFromJson(response.body);
+    } else {
+      throw Exception('Failed to load album dan SATATUS CODE : ' +
+          response.statusCode.toString());
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _pdamService.getDetailId().then((value) {
+    getDetailId().then((value) {
       setState(() {
         _detail.addAll(value.data);
         _detailForDisplay = _detail;
@@ -63,7 +71,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           ),
         ),
         body: FutureBuilder<DetailPdam>(
-          future: _pdamService.getDetailId(),
+          future: getDetailId(),
           builder: (context, snapshot) {
             if (_detailForDisplay.length == 0) {
               return centerLoading();
@@ -148,7 +156,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
 
   Widget _detailBody() {
     dateTime = _detailForDisplay[0].periode;
-    var formatterDate = DateFormat('MMMM yyyy').format(dateTime);
+    // var formatterDate = DateFormat('MMMM yyyy').format(dateTime);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -172,7 +180,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                     child: Text('Periode'),
                   ),
                   Container(
-                    child: Text(tanggal(dateTime).toString()),
+                    child: Text(formatTanggal(dateTime).toString()),
                   ),
                 ],
               ),
@@ -184,7 +192,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                     child: Text('Total Tagihan'),
                   ),
                   Container(
-                      child: Text(rupiah(_detailForDisplay[0].tagihan)
+                      child: Text(formatRupiah(_detailForDisplay[0].tagihan)
                           .replaceAll("Rp ", "Rp"))),
                 ],
               ),
@@ -210,7 +218,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                       child: Text('Total'),
                     ),
                     Container(
-                      child: Text(rupiah(_detailForDisplay[0].total)
+                      child: Text(formatRupiah(_detailForDisplay[0].total)
                           .replaceAll("Rp ", "Rp")),
                     ),
                   ],
@@ -275,7 +283,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                 future: _walletService.getSaldo(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Text(rupiah(snapshot.data.data[0].saldoAkhir)
+                    return Text(formatRupiah(snapshot.data.data[0].saldoAkhir)
                         .replaceAll("Rp ", "Rp"));
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
@@ -303,10 +311,8 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
               userId: 1, walletId: 1, noPelanggan: nomor, namaWilayah: wilayah);
           _pdamService.createPdamPay(postPdam).then((response) async {
             if (response.headers != null) {
-              // var userUid = blok['id'].toString();
               var koId = "1";
               var headerUrl = response.headers['location'];
-              // _localService.saveUrlId(_headers).then((bool committed) {});
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => SelesaiPage(koId, headerUrl)));
             } else {

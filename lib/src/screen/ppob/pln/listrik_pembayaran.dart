@@ -1,8 +1,8 @@
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
@@ -134,7 +134,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             child: Text("Periode"),
                                           ),
                                           Container(
-                                            child: Text(tanggal(periode)),
+                                            child: Text(formatTanggal(periode)),
                                           ),
                                         ],
                                       ),
