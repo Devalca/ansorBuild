@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:ansor_build/src/model/bpjs_model.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_bulan.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_gagal.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
@@ -51,24 +52,34 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
 
           _bpjsServices.postKesehatan(kesehatan).then((response) async {
             if (response.statusCode == 200) {
-              print("berhasil body: " + response.body);
-              print(response.statusCode);
+              // print("berhasil body: " + response.body);
+              // print(response.statusCode);
 
-              Map data = jsonDecode(response.body);
-              transactionId = data['transactionId'].toString();
-              print("transactionId: " + transactionId);
+              // Map data = jsonDecode(response.body);
+              // transactionId = data['transactionId'].toString();
+              // print("transactionId: " + transactionId);
 
-              url = '/ppob/bpjs/kesehatan/' + transactionId;
-              print("url: " + url);
+              // url = '/ppob/bpjs/kesehatan/' + transactionId;
+              // print("url: " + url);
 
-              // _bpjsServices.getUrl(url).then((bool committed) {
+              // _bpjsServices.saveUrl(url).then((bool committed) {
               //   print(url);
               // });
+
+              // Navigator.push(
+              //     context,
+              //     new MaterialPageRoute(
+              //         builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
+              // setState(() => _isLoading = false);
+
+              print("error: " + response.body);
+              print(response.statusCode);
 
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
+                      builder: (__) =>
+                          new PembayaranGagal(pesan: response.body)));
               setState(() => _isLoading = false);
             } else if (response.statusCode == 302) {
               print("berhasil body: " + response.body);
@@ -90,6 +101,13 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
             } else {
               print("error: " + response.body);
               print(response.statusCode);
+
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (__) =>
+                          new PembayaranGagal(pesan: response.body)));
+              setState(() => _isLoading = false);
             }
           });
         }
@@ -112,13 +130,6 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                               style: TextStyle(color: Colors.white)),
                           color: Colors.green,
                           onPressed: _onPressed,
-                          // onPressed: () {
-                          //   Navigator.push(
-                          //       context,
-                          //       new MaterialPageRoute(
-                          //           builder: (__) => new BpjsPembayaran(
-                          //               jenis: "kesehatan")));
-                          // }
                         ),
                       ),
                     ])),

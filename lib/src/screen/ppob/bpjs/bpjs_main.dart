@@ -8,8 +8,8 @@ import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_ketenagakerjaan.dart'
 
 class Bpjs extends StatefulWidget {
   final int index;
-  final String tgl, nm;
-  Bpjs({this.index, this.tgl, this.nm});
+  final String tgl, nm, bln;
+  Bpjs({this.index, this.tgl, this.nm, this.bln});
 
   @override
   _BpjsState createState() => _BpjsState();
@@ -98,7 +98,7 @@ class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin {
                       physics: NeverScrollableScrollPhysics(),
                       children: <Widget>[
                         kesehatan.BpjsKesehatan(tgl: widget.tgl, nm: widget.nm),
-                        ketenagakerjaan.BpjsKetenagakerjaan(),
+                        ketenagakerjaan.BpjsKetenagakerjaan(bln: widget.bln),
                       ],
                     ),
                   ),

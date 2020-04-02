@@ -63,8 +63,12 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                             Navigator.push(
                                                 context,
                                                 new MaterialPageRoute(
-                                                    builder: (__) =>
-                                                        new Bpjs(index: 0, tgl: snapshot.data.data[i].tanggal, nm: snapshot.data.data[i].nama)));
+                                                    builder: (__) => new Bpjs(
+                                                        index: 0,
+                                                        tgl: snapshot.data
+                                                            .data[i].tanggal,
+                                                        nm: snapshot.data
+                                                            .data[i].nama)));
                                             setState(() => _isLoading = false);
                                           },
                                           child: Container(
@@ -96,33 +100,63 @@ class _BpjsBulanState extends State<BpjsBulan> {
                         },
                       ))
                     : Container(
-                        child: ListView.builder(
-                        itemCount: bulanBpjsKerja.length,
-                        itemBuilder: (context, i) {
-                          return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                    child: Column(
+                        child: FutureBuilder<Bayar>(
+                            future: _bpjsServices.fetchBayar(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                  itemCount: snapshot.data.data.length,
+                                  itemBuilder: (context, i) {
+                                    return Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                      Container(
-                                          height: 30,
-                                          child: Text(
-                                            "bpjs",
-                                            style:
-                                                new TextStyle(fontSize: 16.0),
-                                          )),
-                                      Divider(
-                                        height: 12,
-                                        color: Colors.black,
-                                      ),
-                                      Container(height: 15),
-                                    ]))
-                              ]);
-                        },
-                      )),
+                                          new GestureDetector(
+                                              onTap: () {
+                                                setState(
+                                                    () => _isLoading = true);
+                                                Navigator.push(
+                                                    context,
+                                                    new MaterialPageRoute(
+                                                        builder: (__) =>
+                                                            new Bpjs(
+                                                                index: 1,
+                                                                bln: snapshot
+                                                                    .data
+                                                                    .data[i]
+                                                                    .nama)));
+                                                setState(
+                                                    () => _isLoading = false);
+                                              },
+                                              child: Container(
+                                                  child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                    Container(
+                                                        height: 30,
+                                                        child: Text(
+                                                          snapshot.data.data[i]
+                                                              .nama,
+                                                          style: new TextStyle(
+                                                              fontSize: 16.0),
+                                                        )),
+                                                    Divider(
+                                                      height: 12,
+                                                      color: Colors.black,
+                                                    ),
+                                                    Container(height: 15),
+                                                  ]))),
+                                        ]);
+                                  },
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+                              return Center(child: CircularProgressIndicator());
+                            }),
+                      ),
               ));
   }
 }

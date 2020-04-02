@@ -23,11 +23,33 @@ class BpjsServices {
     }
   }
 
+  Future<Bayar> fetchBayar() async {
+    final response = await http.get(
+      '$url/master-data/bayaruntuk',
+      headers: {"accept": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      return Bayar.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load Bulan');
+    }
+  }
+
   Future<http.Response> postKesehatan(PostKesehatan kesehatan) async {
     var response = await http.post(
       '$url/ppob/bpjs/kesehatan',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: kesehatanToJson(kesehatan),
+    );
+    return response;
+  }
+
+  Future<http.Response> postPembayaran(PostPembayaran pembayaran) async {
+    var response = await http.post(
+      '$url/ppob/bpjs/kesehatan/transaction',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: pembayaranToJson(pembayaran),
     );
     return response;
   }
@@ -44,3 +66,4 @@ class BpjsServices {
     return url;
   }
 }
+

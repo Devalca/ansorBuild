@@ -21,20 +21,36 @@ class BpjsPembayaran extends StatefulWidget {
 
 class _BpjsPembayaranState extends State<BpjsPembayaran> {
   ApiService _apiService = ApiService();
+  BpjsServices _bpjsServices = BpjsServices();
 
   bool _isLoading = false;
+
+  String _url = "";
+  String noVa2 = "";
+  String periode2 = "";
+  String url = "";
 
   @override
   void initState() {
     super.initState();
+
+    _url = widget.url;
+
+    // _bpjsServices.getUrl().then(updateUrl);
   }
+
+  // void updateUrl(String updateUrl) {
+  //   setState(() {
+  //     this._url = updateUrl;
+  //   });
+  // }
 
   Future<DetailKesehatan> fetchPembayaran() async {
     final response =
-        await http.get('http://103.9.125.18:3000/ppob/bpjs/kesehatan/1');
+        await http.get('http://103.9.125.18:3000' + _url);
 
     if (response.statusCode == 200) {
-      return pembayaranFromJson(response.body);
+      return detailKesehatanFromJson(response.body);
     } else {
       throw Exception('Failed to load Detail BPJS Kesehatan');
     }
@@ -73,12 +89,61 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                           color: Colors.green,
                           onPressed: () {
                             setState(() => _isLoading = true);
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (__) => new PembayaranBerhasil(
-                                        jenis: widget.jenis)));
-                            setState(() => _isLoading = false);
+                            
+                            String transactionId = widget.url.substring(21);
+                            String noVa = noVa2;
+                            String periode = periode2;
+                            
+                            print("transactionId " + transactionId);
+                            print("noVa " + noVa);
+                            print("periode " + periode);
+
+                            PostPembayaran pembayaran = PostPembayaran(userId: 1, walletId: 1, transactionId: transactionId, noVa: noVa, periode: periode);
+
+                            _bpjsServices.postPembayaran(pembayaran).then((response) async{
+                              if(response.statusCode == 200){
+                                print("berhasil body: " + response.body);
+                                print(response.statusCode);
+
+                                Map data = jsonDecode(response.body);
+                                transactionId = data['transactionId'].toString();
+                                print("transactionId: " + transactionId);
+
+                                url = '/ppob/bpjs/detail/kesehatan/' + transactionId;
+                                print("url: " + url);
+
+                                _bpjsServices.saveUrl(url).then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (__) => new PembayaranBerhasil(
+                                          jenis: widget.jenis)));
+                                setState(() => _isLoading = false);
+                              } else if (response.statusCode == 302) {
+                                print("berhasil body: " + response.body);
+                                print(response.statusCode);
+                                
+                                url = response.headers['location'];
+                                print("url: " + url);
+
+                                _bpjsServices.saveUrl(url).then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (__) => new PembayaranBerhasil(
+                                          jenis: widget.jenis)));
+                                setState(() => _isLoading = false);
+                              }else{
+                                print("error: " + response.body);
+                                print(response.statusCode);
+                              }
+                            });
                           },
                         ),
                       )
@@ -94,6 +159,11 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                       future: fetchPembayaran(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
+                          DateTime periode = snapshot.data.data[0].periode;
+                          
+                          noVa2 = snapshot.data.data[0].noVa.toString();
+                          periode2 = snapshot.data.data[0].periode.toString().substring(0,10);
+                          
                           if (snapshot.data.data.length == 0) {
                             return Text("Tidak ada Data");
                           } else {
@@ -116,16 +186,15 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                       child: widget.jenis == "kesehatan"
                                           ? Text("BPJS Kesehatan" +
                                               "\n" +
-                                              "snapshot.data.data[0].noVa.toString()" +
+                                              snapshot.data.data[0].noVa.toString() +
                                               "\n" +
-                                              "Nama")
+                                              snapshot.data.data[0].namaPelanggan)
                                           : Text("BPJS Ketenagakerjaan" +
                                               "\n" +
                                               "Nomor " +
-                                              snapshot
-                                                  .data.data[0].namaPelanggan +
+                                              snapshot.data.data[0].noVa.toString() +
                                               "\n" +
-                                              "Nama" +
+                                              snapshot.data.data[0].namaPelanggan.toString() +
                                               " - " +
                                               "KCP"),
                                     ),
@@ -162,7 +231,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                     child: Text("Periode"),
                                                   ),
                                                   Container(
-                                                    child: Text("tanggal"),
+                                                    child:
+                                                        Text(tanggal(periode)),
                                                   ),
                                                 ],
                                               ),
@@ -178,7 +248,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                         Text("Jumlah Keluarga"),
                                                   ),
                                                   Container(
-                                                    child: Text("jumlah"),
+                                                    child: Text(snapshot.data.data[0].jumlahKeluarga.toString()),
                                                   ),
                                                 ],
                                               ),
@@ -194,7 +264,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                         Text("Total Tagihan"),
                                                   ),
                                                   Container(
-                                                    child: Text("Rp"),
+                                                    child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.data[0].total)),
                                                   ),
                                                 ],
                                               ),
@@ -210,7 +280,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                         Text("Biaya Pelayanan"),
                                                   ),
                                                   Container(
-                                                    child: Text("Rp"),
+                                                    child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(0)),
                                                   ),
                                                 ],
                                               ),
@@ -228,7 +298,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                     child: Text("Total"),
                                                   ),
                                                   Container(
-                                                    child: Text("Rp"),
+                                                    child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.data[0].total)),
                                                   ),
                                                 ],
                                               ),
@@ -260,7 +330,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                     child: Text("Periode"),
                                                   ),
                                                   Container(
-                                                    child: Text("tanggal"),
+                                                    child: Text(tanggal(periode)),
                                                   ),
                                                 ],
                                               ),
@@ -440,8 +510,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                             )));
                           }
                         } else if (snapshot.hasError) {
-                          // return Center(child: Text("Gagal Memuat Detail Pembayaran"));
-                          return Text("${snapshot.error}");
+                          return Center(child: Text("Gagal Memuat Detail Pembayaran"));
+                          // return Text("${snapshot.error}");
                         }
                         return Center(child: CircularProgressIndicator());
                       },

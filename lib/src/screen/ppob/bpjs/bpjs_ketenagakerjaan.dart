@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_bulan.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 
 class BpjsKetenagakerjaan extends StatefulWidget {
+  final String bln;
+  BpjsKetenagakerjaan({this.bln});
+
   @override
   _BpjsKetenagakerjaanState createState() => _BpjsKetenagakerjaanState();
 }
@@ -15,6 +19,89 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
 
   @override
   Widget build(BuildContext context) {
+    var _onPressed;
+
+    if (widget.bln != null) {
+      _onPressed = () {
+        setState(() => _isLoading = true);
+
+        if (_noKTPController.text.isEmpty) {
+          setState(() {
+            _isLoading = false;
+            _fieldNoKTP = true;
+          });
+        } else {
+          // String noVa = _noKTPController.text.toString();
+
+          // PostKesehatan kesehatan =
+          //     PostKesehatan(noVa: noVa, periode: tgl(widget.tgl));
+
+          // // PostKesehatan kesehatan = PostKesehatan(noVa: "123456789", periode: "2020-01-01");
+
+          // _bpjsServices.postKesehatan(kesehatan).then((response) async {
+          //   if (response.statusCode == 200) {
+          //     // print("berhasil body: " + response.body);
+          //     // print(response.statusCode);
+
+          //     // Map data = jsonDecode(response.body);
+          //     // transactionId = data['transactionId'].toString();
+          //     // print("transactionId: " + transactionId);
+
+          //     // url = '/ppob/bpjs/kesehatan/' + transactionId;
+          //     // print("url: " + url);
+
+          //     // _bpjsServices.saveUrl(url).then((bool committed) {
+          //     //   print(url);
+          //     // });
+
+          //     // Navigator.push(
+          //     //     context,
+          //     //     new MaterialPageRoute(
+          //     //         builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
+          //     // setState(() => _isLoading = false);
+
+          //     print("error: " + response.body);
+          //     print(response.statusCode);
+
+          //     Navigator.push(
+          //         context,
+          //         new MaterialPageRoute(
+          //             builder: (__) =>
+          //                 new PembayaranGagal(pesan: response.body)));
+          //     setState(() => _isLoading = false);
+          //   } else if (response.statusCode == 302) {
+          //     print("berhasil body: " + response.body);
+          //     print(response.statusCode);
+
+          //     url = response.headers['location'];
+          //     print("url: " + url);
+
+          //     _bpjsServices.saveUrl(url).then((bool committed) {
+          //       print(url);
+          //     });
+
+          //     Navigator.push(
+          //         context,
+          //         new MaterialPageRoute(
+          //             builder: (__) =>
+          //                 new BpjsPembayaran(jenis: "kesehatan", url: url)));
+          //     setState(() => _isLoading = false);
+          //   } else {
+          //     print("error: " + response.body);
+          //     print(response.statusCode);
+
+          //     Navigator.push(
+          //         context,
+          //         new MaterialPageRoute(
+          //             builder: (__) =>
+          //                 new PembayaranGagal(pesan: response.body)));
+          //     setState(() => _isLoading = false);
+          //   }
+          // });
+        }
+      };
+    }
+
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         color: Colors.transparent,
@@ -30,9 +117,10 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                   child: RaisedButton(
                     child: Text('LANJUT', style: TextStyle(color: Colors.white)),
                     color: Colors.green,
-                    onPressed: () {
-                      Navigator.push(context, new MaterialPageRoute(builder: (__) => new BpjsPembayaran(jenis: "ketenagakerjaan")));
-                    }
+                    onPressed: _onPressed,
+                    // onPressed: () {
+                    //   Navigator.push(context, new MaterialPageRoute(builder: (__) => new BpjsPembayaran(jenis: "ketenagakerjaan")));
+                    // }
                   ),
                 ),
               ]
@@ -90,20 +178,29 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                   children: <Widget>[
                     
                     Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            child: Text("1 Bulan", style: new TextStyle(fontSize: 14.0)),
-                          ),
-                          Container(
-                            child: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.black,
-                              size: 24.0,
+                      child: new GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (__) =>
+                                    new BpjsBulan(jenis: "ketenagakerjaan")));
+                      },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: Text(widget.bln == null ? "1 Bulan" : widget.bln, style: new TextStyle(fontSize: 14.0)),
                             ),
-                          ),
-                        ],
+                            Container(
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.black,
+                                size: 24.0,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -19,7 +19,7 @@ void initState() {
    
   
   class ApiService {
-    String baseUrl = "http://192.168.10.11:3000";
+    String baseUrl = "http://103.9.125.18:3000";
   
       Future<Wallet> getSaldo() async {
        var response = await http.get(

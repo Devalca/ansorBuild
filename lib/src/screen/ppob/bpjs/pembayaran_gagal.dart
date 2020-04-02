@@ -3,6 +3,9 @@ import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:flutter/material.dart';
 
 class PembayaranGagal extends StatefulWidget {
+  final String pesan;
+  PembayaranGagal({this.pesan});
+
   @override
   _PembayaranGagalState createState() => _PembayaranGagalState();
 }
@@ -72,12 +75,24 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                     ])),
             elevation: 0),
         body: Center(
-          child: Text("Transaksi Gagal\nSilahkan coba beberapa saat lagi",
+          child: widget.pesan == "" ?
+            Text("Transaksi Gagal\nSilahkan coba beberapa saat lagi",
               textAlign: TextAlign.center,
               style: new TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red)),
+                  color: Colors.red
+              )
+            )
+            :
+            Text("Transaksi Gagal\n" + widget.pesan.substring(12, 49),
+              textAlign: TextAlign.center,
+              style: new TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red
+              )
+            ),
         ));
   }
 }
