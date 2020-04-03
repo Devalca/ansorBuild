@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
-class LoadingServices {
+Widget centerLoading() {
+  return Center(
+    child: Container(
+      color: Colors.white,
+      alignment: Alignment(0.0, 0.0),
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
 
-    static Future<void> loadingDialog(BuildContext context) async {
+Future<void> loadingDialog(BuildContext context) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
@@ -17,9 +25,7 @@ class LoadingServices {
                   children: <Widget>[
                     Center(
                       child: Column(children: [
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.green,
-                        ),
+                        CircularProgressIndicator(),
                         SizedBox(
                           height: 10,
                         ),
@@ -31,6 +37,4 @@ class LoadingServices {
                     )
                   ]));
         });
-  }
-
 }

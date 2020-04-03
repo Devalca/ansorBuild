@@ -1,15 +1,14 @@
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
-import 'package:ansor_build/src/service/api_service.dart';
 
 class ListrikPembayaran extends StatefulWidget {
   final String status;
@@ -24,7 +23,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
 
   PlnServices _plnServices = PlnServices();
   ApiService _apiService = ApiService();
-
   String _transactionId = "";
   String url = "";
 

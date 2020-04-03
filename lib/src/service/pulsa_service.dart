@@ -1,37 +1,14 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:ansor_build/src/model/ansor_model.dart';
-import 'package:ansor_build/src/model/user_model.dart';
-import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
-String userUid;
-ApiService _apiService = ApiService();
-String _url;
-
-@override
-void initState() {
-  _apiService.getNameId().then(updateUrl);
-  }
    
   
-  class ApiService {
-    String baseUrl = "http://192.168.10.11:3000";
-  
-      Future<Wallet> getSaldo() async {
-       var response = await http.get(
-        '$baseUrl/users/wallet/1',
-        headers: {"accept": "application/json"},
-      );
-      if (response.statusCode == 200) {
-        return Wallet.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load post');
-      }
-    }
+  class PulsaService {
+    // String baseUrl = "http://192.168.10.11:3000";
+    // String baseUrl = "https://afternoon-waters-38775.herokuapp.com";
+       String baseUrl = "http://103.9.125.18:3000";
   
     Future<ProviderCall> getProvider() async {
       var response = await http.get(
@@ -55,24 +32,6 @@ void initState() {
       } else {
         return null;
       }
-    }
-
-  //   Future<Album> fetchAlbum() async {
-  //   final response = await http.get(baseUrl + _url);
-  //   if (response.statusCode == 200) {
-  //     return albumFromJson(response.body);
-  //   } else {
-  //     throw Exception('Failed to load album');
-  //   }
-  // }
-  
-     Future<http.Response> postRegist(Users users) async {
-      var response = await http.post(
-        '$baseUrl/members/regist/',
-        headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-        body: usersToJson(users),
-      );
-      return response;
     }
   
     Future<http.Response> createPost(Post post) async {
@@ -111,19 +70,4 @@ void initState() {
       );
       return response;
     }
-  
-    Future<bool> saveNameId(String transId) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString("transId", transId);
-      return prefs.commit();
-    }
-  
-    Future<String> getNameId() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String transId = prefs.getString("transId");
-      return transId;
-    }
   }
-  void updateUrl(String transUrl) {
-    _url = transUrl;
-}

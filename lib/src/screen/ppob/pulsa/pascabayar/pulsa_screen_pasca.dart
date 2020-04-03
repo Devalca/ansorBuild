@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:ansor_build/src/model/ansor_model.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,14 +13,15 @@ class PulsaPascaPage extends StatefulWidget {
 }
 
 class _PulsaPascaPageState extends State<PulsaPascaPage> {
-  final GlobalKey<FormState> _key = GlobalKey();
+  String mobi = "";
+  String logoProv = "";
+  bool _isFieldNomor;
   bool _validate = true;
   bool _isLoading = false;
   String inputNomor, inputNominal, hargaNominal;
-  String mobi = "";
-  String logoProv = "";
-  ApiService _apiService = ApiService();
-  bool _isFieldNomor;
+  final GlobalKey<FormState> _key = GlobalKey();
+  LocalService _localService = LocalService();
+  PulsaService _pulsaService = PulsaService();
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
@@ -66,6 +68,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Form(
         key: _key,
@@ -87,40 +90,8 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                       child: Text('Nomor Handphone'),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                              child: Container(child: _buildTextFieldNomor())),
-                          Expanded(
-                              child: Container(
-                            child: Container(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                      margin: EdgeInsets.only(right: 12.0),
-                                      child: Container(
-                                        height: 30.0,
-                                        width: 30.0,
-                                        child: Image.network(logoProv),
-                                      )),
-                                  Container(
-                                    margin: EdgeInsets.only(right: 12.0),
-                                    height: 30.0,
-                                    width: 1.0,
-                                    color: Colors.black,
-                                  ),
-                                  Container(child: Icon(Icons.contacts))
-                                ],
-                              ),
-                            ),
-                          ))
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 12.0),
+                        child: _buildTextFieldNomor()),
                   ],
                 ),
               ),
@@ -145,18 +116,10 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                             child: RaisedButton(
                               onPressed: () {
                                 _showLoadingDialog(context);
-                                // if (_isFieldNomor == null || !_isFieldNomor) {
-                                //   _statePascabayar.currentState.showSnackBar(
-                                //     SnackBar(
-                                //       content: Text("LENGKAPI DATA"),
-                                //     ),
-                                //   );
-                                //   return;
-                                // }
                                 String nomor = _controllerNomor.text.toString();
                                 Post post =
                                     Post(noHp: nomor, userId: 1, walletId: 1);
-                                _apiService
+                                _pulsaService
                                     .createPostPasca(post)
                                     .then((response) async {
                                   if (response.statusCode == 200) {
@@ -165,14 +128,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                                     var koId = userUid;
                                     print(userUid);
                                     if (userUid == "null") {
-                                      // _statePascabayar.currentState.showSnackBar(
-                                      //     SnackBar(
-                                      //         duration:
-                                      //             Duration(milliseconds: 30),
-                                      //         content: Text(
-                                      //             "Nomor Yang Anda Masukan Tidak Terdaftar!")));
+                                      print("NUll user");
                                     } else {
-                                      _apiService
+                                      _localService
                                           .saveNameId(userUid)
                                           .then((bool committed) {});
                                       await new Future.delayed(
@@ -208,15 +166,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           ),
         ),
       ),
-      // _isLoading
-      //     ? Stack(
-      //         children: <Widget>[
-      //           Center(
-      //             child: CircularProgressIndicator(),
-      //           ),
-      //         ],
-      //       )
-      //     : Container(),
     );
   }
 
@@ -224,7 +173,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
     if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Format Nomor Tidak Sesuai";
+      return "Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }
@@ -233,7 +182,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
 
   Widget _buildTextFieldNomor() {
     return FutureBuilder<ProviderCall>(
-        future: _apiService.getProvider(),
+        future: _pulsaService.getProvider(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Datum> providers = snapshot.data.data;
@@ -248,6 +197,32 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                 inputNomor = val;
               },
               decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(width: 1, color: Colors.grey)),
+                  suffixIcon: Stack(
+                    alignment: Alignment.topRight,
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(right: 35),
+                        child: Container(
+                          height: 35.0,
+                          width: 1.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(right: 50, top: 4),
+                        height: 30,
+                        child: Image.network(logoProv),
+                        // child: Icon(logoProv == ""
+                        //     ? Icons.signal_cellular_no_sim
+                        //     : Icons.sim_card),
+                      ),
+                      Container(
+                          padding: EdgeInsets.only(top: 6.0),
+                          child: Image.asset("lib/src/assets/XMLID_2.png")),
+                    ],
+                  ),
                   errorText: _isFieldNomor == null || _isFieldNomor
                       ? null
                       : "Tidak Boleh Kosong"),
@@ -275,7 +250,49 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           } else if (snapshot.hasError) {
             return Text("Jaringan Bermasalah");
           }
-          return Container();
+          return Container(
+            height: 400,
+            alignment: Alignment.center,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         });
   }
 }
+
+// Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: <Widget>[
+//                       Expanded(
+//                           flex: 3,
+//                           child: Container(child: _buildTextFieldNomor())),
+//                       Expanded(
+//                         flex: 1,
+//                         child: Container(
+//                           child: Row(
+//                             mainAxisAlignment:
+//                                 MainAxisAlignment.spaceBetween,
+//                             children: <Widget>[
+//                               Container(
+//                                   child: Container(
+//                                 height: 30.0,
+//                                 width: 30.0,
+//                                 child:
+//                                     Text(logoProv == "" ? "" : "Provider"),
+//                                 // child: Image.network(logoProv),
+//                               )),
+//                               Container(
+//                                 height: 30.0,
+//                                 width: 1.0,
+//                                 color: Colors.black,
+//                               ),
+//                               Container(
+//                                   child: Image.asset(
+//                                       "lib/src/assets/XMLID_2.png"))
+//                             ],
+//                           ),
+//                         ),
+//                       )
+//                     ],
+//                   ),

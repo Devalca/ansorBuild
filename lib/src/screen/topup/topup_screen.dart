@@ -1,7 +1,9 @@
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/topup/atm_screen.dart';
 import 'package:ansor_build/src/screen/topup/banking_screen.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,12 +13,14 @@ class TopupPage extends StatefulWidget {
 }
 
 class _TopupPageState extends State<TopupPage> {
-  ApiService _apiService = ApiService();
+  PulsaService _pulsaService = PulsaService();
+  WalletService _walletService = WalletService();
   final cF = NumberFormat.currency(locale: 'ID');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
         iconTheme: IconThemeData(
@@ -33,9 +37,9 @@ class _TopupPageState extends State<TopupPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SingleChildScrollView(
-              child: Container(
-          color: Colors.white,
+      body: Container(
+        color: Colors.white,
+        child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Container(
@@ -52,8 +56,8 @@ class _TopupPageState extends State<TopupPage> {
                       child: Row(
                         children: <Widget>[
                           Container(
-                              padding:
-                                  const EdgeInsets.only(left: 16.0, right: 10.0),
+                              padding: const EdgeInsets.only(
+                                  left: 16.0, right: 10.0),
                               child: Icon(
                                 Icons.account_balance_wallet,
                                 color: Colors.green,
@@ -66,35 +70,32 @@ class _TopupPageState extends State<TopupPage> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.only(right: 16.0),
-                      child: FutureBuilder<Wallet>(
-                        future: _apiService.getSaldo(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.done) {
-                            if (snapshot.hasData)
-                              return Center(
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                              cF
-                                                  .format(snapshot
-                                                      .data.data[0].saldoAkhir)
-                                                  .replaceAll("IDR", "Rp"),
-                                              style: TextStyle(fontSize: 20.0)),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                          } else if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          }
-                          return Text('MOHON TUNGGU...');
-                        },
+                      child: Row(
+                        children: <Widget>[
+                          FutureBuilder<Wallet>(
+                            future: _walletService.getSaldo(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (snapshot.hasData)
+                                  return Container(
+                                     padding: const EdgeInsets.only(
+                                  right: 16.0),
+                                    child: Text(
+                                        formatRupiah(snapshot.data.data[0].saldoAkhir)
+                                            .replaceAll("Rp ", "Rp"),
+                                        style: TextStyle(fontSize: 16.0)),
+                                  );
+                              } else if (snapshot.hasError) {
+                                return Text("${snapshot.error}");
+                              }
+                              return Container(
+                                padding: const EdgeInsets.only(
+                                  right: 16.0),
+                                child: Text('MOHON TUNGGU...'));
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -122,7 +123,7 @@ class _TopupPageState extends State<TopupPage> {
                       ],
                     ),
                     Container(
-                      height: 250.0,
+                      height: 200.0,
                       child: Center(
                           child: Image.asset("lib/src/assets/qr-code.png")),
                     ),
@@ -130,7 +131,7 @@ class _TopupPageState extends State<TopupPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 50.0),
                       child: Center(
                         child: Text(
-                          'asd sadsa dsad sadsadsadsa sadsa asdsad sadsa dsads adsa das dsa dsa d sad sa dsa ds adsadsadsadsa dsa dsa dsa dasdsadsad sadsad saddas dsad sad sa das das d asd sad sad sa dsa dsa dsa das das d',
+                          "QR Code ini di gunakan jika kamu ingin Top Up melalui merchant dengan cara menunjukan QR Code kepada merchant, kemudian Top Up sesuai dengan nominal yang kamu inginkan",
                           style: TextStyle(color: Colors.black45),
                           textAlign: TextAlign.center,
                         ),
@@ -154,8 +155,8 @@ class _TopupPageState extends State<TopupPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.black12, width: 1.0)),
+                              bottom: BorderSide(
+                                  color: Colors.black12, width: 1.0)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,14 +172,14 @@ class _TopupPageState extends State<TopupPage> {
                                             width: 1, color: Colors.grey[200]),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
-                                    height: 45.0,
-                                    width: 45.0,
+                                    height: 35.0,
+                                    width: 35.0,
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(left: 10.0),
                                     child: Text(
                                       'ATM',
-                                      style: TextStyle(fontSize: 20.0),
+                                      style: TextStyle(fontSize: 12.0),
                                     ),
                                   ),
                                 ],
@@ -203,8 +204,8 @@ class _TopupPageState extends State<TopupPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.black12, width: 1.0)),
+                              bottom: BorderSide(
+                                  color: Colors.black12, width: 1.0)),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -220,14 +221,14 @@ class _TopupPageState extends State<TopupPage> {
                                             width: 1, color: Colors.grey[200]),
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
-                                    height: 45.0,
-                                    width: 45.0,
+                                    height: 35.0,
+                                    width: 35.0,
                                   ),
                                   Container(
                                     padding: EdgeInsets.only(left: 10.0),
                                     child: Text(
                                       'Internet/Mobile Banking',
-                                      style: TextStyle(fontSize: 20.0),
+                                      style: TextStyle(fontSize: 12.0),
                                     ),
                                   ),
                                 ],
