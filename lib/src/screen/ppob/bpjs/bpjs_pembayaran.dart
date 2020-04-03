@@ -260,11 +260,11 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                 //   return Text("Tidak ada Data");
                                 // } else {
                                 return (Container(
-                                  child: Column(
+                                    child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Container(
-                                      height: 70.0,
+                                      height: 85.0,
                                       child: Row(children: <Widget>[
                                         Container(
                                           margin: EdgeInsets.only(right: 12.0),
@@ -506,15 +506,12 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                     snapshot.data.data[0].periodeByr.toString();
                                 noKtp2 = snapshot.data.data[0].noKtp;
 
-                                // if (snapshot.data.data.isNotEmpty) {
-                                //   return Text("Tidak ada Data");
-                                // } else {
                                 return (Container(
                                     child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Container(
-                                      height: 70.0,
+                                      height: 85.0,
                                       child: Row(children: <Widget>[
                                         Container(
                                           margin: EdgeInsets.only(right: 12.0),
@@ -806,11 +803,11 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                     Container(height: 15),
                                   ],
                                 )));
-                                // }
                               } else if (snapshot.hasError) {
-                                // return Center(
-                                // child: Text("Gagal Memuat Detail Pembayaran"));
-                                return Text("${snapshot.error}");
+                                return Center(
+                                    child:
+                                        Text("Gagal Memuat Detail Pembayaran"));
+                                // return Text("${snapshot.error}");
                               }
                               return Center(child: CircularProgressIndicator());
                             },
