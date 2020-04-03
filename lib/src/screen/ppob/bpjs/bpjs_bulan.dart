@@ -5,13 +5,24 @@ import 'package:flutter/material.dart';
 
 class BpjsBulan extends StatefulWidget {
   final String jenis;
-  BpjsBulan({this.jenis});
+  final String noVa;
+  final String noKtp;
+  BpjsBulan({this.jenis, this.noVa, this.noKtp});
 
   @override
   _BpjsBulanState createState() => _BpjsBulanState();
 }
 
 class _BpjsBulanState extends State<BpjsBulan> {
+  @override
+  void initState() {
+    super.initState();
+
+    print("di bulan");
+    print(widget.noVa);
+    print(widget.noKtp);
+  }
+
   bool _isLoading = false;
 
   BpjsServices _bpjsServices = BpjsServices();
@@ -67,8 +78,9 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                                         index: 0,
                                                         tgl: snapshot.data
                                                             .data[i].tanggal,
-                                                        nm: snapshot.data
-                                                            .data[i].nama)));
+                                                        nm: snapshot
+                                                            .data.data[i].nama,
+                                                        noVa: widget.noVa)));
                                             setState(() => _isLoading = false);
                                           },
                                           child: Container(
@@ -124,7 +136,13 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                                                 bln: snapshot
                                                                     .data
                                                                     .data[i]
-                                                                    .nama)));
+                                                                    .nama,
+                                                                periode: snapshot
+                                                                    .data
+                                                                    .data[i]
+                                                                    .periodeByr,
+                                                                noKtp: widget
+                                                                    .noKtp)));
                                                 setState(
                                                     () => _isLoading = false);
                                               },

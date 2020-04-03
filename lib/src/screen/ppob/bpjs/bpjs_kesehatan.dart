@@ -9,17 +9,30 @@ import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 class BpjsKesehatan extends StatefulWidget {
   final String tgl;
   final String nm;
-  BpjsKesehatan({this.tgl, this.nm});
+  final String noVa;
+  BpjsKesehatan({this.tgl, this.nm, this.noVa});
 
   @override
   _BpjsKesehatanState createState() => _BpjsKesehatanState();
 }
 
 class _BpjsKesehatanState extends State<BpjsKesehatan> {
+  @override
+  void initState() {
+    super.initState();
+
+    print(widget.noVa);
+
+    setState(() {
+      _noVAController.text = widget.noVa;
+    });
+  }
+
   bool _isLoading = false;
   bool _fieldNoVA;
 
   String url = "";
+  String noVa = "";
 
   TextEditingController _noVAController = TextEditingController();
 
@@ -43,7 +56,8 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
             _fieldNoVA = true;
           });
         } else {
-          String noVa = _noVAController.text.toString();
+          String noVa =
+              widget.noVa == "" ? _noVAController.text.toString() : widget.noVa;
 
           PostKesehatan kesehatan =
               PostKesehatan(noVa: noVa, periode: tgl(widget.tgl));
@@ -79,7 +93,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                   context,
                   new MaterialPageRoute(
                       builder: (__) =>
-                          new PembayaranGagal(pesan: response.body)));
+                          new PembayaranGagal(jenis: "kesehatan", pesan: response.body)));
               setState(() => _isLoading = false);
             } else if (response.statusCode == 302) {
               print("berhasil body: " + response.body);
@@ -153,7 +167,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                                 hintText: 'Contoh: 123456789',
                                 errorText: _fieldNoVA == null || _fieldNoVA
                                     ? null
-                                    : "Kolom Nomor Meter harus diisi",
+                                    : "Kolom Nomor VA harus diisi",
                               ),
                               style: new TextStyle(fontSize: 14.0),
                               onChanged: (value) {
@@ -166,7 +180,6 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                             Container(height: 15),
                             Container(
                                 child: Text("Bayar Hingga",
-                                    // child: Text(widget.tgl == null ? "kosong" : tgl(widget.tgl),
                                     style: new TextStyle(fontSize: 12.0),
                                     textAlign: TextAlign.left)),
                             new GestureDetector(
@@ -174,8 +187,9 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (__) =>
-                                            new BpjsBulan(jenis: "kesehatan")));
+                                        builder: (__) => new BpjsBulan(
+                                            jenis: "kesehatan",
+                                            noVa: _noVAController.text)));
                               },
                               child: Container(
                                 padding: const EdgeInsets.only(top: 10.0),

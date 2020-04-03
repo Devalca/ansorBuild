@@ -251,7 +251,7 @@ class Bayar {
 
 class DataBayar {
   int id;
-  String periodeByr;
+  int periodeByr;
   String nama;
 
   DataBayar({this.id, this.periodeByr, this.nama});
@@ -263,5 +263,246 @@ class DataBayar {
         "id": id,
         "periode_byr": periodeByr,
         "nama": nama,
+      };
+}
+
+PostKetenagakerjaan ketenagakerjaanFromJson(String str) =>
+    PostKetenagakerjaan.fromJson(json.decode(str));
+String ketenagakerjaanToJson(PostKetenagakerjaan data) =>
+    json.encode(data.toJson());
+
+class PostKetenagakerjaan {
+  int periodeByr;
+  String noKtp;
+
+  PostKetenagakerjaan({
+    this.periodeByr,
+    this.noKtp,
+  });
+
+  factory PostKetenagakerjaan.fromJson(Map<String, dynamic> json) =>
+      PostKetenagakerjaan(
+          periodeByr: json['periode_byr'], noKtp: json['no_ktp']);
+
+  Map<String, dynamic> toJson() => {"periode_byr": periodeByr, "no_ktp": noKtp};
+}
+
+DetailKetenagakerjaan detailKetenagakerjaanFromJson(String str) =>
+    DetailKetenagakerjaan.fromJson(json.decode(str));
+String detailKetenagakerjaanToJson(DetailKetenagakerjaan data) =>
+    json.encode(data.toJson());
+
+class DetailKetenagakerjaan {
+  List<DataKetenagakerjaan> data;
+  String message;
+
+  DetailKetenagakerjaan({
+    this.data,
+    this.message,
+  });
+
+  factory DetailKetenagakerjaan.fromJson(Map<String, dynamic> json) =>
+      DetailKetenagakerjaan(
+        data: List<DataKetenagakerjaan>.from(
+            json["data"].map((x) => DataKetenagakerjaan.fromJson(x))),
+        message: json['message'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
+      };
+}
+
+class DataKetenagakerjaan {
+  int transactionId;
+  String noKtp;
+  String namaPemilik;
+  String cabang;
+  int jkk;
+  int jkm;
+  int jht;
+  int jp;
+  int periodeByr;
+  int totalTagihan;
+  int total;
+  DateTime createdAt;
+
+  DataKetenagakerjaan(
+      {this.transactionId,
+      this.noKtp,
+      this.namaPemilik,
+      this.cabang,
+      this.jkk,
+      this.jkm,
+      this.jht,
+      this.jp,
+      this.periodeByr,
+      this.totalTagihan,
+      this.total,
+      this.createdAt});
+
+  factory DataKetenagakerjaan.fromJson(Map<String, dynamic> json) =>
+      DataKetenagakerjaan(
+        transactionId: json['transactionId'],
+        noKtp: json['no_ktp'],
+        namaPemilik: json['nama_pemilik'],
+        cabang: json['cabang'],
+        jkk: json['jkk'],
+        jkm: json['jkm'],
+        jht: json['jht'],
+        jp: json['jp'],
+        periodeByr: json['periode_byr'],
+        totalTagihan: json['total_tagihan'],
+        total: json['total'],
+        createdAt: DateTime.parse(json['createdAt']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "transactionId": transactionId,
+        "no_ktp": noKtp,
+        "nama_pemilik": namaPemilik,
+        "cabang": cabang,
+        "jkk": jkk,
+        "jkm": jkm,
+        "jht": jht,
+        "periode_byr": periodeByr,
+        "total_tagihan": totalTagihan,
+        "total": total,
+        "createdAt": createdAt
+      };
+}
+
+PostBayarKerja bayarKerjaFromJson(String str) =>
+    PostBayarKerja.fromJson(json.decode(str));
+String bayarKerjaToJson(PostBayarKerja data) => json.encode(data.toJson());
+
+class PostBayarKerja {
+  String periodeByr;
+  String noKtp;
+  int userId;
+  int walletId;
+  String transactionId;
+
+  PostBayarKerja({
+    this.periodeByr,
+    this.noKtp,
+    this.userId,
+    this.walletId,
+    this.transactionId,
+  });
+
+  factory PostBayarKerja.fromJson(Map<String, dynamic> json) => PostBayarKerja(
+      periodeByr: json['periode_byr'],
+      noKtp: json['no_ktp'],
+      userId: json['userId'],
+      walletId: json['walletId'],
+      transactionId: json['transactionId']);
+
+  Map<String, dynamic> toJson() => {
+        "periode_byr": periodeByr,
+        "no_ktp": noKtp,
+        "userId": userId,
+        "walletId": walletId,
+        "transactionId": transactionId
+      };
+}
+
+BerhasilKerja berhasilKerjaFromJson(String str) => BerhasilKerja.fromJson(json.decode(str));
+String berhasilKerjaToJson(BerhasilKerja data) => json.encode(data.toJson());
+
+class BerhasilKerja {
+  List<DataBerhasilKerja> data;
+  String message;
+
+  BerhasilKerja({
+    this.data,
+    this.message,
+  });
+
+  factory BerhasilKerja.fromJson(Map<String, dynamic> json) => BerhasilKerja(
+        data: List<DataBerhasilKerja>.from(
+            json["data"].map((x) => DataBerhasilKerja.fromJson(x))),
+        message: json['message'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
+        "message": message,
+      };
+}
+
+class DataBerhasilKerja {
+  int id;
+  int userId;
+  int walletId;
+  int transactionId;
+  String noKtp;
+  String namaPemilik;
+  int periodeByr;
+  int jkm;
+  int jkk;
+  int jht;
+  int jp;
+  int adminFee;
+  int totalTagihan;
+  int total;
+  String noTransaksi;
+  DateTime createdAt;
+
+  DataBerhasilKerja(
+      {this.id,
+      this.userId,
+      this.walletId,
+      this.transactionId,
+      this.noKtp,
+      this.namaPemilik,
+      this.periodeByr,
+      this.jkm,
+      this.jkk,
+      this.jht,
+      this.jp,
+      this.adminFee,
+      this.totalTagihan,
+      this.total,
+      this.noTransaksi,
+      this.createdAt});
+
+  factory DataBerhasilKerja.fromJson(Map<String, dynamic> json) => DataBerhasilKerja(
+        id: json['id'],
+        userId: json['userId'],
+        walletId: json['walletId'],
+        transactionId: json['transactionId'],
+        noKtp: json['no_ktp'],
+        namaPemilik: json['nama_pemilik'],
+        periodeByr: json['periode_byr'],
+        jkm: json['jkm'],
+        jkk: json['jkk'],
+        jht: json['jht'],
+        jp: json['jp'],
+        adminFee: json['admin_fee'],
+        totalTagihan: json['total_tagihan'],
+        total: json['total'],
+        noTransaksi: json['no_transaksi'],
+        createdAt: DateTime.parse(json['createdAt']),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "userId": userId,
+        "walletId": walletId,
+        "transactionId": transactionId,
+        "no_ktp": noKtp,
+        "nama_pemilik": namaPemilik,
+        "periode_byr": periodeByr,
+        "jkm": jkm,
+        "jkk": jkk,
+        "jht": jht,
+        "jp": jp,
+        "admin_fee": adminFee,
+        "total_tagihan": totalTagihan,
+        "total": total,
+        "no_transaksi": noTransaksi,
+        "createdAt": createdAt
       };
 }

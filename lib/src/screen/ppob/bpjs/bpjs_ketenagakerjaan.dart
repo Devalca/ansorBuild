@@ -1,21 +1,41 @@
 import 'dart:convert';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_bulan.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_gagal.dart';
+import 'package:ansor_build/src/service/bpjs_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
+import 'package:ansor_build/src/model/bpjs_model.dart';
 
 class BpjsKetenagakerjaan extends StatefulWidget {
   final String bln;
-  BpjsKetenagakerjaan({this.bln});
+  final String noKtp;
+  final int periode;
+  BpjsKetenagakerjaan({this.bln, this.periode, this.noKtp});
 
   @override
   _BpjsKetenagakerjaanState createState() => _BpjsKetenagakerjaanState();
 }
 
 class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
+  @override
+  void initState() {
+    super.initState();
+
+    print(widget.noKtp);
+
+    setState(() {
+      _noKTPController.text = widget.noKtp;
+    });
+  }
+
   bool _isLoading = false;
   bool _fieldNoKTP;
 
+  String url = "";
+
   TextEditingController _noKTPController = TextEditingController();
+
+  BpjsServices _bpjsServices = BpjsServices();
 
   @override
   Widget build(BuildContext context) {
@@ -31,73 +51,73 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
             _fieldNoKTP = true;
           });
         } else {
-          // String noVa = _noKTPController.text.toString();
+          String noKtp = _noKTPController.text.toString();
 
-          // PostKesehatan kesehatan =
-          //     PostKesehatan(noVa: noVa, periode: tgl(widget.tgl));
+          PostKetenagakerjaan ketenagakerjaan =
+              PostKetenagakerjaan(periodeByr: widget.periode, noKtp: noKtp);
 
-          // // PostKesehatan kesehatan = PostKesehatan(noVa: "123456789", periode: "2020-01-01");
+          // PostKetenagakerjaan ketenagakerjaan = PostKetenagakerjaan(periodeByr: widget.periode, noKtp: "1234567891011123");
 
-          // _bpjsServices.postKesehatan(kesehatan).then((response) async {
-          //   if (response.statusCode == 200) {
-          //     // print("berhasil body: " + response.body);
-          //     // print(response.statusCode);
+          _bpjsServices.postKetenagakerjaan(ketenagakerjaan).then((response) async {
+            if (response.statusCode == 200) {
+              // print("berhasil body: " + response.body);
+              // print(response.statusCode);
 
-          //     // Map data = jsonDecode(response.body);
-          //     // transactionId = data['transactionId'].toString();
-          //     // print("transactionId: " + transactionId);
+              // Map data = jsonDecode(response.body);
+              // transactionId = data['transactionId'].toString();
+              // print("transactionId: " + transactionId);
 
-          //     // url = '/ppob/bpjs/kesehatan/' + transactionId;
-          //     // print("url: " + url);
+              // url = '/ppob/bpjs/kesehatan/' + transactionId;
+              // print("url: " + url);
 
-          //     // _bpjsServices.saveUrl(url).then((bool committed) {
-          //     //   print(url);
-          //     // });
+              // _bpjsServices.saveUrl(url).then((bool committed) {
+              //   print(url);
+              // });
 
-          //     // Navigator.push(
-          //     //     context,
-          //     //     new MaterialPageRoute(
-          //     //         builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
-          //     // setState(() => _isLoading = false);
+              // Navigator.push(
+              //     context,
+              //     new MaterialPageRoute(
+              //         builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
+              // setState(() => _isLoading = false);
 
-          //     print("error: " + response.body);
-          //     print(response.statusCode);
+              print("error: " + response.body);
+              print(response.statusCode);
 
-          //     Navigator.push(
-          //         context,
-          //         new MaterialPageRoute(
-          //             builder: (__) =>
-          //                 new PembayaranGagal(pesan: response.body)));
-          //     setState(() => _isLoading = false);
-          //   } else if (response.statusCode == 302) {
-          //     print("berhasil body: " + response.body);
-          //     print(response.statusCode);
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (__) =>
+                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: response.body)));
+              setState(() => _isLoading = false);
+            } else if (response.statusCode == 302) {
+              print("berhasil body: " + response.body);
+              print(response.statusCode);
 
-          //     url = response.headers['location'];
-          //     print("url: " + url);
+              url = response.headers['location'];
+              print("url: " + url);
 
-          //     _bpjsServices.saveUrl(url).then((bool committed) {
-          //       print(url);
-          //     });
+              _bpjsServices.saveUrl(url).then((bool committed) {
+                print(url);
+              });
 
-          //     Navigator.push(
-          //         context,
-          //         new MaterialPageRoute(
-          //             builder: (__) =>
-          //                 new BpjsPembayaran(jenis: "kesehatan", url: url)));
-          //     setState(() => _isLoading = false);
-          //   } else {
-          //     print("error: " + response.body);
-          //     print(response.statusCode);
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (__) =>
+                          new BpjsPembayaran(jenis: "ketenagakerjaan", urlkerja: url)));
+              setState(() => _isLoading = false);
+            } else {
+              print("error: " + response.body);
+              print(response.statusCode);
 
-          //     Navigator.push(
-          //         context,
-          //         new MaterialPageRoute(
-          //             builder: (__) =>
-          //                 new PembayaranGagal(pesan: response.body)));
-          //     setState(() => _isLoading = false);
-          //   }
-          // });
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (__) =>
+                          new PembayaranGagal(pesan: response.body)));
+              setState(() => _isLoading = false);
+            }
+          });
         }
       };
     }
@@ -149,7 +169,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: 'Contoh: 123456789',
-                  errorText: _fieldNoKTP == null || _fieldNoKTP ? null : "Kolom Nomor Meter harus diisi",
+                  errorText: _fieldNoKTP == null || _fieldNoKTP ? null : "Kolom Nomor KTP harus diisi",
                 ),
                 style: new TextStyle(fontSize:  14.0),
                 onChanged: (value) {
@@ -184,7 +204,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                             context,
                             new MaterialPageRoute(
                                 builder: (__) =>
-                                    new BpjsBulan(jenis: "ketenagakerjaan")));
+                                    new BpjsBulan(jenis: "ketenagakerjaan", noKtp: _noKTPController.text)));
                       },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -45,11 +45,29 @@ class BpjsServices {
     return response;
   }
 
+  Future<http.Response> postKetenagakerjaan(PostKetenagakerjaan ketenagakerjaan) async {
+    var response = await http.post(
+      '$url/ppob/bpjs/ketenagakerjaan',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: ketenagakerjaanToJson(ketenagakerjaan),
+    );
+    return response;
+  }
+
   Future<http.Response> postPembayaran(PostPembayaran pembayaran) async {
     var response = await http.post(
       '$url/ppob/bpjs/kesehatan/transaction',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: pembayaranToJson(pembayaran),
+    );
+    return response;
+  }
+
+  Future<http.Response> postBayarKerja(PostBayarKerja bayarKerja) async {
+    var response = await http.post(
+      '$url/ppob/bpjs/ketenagakerjaan/transaction',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: bayarKerjaToJson(bayarKerja),
     );
     return response;
   }

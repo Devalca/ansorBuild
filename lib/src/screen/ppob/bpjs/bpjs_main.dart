@@ -7,9 +7,10 @@ import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_ketenagakerjaan.dart'
     as ketenagakerjaan;
 
 class Bpjs extends StatefulWidget {
-  final int index;
+  final int index, periode;
   final String tgl, nm, bln;
-  Bpjs({this.index, this.tgl, this.nm, this.bln});
+  final String noVa, noKtp;
+  Bpjs({this.index, this.tgl, this.nm, this.bln, this.periode, this.noVa, this.noKtp});
 
   @override
   _BpjsState createState() => _BpjsState();
@@ -22,6 +23,8 @@ class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin {
   void initState() {
     controller = new TabController(vsync: this, length: 2);
     super.initState();
+    print(widget.noVa);
+    print(widget.noKtp);
   }
 
   @override
@@ -97,8 +100,8 @@ class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin {
                     body: TabBarView(
                       physics: NeverScrollableScrollPhysics(),
                       children: <Widget>[
-                        kesehatan.BpjsKesehatan(tgl: widget.tgl, nm: widget.nm),
-                        ketenagakerjaan.BpjsKetenagakerjaan(bln: widget.bln),
+                        kesehatan.BpjsKesehatan(tgl: widget.tgl, nm: widget.nm, noVa: widget.noVa),
+                        ketenagakerjaan.BpjsKetenagakerjaan(bln: widget.bln, periode: widget.periode, noKtp: widget.noKtp),
                       ],
                     ),
                   ),

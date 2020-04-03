@@ -3,8 +3,8 @@ import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:flutter/material.dart';
 
 class PembayaranGagal extends StatefulWidget {
-  final String pesan;
-  PembayaranGagal({this.pesan});
+  final String pesan, jenis;
+  PembayaranGagal({this.pesan, this.jenis});
 
   @override
   _PembayaranGagalState createState() => _PembayaranGagalState();
@@ -85,7 +85,7 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
               )
             )
             :
-            Text("Transaksi Gagal\n" + widget.pesan.substring(12, 49),
+            Text( widget.jenis == "kesehatan" ? "Transaksi Gagal\n" + widget.pesan.substring(12, 49) : "Transaksi Gagal\n" + widget.pesan.substring(12, 37),
               textAlign: TextAlign.center,
               style: new TextStyle(
                   fontSize: 14.0,
