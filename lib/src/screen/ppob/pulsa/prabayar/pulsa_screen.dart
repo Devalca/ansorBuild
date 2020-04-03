@@ -2,25 +2,34 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
+import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/permissions_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'detail_screen.dart';
 
 class PulsaPage extends StatefulWidget {
+  final String noValue;
+  PulsaPage(this.noValue);
+
   @override
   _PulsaPageState createState() => _PulsaPageState();
 }
 
 class _PulsaPageState extends State<PulsaPage> {
-  var mobi = "";
+  var namaProv = "";
   var idProv = "";
   var logoProv = "";
-  bool _validate = true;
+  var testProv;
+  var cekNo;
+  bool _validate = false;
   int _nominalIndex = -1;
   String inputNomor, inputNominal, hargaNominal;
   GlobalKey<FormState> _key = GlobalKey();
@@ -28,9 +37,37 @@ class _PulsaPageState extends State<PulsaPage> {
   LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
   TextEditingController _controllerNomor = TextEditingController();
+  List<Nominal> _nominal = List<Nominal>();
+  List<Nominal> _nominalForDisplay = List<Nominal>();
+  List<Provider> _provider = List<Provider>();
+  List<Provider> _providerForDisplay = List<Provider>();
+  static const platform =
+      const MethodChannel('flutter_contacts/launch_contacts');
 
   @override
   void initState() {
+    _pulsaService.getNominal().then((value) {
+      setState(() {
+        _nominal.addAll(value.data);
+        _nominalForDisplay = _nominal;
+      });
+    });
+    _pulsaService.getProvider().then((value) {
+      setState(() {
+        _provider.addAll(value.data);
+        _providerForDisplay = _provider;
+      });
+    });
+    setState(() {
+      if (widget.noValue != "") {
+        _controllerNomor.text =
+            widget.noValue.toString().replaceAll("+62", "0").replaceAll("-", "");
+        if (_controllerNomor.text != null) {
+          cekNo = _controllerNomor.text;
+          testProv = cekNo.substring(0, 4);
+        }
+      }
+    });
     super.initState();
   }
 
@@ -45,196 +82,181 @@ class _PulsaPageState extends State<PulsaPage> {
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
       body: Container(
-        child:
-            Form(key: _key, autovalidate: _validate, child: formInputPulsa()),
+        child: Form(
+            key: _key,
+            autovalidate: _validate,
+            child: SingleChildScrollView(child: _formPulsaInput())),
       ),
     );
   }
 
-  Widget formInputPulsa() {
-    return SingleChildScrollView(
-      child: Container(
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: FutureBuilder<ProviderCall>(
-            future: _pulsaService.getProvider(),
+  Widget _formPulsaInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Container(margin: EdgeInsets.only(top: 16.0), child: Text("NO")),
+        Padding(
+          padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+          child: TextFormField(
+              inputFormatters: [LengthLimitingTextInputFormatter(12)],
+              decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(width: 1, color: Colors.grey)),
+                suffixIcon: Stack(
+                  alignment: Alignment.topRight,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(right: 35),
+                      child: Container(
+                        height: 35.0,
+                        width: 1.0,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 44, top: 4),
+                      height: 30,
+                      child: logoProv == ""
+                          ? Container(
+                              height: 5,
+                              width: 5,
+                            )
+                          : Image.network(logoProv),
+                    ),
+                    Container(
+                        padding:
+                            EdgeInsets.only(top: 6.0, right: 6.0, bottom: 10.0),
+                        child: GestureDetector(
+                            onTap: () async => launchContacts(),
+                            child: Image.asset("lib/src/assets/XMLID_2.png"))),
+                  ],
+                ),
+              ),
+              controller: _controllerNomor,
+              onChanged: (String value) async {
+                for (var i = 0; i < _providerForDisplay.length; i++) {
+                  if (value.length == 4) {
+                    if (value.substring(0, 4) ==
+                        _providerForDisplay[i].kodeProvider) {
+                      setState(() {
+                        namaProv = _providerForDisplay[i].namaProvider;
+                        idProv = _providerForDisplay[i].operatorId.toString();
+                        logoProv = _providerForDisplay[i].file.toString();
+                        testProv = "";
+                      });
+                    }
+                  } else if (value.length == 3) {
+                    setState(() {
+                      idProv = "";
+                      namaProv = "";
+                      logoProv = "";
+                    });
+                  }
+                }
+              },
+              keyboardType: TextInputType.phone,
+              validator: validateNomor,
+              onSaved: (String val) {
+                inputNomor = val;
+              }),
+        ),
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          FutureBuilder<NominalList>(
+            future: _pulsaService.getNominal(),
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Datum> providers = snapshot.data.data;
-                return Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Center(
+                    child: Text("Koneksi Terputus"),
+                  );
+                case ConnectionState.waiting:
+                  return Container(
+                    height: 400,
+                    child: centerLoading(),
+                  );
+                default:
+                  if (snapshot.hasData) {
+                    for (var i = 0; i < snapshot.data.data.length; i++) {
+                      for (var i = 0; i < _providerForDisplay.length; i++) {
+                        if (testProv == _providerForDisplay[i].kodeProvider) {
+                          namaProv = _providerForDisplay[i].namaProvider;
+                          idProv = _providerForDisplay[i].operatorId.toString();
+                          logoProv = _providerForDisplay[i].file.toString();
+                        }
+                      }
+                      if (idProv == "") {
+                        return Container(
+                          height: 350,
+                          child: centerLoading(),
+                        );
+                      } else if (idProv ==
+                          snapshot.data.data[i].operatorId.toString()) {
+                        print(idProv);
+                        List<Listharga> hargaList =
+                            snapshot.data.data[i].listharga;
+                        return Column(
                           children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(top: 16.0),
-                                child: Text('Nomor Handphone')),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12.0),
-                              child: TextFormField(
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(12)
-                                  ],
-                                  decoration: InputDecoration(
-                                    focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            width: 1, color: Colors.grey)),
-                                    suffixIcon: Stack(
-                                      alignment: Alignment.topRight,
-                                      children: <Widget>[
-                                        Container(
-                                          padding: EdgeInsets.only(right: 35),
-                                          child: Container(
-                                            height: 35.0,
-                                            width: 1.0,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              right: 50, top: 4),
-                                          height: 30,
-                                          child: Image.network(logoProv),
-                                          // child: Icon(logoProv == ""
-                                          //     ? Icons.signal_cellular_no_sim
-                                          //     : Icons.sim_card),
-                                        ),
-                                        Container(
-                                            padding: EdgeInsets.only(top: 6.0),
-                                            child: Image.asset(
-                                                "lib/src/assets/XMLID_2.png")),
-                                      ],
-                                    ),
-                                  ),
-                                  controller: _controllerNomor,
-                                  onChanged: (String value) async {
-                                    for (var i = 0;
-                                        i < snapshot.data.data.length;
-                                        i++) {
-                                      if (value.length == 4) {
-                                        if (value ==
-                                            providers[i].kodeProvider) {
-                                          setState(() {
-                                            mobi = providers[i].namaProvider;
-                                            idProv = providers[i]
-                                                .operatorId
-                                                .toString();
-                                            logoProv =
-                                                providers[i].file.toString();
-                                          });
-                                          print("LOGO PROVIDER: " + logoProv);
-                                        }
-                                      } else if (value.length == 3) {
-                                        setState(() {
-                                          mobi = "";
-                                          logoProv = "";
-                                        });
-                                      }
-                                    }
-                                  },
-                                  keyboardType: TextInputType.phone,
-                                  validator: validateNomor,
-                                  onSaved: (String val) {
-                                    inputNomor = val;
-                                  }),
-                            ),
-                            Container(
-                              height: 450.0,
-                              padding: EdgeInsets.only(top: 15.0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    FutureBuilder<NominalList>(
-                                      future: _pulsaService.getNominal(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.done) {
-                                          for (var i = 0;
-                                              i < snapshot.data.data.length;
-                                              i++) {
-                                            if (idProv == "") {
-                                              return Container();
-                                            } else if (idProv ==
-                                                snapshot.data.data[i].operatorId
-                                                    .toString()) {
-                                              List<Listharga> hargaList =
-                                                  snapshot
-                                                      .data.data[i].listharga;
-                                              return Container(
-                                                height: 430.0,
-                                                child: _btnListView(hargaList),
-                                              );
-                                            }
-                                          }
-                                        }
-                                        return Container();
-                                      },
-                                    ),
-                                  ]),
-                            ),
+                            _btnListView(hargaList),
+                            _btnNext()
                           ],
-                        ),
-                      ),
-                      Container(
-                        child: Column(
-                          children: <Widget>[
-                            Divider(
-                              height: 12,
-                              color: Colors.black,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text('Total'),
-                                      ),
-                                      Container(
-                                          child: Text(hargaNominal == null
-                                              ? ""
-                                              : hargaNominal)),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    width: 100.0,
-                                    child: RaisedButton(
-                                      color: Colors.green,
-                                      onPressed: _sendToServer,
-                                      child: Text(
-                                        'BELI',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
+                        );
+                      }
+                    }
+                  } else {
+                    return Text('Result: ${snapshot.error}');
+                  }
               }
               return Container(
-                height: 400,
-                alignment: Alignment.center,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
+                height: 350,
+                child: centerLoading(),
               );
-            }),
+            },
+          ),
+        ]),
+      ],
+    );
+  }
+
+  Widget _btnNext() {
+    return Container(
+      margin: EdgeInsets.only(top: 10.0),
+      child: Column(
+        children: <Widget>[
+          Divider(
+            height: 12,
+            color: Colors.black,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      child: Text('Total'),
+                    ),
+                    Container(
+                        child: Text(hargaNominal == null ? "" : hargaNominal)),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: 100.0,
+                  child: RaisedButton(
+                    color: Colors.green,
+                    onPressed: sendToServer,
+                    child: Text(
+                      'BELI',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -298,9 +320,6 @@ class _PulsaPageState extends State<PulsaPage> {
               if (_nominalIndex == index) {
                 inputNominal = hargaList[index].nominalPulsa.toString();
                 hargaNominal = formatRupiah(jmh).replaceAll("Rp ", "Rp");
-                print(index);
-                print(_nominalIndex);
-                print(inputNominal);
               }
             },
           );
@@ -318,32 +337,23 @@ class _PulsaPageState extends State<PulsaPage> {
     return null;
   }
 
-  String validateNominal(String value) {
-    String patttern = r'(^[0-9]*$)';
-    RegExp regExp = RegExp(patttern);
-    if (value.length == 0) {
-      return "Tidak Boleh Kosong";
-    } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
-    }
-    return null;
-  }
-
-  _sendToServer() {
+  void sendToServer() {
     loadingDialog(context);
     if (_key.currentState.validate()) {
       _key.currentState.save();
-      // setState(() => _isLoading = true);
       String nomor = inputNomor.toString();
-      int nominal = int.parse(inputNominal.toString());
-      String namaProv = mobi.toString();
-      if (nomor != null || nominal != null || namaProv != null) {
+      // int nominal = int.parse(inputNominal.toString());
+      String providerNama = namaProv.toString();
+      int nominal = inputNominal == ""
+          ? int.parse(cekNo.toString())
+          : int.parse(inputNominal.toString());
+      if (nomor != null && nominal != null && providerNama != null) {
         Post post = Post(
             noHp: nomor,
             nominal: nominal,
             userId: 1,
             walletId: 1,
-            provider: namaProv);
+            provider: providerNama);
         _pulsaService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
@@ -363,7 +373,7 @@ class _PulsaPageState extends State<PulsaPage> {
           }
         });
       } else {
-        print("error");
+        print("Something Error");
       }
     } else {
       setState(() {
@@ -371,80 +381,17 @@ class _PulsaPageState extends State<PulsaPage> {
       });
     }
   }
-}
 
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// children: <Widget>[
-// Expanded(
-//     flex: 3,
-//     child: Container(
-//       child: TextFormField(
-//           inputFormatters: [
-//             LengthLimitingTextInputFormatter(
-//                 12)
-//           ],
-//           controller: _controllerNomor,
-//           onChanged: (String value) async {
-//             for (var i = 0;
-//                 i < snapshot.data.data.length;
-//                 i++) {
-//               if (value.length == 4) {
-//                 if (value ==
-//                     providers[i]
-//                         .kodeProvider) {
-//                   setState(() {
-//                     mobi = providers[i]
-//                         .namaProvider;
-//                     idProv = providers[i]
-//                         .operatorId
-//                         .toString();
-//                     logoProv = providers[i]
-//                         .file
-//                         .toString();
-//                   });
-//                   print("LOGO PROVIDER: " +
-//                       logoProv);
-//                 }
-//               } else if (value.length == 3) {
-//                 setState(() {
-//                   mobi = "";
-//                   logoProv = "";
-//                 });
-//               }
-//             }
-//           },
-//           keyboardType: TextInputType.phone,
-//           validator: validateNomor,
-//           onSaved: (String val) {
-//             inputNomor = val;
-//           }),
-//     )),
-// Expanded(
-//   flex: 1,
-//   child: Container(
-//     child: Row(
-//       mainAxisAlignment:
-//           MainAxisAlignment.spaceBetween,
-//       children: <Widget>[
-//         Container(
-//           child: Container(
-//           height: 30.0,
-//           width: 30.0,
-//           child: Text(logoProv == "" ? "" : "Provider"),
-//           // child: Image.network(logoProv),
-//         )),
-//         Container(
-//           height: 30.0,
-//           width: 1.0,
-//           color: Colors.black,
-//         ),
-//         Container(
-//             child: Image.asset(
-//                 "lib/src/assets/XMLID_2.png"))
-//       ],
-//     ),
-//   ),
-// )
-// ],
-// ),
+  void launchContacts() async {
+    final PermissionStatus permissionStatus =
+        await PermissionsService().getPermissionContact();
+    if (permissionStatus == PermissionStatus.granted) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ContactsPage()));
+    } else {
+      PermissionsService().requestContactsPermission(onPermissionDenied: () {
+        print('Permission has been denied');
+      });
+    }
+  }
+}

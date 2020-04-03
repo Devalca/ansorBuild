@@ -66,7 +66,7 @@ ProviderCall providerCallFromJson(String str) => ProviderCall.fromJson(json.deco
 String providerCallToJson(ProviderCall data) => json.encode(data.toJson());
 
 class ProviderCall {
-    List<Datum> data;
+    List<Provider> data;
     String message;
 
     ProviderCall({
@@ -75,7 +75,7 @@ class ProviderCall {
     });
 
     factory ProviderCall.fromJson(Map<String, dynamic> json) => ProviderCall(
-        data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+        data: List<Provider>.from(json["data"].map((x) => Provider.fromJson(x))),
         message: json["message"],
     );
 
@@ -85,7 +85,7 @@ class ProviderCall {
     };
 }
 
-class Datum {
+class Provider {
     int providerId;
     int operatorId;
     JenisProvider jenisProvider;
@@ -93,7 +93,7 @@ class Datum {
     String kodeProvider;
     String file;
 
-    Datum({
+    Provider({
         this.providerId,
         this.operatorId,
         this.jenisProvider,
@@ -102,7 +102,7 @@ class Datum {
         this.file
     });
 
-    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    factory Provider.fromJson(Map<String, dynamic> json) => Provider(
         providerId: json["providerId"],
         operatorId: json["operatorId"],
         jenisProvider: jenisProviderValues.map[json["jenis_provider"]],

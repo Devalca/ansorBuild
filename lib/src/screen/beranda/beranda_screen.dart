@@ -339,7 +339,7 @@ class _BerandaPageState extends State<BerandaPage> {
       onTap: () {
         if (ppobService.title == "PULSA") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainPulsa()));
+              context, MaterialPageRoute(builder: (context) => MainPulsa("")));
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Listrik()));
