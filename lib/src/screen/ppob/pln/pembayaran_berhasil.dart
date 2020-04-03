@@ -32,7 +32,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   }
 
   Future<Detail> fetchDetail() async {
-    final response = await http.get('http://192.168.10.11:3000' + _url);
+    final response = await http.get('http://103.9.125.18:3000' + _url);
 
     if (response.statusCode == 200) {
       return detailFromJson(response.body);
@@ -42,12 +42,12 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   }
 
   token(data){
-    var arr = [];
-    arr[0]=data.slice(0,4);
-    arr[1]=data.slice(4,8);
-    arr[2]=data.slice(8,12);
-    arr[3]=data.slice(12,16);
-    return arr.join("-");
+    var arr = new List(3);
+    var item = data.length;
+    arr[0]=data.substring(0,4);
+    arr[1]=data.substring(4,8);
+    arr[2]=data.substring(8,item);
+    return arr.join(" - ");
   }
 
   @override
@@ -107,7 +107,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(formatTanggal(periode) + ", " + DateFormat('HH.mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -116,7 +116,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               
                               Container( height: 25 ),
 
-                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 
@@ -152,7 +152,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 15 ),
 
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 
@@ -332,7 +332,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(formatTanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode) + ", " + DateFormat('HH.mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -341,7 +341,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 25 ),
 
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 

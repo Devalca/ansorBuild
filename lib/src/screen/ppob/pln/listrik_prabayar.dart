@@ -168,7 +168,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
+                        width: 158,
                         height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
@@ -201,7 +201,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
+                        width: 158,
                         height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
@@ -242,7 +242,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
+                        width: 158,
                         height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
@@ -275,7 +275,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
+                        width: 158,
                         height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
@@ -316,7 +316,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
+                        width: 158,
                         height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
@@ -349,7 +349,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 150,
+                        width: 158,
                         height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
@@ -366,7 +366,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                   ],
                 ),
 
-                Container( height: 161 ),
+                Container( height: 171 ),
 
                 Divider(
                   height: 12,
@@ -374,7 +374,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                 ),
 
                 Container(
-                  height: 50.0,
+                  height: 55.0,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -393,7 +393,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                       ),
                       Container(
                         child: SizedBox(
-                          width : 150,
+                          width : 155,
                           height: 35,
                           child: RaisedButton(
                             child: Text('LANJUT', style: TextStyle(color: Colors.white)),

@@ -99,7 +99,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                   )
                 ),
 
-                Container( height: 250 ),
+                Container( height: 260 ),
 
                 Divider(
                   height: 12,
