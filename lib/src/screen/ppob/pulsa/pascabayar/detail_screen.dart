@@ -340,6 +340,7 @@ class _DetailPageState extends State<DetailPage> {
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
+                                    print("REsponse : "+ response.body);
                                     var userUid = blok['id'].toString();
                                     var koId = userUid;
                                     if (userUid == "null") {

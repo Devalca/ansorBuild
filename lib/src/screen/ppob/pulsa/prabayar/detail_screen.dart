@@ -286,6 +286,7 @@ class _DetailPageState extends State<DetailPage> {
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
+                                    print("RESPONSENYA: " + response.body);
                                     userUid = blok['id'].toString();
                                     var koId = userUid;
                                     _localService.saveNameId(userUid).then((bool committed) {

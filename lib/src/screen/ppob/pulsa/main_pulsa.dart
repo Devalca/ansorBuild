@@ -4,6 +4,10 @@ import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainPulsa extends StatefulWidget {
+  final String noValue;
+  MainPulsa(this.noValue);
+
+
   @override
   _MainPulsaState createState() => _MainPulsaState();
 }
@@ -11,6 +15,7 @@ class MainPulsa extends StatefulWidget {
 class _MainPulsaState extends State<MainPulsa> {
   @override
   Widget build(BuildContext context) {
+    String noValue = widget.noValue;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -20,7 +25,7 @@ class _MainPulsaState extends State<MainPulsa> {
               color: Colors.black,
             ),
             leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
                   Navigator.pop(context, true);
                 }),
@@ -94,7 +99,7 @@ class _MainPulsaState extends State<MainPulsa> {
                   body: TabBarView(
                     physics: NeverScrollableScrollPhysics(),
                     children: <Widget>[
-                      PulsaPage(),
+                      PulsaPage(noValue),
                       PulsaPascaPage(),
                     ],
                   ),

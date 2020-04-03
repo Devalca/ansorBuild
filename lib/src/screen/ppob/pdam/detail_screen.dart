@@ -26,9 +26,9 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
   List<DetailData> _detailForDisplay = List<DetailData>();
 
     Future<DetailPdam> getDetailId() async {
-    String baseUrl = "http://103.9.125.18:3000";
+    String baseUrl = "http://103.9.125.18:3000/ppob/pdam/";
     final response = await http.get(
-      '$baseUrl/ppob/pdam/1',
+      baseUrl + widget.koId,
     );
     if (response.statusCode == 200) {
       print(response.statusCode);
@@ -204,8 +204,8 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                     child: Text('Biaya Pelayanan'),
                   ),
                   Container(
-                    child: Text("Rp0"),
-                  ),
+                    child: Text(formatRupiah(_detailForDisplay[0].adminFee)
+                          .replaceAll("Rp ", "Rp"))),
                 ],
               ),
               Divider(),

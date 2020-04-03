@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/pulsa_model.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
@@ -185,7 +186,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
         future: _pulsaService.getProvider(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Datum> providers = snapshot.data.data;
+            List<Provider> providers = snapshot.data.data;
             return TextFormField(
               inputFormatters: [
                 LengthLimitingTextInputFormatter(12),
@@ -214,13 +215,13 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         padding: EdgeInsets.only(right: 50, top: 4),
                         height: 30,
                         child: Image.network(logoProv),
-                        // child: Icon(logoProv == ""
-                        //     ? Icons.signal_cellular_no_sim
-                        //     : Icons.sim_card),
                       ),
-                      Container(
-                          padding: EdgeInsets.only(top: 6.0),
-                          child: Image.asset("lib/src/assets/XMLID_2.png")),
+                     Container(
+                        padding:
+                            EdgeInsets.only(top: 6.0, right: 6.0, bottom: 10.0),
+                        child: GestureDetector(
+                            onTap: () async => underDialog(context),
+                            child: Image.asset("lib/src/assets/XMLID_2.png"))),
                     ],
                   ),
                   errorText: _isFieldNomor == null || _isFieldNomor

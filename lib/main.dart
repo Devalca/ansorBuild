@@ -1,9 +1,12 @@
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
+import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'src/routes/routes.dart';
+import 'src/service/permissions_service.dart';
 
 
 void main() => runApp(MyApp());
@@ -17,6 +20,9 @@ class MyApp extends StatelessWidget {
       systemNavigationBarColor: Colors.white,
       systemNavigationBarIconBrightness: Brightness.dark,
     ));
+    PermissionsService().requestContactsPermission(onPermissionDenied: () {
+      print('Permission has been denied');
+    });
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ansorBuld',
