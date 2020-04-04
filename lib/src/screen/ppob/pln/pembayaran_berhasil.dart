@@ -3,7 +3,6 @@ import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 

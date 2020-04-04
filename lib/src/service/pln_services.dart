@@ -6,7 +6,7 @@ import 'package:ansor_build/src/model/pln_model.dart';
 
 String id, transactionId, namaPelanggan;
 
-class PlnServices{
+class PlnServices {
   String baseUrl = "http://103.9.125.18:3000/ppob";
 
   Future<http.Response> postPascabayar(PostPascabayar pascabayar) async {
@@ -17,7 +17,9 @@ class PlnServices{
     );
     return response;
   }
-  Future<http.Response> postPascaTransaction(PostPascaTransaction pascaTransaction) async {
+
+  Future<http.Response> postPascaTransaction(
+      PostPascaTransaction pascaTransaction) async {
     var response = await http.post(
       '$baseUrl/pln/pascabayar/transaction',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -35,7 +37,8 @@ class PlnServices{
     return response;
   }
 
-  Future<http.Response> postPraTransaction(PostPraTransaction praTransaction) async {
+  Future<http.Response> postPraTransaction(
+      PostPraTransaction praTransaction) async {
     var response = await http.post(
       '$baseUrl/pln/prabayar/transaction',
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},

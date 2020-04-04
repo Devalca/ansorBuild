@@ -97,7 +97,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
         child: Form(
           key: _formPrabayar,
           child: Padding(
-            padding: const EdgeInsets.all(0.0),
+            padding: const EdgeInsets.only(top: 12.0),
             child: _isLoading ? Center(child: CircularProgressIndicator()) :  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -168,8 +168,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press1 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 148,
-                        height: 60,
+                        width: 158,
+                        height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -201,8 +201,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press2 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 148,
-                        height: 60,
+                        width: 158,
+                        height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -242,8 +242,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press3 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 148,
-                        height: 60,
+                        width: 158,
+                        height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -275,8 +275,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press4 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 148,
-                        height: 60,
+                        width: 158,
+                        height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -316,8 +316,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press5 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 148,
-                        height: 60,
+                        width: 158,
+                        height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -349,8 +349,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           borderRadius: new BorderRadius.all(Radius.circular(10.0)),
                           border: Border.all(color: press6 ? Colors.green : Colors.grey[300], width: 1)
                         ),
-                        width: 148,
-                        height: 60,
+                        width: 158,
+                        height: 61,
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           child: new Column(
@@ -366,7 +366,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                   ],
                 ),
 
-                Container( height: 160 ),
+                Container( height: 171 ),
 
                 Divider(
                   height: 12,
@@ -374,7 +374,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                 ),
 
                 Container(
-                  height: 50.0,
+                  height: 55.0,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
@@ -393,7 +393,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                       ),
                       Container(
                         child: SizedBox(
-                          width : 150,
+                          width : 155,
                           height: 35,
                           child: RaisedButton(
                             child: Text('LANJUT', style: TextStyle(color: Colors.white)),

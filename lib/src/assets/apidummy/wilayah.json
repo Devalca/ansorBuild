@@ -1,0 +1,77 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "nama_wilayah": "Kota Bandung"
+    },
+    {
+      "id": 2,
+      "nama_wilayah": "Kota Bekasi"
+    },
+    {
+      "id": 3,
+      "nama_wilayah": "Kota Depok"
+    },
+    {
+      "id": 4,
+      "nama_wilayah": "Kota Cirebon"
+    },
+    {
+      "id": 5,
+      "nama_wilayah": "Kab. Garut"
+    },
+    {
+      "id": 6,
+      "nama_wilayah": "Kab. Indramayu"
+    },
+    {
+      "id": 7,
+      "nama_wilayah": "Kab. Purwakarta"
+    },
+    {
+      "id": 8,
+      "nama_wilayah": "Kab. Subang"
+    },
+    {
+      "id": 9,
+      "nama_wilayah": "Kab. Sukabumi"
+    },
+    {
+      "id": 10,
+      "nama_wilayah": "Kab. Sumedang"
+    },
+    {
+      "id": 11,
+      "nama_wilayah": "Kab. Tasikmalaya"
+    },
+    {
+      "id": 12,
+      "nama_wilayah": "Kab. Majalengka"
+    },
+    {
+      "id": 13,
+      "nama_wilayah": "Kota Bandung"
+    },
+    {
+      "id": 14,
+      "nama_wilayah": "Kota Bekasi"
+    },
+    {
+      "id": 15,
+      "nama_wilayah": "Kota Depok"
+    },
+    {
+      "id": 16,
+      "nama_wilayah": "Kota Bandung"
+    },
+    {
+      "id": 17,
+      "nama_wilayah": "Kota Bekasi"
+    },
+    {
+      "id": 18,
+      "nama_wilayah": "Kota Depok"
+    }
+  ],
+  "message": "berhasil"
+}

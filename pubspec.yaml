@@ -22,12 +22,13 @@ dependencies:
   http: ^0.12.0+4
   expandable: ^4.1.2
   get_it: ^3.0.3
-  shared_preferences: ^0.5.6+2
+  shared_preferences: ^0.5.6+3
   intl : ^0.16.1
   carousel_slider: ^1.4.1
   indonesia: ^1.0.1
   permission_handler: ^4.0.0
   contacts_service: ^0.3.10
+  # contact_picker: ^0.0.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -49,13 +50,18 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - lib/src/assets/hack.png
+    # Api Local Dummy
+    - lib/src/assets/apidummy/wilayah.json
+    # Example Icon
     - lib/src/assets/qr-code.png
+    # Logo Apps
     - lib/src/assets/lapakSahabat.png
-    - lib/src/assets/LISTRIK.png
+    # Iklan Apps
     - lib/src/assets/BANNER_PULSA.jpg
     - lib/src/assets/BANNER_ATAS.jpg
     - lib/src/assets/BANNER_BAWAH.jpg
+    # Icon Apps
+    - lib/src/assets/LISTRIK.png
     - lib/src/assets/BPJS.png
     - lib/src/assets/LISTRIK.png
     - lib/src/assets/PDAM.png
@@ -69,6 +75,28 @@ flutter:
     - lib/src/assets/KIBLAT.png
     - lib/src/assets/QURAN.png
     - lib/src/assets/LAINNYA.png
+    # Navbar Icon Apps
+    - lib/src/assets/ACCOUNT_GREEN.png
+    - lib/src/assets/ACCOUNT.png
+    - lib/src/assets/HOME_GREEN.png
+    - lib/src/assets/HOME.png
+    - lib/src/assets/INBOX_GREEN.png
+    - lib/src/assets/INBOX.png
+    - lib/src/assets/TRANSFER_GREEN.png
+    - lib/src/assets/TRANSFER.png
+    - lib/src/assets/XMLID_2.png
+    - lib/src/assets/scan_qr.png
+    # List Icon Bank
+    - lib/src/assets/bank/bca.png
+    - lib/src/assets/bank/niaga.png
+    - lib/src/assets/bank/bjb.png
+    - lib/src/assets/bank/bni.png
+    - lib/src/assets/bank/bri.png
+    - lib/src/assets/bank/dki.png
+    - lib/src/assets/bank/mandiri.png
+    - lib/src/assets/bank/mybank.png
+    - lib/src/assets/bank/ocbc.png
+    - lib/src/assets/bank/permata.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:

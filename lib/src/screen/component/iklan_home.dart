@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 final List<String> homeIklan = [
   'lib/src/assets/BANNER_ATAS.jpg',
   'lib/src/assets/BANNER_ATAS.jpg',
-  'lib/src/assets/BANNER_ATAS.jpg'
+  'lib/src/assets/BANNER_ATAS.jpg',
   'lib/src/assets/BANNER_ATAS.jpg',
   'lib/src/assets/BANNER_ATAS.jpg',
 ];
@@ -19,15 +19,13 @@ final List child = map<Widget>(
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Stack(children: <Widget>[
-         Image.asset(i, fit: BoxFit.fill, width: 1000.0),
+          Image.asset(i, fit: BoxFit.fill, width: 1000.0),
           Positioned(
             bottom: 0.0,
             left: 0.0,
             right: 0.0,
             child: Container(
-              decoration: BoxDecoration(
-               
-              ),
+              decoration: BoxDecoration(),
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
             ),
           ),
@@ -92,7 +90,10 @@ class _IklanHomeState extends State<IklanHome> {
               ),
             ),
             Container(
-              child: Text('Lihat Semua', style: TextStyle(color: Colors.green),),
+              child: Text(
+                'Lihat Semua',
+                style: TextStyle(color: Colors.green),
+              ),
             )
           ],
         ),

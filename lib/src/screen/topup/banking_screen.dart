@@ -18,14 +18,14 @@ class BankingPage extends StatelessWidget {
   ];
 
   final List<String> iconBank = [
-  'lib/src/assets/BANNER_ATAS.jpg',
-  'lib/src/assets/BANNER_ATAS.jpg',
-  'lib/src/assets/BANNER_ATAS.jpg'
-  'lib/src/assets/BANNER_ATAS.jpg',
-  'lib/src/assets/BANNER_ATAS.jpg',
-   'lib/src/assets/BANNER_ATAS.jpg',
-  'lib/src/assets/BANNER_ATAS.jpg',
-  'lib/src/assets/BANNER_ATAS.jpg'
+  'lib/src/assets/bank/bca.png',
+  'lib/src/assets/bank/mandiri.png',
+  'lib/src/assets/bank/bri.png',
+  'lib/src/assets/bank/bni.png',
+  'lib/src/assets/bank/dki.png',
+  'lib/src/assets/bank/niaga.png',
+  'lib/src/assets/bank/mybank.png',
+  '',
 ];
 
   @override
@@ -69,7 +69,7 @@ class BankingPage extends StatelessWidget {
             margin: EdgeInsets.only(top: 230.0),
             child: ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return ListTopupPage(title: namaBank[index]);
+                return ListTopupPage(title: namaBank[index], iconBank: iconBank[index],);
               },
               itemCount: namaBank.length,
             ),
@@ -131,12 +131,13 @@ class _ListTopupPageState extends State<ListTopupPage> {
                               expandFlag = !expandFlag;
                             });
                           }),
-                      Container(
-                        height: 30.0,
-                        width: 50.0,
-                        padding: EdgeInsets.only(left: 10.0),
-                        color: Colors.grey[200],
-                      ),
+                       widget.iconBank == ''
+                          ? Container()
+                          : Container(
+                              height: 30.0,
+                              width: 50.0,
+                              child: Image.asset(widget.iconBank),
+                            ),
                       Padding(
                         padding: const EdgeInsets.only(left: 12.0),
                         child: Text(
