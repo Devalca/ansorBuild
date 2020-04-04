@@ -1,5 +1,5 @@
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
-import 'package:ansor_build/src/screen/component/formatIndo.dart';
+import 'package:indonesia/indonesia.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
