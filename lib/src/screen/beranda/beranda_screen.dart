@@ -5,6 +5,7 @@ import 'package:ansor_build/src/screen/component/iklan_home.dart';
 import 'package:ansor_build/src/screen/component/iklan_kecil.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
@@ -346,6 +347,9 @@ class _BerandaPageState extends State<BerandaPage> {
         } else if (ppobService.title == "Air PDAM") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PdamPage("")));
+        }else if (ppobService.title == "BPJS") {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Bpjs()));
         } else {
           print('Under Maintence');
         }

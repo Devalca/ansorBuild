@@ -25,6 +25,7 @@ dependencies:
   shared_preferences: ^0.5.6+3
   intl : ^0.16.1
   carousel_slider: ^1.4.1
+  indonesia: ^1.0.1
   permission_handler: ^4.0.0
   contacts_service: ^0.3.10
   # contact_picker: ^0.0.2

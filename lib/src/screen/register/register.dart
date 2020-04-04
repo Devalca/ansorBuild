@@ -123,7 +123,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       Text('Sudah Punya Akun? '),
                                       GestureDetector(
                                         onTap: () {
-                                          _toLanding();
+                                          // _toLanding();
+                                          Navigator.push(context, new MaterialPageRoute(builder: (__) => new Login()));
                                         },
                                         child: Text(
                                           'MASUK',

@@ -1,7 +1,8 @@
-import 'package:ansor_build/src/screen/component/formatIndo.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'package:indonesia/indonesia.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
@@ -22,7 +23,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
   bool _isLoading = false;
 
   PlnServices _plnServices = PlnServices();
-  ApiService _apiService = ApiService();
+  WalletService _walletService = WalletService();
   String _transactionId = "";
   String url = "";
 
@@ -61,6 +62,11 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
             iconTheme: IconThemeData(
               color: Colors.black,
             ),
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                }),
             backgroundColor: Colors.white,
             title: Text(
               'Pembayaran',
@@ -260,7 +266,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                     child:
                                                         FutureBuilder<Wallet>(
                                                   future:
-                                                      _apiService.getSaldo(),
+                                                      _walletService.getSaldo(),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasData) {
                                                       return Text(NumberFormat
@@ -478,8 +484,9 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                             ));
                           }
                         } else if (snapshot.hasError) {
-                          return Text(
-                              "Nomor Meter yang Anda Masukkan Tidak Terdaftar");
+                          // return Text(
+                          //     "Nomor Meter yang Anda Masukkan Tidak Terdaftar");
+                          return Text("${snapshot.error}");
                         }
 
                         return Center(child: CircularProgressIndicator());
