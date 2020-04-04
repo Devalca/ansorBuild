@@ -77,9 +77,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                   if (snapshot.hasData && snapshot.data != null) {
                     DateTime periode = snapshot.data.createdAt;
-                    if(snapshot.data == null) {
-                      return Text("Tidak ada Data");
-                    }else if(widget.status == "prabayar"){
+                    if(widget.status == "prabayar"){
                       return(
                         Container(
                           child: Column(

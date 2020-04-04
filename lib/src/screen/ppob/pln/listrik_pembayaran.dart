@@ -63,11 +63,10 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
               color: Colors.black,
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.pop(context, true);
-              }
-            ),
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                }),
             backgroundColor: Colors.white,
             title: Text(
               'Pembayaran',
@@ -82,11 +81,11 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                     FutureBuilder<Album>(
                       future: fetchAlbum(),
                       builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data != null) {
+                        if (snapshot.hasData) {
                           DateTime periode = snapshot.data.createdAt;
-                          // if (snapshot.data == null) {
-                          //   return Text("Tidak ada Data");
-                          // } else {
+                          if (snapshot.data == null) {
+                            return Text("Tidak ada Data");
+                          } else {
                             return (Container(
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -483,11 +482,11 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                     )
                                   ]),
                             ));
-                          // }
+                          }
                         } else if (snapshot.hasError) {
-                          return Text(
-                              "Nomor Meter yang Anda Masukkan Tidak Terdaftar");
-                          // return Text("${snapshot.error}");
+                          // return Text(
+                          //     "Nomor Meter yang Anda Masukkan Tidak Terdaftar");
+                          return Text("${snapshot.error}");
                         }
 
                         return Center(child: CircularProgressIndicator());
