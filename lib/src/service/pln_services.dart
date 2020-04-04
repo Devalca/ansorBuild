@@ -7,7 +7,7 @@ import 'package:ansor_build/src/model/pln_model.dart';
 String id, transactionId, namaPelanggan;
 
 class PlnServices{
-  String baseUrl = "http://192.168.10.11:3000/ppob";
+  String baseUrl = "http://103.9.125.18:3000/ppob";
 
   Future<http.Response> postPascabayar(PostPascabayar pascabayar) async {
     var response = await http.post(

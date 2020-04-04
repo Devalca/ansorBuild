@@ -1,8 +1,8 @@
 import 'package:ansor_build/src/model/bpjs_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_berhasil.dart';
-import 'package:ansor_build/src/service/api_service.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -20,7 +20,7 @@ class BpjsPembayaran extends StatefulWidget {
 }
 
 class _BpjsPembayaranState extends State<BpjsPembayaran> {
-  ApiService _apiService = ApiService();
+  WalletService _walletService = WalletService();
   BpjsServices _bpjsServices = BpjsServices();
 
   bool _isLoading = false;
@@ -256,9 +256,6 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                     .toString()
                                     .substring(0, 10);
 
-                                // if (snapshot.data.data.isNotEmpty) {
-                                //   return Text("Tidak ada Data");
-                                // } else {
                                 return (Container(
                                     child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -459,7 +456,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                     child:
                                                         FutureBuilder<Wallet>(
                                                   future:
-                                                      _apiService.getSaldo(),
+                                                      _walletService.getSaldo(),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasData) {
                                                       return Text(NumberFormat
@@ -488,7 +485,6 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                     Container(height: 15),
                                   ],
                                 )));
-                                // }
                               } else if (snapshot.hasError) {
                                 // return Center(
                                 // child: Text("Gagal Memuat Detail Pembayaran"));
@@ -774,7 +770,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                     child:
                                                         FutureBuilder<Wallet>(
                                                   future:
-                                                      _apiService.getSaldo(),
+                                                      _walletService.getSaldo(),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasData) {
                                                       return Text(NumberFormat

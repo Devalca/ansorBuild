@@ -39,7 +39,7 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
               color: Colors.black,
             ),
             leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.pop(context, true);
               }

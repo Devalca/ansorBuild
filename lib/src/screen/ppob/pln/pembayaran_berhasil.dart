@@ -1,4 +1,5 @@
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -32,7 +33,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   }
 
   Future<Detail> fetchDetail() async {
-    final response = await http.get('http://192.168.10.11:3000' + _url);
+    final response = await http.get('http://103.9.125.18:3000' + _url);
 
     if (response.statusCode == 200) {
       return detailFromJson(response.body);
@@ -42,20 +43,12 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   }
 
   token(data){
-    var arr = [];
-    arr[0]=data.slice(0,4);
-    arr[1]=data.slice(4,8);
-    arr[2]=data.slice(8,12);
-    arr[3]=data.slice(12,16);
-    // for(var i=0; i<=3; i+=4){
-    //   arr[i]=data.slice(i,i+4);
-    // }
-    return arr.join("-");
-  }
-
-  time(data){
-    var newTime = data.slice(11,16);
-    return newTime;
+    var arr = new List(3);
+    var item = data.length;
+    arr[0]=data.substring(0,4);
+    arr[1]=data.substring(4,8);
+    arr[2]=data.substring(8,item);
+    return arr.join(" - ");
   }
 
   @override
@@ -82,7 +75,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                 future: fetchDetail(),
                 builder: (context, snapshot) {
 
-                  if (snapshot.hasData) {
+                  if (snapshot.hasData && snapshot.data != null) {
                     DateTime periode = snapshot.data.createdAt;
                     if(snapshot.data == null) {
                       return Text("Tidak ada Data");
@@ -115,7 +108,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode) + ", " + time(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -124,7 +117,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               
                               Container( height: 25 ),
 
-                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 
@@ -160,7 +153,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 15 ),
 
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 
@@ -340,7 +333,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode) + ", " + DateFormat('HH.mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -349,7 +342,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                               Container( height: 25 ),
 
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold)),
+                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
 
                               Container( height: 10 ),
 

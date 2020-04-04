@@ -1,52 +1,46 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:ansor_build/src/model/ansor_model.dart';
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
-import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
-import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/model/pdam_model.dart';
+import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class SelesaiPage extends StatefulWidget {
   final String koId;
-  SelesaiPage(this.koId);
+  final String headerUrl;
+  SelesaiPage(this.koId, this.headerUrl);
 
   @override
   _SelesaiPageState createState() => _SelesaiPageState();
 }
 
 class _SelesaiPageState extends State<SelesaiPage> {
-  String _id = "";
-  Future<PostTrans> futureTrans;
-  ApiService _apiService = ApiService();
+  Future<DetailTrans> futureTrans;
   final cF = NumberFormat.currency(locale: 'ID');
-  @override
-  void initState() {
-    super.initState();
-    _apiService.getNameId().then(updateId);
-    futureTrans = fetchTrans();
-  }
 
-  Future<PostTrans> fetchTrans() async {
-    String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
-    final response = await http.get(baseUrl + widget.koId);
-    print("SATATUS CODENYA: " + response.statusCode.toString());
+  Future<DetailTrans> getDetailTrans() async {
+    // String baseUrl = "https://afternoon-waters-38775.herokuapp.com";
+    String baseUrl = "http://103.9.125.18:3000";
+    final response = await http.get(baseUrl + widget.headerUrl);
     if (response.statusCode == 200) {
-      print("SATATUS CODENYA: " + response.statusCode.toString());
-      return postTransFromJson(response.body);
+      return detailTransFromJson(response.body);
     } else {
-      print("SATATUS CODENYA: " + response.statusCode.toString());
+      print("SATATUS Response: " + response.toString());
       throw Exception('Failed to load album');
     }
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.white,
@@ -56,18 +50,17 @@ class _SelesaiPageState extends State<SelesaiPage> {
           leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LandingPage()));
+                _toLanding();
               }),
         ),
-        body: FutureBuilder<PostTrans>(
-          future: futureTrans,
+        body: FutureBuilder<DetailTrans>(
+          future: getDetailTrans(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              int dotUang = snapshot.data.data[0].totalHarga;
-              DateTime dateTime = snapshot.data.data[0].periode;
-              // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
-              // var formatterTime = DateFormat('HH.mm').format(dateTime);
+              int dotUang = snapshot.data.data[0].total;
+              DateTime datePeriode = snapshot.data.data[0].periode;
+              DateTime dateLunas = snapshot.data.data[0].tglBayar;
+              var formatterTime = DateFormat('HH:mm').format(dateLunas);
               return SingleChildScrollView(
                 child: Container(
                   color: Colors.white,
@@ -95,7 +88,8 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                   ),
                                 ),
                                 Container(
-                                  child: Text(tanggal(dateTime)),
+                                  child: Text(
+                                      "${formatTanggal(dateLunas)} ${formatterTime.toString()}"),
                                 ),
                                 Container(
                                   child: Text('via Un1ty'),
@@ -141,19 +135,20 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text("No Meter/ID Pelanggan"),
+                                              child:
+                                                  Text("No Meter/ID Pelanggan"),
                                             ),
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
                                               child: Text('Periode'),
                                             ),
-                                             Container(
+                                            Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
                                               child: Text('Tanggal Lunas'),
                                             ),
-                                             Container(
+                                            Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
                                               child: Text('Nomor Transaksi'),
@@ -172,32 +167,44 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text(
-                                                  snapshot.data.data[0].status),
-                                            ),
-                                            Container(
-                                              margin:
-                                                  EdgeInsets.only(bottom: 12.0),
-                                              child: Text(
-                                                  snapshot.data.data[0].noHp),
+                                              child: Text('PDAM ' +
+                                                  snapshot.data.data[0]
+                                                      .namaWilayah),
                                             ),
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
                                               child: Text(snapshot
-                                                  .data.data[0].provider),
+                                                  .data.data[0].namaPelanggan),
                                             ),
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
                                               child: Text(snapshot
-                                                  .data.data[0].transactionId
+                                                  .data.data[0].noPelanggan),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(formatBlnTahun(datePeriode)
                                                   .toString()),
                                             ),
                                             Container(
-                                              child: Text(cF
-                                                  .format(dotUang)
-                                                  .replaceAll("IDR", "Rp")),
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(formatTanggal(dateLunas)
+                                                  .toString()),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(snapshot
+                                                  .data.data[0].noTransaksi
+                                                  .toString()),
+                                            ),
+                                            Container(
+                                              child: Text(formatRupiah(dotUang)
+                                                  .replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -226,10 +233,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: FlatButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LandingPage()));
+                                _toLanding();
                               },
                               child: Text(
                                 'Selesai'.toUpperCase(),
@@ -248,14 +252,18 @@ class _SelesaiPageState extends State<SelesaiPage> {
               return Text("${snapshot.error}");
             }
 
-            return CircularProgressIndicator();
+            return Container(
+              alignment: Alignment.center,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           },
         ));
   }
 
-  void updateId(String transId) {
-    setState(() {
-      this._id = transId;
-    });
+  _toLanding() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.LandingScreen, (Route<dynamic> route) => false);
   }
 }

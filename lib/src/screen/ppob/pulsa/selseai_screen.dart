@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:ansor_build/src/model/ansor_model.dart';
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
-import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
-import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/model/pulsa_model.dart';
+import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
 
 class SesPulsaPage extends StatefulWidget {
@@ -20,23 +16,20 @@ class SesPulsaPage extends StatefulWidget {
 }
 
 class _SesPulsaPageState extends State<SesPulsaPage> {
-  String _id = "";
   Future<PostTrans> futureTrans;
-  ApiService _apiService = ApiService();
   final cF = NumberFormat.currency(locale: 'ID');
   @override
   void initState() {
     super.initState();
-    _apiService.getNameId().then(updateId);
     futureTrans = fetchTrans();
   }
 
   Future<PostTrans> fetchTrans() async {
-    String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
+    // String baseUrl = "http://192.168.10.11:3000/ppob/detail/pulsa/";
+    // String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/detail/pulsa/";
+    String baseUrl = "http://103.9.125.18:3000/ppob/detail/pulsa/";
     final response = await http.get(baseUrl + widget.koId);
-    print("SATATUS CODENYA: " + response.statusCode.toString());
     if (response.statusCode == 200) {
-      print("SATATUS CODENYA: " + response.statusCode.toString());
       return postTransFromJson(response.body);
     } else {
       print("SATATUS CODENYA: " + response.statusCode.toString());
@@ -47,6 +40,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: Colors.white,
@@ -56,8 +50,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
           leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LandingPage()));
+                _toLanding();
               }),
         ),
         body: FutureBuilder<PostTrans>(
@@ -67,7 +60,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               int dotUang = snapshot.data.data[0].totalHarga;
               DateTime dateTime = snapshot.data.data[0].periode;
               // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
-              var formatterTime = DateFormat('HH.mm').format(dateTime);
+              var formatterTime = DateFormat('HH:mm').format(dateTime);
               return SingleChildScrollView(
                 child: Container(
                   color: Colors.white,
@@ -81,7 +74,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                               children: <Widget>[
                                 Container(
                                   margin:
-                                  EdgeInsets.only(top: 30.0, bottom: 15.0),
+                                      EdgeInsets.only(top: 30.0, bottom: 15.0),
                                   height: 100.0,
                                   width: 100.0,
                                   color: Colors.grey[300],
@@ -95,7 +88,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                   ),
                                 ),
                                 Container(
-                                  child: Text("${tanggal(dateTime)} ${formatterTime.toString()}"),
+                                  child: Text(
+                                      "${formatTanggal(dateTime)} ${formatterTime.toString()}"),
                                 ),
                                 Container(
                                   child: Text('via Un1ty'),
@@ -185,9 +179,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                                   .toString()),
                                             ),
                                             Container(
-                                              child: Text(cF
-                                                  .format(dotUang)
-                                                  .replaceAll("IDR", "Rp")),
+                                              child: Text(formatRupiah(dotUang)
+                                                  .replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -216,10 +209,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: FlatButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LandingPage()));
+                                _toLanding();
                               },
                               child: Text(
                                 'Selesai'.toUpperCase(),
@@ -238,14 +228,18 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               return Text("${snapshot.error}");
             }
 
-            return CircularProgressIndicator();
+            return Container(
+              alignment: Alignment.center,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           },
         ));
   }
 
-  void updateId(String transId) {
-    setState(() {
-      this._id = transId;
-    });
+  _toLanding() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.LandingScreen, (Route<dynamic> route) => false);
   }
 }

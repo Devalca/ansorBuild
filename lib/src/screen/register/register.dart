@@ -1,10 +1,9 @@
-import 'dart:convert';
-
-import 'package:ansor_build/src/model/ansor_model.dart';
 import 'package:ansor_build/src/model/user_model.dart';
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/component/kontak.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
-import 'package:ansor_build/src/service/api_service.dart';
+import 'package:ansor_build/src/service/regist_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,9 +13,10 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  ApiService _apiService = ApiService();
+  RegistService _registService = RegistService();
   final _regKey = GlobalKey<FormState>();
-  bool _validate = true;
+  bool _validate = false;
+  bool showPsd = true;
   String registNama = '';
   String registEmail = '';
   String registPsd = '';
@@ -26,88 +26,125 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _controllerNomor = TextEditingController();
   TextEditingController _controllerPsd = TextEditingController();
 
-  Future<void> _glDialog(BuildContext context) {
-    return showDialog<void>(
-      context: context, 
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Pendaftaran Gagal'),
-            content: const Text(
-                'Email atau Nomor anda sudah terdaftar silahkan periksa kembali'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _suDialog(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Pendaftaran Berhasil'),
-            content: const Text(
-                'Silahkan Login Menggunakan Email dan Password yang baru saja anda buat'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => Login()));
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: Text('Halaman Registrasi'),
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
       ),
-      body: SafeArea(
-        child: Form(
-          key: _regKey,
-          autovalidate: _validate,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    nameField(),
-                    emailField(),
-                    nomorField(),
-                    passwordField(),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                  height: 50.0,
-                  color: Colors.blueAccent,
-                  child: registerButton(),
-                )
-              ],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Form(
+            key: _regKey,
+            autovalidate: _validate,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 25.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    height: 100,
+                    width: 200,
+                    margin: EdgeInsets.only(bottom: 60),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Image.asset('lib/src/assets/lapakSahabat.png'),
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: Text(
+                              "Nama Lengkap",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          nameField(),
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: Text(
+                              "Nomor Handphone",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          nomorField(),
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: Text(
+                              "Email",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          emailField(),
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: Text(
+                              "Kata Sandi",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          passwordField(),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                border:
+                                    Border.all(width: 1, color: Colors.green),
+                                borderRadius: BorderRadius.circular(5)),
+                            margin: EdgeInsets.only(top: 30.0, bottom: 30.0),
+                            height: 50.0,
+                            child: registerButton(),
+                          ),
+                          Column(
+                            children: <Widget>[
+                              Divider(),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 20.0),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text('Sudah Punya Akun? '),
+                                      GestureDetector(
+                                        onTap: () {
+                                          // _toLanding();
+                                          Navigator.push(context, new MaterialPageRoute(builder: (__) => new Login()));
+                                        },
+                                        child: Text(
+                                          'MASUK',
+                                          style: TextStyle(color: Colors.green),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  Container(),
+                  Container(),
+                ],
+              ),
             ),
           ),
         ),
@@ -119,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return TextFormField(
       controller: _controllerNama,
       keyboardType: TextInputType.text,
-      decoration: InputDecoration(labelText: 'Nama Lengkap'),
+      decoration: InputDecoration(hintText: 'Masukkan Nama Lengkap'),
       validator: validateName,
       onSaved: (String value) {
         registNama = value;
@@ -128,12 +165,17 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validateName(String value) {
+    String patttern = r'(^[a-zA-Z]*$)';
+    RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
       return 'Nama Lengkap Harus Diisi';
-    } else if (value.length < 7)
-      return 'Lebih Dari 6';
-    else
-      return null;
+    } else if (value.length < 3) {
+      return 'Nama harus lebih dari 3';
+    } else if (!regExp.hasMatch(value)) {
+      return "Hanya Boleh Huruf atau Alphabet";
+    }
+
+    return null;
   }
 
   Widget emailField() {
@@ -141,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: _controllerEmail,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-        labelText: 'Email',
+        hintText: 'Masukkan Email',
       ),
       validator: validateEmail,
       onSaved: (String value) {
@@ -164,7 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
       inputFormatters: [
         LengthLimitingTextInputFormatter(12),
       ],
-      decoration: InputDecoration(labelText: 'Nomor Handphone'),
+      decoration: InputDecoration(hintText: 'Masukkan Nomor Handphone'),
       validator: validateNomor,
       onSaved: (String value) {
         registNomor = value;
@@ -173,14 +215,10 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validateNomor(String value) {
-    String patttern = r'(^[0-9]*$)';
-    RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
       return "Tidak Boleh Kosong";
     } else if (value.length != 12) {
       return "Harus 12";
-    } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
     }
     return null;
   }
@@ -188,9 +226,20 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget passwordField() {
     return TextFormField(
       controller: _controllerPsd,
-      obscureText: true,
+      obscureText: showPsd,
       decoration: InputDecoration(
-        labelText: 'Password',
+        hintText: 'Buat Kata Sandi',
+        suffixIcon: IconButton(
+          icon: Icon(
+            showPsd ? Icons.visibility_off : Icons.visibility,
+            color: Theme.of(context).primaryColorDark,
+          ),
+          onPressed: () {
+            setState(() {
+              showPsd = !showPsd;
+            });
+          },
+        ),
       ),
       validator: validatePassword,
       onSaved: (String value) {
@@ -201,14 +250,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String validatePassword(String value) {
     if (value.length < 6) {
-      return 'Password Minimal 6 Karakter';
+      return 'Kata Sandi Minimal 6 Karakter';
     }
     return null;
   }
 
   Widget registerButton() {
-    return RaisedButton(
-      color: Colors.green,
+    return FlatButton(
       onPressed: () {
         if (_regKey.currentState.validate()) {
           _regKey.currentState.save();
@@ -222,22 +270,22 @@ class _RegisterPageState extends State<RegisterPage> {
               email: registEmail,
               password: registPsd,
             );
-            _apiService.postRegist(users).then((response) async {
+            _registService.postRegist(users).then((response) async {
               if (response.statusCode == 200) {
                 if (response.body == "already existed!") {
-                  print("MOBIL SETAN: " +  response.body);
-                  _glDialog(context);
+                  registGagalDialog(context);
                   _controllerNama.clear();
                   _controllerEmail.clear();
                   _controllerNomor.clear();
                   _controllerPsd.clear();
                 } else {
-                  _suDialog(context);
+                  registSuksesDialog(context);
                   _controllerNama.clear();
                   _controllerEmail.clear();
                   _controllerNomor.clear();
                   _controllerPsd.clear();
                 }
+                print('Daftar SUkses');
                 // _statePrabayar.currentState.showSnackBar(SnackBar(
                 //     duration: Duration(minutes: 5),
                 //     content: Text("SEDANG PROSES")));
@@ -258,5 +306,10 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(color: Colors.white),
       ),
     );
+  }
+
+  _toLanding() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.LandingScreen, (Route<dynamic> route) => false);
   }
 }
