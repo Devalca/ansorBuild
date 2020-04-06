@@ -4,7 +4,6 @@ import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  String _id = "";
   DateTime dateTime;
   Future<Album> futureAlbum;
   PulsaService _pulsaService = PulsaService();
@@ -156,7 +154,7 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                           Container(
                                               child: Text(formatRupiah(snapshot
-                                                      .data.data[0].totalHarga)
+                                                      .data.data[0].nominal)
                                                   .replaceAll("Rp ", "Rp"))),
                                         ],
                                       ),
@@ -170,8 +168,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Biaya Pelayanan'),
                                           ),
                                           Container(
-                                            // snapshot.data.data[0].adminFee.toString()
-                                            child: Text("Rp0"),
+                                             child: Text(formatRupiah(snapshot.data.data[0].adminFee).replaceAll("Rp ", "Rp")),
                                           ),
                                         ],
                                       ),
@@ -290,7 +287,7 @@ class _DetailPageState extends State<DetailPage> {
                               color: Colors.green,
                               onPressed: () {
                                 loadingDialog(context);
-                                int transactionId = int.parse(_id.toString());
+                                int transactionId = int.parse(widget.koId);
                                 String nomorHp =
                                     snapshot.data.data[0].noHp.toString();
                                 Post post = Post(
@@ -311,7 +308,7 @@ class _DetailPageState extends State<DetailPage> {
                                       print("NUll user");
                                     } else {
                                       await Future.delayed(
-                                          const Duration(seconds: 5));
+                                          const Duration(seconds: 4));
                                       Navigator.pushReplacement(
                                           context,
                                           MaterialPageRoute(

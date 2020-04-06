@@ -45,7 +45,7 @@ Future<void> pascaGagalDialog(BuildContext context) async {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-         Future.delayed(Duration(milliseconds: 450), () {
+        Future.delayed(Duration(milliseconds: 450), () {
           Navigator.of(context).pop(true);
         });
         return new WillPopScope(
@@ -86,6 +86,30 @@ Future<void> nullNominalDialog(BuildContext context) async {
                 style: TextStyle(color: Colors.green),
               ),
             ]),
+          )
+        ]);
+      });
+}
+
+Future<void> nullPdamDialog(BuildContext context) async {
+  return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+        });
+        return SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
+          Center(
+            child: Container(
+              margin: EdgeInsets.all(40.0),
+              alignment: Alignment.center,
+              child: Text(
+                "Data tidak ditemukan silahkan periksa kembali wilayah dan nomor pelanggan anda",
+                style: TextStyle(color: Colors.green),
+                textAlign: TextAlign.center,
+              ),
+            ),
           )
         ]);
       });
