@@ -30,11 +30,11 @@ class _PulsaPageState extends State<PulsaPage> {
   var testProv;
   var cekNo;
   bool _validate = false;
+  bool _isHide = false;
   int _nominalIndex = -1;
   String inputNomor, inputNominal, hargaNominal;
   GlobalKey<FormState> _key = GlobalKey();
   PulsaService _pulsaService = PulsaService();
-  LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
   TextEditingController _controllerNomor = TextEditingController();
   List<Nominal> _nominal = List<Nominal>();
@@ -85,14 +85,25 @@ class _PulsaPageState extends State<PulsaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       body: Container(
         child: Form(
             key: _key,
             autovalidate: _validate,
-            child: SingleChildScrollView(child: _formPulsaInput())),
+            child: SingleChildScrollView(child: _isHideValidasi())),
       ),
     );
+  }
+
+  Widget _isHideValidasi() {
+    if (_isHide == false) {
+      return _formPulsaInput();
+    } else {
+      return Container(
+        height: 400,
+        child: centerLoading(),
+      );
+    }
   }
 
   Widget _formPulsaInput() {
@@ -193,7 +204,6 @@ class _PulsaPageState extends State<PulsaPage> {
                       if (idProv == "") {
                         return Container(
                           height: 350,
-                       
                         );
                       } else if (idProv ==
                           snapshot.data.data[i].operatorId.toString()) {
@@ -256,6 +266,9 @@ class _PulsaPageState extends State<PulsaPage> {
                       if (inputNominal == null) {
                         nullNominalDialog(context);
                       } else {
+                        setState(() {
+                          _isHide = true;
+                        });
                         sendToServer();
                       }
                     },
@@ -359,7 +372,6 @@ class _PulsaPageState extends State<PulsaPage> {
           ? int.parse(cekNo.toString())
           : int.parse(inputNominal.toString());
       if (nomor != null && nominal != null && providerNama != null) {
-        loadingDialog(context);
         Post post = Post(
             noHp: nomor,
             nominal: nominal,
@@ -372,16 +384,20 @@ class _PulsaPageState extends State<PulsaPage> {
             userUid = blok['id'].toString();
             var koId = userUid;
             await Future.delayed(const Duration(seconds: 4));
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (__) => DetailPage(koId, namaProv)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (__) => DetailPage(koId, namaProv)));
+            setState(() {
+              _isHide = false;
+            });
             _key.currentState.reset();
           } else {
+            setState(() {
+              _isHide = false;
+            });
             print("INI STATUS CODE : " + response.statusCode.toString());
           }
         });
-      } 
+      }
     } else {
       setState(() {
         _validate = true;

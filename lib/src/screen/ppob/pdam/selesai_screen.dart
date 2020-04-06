@@ -47,11 +47,13 @@ class _SelesaiPageState extends State<SelesaiPage> {
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
-          leading: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                _toLanding();
-              }),
+          leading: Container(
+            child: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  _toLanding();
+                }),
+          ),
         ),
         body: FutureBuilder<DetailTrans>(
           future: getDetailTrans(),
@@ -146,7 +148,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
-                                              child: Text('Tanggal Lunas'),
+                                              child: Text('Pelunasan'),
                                             ),
                                             Container(
                                               margin:

@@ -25,7 +25,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
   List<DetailData> _detail = List<DetailData>();
   List<DetailData> _detailForDisplay = List<DetailData>();
 
-    Future<DetailPdam> getDetailId() async {
+  Future<DetailPdam> getDetailId() async {
     String baseUrl = "http://103.9.125.18:3000/ppob/pdam/";
     final response = await http.get(
       baseUrl + widget.koId,
@@ -180,7 +180,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                     child: Text('Periode'),
                   ),
                   Container(
-                    child: Text(formatTanggal(dateTime).toString()),
+                    child: Text(formatBlnTahun(dateTime).toString()),
                   ),
                 ],
               ),
@@ -204,7 +204,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                     child: Text('Biaya Pelayanan'),
                   ),
                   Container(
-                    child: Text(formatRupiah(_detailForDisplay[0].adminFee)
+                      child: Text(formatRupiah(_detailForDisplay[0].adminFee)
                           .replaceAll("Rp ", "Rp"))),
                 ],
               ),
@@ -313,8 +313,11 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
             if (response.headers != null) {
               var koId = "1";
               var headerUrl = response.headers['location'];
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => SelesaiPage(koId, headerUrl)));
+              await Future.delayed(const Duration(seconds: 4));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelesaiPage(koId, headerUrl)));
             } else {
               return print("Hasil Response : " + response.toString());
             }

@@ -24,6 +24,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   String mobi = "";
   String logoProv = "";
   bool _validate = false;
+  bool _isHide = false;
   String cekNo;
   String testProv;
   String inputNomor, inputNominal, hargaNominal;
@@ -61,72 +62,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
-      body: Form(
-        key: _key,
-        autovalidate: _validate,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Container(
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(top: 12.0),
-                      child: Text('Nomor Handphone'),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: _buildTextFieldNomor()),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Column(
-                  children: <Widget>[
-                    Divider(color: Colors.black),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            // children: <Widget>[Text('Total'), Text('Rp')],
-                          ),
-                        ),
-                        Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: RaisedButton(
-                              onPressed: () {
-                                _sendToServer();
-                              },
-                              child: Text(
-                                "beli".toUpperCase(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              color: Colors.green,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
+      body: Form(key: _key, autovalidate: _validate, child: _isHideValidasi()),
     );
   }
 
@@ -218,11 +154,83 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
         });
   }
 
+  Widget _isHideValidasi() {
+    if (_isHide == false) {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 12.0),
+                    child: Text('Nomor Handphone'),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: _buildTextFieldNomor()),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Column(
+                children: <Widget>[
+                  Divider(color: Colors.black),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          // children: <Widget>[Text('Total'), Text('Rp')],
+                        ),
+                      ),
+                      Container(
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: RaisedButton(
+                            onPressed: () {
+                              _sendToServer();
+                            },
+                            child: Text(
+                              "beli".toUpperCase(),
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            color: Colors.green,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    } else {
+      return centerLoading();
+    }
+  }
+
   void _sendToServer() {
     if (_key.currentState.validate()) {
       _key.currentState.save();
       String nomor = _controllerNomor.text.toString();
       if (nomor != null) {
+        setState(() {
+          _isHide = true;
+        });
         Post post = Post(noHp: nomor, userId: 1, walletId: 1);
         _pulsaService.createPostPasca(post).then((response) async {
           if (response.statusCode == 200) {
@@ -231,10 +239,16 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             var koId = userUid;
             if (userUid == "null") {
               pascaGagalDialog(context);
+              setState(() {
+                _isHide = false;
+              });
             } else {
-              loadingDialog(context);
+              await Future.delayed(const Duration(seconds: 4));
               Navigator.push(context,
                   MaterialPageRoute(builder: (__) => DetailPage(koId)));
+              setState(() {
+                _isHide = false;
+              });
             }
           } else {
             print("INI STATUS CODE: " + response.statusCode.toString());

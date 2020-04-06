@@ -26,14 +26,11 @@ class _DetailPageState extends State<DetailPage> {
   Future<Wallet> futureWallet;
   PulsaService _pulsaService = PulsaService();
   WalletService _walletService = WalletService();
-  LocalService _localService = LocalService();
-  String _id = "";
   final cF = NumberFormat.currency(locale: 'ID');
 
   @override
   void initState() {
     super.initState();
-    _localService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
     futureWallet = _walletService.getSaldo();
   }
@@ -43,12 +40,9 @@ class _DetailPageState extends State<DetailPage> {
     // String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/pulsa/";
     String baseUrl = "http://103.9.125.18:3000/ppob/pulsa/";
     final response = await http.get(baseUrl + widget.koId);
-    print(baseUrl + widget.koId);
     if (response.statusCode == 200) {
-      print(baseUrl + widget.koId);
       return albumFromJson(response.body);
     } else {
-      print(baseUrl + widget.koId);
       throw Exception('Failed to load album');
     }
   }
@@ -56,6 +50,7 @@ class _DetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar( 
         elevation: 1,
         iconTheme: IconThemeData(
@@ -139,7 +134,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Harga'),
                                           ),
                                           Container(
-                                              child: Text(formatRupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp"))),
+                                              child: Text(formatRupiah(snapshot.data.data[0].nominal).replaceAll("Rp ", "Rp"))),
                                         ],
                                       ),
                                       Row(
@@ -152,8 +147,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Biaya Pelayanan'),
                                           ),
                                           Container(
-                                            // snapshot.data.data[0].adminFee.toString()
-                                            child: Text("Rp0"),
+                                            child: Text(formatRupiah(snapshot.data.data[0].adminFee).replaceAll("Rp ", "Rp")),
                                           ),
                                         ],
                                       ),
@@ -268,8 +262,7 @@ class _DetailPageState extends State<DetailPage> {
                               color: Colors.green,
                               onPressed: () {
                                 loadingDialog(context);
-                                // setState(() => _isLoading = true);
-                                int transactionId = int.parse(_id.toString());
+                                int transactionId = int.parse(widget.koId);
                                 String nomorHp =
                                     snapshot.data.data[0].noHp.toString();
                                 int nominal = int.parse(
@@ -286,13 +279,9 @@ class _DetailPageState extends State<DetailPage> {
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
-                                    print("RESPONSENYA: " + response.body);
                                     userUid = blok['id'].toString();
                                     var koId = userUid;
-                                    _localService.saveNameId(userUid).then((bool committed) {
-                                      print(userUid);
-                                    });
-                                     await Future.delayed(const Duration(seconds: 5));
+                                     await Future.delayed(const Duration(seconds: 4));
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
@@ -330,11 +319,5 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
-  }
-
-  void updateId(String transId) {
-    setState(() {
-      this._id = transId;
-    });
   }
 }

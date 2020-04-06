@@ -47,11 +47,13 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
-          leading: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                _toLanding();
-              }),
+          leading: Container(
+            child: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  _toLanding();
+                }),
+          ),
         ),
         body: FutureBuilder<PostTrans>(
           future: futureTrans,
@@ -89,7 +91,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                 ),
                                 Container(
                                   child: Text(
-                                      "${formatTanggal(dateTime)} ${formatterTime.toString()}"),
+                                      "${formatTanggal(dateTime)}, ${formatterTime.toString()}"),
                                 ),
                                 Container(
                                   child: Text('via Un1ty'),

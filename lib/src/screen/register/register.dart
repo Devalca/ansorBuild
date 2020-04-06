@@ -29,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
@@ -161,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validateName(String value) {
-    String patttern = r'(^[a-zA-Z]*$)';
+    String patttern = r'(^[a-zA-Z ]*$)';
     RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
       return 'Nama Lengkap Harus Diisi';
@@ -200,9 +200,11 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: _controllerNomor,
       keyboardType: TextInputType.phone,
       inputFormatters: [
-        LengthLimitingTextInputFormatter(12),
+        LengthLimitingTextInputFormatter(13),
       ],
-      decoration: InputDecoration(hintText: 'Masukkan Nomor Handphone'),
+      decoration: InputDecoration(
+        hintText: 'Masukkan Nomor Handphone',
+        ),
       validator: validateNomor,
       onSaved: (String value) {
         registNomor = value;
@@ -213,9 +215,11 @@ class _RegisterPageState extends State<RegisterPage> {
   String validateNomor(String value) {
     if (value.isEmpty) {
       return "Tidak Boleh Kosong";
-    } else if (value.length != 12) {
-      return "Harus 12";
-    }
+    } else if (value.substring(0,2) != "08") {
+      return "Gunakan Format ID '08'";
+    } else if (value.length == 10 && value.length == 11 && value.length == 12 && value.length == 13) {
+      return "Format Nomor Salah";
+    } 
     return null;
   }
 
@@ -281,13 +285,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   _controllerNomor.clear();
                   _controllerPsd.clear();
                 }
-                print('Daftar SUkses');
-                // _statePrabayar.currentState.showSnackBar(SnackBar(
-                //     duration: Duration(minutes: 5),
-                //     content: Text("SEDANG PROSES")));
-                // await new Future.delayed(
-                //     const Duration(seconds: 2));
-                // setState(() => _isLoading = false);
               } else {
                 print("INI STATUS CODE : " + response.statusCode.toString());
               }

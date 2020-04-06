@@ -98,38 +98,7 @@ class _PdamPageState extends State<PdamPage> {
                     alignment: Alignment.centerRight,
                     child: RaisedButton(
                       onPressed: () {
-                        loadingDialog(context);
-                        String nomor = _controllerNomor.text.toString();
-                        String wilayah =
-                            _controllerWilayah.text = widget.namaKotaKab;
-                        PostPdam postPdam =
-                            PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
-                        if (nomor != null || wilayah != null) {
-                          _pdamService
-                              .createPostPdam(postPdam)
-                              .then((response) async {
-                            if (response.statusCode == 200) {
-                              Map blok = jsonDecode(response.body);
-                              String userUid = blok['data'][0]['id'].toString();
-                              String koId = userUid;
-                              print(userUid);
-                              if (userUid == null) {
-                                print("user id Kosong");
-                              } else {
-                                await new Future.delayed(
-                                          const Duration(seconds: 5));
-                                Navigator.push(context, MaterialPageRoute(builder: (__)
-                                => DetailPagePdam(koId)
-                                ));
-                              }
-                            } else {
-                              print("INI STATUS CODE: " +
-                                  response.statusCode.toString());
-                            }
-                          });
-                        } else {
-                          print("NOMOR dan WILAYAH KOSONG");
-                        }
+                        _sendToServer();
                       },
                       child: Text(
                         "LANJUT".toUpperCase(),
@@ -152,6 +121,9 @@ class _PdamPageState extends State<PdamPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
+    if (value.isEmpty) {
+      return "Silahkan Masukan Nomor Pelanggan";
+    }
     if (value.length != 11 && value.length != 12 && value.length != 13) {
       return "Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
@@ -160,11 +132,20 @@ class _PdamPageState extends State<PdamPage> {
     return null;
   }
 
+  String validateWilayah(String value) {
+    if (value == "Pilih Daerah") {
+      return "Silahkan Masukan Nomor Pelanggan";
+    }
+    return null;
+  }
+
   Widget _buildTextFieldWilayah() {
+    _controllerWilayah.text =
+        widget.namaKotaKab == "" ? "Pilih Daerah" : widget.namaKotaKab;
     return TextFormField(
-      enabled: false,
+      // enabled: false,
       controller: _controllerWilayah,
-      keyboardType: TextInputType.text,
+      validator: validateWilayah,
       decoration: InputDecoration(
         suffixIcon: Icon(
           Icons.expand_more,
@@ -172,17 +153,7 @@ class _PdamPageState extends State<PdamPage> {
         ),
         focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(width: 1, color: Colors.grey)),
-        hintText:
-            widget.namaKotaKab == "" ? "Pilih Daerah" : widget.namaKotaKab,
-        errorText:
-            _isFieldWilayah == null || _isFieldWilayah ? null : "Nama Wilayah",
       ),
-      onChanged: (String value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _isFieldWilayah) {
-          setState(() => _isFieldWilayah = isFieldValid);
-        }
-      },
     );
   }
 
@@ -213,5 +184,43 @@ class _PdamPageState extends State<PdamPage> {
         },
       ),
     );
+  }
+
+  void _sendToServer() {
+    if (_key.currentState.validate()) {
+      _key.currentState.save();
+      loadingDialog(context);
+      String nomor = _controllerNomor.text.toString();
+      String wilayah = _controllerWilayah.text = widget.namaKotaKab;
+      PostPdam postPdam = PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
+      if (nomor != null || wilayah != null) {
+        _pdamService.createPostPdam(postPdam).then((response) async {
+          if (response.statusCode == 200) {
+            Map blok = jsonDecode(response.body);
+            if (blok["message"] == "data tidak ada") {
+              nullPdamDialog(context);
+            } else {
+              String userUid = blok['data'][0]['id'].toString();
+              String koId = userUid;
+              if (userUid == null) {
+                print("user id Kosong");
+              } else {
+                await Future.delayed(const Duration(seconds: 4));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (__) => DetailPagePdam(koId)));
+              }
+            }
+          } else {
+            print("INI STATUS CODE: " + response.statusCode.toString());
+          }
+        });
+      } else {
+        print("NOMOR dan WILAYAH KOSONG");
+      }
+    } else {
+      setState(() {
+        _validate = true;
+      });
+    }
   }
 }
