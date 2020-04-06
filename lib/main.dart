@@ -1,7 +1,4 @@
-import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
-import 'package:ansor_build/src/screen/component/kontak.dart';
-import 'package:ansor_build/src/screen/register/register.dart';
-import 'package:contacts_service/contacts_service.dart';
+import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -30,7 +27,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         primarySwatch: Colors.green
       ),
-      home: RegisterPage(),
+      home: Login(),
       routes: Routes.getRoutes(),
     );
   }

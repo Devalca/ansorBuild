@@ -34,9 +34,6 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -123,8 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                       Text('Sudah Punya Akun? '),
                                       GestureDetector(
                                         onTap: () {
-                                          // _toLanding();
-                                          Navigator.push(context, new MaterialPageRoute(builder: (__) => new Login()));
+                                          _toLanding();
                                         },
                                         child: Text(
                                           'MASUK',
@@ -310,6 +306,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _toLanding() {
     Navigator.of(context).pushNamedAndRemoveUntil(
-        Routes.LandingScreen, (Route<dynamic> route) => false);
+        Routes.LoginScreen, (Route<dynamic> route) => false);
   }
 }
