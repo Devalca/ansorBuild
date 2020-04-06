@@ -61,7 +61,7 @@ class _PulsaPageState extends State<PulsaPage> {
     setState(() {
       if (widget.noValue != "") {
         _controllerNomor.text =
-            widget.noValue.toString().replaceAll("+62", "0").replaceAll("-", "");
+            widget.noValue.toString().replaceAll("+62", "0").replaceAll("-", "").replaceAll(" ", "");
         if (_controllerNomor.text != null) {
           cekNo = _controllerNomor.text;
           testProv = cekNo.substring(0, 4);
@@ -94,7 +94,7 @@ class _PulsaPageState extends State<PulsaPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Container(margin: EdgeInsets.only(top: 16.0), child: Text("NO")),
+        Container(margin: EdgeInsets.only(top: 16.0), child: Text("Nomor Handphone")),
         Padding(
           padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
           child: TextFormField(

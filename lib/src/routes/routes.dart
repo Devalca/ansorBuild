@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/register/register.dart';

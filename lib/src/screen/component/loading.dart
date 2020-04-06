@@ -1,7 +1,4 @@
-import 'dart:js';
-
 import 'package:ansor_build/src/routes/routes.dart';
-import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:flutter/material.dart';
 
 Widget centerLoading() {
