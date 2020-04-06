@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/iklan_ppob.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
@@ -5,7 +6,8 @@ import 'package:flutter/material.dart';
 
 class MainPulsa extends StatefulWidget {
   final String noValue;
-  MainPulsa(this.noValue);
+  final String noValue2;
+  MainPulsa(this.noValue, this.noValue2);
 
 
   @override
@@ -14,8 +16,13 @@ class MainPulsa extends StatefulWidget {
 
 class _MainPulsaState extends State<MainPulsa> {
   @override
+  void initState() {
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     String noValue = widget.noValue;
+    String noValue2 = widget.noValue2;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -27,7 +34,7 @@ class _MainPulsaState extends State<MainPulsa> {
             leading: IconButton(
                 icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.pop(context, true);
+                 _toLanding();
                 }),
             elevation: 0.2,
             backgroundColor: Colors.white,
@@ -100,7 +107,7 @@ class _MainPulsaState extends State<MainPulsa> {
                     physics: NeverScrollableScrollPhysics(),
                     children: <Widget>[
                       PulsaPage(noValue),
-                      PulsaPascaPage(),
+                      PulsaPascaPage(noValue2),
                     ],
                   ),
                 ),
@@ -108,5 +115,9 @@ class _MainPulsaState extends State<MainPulsa> {
             ],
           )),
     );
+  }
+    _toLanding() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.LandingScreen, (Route<dynamic> route) => false);
   }
 }

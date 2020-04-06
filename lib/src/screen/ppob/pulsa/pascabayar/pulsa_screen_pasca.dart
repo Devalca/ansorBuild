@@ -1,14 +1,21 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/pulsa_model.dart';
+import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/permissions_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PulsaPascaPage extends StatefulWidget {
+  final String noValue2;
+  PulsaPascaPage(this.noValue2);
+
   @override
   _PulsaPascaPageState createState() => _PulsaPascaPageState();
 }
@@ -16,54 +23,37 @@ class PulsaPascaPage extends StatefulWidget {
 class _PulsaPascaPageState extends State<PulsaPascaPage> {
   String mobi = "";
   String logoProv = "";
-  bool _isFieldNomor;
-  bool _validate = true;
-  bool _isLoading = false;
+  bool _validate = false;
+  String cekNo;
+  String testProv;
   String inputNomor, inputNominal, hargaNominal;
   final GlobalKey<FormState> _key = GlobalKey();
-  LocalService _localService = LocalService();
   PulsaService _pulsaService = PulsaService();
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
   void initState() {
+    setState(() {
+      if (widget.noValue2 == null) {
+        print("noValue2 Kosong");
+      } else if (widget.noValue2 != "") {
+        _controllerNomor.text = widget.noValue2
+            .toString()
+            .replaceAll("+62", "0")
+            .replaceAll("-", "")
+            .replaceAll(" ", "");
+        if (_controllerNomor.text != null) {
+          cekNo = _controllerNomor.text;
+          testProv = cekNo.substring(0, 4);
+        }
+      }
+    });
     super.initState();
   }
 
   void dispose() {
     _controllerNomor.dispose();
     super.dispose();
-  }
-
-  static Future<void> _showLoadingDialog(BuildContext context) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          Future.delayed(Duration(seconds: 5), () {
-            Navigator.of(context).pop(true);
-          });
-          return new WillPopScope(
-              onWillPop: () async => false,
-              child: SimpleDialog(
-                  backgroundColor: Colors.white,
-                  children: <Widget>[
-                    Center(
-                      child: Column(children: [
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.green,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Mohon Tunggu....",
-                          style: TextStyle(color: Colors.green),
-                        )
-                      ]),
-                    )
-                  ]));
-        });
   }
 
   @override
@@ -107,7 +97,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         Container(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[Text('Total'), Text('Rp')],
+                            // children: <Widget>[Text('Total'), Text('Rp')],
                           ),
                         ),
                         Container(
@@ -116,37 +106,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: RaisedButton(
                               onPressed: () {
-                                _showLoadingDialog(context);
-                                String nomor = _controllerNomor.text.toString();
-                                Post post =
-                                    Post(noHp: nomor, userId: 1, walletId: 1);
-                                _pulsaService
-                                    .createPostPasca(post)
-                                    .then((response) async {
-                                  if (response.statusCode == 200) {
-                                    Map blok = jsonDecode(response.body);
-                                    userUid = blok['id'].toString();
-                                    var koId = userUid;
-                                    print(userUid);
-                                    if (userUid == "null") {
-                                      print("NUll user");
-                                    } else {
-                                      _localService
-                                          .saveNameId(userUid)
-                                          .then((bool committed) {});
-                                      await new Future.delayed(
-                                          const Duration(seconds: 5));
-                                      Navigator.push(
-                                          context,
-                                          new MaterialPageRoute(
-                                              builder: (__) =>
-                                                  new DetailPage(koId)));
-                                    }
-                                  } else {
-                                    print("INI STATUS CODE: " +
-                                        response.statusCode.toString());
-                                  }
-                                });
+                                _sendToServer();
                               },
                               child: Text(
                                 "beli".toUpperCase(),
@@ -173,8 +133,10 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Nomor Salah";
+    if (value.isEmpty) {
+      return "Nomor Boleh Kosong";
+    } else if (value.length != 11 && value.length != 12 && value.length != 13) {
+      return "Format Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }
@@ -216,24 +178,19 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         height: 30,
                         child: Image.network(logoProv),
                       ),
-                     Container(
-                        padding:
-                            EdgeInsets.only(top: 6.0, right: 6.0, bottom: 10.0),
-                        child: GestureDetector(
-                            onTap: () async => underDialog(context),
-                            child: Image.asset("lib/src/assets/XMLID_2.png"))),
+                      Container(
+                          padding: EdgeInsets.only(
+                              top: 6.0, right: 6.0, bottom: 10.0),
+                          child: GestureDetector(
+                              onTap: () async => launchContacts(),
+                              child:
+                                  Image.asset("lib/src/assets/XMLID_2.png"))),
                     ],
-                  ),
-                  errorText: _isFieldNomor == null || _isFieldNomor
-                      ? null
-                      : "Tidak Boleh Kosong"),
+                  )),
               onChanged: (value) {
-                bool isFieldValid = value.trim().isNotEmpty;
                 for (var i = 0; i < snapshot.data.data.length; i++) {
                   if (value.length == 4) {
-                    if (isFieldValid != _isFieldNomor) {
-                      setState(() => _isFieldNomor = isFieldValid);
-                    } else if (value == providers[i].kodeProvider) {
+                    if (value.substring(0, 4) == providers[i].kodeProvider) {
                       setState(() {
                         mobi = providers[i].namaProvider;
                         logoProv = providers[i].file.toString();
@@ -260,40 +217,47 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           );
         });
   }
-}
 
-// Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: <Widget>[
-//                       Expanded(
-//                           flex: 3,
-//                           child: Container(child: _buildTextFieldNomor())),
-//                       Expanded(
-//                         flex: 1,
-//                         child: Container(
-//                           child: Row(
-//                             mainAxisAlignment:
-//                                 MainAxisAlignment.spaceBetween,
-//                             children: <Widget>[
-//                               Container(
-//                                   child: Container(
-//                                 height: 30.0,
-//                                 width: 30.0,
-//                                 child:
-//                                     Text(logoProv == "" ? "" : "Provider"),
-//                                 // child: Image.network(logoProv),
-//                               )),
-//                               Container(
-//                                 height: 30.0,
-//                                 width: 1.0,
-//                                 color: Colors.black,
-//                               ),
-//                               Container(
-//                                   child: Image.asset(
-//                                       "lib/src/assets/XMLID_2.png"))
-//                             ],
-//                           ),
-//                         ),
-//                       )
-//                     ],
-//                   ),
+  void _sendToServer() {
+    if (_key.currentState.validate()) {
+      _key.currentState.save();
+      String nomor = _controllerNomor.text.toString();
+      if (nomor != null) {
+        Post post = Post(noHp: nomor, userId: 1, walletId: 1);
+        _pulsaService.createPostPasca(post).then((response) async {
+          if (response.statusCode == 200) {
+            Map blok = jsonDecode(response.body);
+            userUid = blok['id'].toString();
+            var koId = userUid;
+            if (userUid == "null") {
+              pascaGagalDialog(context);
+            } else {
+              loadingDialog(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (__) => DetailPage(koId)));
+            }
+          } else {
+            print("INI STATUS CODE: " + response.statusCode.toString());
+          }
+        });
+      }
+    } else {
+      setState(() {
+        _validate = true;
+      });
+    }
+  }
+
+  void launchContacts() async {
+    final PermissionStatus permissionStatus =
+        await PermissionsService().getPermissionContact();
+    if (permissionStatus == PermissionStatus.granted) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ContactsPage2()));
+    } else {
+      PermissionsService().requestContactsPermission(onPermissionDenied: () {
+        print('Permission has been denied');
+      });
+    }
+  }
+}

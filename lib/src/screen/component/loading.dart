@@ -40,6 +40,57 @@ Future<void> underDialog(BuildContext context) async {
       });
 }
 
+Future<void> pascaGagalDialog(BuildContext context) async {
+  return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+         Future.delayed(Duration(milliseconds: 450), () {
+          Navigator.of(context).pop(true);
+        });
+        return new WillPopScope(
+            onWillPop: () async => false,
+            child:
+                SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
+              Center(
+                child: Column(children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Nomor Tidak Terdaftar",
+                    style: TextStyle(color: Colors.green),
+                  ),
+                ]),
+              )
+            ]));
+      });
+}
+
+Future<void> nullNominalDialog(BuildContext context) async {
+  return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(milliseconds: 450), () {
+          Navigator.of(context).pop(true);
+        });
+        return SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
+          Center(
+            child: Column(children: [
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Silahkan Pilih Nominal",
+                style: TextStyle(color: Colors.green),
+              ),
+            ]),
+          )
+        ]);
+      });
+}
+
 Future<void> nullDialog(BuildContext context) async {
   return showDialog<void>(
       context: context,
@@ -127,7 +178,7 @@ Future<void> loadingDialog(BuildContext context) async {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        Future.delayed(Duration(seconds: 5), () {
+        Future.delayed(Duration(seconds: 4), () {
           Navigator.of(context).pop(true);
         });
         return new WillPopScope(

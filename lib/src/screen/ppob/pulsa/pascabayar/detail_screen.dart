@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
@@ -21,19 +22,16 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  String _id = "";
   DateTime dateTime;
   Future<Album> futureAlbum;
-  bool _isLoading = false;
   PulsaService _pulsaService = PulsaService();
   WalletService _walletService = WalletService();
-  LocalService _localService = LocalService();
   final cF = NumberFormat.currency(locale: 'ID');
-  String _id = "";
 
   @override
   void initState() {
     super.initState();
-    _localService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
   }
 
@@ -48,37 +46,6 @@ class _DetailPageState extends State<DetailPage> {
       print("SATATUS CODENYA: " + response.statusCode.toString());
       throw Exception('Failed to load album');
     }
-  }
-
-  static Future<void> _showLoadingDialog(BuildContext context) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          Future.delayed(Duration(seconds: 5), () {
-            Navigator.of(context).pop(true);
-          });
-          return WillPopScope(
-              onWillPop: () async => false,
-              child: SimpleDialog(
-                  backgroundColor: Colors.white,
-                  children: <Widget>[
-                    Center(
-                      child: Column(children: [
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.green,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Mohon Tunggu....",
-                          style: TextStyle(color: Colors.green),
-                        )
-                      ]),
-                    )
-                  ]));
-        });
   }
 
   @override
@@ -322,13 +289,10 @@ class _DetailPageState extends State<DetailPage> {
                             child: RaisedButton(
                               color: Colors.green,
                               onPressed: () {
-                                _showLoadingDialog(context);
-                                // setState(() => _isLoading = true);
+                                loadingDialog(context);
                                 int transactionId = int.parse(_id.toString());
                                 String nomorHp =
                                     snapshot.data.data[0].noHp.toString();
-                                int nominal = int.parse(
-                                    snapshot.data.data[0].nominal.toString());
                                 Post post = Post(
                                   userId: 1,
                                   walletId: 1,
@@ -346,9 +310,6 @@ class _DetailPageState extends State<DetailPage> {
                                     if (userUid == "null") {
                                       print("NUll user");
                                     } else {
-                                      _localService
-                                          .saveNameId(userUid)
-                                          .then((bool committed) {});
                                       await Future.delayed(
                                           const Duration(seconds: 5));
                                       Navigator.pushReplacement(
@@ -388,11 +349,5 @@ class _DetailPageState extends State<DetailPage> {
         ),
       ),
     );
-  }
-
-  void updateId(String transId) {
-    setState(() {
-      this._id = transId;
-    });
   }
 }

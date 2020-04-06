@@ -59,9 +59,14 @@ class _PulsaPageState extends State<PulsaPage> {
       });
     });
     setState(() {
-      if (widget.noValue != "") {
-        _controllerNomor.text =
-            widget.noValue.toString().replaceAll("+62", "0").replaceAll("-", "").replaceAll(" ", "");
+      if (widget.noValue == null) {
+        print("noValue Kosong");
+      } else if (widget.noValue != "") {
+        _controllerNomor.text = widget.noValue
+            .toString()
+            .replaceAll("+62", "0")
+            .replaceAll("-", "")
+            .replaceAll(" ", "");
         if (_controllerNomor.text != null) {
           cekNo = _controllerNomor.text;
           testProv = cekNo.substring(0, 4);
@@ -94,7 +99,8 @@ class _PulsaPageState extends State<PulsaPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Container(margin: EdgeInsets.only(top: 16.0), child: Text("Nomor Handphone")),
+        Container(
+            margin: EdgeInsets.only(top: 16.0), child: Text("Nomor Handphone")),
         Padding(
           padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
           child: TextFormField(
@@ -187,7 +193,7 @@ class _PulsaPageState extends State<PulsaPage> {
                       if (idProv == "") {
                         return Container(
                           height: 350,
-                          child: centerLoading(),
+                       
                         );
                       } else if (idProv ==
                           snapshot.data.data[i].operatorId.toString()) {
@@ -246,7 +252,13 @@ class _PulsaPageState extends State<PulsaPage> {
                   width: 100.0,
                   child: RaisedButton(
                     color: Colors.green,
-                    onPressed: sendToServer,
+                    onPressed: () {
+                      if (inputNominal == null) {
+                        nullNominalDialog(context);
+                      } else {
+                        sendToServer();
+                      }
+                    },
                     child: Text(
                       'BELI',
                       style: TextStyle(color: Colors.white),
@@ -338,7 +350,6 @@ class _PulsaPageState extends State<PulsaPage> {
   }
 
   void sendToServer() {
-    loadingDialog(context);
     if (_key.currentState.validate()) {
       _key.currentState.save();
       String nomor = inputNomor.toString();
@@ -348,6 +359,7 @@ class _PulsaPageState extends State<PulsaPage> {
           ? int.parse(cekNo.toString())
           : int.parse(inputNominal.toString());
       if (nomor != null && nominal != null && providerNama != null) {
+        loadingDialog(context);
         Post post = Post(
             noHp: nomor,
             nominal: nominal,
@@ -359,22 +371,17 @@ class _PulsaPageState extends State<PulsaPage> {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
             var koId = userUid;
-            _localService.saveNameId(userUid).then((bool committed) {
-              print(userUid);
-            });
-            await new Future.delayed(const Duration(seconds: 5));
+            await Future.delayed(const Duration(seconds: 4));
             Navigator.push(
                 context,
-                new MaterialPageRoute(
-                    builder: (__) => new DetailPage(koId, namaProv)));
+                MaterialPageRoute(
+                    builder: (__) => DetailPage(koId, namaProv)));
             _key.currentState.reset();
           } else {
             print("INI STATUS CODE : " + response.statusCode.toString());
           }
         });
-      } else {
-        print("Something Error");
-      }
+      } 
     } else {
       setState(() {
         _validate = true;

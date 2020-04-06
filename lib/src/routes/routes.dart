@@ -1,4 +1,5 @@
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
+import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:flutter/material.dart';
