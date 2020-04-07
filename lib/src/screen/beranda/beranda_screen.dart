@@ -5,6 +5,7 @@ import 'package:ansor_build/src/screen/component/iklan_home.dart';
 import 'package:ansor_build/src/screen/component/iklan_kecil.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
+import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
@@ -425,7 +426,8 @@ class _BerandaPageState extends State<BerandaPage> {
             if (productService.length != null) {
               return InkWell(
                   onTap: () {
-                    print('INI BARANG');
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => DetailKatalogPage()));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 16.0),
