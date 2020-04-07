@@ -1,17 +1,20 @@
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:ansor_build/src/screen/ppob/pln/listrik_pascabayar.dart' as pascabayar;
-import 'package:ansor_build/src/screen/ppob/pln/listrik_prabayar.dart' as prabayar;
+import 'package:ansor_build/src/screen/ppob/pln/listrik_pascabayar.dart'
+    as pascabayar;
+import 'package:ansor_build/src/screen/ppob/pln/listrik_prabayar.dart'
+    as prabayar;
 
 class Listrik extends StatefulWidget {
+  final int index;
+  Listrik({this.index});
 
   @override
-    _ListrikState createState() => _ListrikState();
-  }
+  _ListrikState createState() => _ListrikState();
+}
 
-class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
-
+class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin {
   TabController controller;
 
   @override
@@ -31,73 +34,72 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
+        initialIndex: widget.index == null ? 0 : widget.index,
         length: 2,
         child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          appBar: AppBar(
-            iconTheme: IconThemeData(
-              color: Colors.black,
+            resizeToAvoidBottomPadding: false,
+            appBar: AppBar(
+              iconTheme: IconThemeData(
+                color: Colors.black,
+              ),
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    Navigator.pop(context, true);
+                  }),
+              elevation: 0.2,
+              backgroundColor: Colors.white,
+              title: Text(
+                'Listrik PLN',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.pop(context, true);
-              }
-            ),
-            elevation: 0.2,
-            backgroundColor: Colors.white,
-            title: Text(
-              'Listrik PLN',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-          body: Stack(
-            fit: StackFit.expand,
-            overflow: Overflow.clip,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 0, left: 12.0, right: 12.0),
-                child: Scaffold(
-                  resizeToAvoidBottomPadding: false,
-                  appBar: AppBar(
-                    elevation: 0.0,
-                    backgroundColor: Colors.white,
-                    bottom: PreferredSize(
-                      preferredSize: Size(0.5, 0.5),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 7.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          border: Border.all(width: 1, color: Colors.white),
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        child: TabBar(
-                          labelColor: Colors.green,
-                          indicatorColor: Colors.green,
-                          tabs: [
-                            Container(
-                              child: Tab(text: 'Prabayar'),
-                            ),
-                            Container(
-                              child: Tab(text: 'Pascabayar'),
-                            ),
-                          ],
+            body: Stack(
+              fit: StackFit.expand,
+              overflow: Overflow.clip,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 0, left: 12.0, right: 12.0),
+                  child: Scaffold(
+                    resizeToAvoidBottomPadding: false,
+                    appBar: AppBar(
+                      elevation: 0.0,
+                      backgroundColor: Colors.white,
+                      bottom: PreferredSize(
+                        preferredSize: Size(0.5, 0.5),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 7.0),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            border: Border.all(width: 1, color: Colors.white),
+                            borderRadius: BorderRadius.circular(6.0),
+                          ),
+                          child: TabBar(
+                            labelColor: Colors.green,
+                            indicatorColor: Colors.green,
+                            tabs: [
+                              Container(
+                                child: Tab(text: 'Prabayar'),
+                              ),
+                              Container(
+                                child: Tab(text: 'Pascabayar'),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
+                    body: TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        prabayar.ListrikPrabayar(),
+                        pascabayar.ListrikPascabayar(),
+                      ],
+                    ),
                   ),
-                  body: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      prabayar.ListrikPrabayar(),
-                      pascabayar.ListrikPascabayar(),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          )
-        ),
+                )
+              ],
+            )),
       ),
     );
     // return Scaffold(
@@ -122,7 +124,7 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin{
     //       ],
     //     ),
     //   ),
-      
+
     //   body: new TabBarView(
     //     controller: controller,
     //     children: <Widget>[

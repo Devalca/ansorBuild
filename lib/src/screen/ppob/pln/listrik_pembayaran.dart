@@ -24,8 +24,12 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
 
   PlnServices _plnServices = PlnServices();
   WalletService _walletService = WalletService();
+
   String _transactionId = "";
   String url = "";
+  String noMeter2 = "";
+
+  int nominal2 = 0;
 
   Future<Album> futureAlbum;
 
@@ -72,6 +76,194 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
               'Pembayaran',
               style: TextStyle(color: Colors.black),
             )),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.transparent,
+          child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    SizedBox(
+                      width: 333,
+                      height: 35,
+                      child: RaisedButton(
+                        child:
+                            Text('BAYAR', style: TextStyle(color: Colors.white)),
+                        color: Colors.green,
+                        onPressed: () {
+                          setState(() => _isLoading = true);
+                          String id = _transactionId;
+                          String transactionId =
+                              id.substring(10);
+                          String noMeter = noMeter2;
+                          int nominal = nominal2;
+
+                          print("transactionId: " +
+                              transactionId);
+                          print("noMeter: " + noMeter);
+
+                          PostPascaTransaction
+                              pascaTransaction =
+                              PostPascaTransaction(
+                                  noMeter: noMeter,
+                                  transactionId:
+                                      transactionId,
+                                  userId: 1,
+                                  walletId: 1);
+
+                          PostPraTransaction
+                              praTransaction =
+                              PostPraTransaction(
+                                  noMeter: noMeter,
+                                  nominal: nominal,
+                                  transactionId:
+                                      transactionId,
+                                  userId: 1,
+                                  walletId: 1);
+
+                          if (widget.status ==
+                              "pascabayar") {
+                            _plnServices
+                                .postPascaTransaction(
+                                    pascaTransaction)
+                                .then((response) async {
+                              print(response.statusCode);
+                              if (response.statusCode ==
+                                  302) {
+                                print('Berhasil');
+                                url = response
+                                    .headers['location'];
+                                print("url: " + url);
+
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranBerhasil(
+                                                status: widget
+                                                    .status)));
+                                setState(() =>
+                                    _isLoading = false);
+                              } else if (response
+                                      .statusCode ==
+                                  200) {
+                                print('Berhasil');
+
+                                Map data = jsonDecode(
+                                    response.body);
+                                id = data['id'].toString();
+                                url = '/ppob/detail/pln/' +
+                                    id;
+                                print("url" + url);
+
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranBerhasil(
+                                                status: widget
+                                                    .status)));
+                                setState(() =>
+                                    _isLoading = false);
+                              } else {
+                                print("Gagal");
+                                print(response.statusCode);
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranGagal()));
+                                setState(() =>
+                                    _isLoading = false);
+                              }
+                            });
+                          } else {
+                            _plnServices
+                                .postPraTransaction(
+                                    praTransaction)
+                                .then((response) async {
+                              print(response.statusCode);
+                              if (response.statusCode ==
+                                  302) {
+                                print('Berhasil');
+                                url = response
+                                    .headers['location'];
+                                print("url: " + url);
+
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranBerhasil(
+                                                status: widget
+                                                    .status)));
+                                setState(() =>
+                                    _isLoading = false);
+                              } else if (response
+                                      .statusCode ==
+                                  200) {
+                                print('Berhasil');
+
+                                Map data = jsonDecode(
+                                    response.body);
+                                id = data['id'].toString();
+                                url = '/ppob/detail/pln/' +
+                                    id;
+                                print("url" + url);
+
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranBerhasil(
+                                                status: widget
+                                                    .status)));
+                                setState(() =>
+                                    _isLoading = false);
+                              } else {
+                                print("Gagal");
+                                print(response.statusCode);
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranGagal()));
+                                setState(() =>
+                                    _isLoading = false);
+                              }
+                            });
+                          }
+                        },
+                      ),
+                    )
+                  ])),
+          elevation: 0),
         body: SingleChildScrollView(
           child: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -83,6 +275,10 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           DateTime periode = snapshot.data.createdAt;
+
+                          noMeter2 = snapshot.data.no_meter;
+                          nominal2 = snapshot.data.nominal;
+
                           if (snapshot.data == null) {
                             return Text("Tidak ada Data");
                           } else {
@@ -119,101 +315,182 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                         textAlign: TextAlign.start,
                                         style: new TextStyle(fontSize: 14.0)),
                                     Container(height: 15),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      width: double.infinity,
-                                      height: 140.0,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.rectangle,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10.0)),
-                                          border: Border.all(
-                                              color: Colors.grey[300],
-                                              width: 1)),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Expanded(
-                                            flex: 1,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                  child: Text("Periode"),
-                                                ),
-                                                Container(
-                                                  child: Text(tanggal(periode)),
-                                                ),
-                                              ],
+                                    widget.status == "prabayar" ?
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        width: double.infinity,
+                                        height: 100.0,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            border: Border.all(
+                                                color: Colors.grey[300],
+                                                width: 1)),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total Harga"),
+                                                  ),
+                                                  Container(
+                                                    child: Text(NumberFormat
+                                                            .simpleCurrency(
+                                                                locale: 'id',
+                                                                decimalDigits: 0)
+                                                        .format(
+                                                            snapshot.data.nominal)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                  child: Text("Total Tagihan"),
-                                                ),
-                                                Container(
-                                                  child: Text(NumberFormat
-                                                          .simpleCurrency(
-                                                              locale: 'id',
-                                                              decimalDigits: 0)
-                                                      .format(
-                                                          snapshot.data.total)),
-                                                ),
-                                              ],
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child:
+                                                        Text("Biaya Pelayanan"),
+                                                  ),
+                                                  Container(
+                                                    child: Text(NumberFormat
+                                                            .simpleCurrency(
+                                                                locale: 'id',
+                                                                decimalDigits: 0)
+                                                        .format(1500)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Expanded(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                  child:
-                                                      Text("Biaya Pelayanan"),
-                                                ),
-                                                Container(
-                                                  child: Text(NumberFormat
-                                                          .simpleCurrency(
-                                                              locale: 'id',
-                                                              decimalDigits: 0)
-                                                      .format(0)),
-                                                ),
-                                              ],
+                                            Divider(
+                                                height: 12, color: Colors.black),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total"),
+                                                  ),
+                                                  Container(
+                                                    child: Text(NumberFormat
+                                                            .simpleCurrency(
+                                                                locale: 'id',
+                                                                decimalDigits: 0)
+                                                        .format(
+                                                            snapshot.data.total)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Divider(
-                                              height: 12, color: Colors.black),
-                                          Expanded(
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                  child: Text("Total"),
-                                                ),
-                                                Container(
-                                                  child: Text(NumberFormat
-                                                          .simpleCurrency(
-                                                              locale: 'id',
-                                                              decimalDigits: 0)
-                                                      .format(
-                                                          snapshot.data.total)),
-                                                ),
-                                              ],
+                                          ],
+                                        ),
+                                      )
+                                    :
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        width: double.infinity,
+                                        height: 140.0,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            border: Border.all(
+                                                color: Colors.grey[300],
+                                                width: 1)),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Periode"),
+                                                  ),
+                                                  Container(
+                                                    child: Text(tanggal(periode).substring(1)),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total Harga"),
+                                                  ),
+                                                  Container(
+                                                    child: Text(NumberFormat
+                                                            .simpleCurrency(
+                                                                locale: 'id',
+                                                                decimalDigits: 0)
+                                                        .format(
+                                                            snapshot.data.nominal)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child:
+                                                        Text("Biaya Pelayanan"),
+                                                  ),
+                                                  Container(
+                                                    child: Text(NumberFormat
+                                                            .simpleCurrency(
+                                                                locale: 'id',
+                                                                decimalDigits: 0)
+                                                        .format(1500)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Divider(
+                                                height: 12, color: Colors.black),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total"),
+                                                  ),
+                                                  Container(
+                                                    child: Text(NumberFormat
+                                                            .simpleCurrency(
+                                                                locale: 'id',
+                                                                decimalDigits: 0)
+                                                        .format(
+                                                            snapshot.data.total)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
+
                                     Container(height: 15),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
@@ -292,194 +569,194 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                         ],
                                       ),
                                     ),
-                                    Container(height: 160),
-                                    Container(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Align(
-                                        child: SizedBox(
-                                          width: double.infinity,
-                                          height: 35,
-                                          child: RaisedButton(
-                                            child: Text('BAYAR',
-                                                style: TextStyle(
-                                                    color: Colors.white)),
-                                            color: Colors.green,
-                                            onPressed: () {
-                                              setState(() => _isLoading = true);
-                                              String id = _transactionId;
-                                              String transactionId =
-                                                  id.substring(10);
-                                              String noMeter =
-                                                  snapshot.data.no_meter;
-                                              int nominal =
-                                                  snapshot.data.nominal;
+                                    // Container(height: 160),
+                                    // Container(
+                                    //   alignment: Alignment.bottomCenter,
+                                    //   child: Align(
+                                    //     child: SizedBox(
+                                    //       width: double.infinity,
+                                    //       height: 35,
+                                    //       child: RaisedButton(
+                                    //         child: Text('BAYAR',
+                                    //             style: TextStyle(
+                                    //                 color: Colors.white)),
+                                    //         color: Colors.green,
+                                    //         onPressed: () {
+                                    //           setState(() => _isLoading = true);
+                                    //           String id = _transactionId;
+                                    //           String transactionId =
+                                    //               id.substring(10);
+                                    //           String noMeter =
+                                    //               snapshot.data.no_meter;
+                                    //           int nominal =
+                                    //               snapshot.data.nominal;
 
-                                              print("transactionId: " +
-                                                  transactionId);
-                                              print("noMeter: " + noMeter);
+                                    //           print("transactionId: " +
+                                    //               transactionId);
+                                    //           print("noMeter: " + noMeter);
 
-                                              PostPascaTransaction
-                                                  pascaTransaction =
-                                                  PostPascaTransaction(
-                                                      noMeter: noMeter,
-                                                      transactionId:
-                                                          transactionId,
-                                                      userId: 1,
-                                                      walletId: 1);
+                                    //           PostPascaTransaction
+                                    //               pascaTransaction =
+                                    //               PostPascaTransaction(
+                                    //                   noMeter: noMeter,
+                                    //                   transactionId:
+                                    //                       transactionId,
+                                    //                   userId: 1,
+                                    //                   walletId: 1);
 
-                                              PostPraTransaction
-                                                  praTransaction =
-                                                  PostPraTransaction(
-                                                      noMeter: noMeter,
-                                                      nominal: nominal,
-                                                      transactionId:
-                                                          transactionId,
-                                                      userId: 1,
-                                                      walletId: 1);
+                                    //           PostPraTransaction
+                                    //               praTransaction =
+                                    //               PostPraTransaction(
+                                    //                   noMeter: noMeter,
+                                    //                   nominal: nominal,
+                                    //                   transactionId:
+                                    //                       transactionId,
+                                    //                   userId: 1,
+                                    //                   walletId: 1);
 
-                                              if (widget.status ==
-                                                  "pascabayar") {
-                                                _plnServices
-                                                    .postPascaTransaction(
-                                                        pascaTransaction)
-                                                    .then((response) async {
-                                                  print(response.statusCode);
-                                                  if (response.statusCode ==
-                                                      302) {
-                                                    print('Berhasil');
-                                                    url = response
-                                                        .headers['location'];
-                                                    print("url: " + url);
+                                    //           if (widget.status ==
+                                    //               "pascabayar") {
+                                    //             _plnServices
+                                    //                 .postPascaTransaction(
+                                    //                     pascaTransaction)
+                                    //                 .then((response) async {
+                                    //               print(response.statusCode);
+                                    //               if (response.statusCode ==
+                                    //                   302) {
+                                    //                 print('Berhasil');
+                                    //                 url = response
+                                    //                     .headers['location'];
+                                    //                 print("url: " + url);
 
-                                                    _plnServices
-                                                        .saveTransactionId(url)
-                                                        .then((bool committed) {
-                                                      print(url);
-                                                    });
+                                    //                 _plnServices
+                                    //                     .saveTransactionId(url)
+                                    //                     .then((bool committed) {
+                                    //                   print(url);
+                                    //                 });
 
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (__) =>
-                                                                new PembayaranBerhasil(
-                                                                    status: widget
-                                                                        .status)));
-                                                    setState(() =>
-                                                        _isLoading = false);
-                                                  } else if (response
-                                                          .statusCode ==
-                                                      200) {
-                                                    print('Berhasil');
+                                    //                 Navigator.push(
+                                    //                     context,
+                                    //                     new MaterialPageRoute(
+                                    //                         builder: (__) =>
+                                    //                             new PembayaranBerhasil(
+                                    //                                 status: widget
+                                    //                                     .status)));
+                                    //                 setState(() =>
+                                    //                     _isLoading = false);
+                                    //               } else if (response
+                                    //                       .statusCode ==
+                                    //                   200) {
+                                    //                 print('Berhasil');
 
-                                                    Map data = jsonDecode(
-                                                        response.body);
-                                                    id = data['id'].toString();
-                                                    url = '/ppob/detail/pln/' +
-                                                        id;
-                                                    print("url" + url);
+                                    //                 Map data = jsonDecode(
+                                    //                     response.body);
+                                    //                 id = data['id'].toString();
+                                    //                 url = '/ppob/detail/pln/' +
+                                    //                     id;
+                                    //                 print("url" + url);
 
-                                                    _plnServices
-                                                        .saveTransactionId(url)
-                                                        .then((bool committed) {
-                                                      print(url);
-                                                    });
+                                    //                 _plnServices
+                                    //                     .saveTransactionId(url)
+                                    //                     .then((bool committed) {
+                                    //                   print(url);
+                                    //                 });
 
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (__) =>
-                                                                new PembayaranBerhasil(
-                                                                    status: widget
-                                                                        .status)));
-                                                    setState(() =>
-                                                        _isLoading = false);
-                                                  } else {
-                                                    print("Gagal");
-                                                    print(response.statusCode);
+                                    //                 Navigator.push(
+                                    //                     context,
+                                    //                     new MaterialPageRoute(
+                                    //                         builder: (__) =>
+                                    //                             new PembayaranBerhasil(
+                                    //                                 status: widget
+                                    //                                     .status)));
+                                    //                 setState(() =>
+                                    //                     _isLoading = false);
+                                    //               } else {
+                                    //                 print("Gagal");
+                                    //                 print(response.statusCode);
 
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (__) =>
-                                                                new PembayaranGagal()));
-                                                    setState(() =>
-                                                        _isLoading = false);
-                                                  }
-                                                });
-                                              } else {
-                                                _plnServices
-                                                    .postPraTransaction(
-                                                        praTransaction)
-                                                    .then((response) async {
-                                                  print(response.statusCode);
-                                                  if (response.statusCode ==
-                                                      302) {
-                                                    print('Berhasil');
-                                                    url = response
-                                                        .headers['location'];
-                                                    print("url: " + url);
+                                    //                 Navigator.push(
+                                    //                     context,
+                                    //                     new MaterialPageRoute(
+                                    //                         builder: (__) =>
+                                    //                             new PembayaranGagal()));
+                                    //                 setState(() =>
+                                    //                     _isLoading = false);
+                                    //               }
+                                    //             });
+                                    //           } else {
+                                    //             _plnServices
+                                    //                 .postPraTransaction(
+                                    //                     praTransaction)
+                                    //                 .then((response) async {
+                                    //               print(response.statusCode);
+                                    //               if (response.statusCode ==
+                                    //                   302) {
+                                    //                 print('Berhasil');
+                                    //                 url = response
+                                    //                     .headers['location'];
+                                    //                 print("url: " + url);
 
-                                                    _plnServices
-                                                        .saveTransactionId(url)
-                                                        .then((bool committed) {
-                                                      print(url);
-                                                    });
+                                    //                 _plnServices
+                                    //                     .saveTransactionId(url)
+                                    //                     .then((bool committed) {
+                                    //                   print(url);
+                                    //                 });
 
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (__) =>
-                                                                new PembayaranBerhasil(
-                                                                    status: widget
-                                                                        .status)));
-                                                    setState(() =>
-                                                        _isLoading = false);
-                                                  } else if (response
-                                                          .statusCode ==
-                                                      200) {
-                                                    print('Berhasil');
+                                    //                 Navigator.push(
+                                    //                     context,
+                                    //                     new MaterialPageRoute(
+                                    //                         builder: (__) =>
+                                    //                             new PembayaranBerhasil(
+                                    //                                 status: widget
+                                    //                                     .status)));
+                                    //                 setState(() =>
+                                    //                     _isLoading = false);
+                                    //               } else if (response
+                                    //                       .statusCode ==
+                                    //                   200) {
+                                    //                 print('Berhasil');
 
-                                                    Map data = jsonDecode(
-                                                        response.body);
-                                                    id = data['id'].toString();
-                                                    url = '/ppob/detail/pln/' +
-                                                        id;
-                                                    print("url" + url);
+                                    //                 Map data = jsonDecode(
+                                    //                     response.body);
+                                    //                 id = data['id'].toString();
+                                    //                 url = '/ppob/detail/pln/' +
+                                    //                     id;
+                                    //                 print("url" + url);
 
-                                                    _plnServices
-                                                        .saveTransactionId(url)
-                                                        .then((bool committed) {
-                                                      print(url);
-                                                    });
+                                    //                 _plnServices
+                                    //                     .saveTransactionId(url)
+                                    //                     .then((bool committed) {
+                                    //                   print(url);
+                                    //                 });
 
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (__) =>
-                                                                new PembayaranBerhasil(
-                                                                    status: widget
-                                                                        .status)));
-                                                    setState(() =>
-                                                        _isLoading = false);
-                                                  } else {
-                                                    print("Gagal");
-                                                    print(response.statusCode);
+                                    //                 Navigator.push(
+                                    //                     context,
+                                    //                     new MaterialPageRoute(
+                                    //                         builder: (__) =>
+                                    //                             new PembayaranBerhasil(
+                                    //                                 status: widget
+                                    //                                     .status)));
+                                    //                 setState(() =>
+                                    //                     _isLoading = false);
+                                    //               } else {
+                                    //                 print("Gagal");
+                                    //                 print(response.statusCode);
 
-                                                    Navigator.push(
-                                                        context,
-                                                        new MaterialPageRoute(
-                                                            builder: (__) =>
-                                                                new PembayaranGagal()));
-                                                    setState(() =>
-                                                        _isLoading = false);
-                                                  }
-                                                });
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    )
+                                    //                 Navigator.push(
+                                    //                     context,
+                                    //                     new MaterialPageRoute(
+                                    //                         builder: (__) =>
+                                    //                             new PembayaranGagal()));
+                                    //                 setState(() =>
+                                    //                     _isLoading = false);
+                                    //               }
+                                    //             });
+                                    //           }
+                                    //         },
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // )
                                   ]),
                             ));
                           }

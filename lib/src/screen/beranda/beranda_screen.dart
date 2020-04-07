@@ -16,6 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BerandaPage extends StatefulWidget {
+  final int index;
+  BerandaPage({this.index});
+
   @override
   _BerandaPageState createState() => _BerandaPageState();
 }
@@ -343,7 +346,7 @@ class _BerandaPageState extends State<BerandaPage> {
               context, MaterialPageRoute(builder: (context) => MainPulsa("", "")));
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Listrik()));
+              context, MaterialPageRoute(builder: (context) => Listrik(index: widget.index)));
         } else if (ppobService.title == "Air PDAM") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PdamPage("")));

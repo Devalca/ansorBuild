@@ -1,6 +1,7 @@
 import 'package:ansor_build/src/model/bpjs_model.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -19,13 +20,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
   String _url = "";
 
-  BpjsServices _bpjsServices = BpjsServices();
+  LocalService _localServices = LocalService();
 
   @override
   void initState() {
     super.initState();
 
-    _bpjsServices.getUrl().then(updateUrl);
+    _localServices.getUrl().then(updateUrl);
   }
 
   void updateUrl(String updateUrl) {

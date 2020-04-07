@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WalletService {
 // String baseUrl = "http://192.168.10.11:3000";
@@ -9,8 +10,11 @@ class WalletService {
    String baseUrl = "http://103.9.125.18:3000";
 
     Future<Wallet> getSaldo() async {
-       var response = await http.get(
-        '$baseUrl/users/wallet/1',
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String url = prefs.getString("walletId");
+
+      var response = await http.get(
+        '$baseUrl/users/wallet/$url',
         headers: {"accept": "application/json"},
       );
       if (response.statusCode == 200) {

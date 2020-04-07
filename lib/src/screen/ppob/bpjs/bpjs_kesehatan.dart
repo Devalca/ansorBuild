@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'package:ansor_build/src/model/bpjs_model.dart';
+import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_bulan.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_gagal.dart';
+import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 
@@ -37,6 +41,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
   TextEditingController _noVAController = TextEditingController();
 
   BpjsServices _bpjsServices = BpjsServices();
+  LocalService _localServices = LocalService();
 
   tgl(tgl) {
     return tgl.substring(0, 10);
@@ -92,8 +97,8 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) =>
-                          new PembayaranGagal(jenis: "kesehatan", pesan: response.body)));
+                      builder: (__) => new PembayaranGagal(
+                          jenis: "kesehatan", pesan: response.body)));
               setState(() => _isLoading = false);
             } else if (response.statusCode == 302) {
               print("berhasil body: " + response.body);
@@ -102,7 +107,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
               url = response.headers['location'];
               print("url: " + url);
 
-              _bpjsServices.saveUrl(url).then((bool committed) {
+              _localServices.saveUrl(url).then((bool committed) {
                 print(url);
               });
 
@@ -225,6 +230,69 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                               ),
                             ),
                             Divider(height: 12, color: Colors.black),
+                            // Container(
+                            //     child: Text("Logout",
+                            //         style: new TextStyle(fontSize: 12.0),
+                            //         textAlign: TextAlign.left)),
+                            // new GestureDetector(
+                            //   onTap: () {
+                            //     walletId = "0";
+                            //     userId = "0";
+                            //     isLogin = false;
+
+                            //     _localServices
+                            //         .saveWalletId(walletId)
+                            //         .then((bool committed) {
+                            //       print(walletId);
+                            //     });
+
+                            //     _localServices
+                            //         .saveUserId(userId)
+                            //         .then((bool committed) {
+                            //       print(userId);
+                            //     });
+
+                            //     _localServices
+                            //         .isLogin(isLogin)
+                            //         .then((bool committed) {
+                            //       print(isLogin);
+                            //     });
+
+                            //     Navigator.push(
+                            //         context,
+                            //         new MaterialPageRoute(
+                            //             builder: (__) => new RegisterPage()));
+                            //   },
+                            //   child: Container(
+                            //     padding: const EdgeInsets.only(top: 10.0),
+                            //     width: double.infinity,
+                            //     height: 40.0,
+                            //     child: Column(
+                            //       children: <Widget>[
+                            //         Expanded(
+                            //           child: Row(
+                            //             mainAxisAlignment:
+                            //                 MainAxisAlignment.spaceBetween,
+                            //             children: <Widget>[
+                            //               Container(
+                            //                 child: Text("Logout",
+                            //                     style: new TextStyle(
+                            //                         fontSize: 14.0)),
+                            //               ),
+                            //               Container(
+                            //                 child: Icon(
+                            //                   Icons.keyboard_arrow_down,
+                            //                   color: Colors.black,
+                            //                   size: 24.0,
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                           ]))));
   }
 }

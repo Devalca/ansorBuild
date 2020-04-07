@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:ansor_build/src/model/login_model.dart';
 import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -14,27 +17,28 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   String error = "";
+
   bool _isLoading = false;
   bool _fieldNohp, _fieldPassword;
+
   TextEditingController _nohpController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  LoginServices _loginServices = LoginServices();
 
-  createAlertDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text("No HP atau Password anda Salah!!!"),
-            actions: <Widget>[
-              MaterialButton(
-                elevation: 5.0,
-                child: Text("OK"),
-                onPressed: () {},
-              )
-            ],
-          );
-        });
+  LoginServices _loginServices = LoginServices();
+  LocalService _localServices = LocalService();
+
+  Future cekLogin() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (pref.getBool("isLogin") == true) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => new LandingPage()));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cekLogin();
   }
 
   @override
@@ -131,22 +135,48 @@ class _LoginState extends State<Login> {
                         Map data = jsonDecode(response.body);
                         walletId = data["walletId"].toString();
                         userId = data["userId"].toString();
+                        isLogin = true;
                         print("walletId: " + walletId);
                         print("userId: " + userId);
+                        print("isLogin: " + isLogin.toString());
 
-                        _loginServices
+                        _localServices
                             .saveWalletId(walletId)
                             .then((bool committed) {
                           print(walletId);
                         });
 
-                        _loginServices
+                        _localServices
                             .saveUserId(userId)
                             .then((bool committed) {
                           print(userId);
                         });
 
-                        _toLanding();
+                        _localServices.isLogin(isLogin).then((bool committed) {
+                          print(isLogin);
+                        });
+
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Login Anda Berhasil",
+                                    style: TextStyle(color: Colors.green)),
+                                content: Text(
+                                    "Anda Berhasil Login dengan nomor $no_hp"),
+                                actions: <Widget>[
+                                  MaterialButton(
+                                    elevation: 5.0,
+                                    child: Text("OK",
+                                        style: TextStyle(color: Colors.green)),
+                                    onPressed: () {
+                                      _toLanding();
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+
                         setState(() => _isLoading = false);
                       } else {
                         print("error: " + response.body);
@@ -155,16 +185,42 @@ class _LoginState extends State<Login> {
                         Map data = jsonDecode(response.body);
                         message = data["message"].toString();
 
+                        walletId = "0";
+                        userId = "0";
+                        isLogin = false;
+                        print("walletId: " + walletId);
+                        print("userId: " + userId);
+                        print("isLogin: " + isLogin.toString());
+
+                        _localServices
+                            .saveWalletId(walletId)
+                            .then((bool committed) {
+                          print(walletId);
+                        });
+
+                        _localServices
+                            .saveUserId(userId)
+                            .then((bool committed) {
+                          print(userId);
+                        });
+
+                        _localServices.isLogin(isLogin).then((bool committed) {
+                          print(isLogin);
+                        });
+
                         showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
+                                title: Text("Login Anda Gagal",
+                                    style: TextStyle(color: Colors.green)),
                                 content:
-                                    Text("No HP atau Password anda Salah!!!"),
+                                    Text("No HP atau Password Anda Salah!!!"),
                                 actions: <Widget>[
                                   MaterialButton(
                                     elevation: 5.0,
-                                    child: Text("OK"),
+                                    child: Text("OK",
+                                        style: TextStyle(color: Colors.green)),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
@@ -218,7 +274,8 @@ class _LoginState extends State<Login> {
           ])),
     ));
   }
-    _toLanding() {
+
+  _toLanding() {
     Navigator.of(context).pushNamedAndRemoveUntil(
         Routes.LandingScreen, (Route<dynamic> route) => false);
   }

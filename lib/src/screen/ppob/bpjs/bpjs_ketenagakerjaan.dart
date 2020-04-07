@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_bulan.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_gagal.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 import 'package:ansor_build/src/model/bpjs_model.dart';
@@ -36,6 +37,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
   TextEditingController _noKTPController = TextEditingController();
 
   BpjsServices _bpjsServices = BpjsServices();
+  LocalService _localServices = LocalService();
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +98,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
               url = response.headers['location'];
               print("url: " + url);
 
-              _bpjsServices.saveUrl(url).then((bool committed) {
+              _localServices.saveUrl(url).then((bool committed) {
                 print(url);
               });
 

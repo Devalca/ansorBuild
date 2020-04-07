@@ -63,6 +63,32 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
           color: Colors.black,
         ),
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.transparent,
+        child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    width: 333,
+                    height: 35,
+                    child: RaisedButton(
+                      child: Text('SELESAI',
+                          style: TextStyle(color: Colors.green)),
+                      color: Colors.white,
+                      onPressed: () {
+                        setState(() => _isLoading = true);
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (__) => new BerandaPage(index: 0)));
+                        setState(() => _isLoading = false);
+                      },
+                    ),
+                  )
+                ])),
+        elevation: 0),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -274,29 +300,29 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                 ),
                               ),
                               
-                              Container( height: 15 ),
+                              // Container( height: 15 ),
 
-                              Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
+                              // Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
 
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.green),
-                                ),
-                                alignment: Alignment.bottomCenter,
-                                child: SizedBox(
-                                  width :double.infinity,
-                                  height: 35,
-                                  child: RaisedButton(
-                                    child: Text('SELESAI', style: TextStyle(color: Colors.green)),
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      setState(() => _isLoading = true);
-                                      Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
-                                      setState(() => _isLoading = false);
-                                    },
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //     border: Border.all(color: Colors.green),
+                              //   ),
+                              //   alignment: Alignment.bottomCenter,
+                              //   child: SizedBox(
+                              //     width :double.infinity,
+                              //     height: 35,
+                              //     child: RaisedButton(
+                              //       child: Text('SELESAI', style: TextStyle(color: Colors.green)),
+                              //       color: Colors.white,
+                              //       onPressed: () {
+                              //         setState(() => _isLoading = true);
+                              //         Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
+                              //         setState(() => _isLoading = false);
+                              //       },
+                              //     ),
+                              //   ),
+                              // ),
                             ]
                           )
                         )
@@ -330,7 +356,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode) + ", " + DateFormat('HH.mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tanggal(periode) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -463,29 +489,35 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                 ),
                               ),
                               
-                              Container( height: 15 ),
+                              // Container( height: 15 ),
 
-                              Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
+                              // Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
 
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.green),
-                                ),
-                                alignment: Alignment.bottomCenter,
-                                child: SizedBox(
-                                  width :double.infinity,
-                                  height: 35,
-                                  child: RaisedButton(
-                                    child: Text('SELESAI', style: TextStyle(color: Colors.green)),
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      setState(() => _isLoading = true);
-                                      Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
-                                      setState(() => _isLoading = false);
-                                    },
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   decoration: BoxDecoration(
+                              //     border: Border.all(color: Colors.green),
+                              //   ),
+                              //   alignment: Alignment.bottomCenter,
+                              //   child: Column(
+                              //     mainAxisAlignment: MainAxisAlignment.end,
+                              //     crossAxisAlignment: CrossAxisAlignment.center,
+                              //     children: <Widget>[
+                              //       SizedBox(
+                              //         width :double.infinity,
+                              //         height: 35,
+                              //         child: RaisedButton(
+                              //           child: Text('SELESAI', style: TextStyle(color: Colors.green)),
+                              //           color: Colors.white,
+                              //           onPressed: () {
+                              //             setState(() => _isLoading = true);
+                              //             Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
+                              //             setState(() => _isLoading = false);
+                              //           },
+                              //         ),
+                              //       ),
+                              //     ]
+                              //   )
+                              // ),
                             ]
                           )
                         )

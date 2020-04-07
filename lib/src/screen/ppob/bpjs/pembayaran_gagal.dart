@@ -47,7 +47,7 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (__) => new Bpjs()));
+                                        builder: (__) => new Bpjs(index: 0)));
                               }),
                         ),
                       ),
@@ -75,24 +75,22 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                     ])),
             elevation: 0),
         body: Center(
-          child: widget.pesan == "" ?
-            Text("Transaksi Gagal\nSilahkan coba beberapa saat lagi",
-              textAlign: TextAlign.center,
-              style: new TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red
-              )
-            )
-            :
-            Text( widget.jenis == "kesehatan" ? "Transaksi Gagal\n" + widget.pesan.substring(12, 49) : "Transaksi Gagal\n" + widget.pesan.substring(12, 37),
-              textAlign: TextAlign.center,
-              style: new TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red
-              )
-            ),
+          child: widget.pesan == ""
+              ? Text("Transaksi Gagal\nSilahkan coba beberapa saat lagi",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red))
+              : Text(
+                  widget.jenis == "kesehatan"
+                      ? "Transaksi Gagal\n" + widget.pesan.substring(12, 49)
+                      : "Transaksi Gagal\n" + widget.pesan.substring(12, 37),
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red)),
         ));
   }
 }

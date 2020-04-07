@@ -2,6 +2,7 @@ import 'package:ansor_build/src/model/bpjs_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -22,6 +23,7 @@ class BpjsPembayaran extends StatefulWidget {
 class _BpjsPembayaranState extends State<BpjsPembayaran> {
   WalletService _walletService = WalletService();
   BpjsServices _bpjsServices = BpjsServices();
+  LocalService _localServices = LocalService();
 
   bool _isLoading = false;
 
@@ -134,7 +136,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                   transactionId;
                               print("url: " + url);
 
-                              _bpjsServices.saveUrl(url).then((bool committed) {
+                              _localServices.saveUrl(url).then((bool committed) {
                                 print(url);
                               });
 
@@ -151,7 +153,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                               url = response.headers['location'];
                               print("url: " + url);
 
-                              _bpjsServices.saveUrl(url).then((bool committed) {
+                              _localServices.saveUrl(url).then((bool committed) {
                                 print(url);
                               });
 
@@ -198,7 +200,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                   transactionId;
                               print("url: " + url);
 
-                              _bpjsServices.saveUrl(url).then((bool committed) {
+                              _localServices.saveUrl(url).then((bool committed) {
                                 print(url);
                               });
 
@@ -215,7 +217,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                               url = response.headers['location'];
                               print("url: " + url);
 
-                              _bpjsServices.saveUrl(url).then((bool committed) {
+                              _localServices.saveUrl(url).then((bool committed) {
                                 print(url);
                               });
 
