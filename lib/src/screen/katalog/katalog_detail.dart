@@ -9,6 +9,7 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Detail "Nama Barang"'),
       ),
