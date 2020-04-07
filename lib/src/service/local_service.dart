@@ -42,6 +42,12 @@ class LocalService {
     return prefs.commit();
   }
 
+  Future<String> getWalletId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String walletId = prefs.getString("walletId");
+    return walletId;
+  }
+
   Future<bool> saveUserId(String userId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("userId", userId);

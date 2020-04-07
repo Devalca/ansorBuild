@@ -1,13 +1,15 @@
+import 'dart:convert';
+
 import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class DetailPagePdam extends StatefulWidget {
   final String koId;
@@ -18,10 +20,11 @@ class DetailPagePdam extends StatefulWidget {
 }
 
 class _DetailPagePdamState extends State<DetailPagePdam> {
+  String _idWallet;
   DateTime dateTime;
   PdamService _pdamService = PdamService();
   WalletService _walletService = WalletService();
-  final cF = NumberFormat.currency(locale: 'ID');
+  LocalService _localService = LocalService();
   List<DetailData> _detail = List<DetailData>();
   List<DetailData> _detailForDisplay = List<DetailData>();
 
@@ -31,7 +34,6 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
       baseUrl + widget.koId,
     );
     if (response.statusCode == 200) {
-      print(response.statusCode);
       return detailPdamFromJson(response.body);
     } else {
       throw Exception('Failed to load album dan SATATUS CODE : ' +
@@ -42,11 +44,18 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
   @override
   void initState() {
     super.initState();
+    _localService.getWalletId().then(updateWallet);
     getDetailId().then((value) {
       setState(() {
         _detail.addAll(value.data);
         _detailForDisplay = _detail;
       });
+    });
+  }
+
+  void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
     });
   }
 
@@ -307,17 +316,25 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           loadingDialog(context);
           String nomor = _detailForDisplay[0].noPelanggan;
           String wilayah = _detailForDisplay[0].namaWilayah;
+          int idWallet = int.parse(_idWallet);
           PostPdam postPdam = PostPdam(
-              userId: 1, walletId: 1, noPelanggan: nomor, namaWilayah: wilayah);
+              userId: idWallet,
+              walletId: idWallet,
+              noPelanggan: nomor,
+              namaWilayah: wilayah);
           _pdamService.createPdamPay(postPdam).then((response) async {
             if (response.headers != null) {
-              var koId = "1";
-              var headerUrl = response.headers['location'];
-              await Future.delayed(const Duration(seconds: 4));
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SelesaiPage(koId, headerUrl)));
+              Map blok = jsonDecode(response.body);
+              if (blok["saldo"] == 0) {
+                saldoMinDialog(context);
+              } else {
+                var headerUrl = response.headers['location'];
+                await Future.delayed(const Duration(seconds: 4));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SelesaiPage(headerUrl)));
+              }
             } else {
               return print("Hasil Response : " + response.toString());
             }

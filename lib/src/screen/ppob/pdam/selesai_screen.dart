@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SelesaiPage extends StatefulWidget {
-  final String koId;
   final String headerUrl;
-  SelesaiPage(this.koId, this.headerUrl);
+  SelesaiPage(this.headerUrl);
 
   @override
   _SelesaiPageState createState() => _SelesaiPageState();
@@ -18,7 +17,6 @@ class SelesaiPage extends StatefulWidget {
 
 class _SelesaiPageState extends State<SelesaiPage> {
   Future<DetailTrans> futureTrans;
-  final cF = NumberFormat.currency(locale: 'ID');
 
   Future<DetailTrans> getDetailTrans() async {
     // String baseUrl = "https://afternoon-waters-38775.herokuapp.com";

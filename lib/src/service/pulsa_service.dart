@@ -59,6 +59,7 @@ import 'package:http/http.dart' as http;
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         body: postToJson(post),
       );
+      print(response.body);
       return response;
     }
   
@@ -68,6 +69,7 @@ import 'package:http/http.dart' as http;
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         body: postToJson(post),
       );
+      print(response.body);
       return response;
     }
   }

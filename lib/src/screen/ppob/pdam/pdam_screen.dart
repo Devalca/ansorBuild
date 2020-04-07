@@ -18,11 +18,9 @@ class PdamPage extends StatefulWidget {
 }
 
 class _PdamPageState extends State<PdamPage> {
+  bool _validate = true;
   final GlobalKey<FormState> _key = GlobalKey();
   PdamService _pdamService = PdamService();
-  bool _validate = true;
-  bool _isFieldWilayah;
-  bool _isFieldNomor;
   String inputNomor, inputWilayah;
   TextEditingController _controllerWilayah = TextEditingController();
   TextEditingController _controllerNomor = TextEditingController();
@@ -134,7 +132,7 @@ class _PdamPageState extends State<PdamPage> {
 
   String validateWilayah(String value) {
     if (value == "Pilih Daerah") {
-      return "Silahkan Masukan Nomor Pelanggan";
+      return "Silahkan Pilih Daerah Anda Yang Terdaftar";
     }
     return null;
   }
@@ -173,15 +171,7 @@ class _PdamPageState extends State<PdamPage> {
             focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(width: 1, color: Colors.grey)),
             hintText: "Contoh : 123456",
-            errorText: _isFieldNomor == null || _isFieldNomor
-                ? null
-                : "Tidak Boleh Kosong"),
-        onChanged: (String value) {
-          bool isFieldValid = value.trim().isNotEmpty;
-          if (isFieldValid != _isFieldNomor) {
-            setState(() => _isFieldNomor = isFieldValid);
-          }
-        },
+        ),
       ),
     );
   }
@@ -200,8 +190,8 @@ class _PdamPageState extends State<PdamPage> {
             if (blok["message"] == "data tidak ada") {
               nullPdamDialog(context);
             } else {
-              String userUid = blok['data'][0]['id'].toString();
-              String koId = userUid;
+              var userUid = blok['data'][0]['id'];
+              var koId = userUid.toString();
               if (userUid == null) {
                 print("user id Kosong");
               } else {
@@ -214,8 +204,6 @@ class _PdamPageState extends State<PdamPage> {
             print("INI STATUS CODE: " + response.statusCode.toString());
           }
         });
-      } else {
-        print("NOMOR dan WILAYAH KOSONG");
       }
     } else {
       setState(() {

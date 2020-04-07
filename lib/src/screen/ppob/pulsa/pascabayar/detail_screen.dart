@@ -4,6 +4,7 @@ import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
@@ -21,17 +22,26 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  String _idWallet;
   DateTime dateTime;
   Future<Album> futureAlbum;
   PulsaService _pulsaService = PulsaService();
   WalletService _walletService = WalletService();
-  final cF = NumberFormat.currency(locale: 'ID');
+  LocalService _localService = LocalService();
 
   @override
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
+    _localService.getWalletId().then(updateWallet);
   }
+
+  void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
+    });
+  }
+
 
   Future<Album> fetchAlbum() async {
     // String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
@@ -290,9 +300,10 @@ class _DetailPageState extends State<DetailPage> {
                                 int transactionId = int.parse(widget.koId);
                                 String nomorHp =
                                     snapshot.data.data[0].noHp.toString();
+                                int idWallet = int.parse(_idWallet); 
                                 Post post = Post(
-                                  userId: 1,
-                                  walletId: 1,
+                                  userId: idWallet,
+                                  walletId: idWallet,
                                   noHp: nomorHp,
                                   transactionId: transactionId,
                                 );
@@ -301,21 +312,26 @@ class _DetailPageState extends State<DetailPage> {
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
-                                    print("REsponse : "+ response.body);
-                                    var userUid = blok['id'].toString();
-                                    var koId = userUid;
-                                    if (userUid == "null") {
-                                      print("NUll user");
+                                    if (blok["saldo"] == 0) {
+                                      saldoMinDialog(context);
                                     } else {
-                                      await Future.delayed(
-                                          const Duration(seconds: 4));
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SesPulsaPage(koId)));
+                                      var userUid =
+                                          blok['data'][0]['id'];
+                                      //  userUid = blok['id'].toString();
+                                      var koId = userUid.toString();
+                                      if (userUid == null) {
+                                        print("user id Kosong");
+                                      } else {
+                                        await Future.delayed(
+                                            const Duration(seconds: 4));
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SesPulsaPage(koId)));
+                                      }
                                     }
-                                  } else {
+                                  }  else {
                                     print("Status Code" +
                                         response.statusCode.toString());
                                   }

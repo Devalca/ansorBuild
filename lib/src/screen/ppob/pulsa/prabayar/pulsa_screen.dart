@@ -35,7 +35,6 @@ class _PulsaPageState extends State<PulsaPage> {
   String inputNomor, inputNominal, hargaNominal;
   GlobalKey<FormState> _key = GlobalKey();
   PulsaService _pulsaService = PulsaService();
-  final cF = NumberFormat.currency(locale: 'ID');
   TextEditingController _controllerNomor = TextEditingController();
   List<Nominal> _nominal = List<Nominal>();
   List<Nominal> _nominalForDisplay = List<Nominal>();

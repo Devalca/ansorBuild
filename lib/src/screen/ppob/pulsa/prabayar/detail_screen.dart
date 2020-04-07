@@ -9,7 +9,6 @@ import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import '../selseai_screen.dart';
 
 class DetailPage extends StatefulWidget {
@@ -22,17 +21,25 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  String _idWallet;
   Future<Album> futureAlbum;
   Future<Wallet> futureWallet;
   PulsaService _pulsaService = PulsaService();
   WalletService _walletService = WalletService();
-  final cF = NumberFormat.currency(locale: 'ID');
+  LocalService _localService = LocalService();
 
   @override
   void initState() {
     super.initState();
     futureAlbum = fetchAlbum();
     futureWallet = _walletService.getSaldo();
+    _localService.getWalletId().then(updateWallet);
+  }
+
+  void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
+    });
   }
 
   Future<Album> fetchAlbum() async {
@@ -51,16 +58,16 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar( 
+      appBar: AppBar(
         elevation: 1,
         iconTheme: IconThemeData(
           color: Colors.black,
         ),
-         leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.pop(context,true);
-              }),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context, true);
+            }),
         backgroundColor: Colors.white,
         title: Text(
           'Pembayaran',
@@ -73,7 +80,7 @@ class _DetailPageState extends State<DetailPage> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(
-                              child: Container(
+                child: Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -134,7 +141,9 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Total Harga'),
                                           ),
                                           Container(
-                                              child: Text(formatRupiah(snapshot.data.data[0].nominal).replaceAll("Rp ", "Rp"))),
+                                              child: Text(formatRupiah(snapshot
+                                                      .data.data[0].nominal)
+                                                  .replaceAll("Rp ", "Rp"))),
                                         ],
                                       ),
                                       Row(
@@ -147,13 +156,16 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Biaya Pelayanan'),
                                           ),
                                           Container(
-                                            child: Text(formatRupiah(snapshot.data.data[0].adminFee).replaceAll("Rp ", "Rp")),
+                                            child: Text(formatRupiah(snapshot
+                                                    .data.data[0].adminFee)
+                                                .replaceAll("Rp ", "Rp")),
                                           ),
                                         ],
                                       ),
                                       Divider(),
                                       Container(
-                                        padding: const EdgeInsets.only(top: 10.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -162,7 +174,9 @@ class _DetailPageState extends State<DetailPage> {
                                               child: Text('Total'),
                                             ),
                                             Container(
-                                              child: Text(formatRupiah(snapshot.data.data[0].totalHarga).replaceAll("Rp ", "Rp")),
+                                              child: Text(formatRupiah(snapshot
+                                                      .data.data[0].totalHarga)
+                                                  .replaceAll("Rp ", "Rp")),
                                             ),
                                           ],
                                         ),
@@ -225,13 +239,15 @@ class _DetailPageState extends State<DetailPage> {
                                             )
                                           ],
                                         ),
-                                      ), 
+                                      ),
                                       Container(
-                                        child: FutureBuilder<Wallet>(
+                                          child: FutureBuilder<Wallet>(
                                         future: futureWallet,
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
-                                            return Text(formatRupiah(snapshot.data.data[0].saldoAkhir).replaceAll("Rp ", "Rp"));
+                                            return Text(formatRupiah(snapshot
+                                                    .data.data[0].saldoAkhir)
+                                                .replaceAll("Rp ", "Rp"));
                                           } else if (snapshot.hasError) {
                                             print("${snapshot.error}");
                                             return CircularProgressIndicator();
@@ -267,30 +283,41 @@ class _DetailPageState extends State<DetailPage> {
                                     snapshot.data.data[0].noHp.toString();
                                 int nominal = int.parse(
                                     snapshot.data.data[0].nominal.toString());
+                                int idWallet = int.parse(_idWallet); 
                                 Post post = Post(
                                     transactionId: transactionId,
                                     noHp: nomorHp,
                                     nominal: nominal,
-                                    userId: 1,
-                                    walletId: 1,
+                                    userId: idWallet,
+                                    walletId: idWallet,
                                     provider: widget.namaProv);
                                 _pulsaService
                                     .createPay(post)
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
-                                    userUid = blok['id'].toString();
-                                    var koId = userUid;
-                                     await Future.delayed(const Duration(seconds: 4));
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                SesPulsaPage(koId)));
-                                    //   print(post);
-                                    // setState(() => _isLoading = false);
+                                    if (blok["saldo"] == 0) {
+                                      saldoMinDialog(context);
+                                    } else {
+                                      var userUid =
+                                          blok['data'][0]['id'];
+                                      //  userUid = blok['id'].toString();
+                                      var koId = userUid.toString();
+                                      if (userUid == null) {
+                                        print("user id Kosong");
+                                      } else {
+                                        await Future.delayed(
+                                            const Duration(seconds: 4));
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SesPulsaPage(koId)));
+                                      }
+                                    }
                                   } else {
-                                    print(response.statusCode);
+                                    print("INI STATUS CODE: " +
+                                        response.statusCode.toString());
                                   }
                                 });
                               },
@@ -308,11 +335,10 @@ class _DetailPageState extends State<DetailPage> {
               );
             } else if (snapshot.hasError) {
               return Container(
-              alignment: Alignment.center,
-              child: Center(
-                child: Text("Transaksi Gagal Silahkan Coba lagi")
-              ),
-            );
+                alignment: Alignment.center,
+                child:
+                    Center(child: Text("Transaksi Gagal Silahkan Coba lagi")),
+              );
             }
             return Container();
           },

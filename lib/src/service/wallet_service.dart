@@ -11,10 +11,10 @@ class WalletService {
 
     Future<Wallet> getSaldo() async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String url = prefs.getString("walletId");
+      String idWallet = prefs.getString("walletId");
 
       var response = await http.get(
-        '$baseUrl/users/wallet/$url',
+        '$baseUrl/users/wallet/$idWallet',
         headers: {"accept": "application/json"},
       );
       if (response.statusCode == 200) {

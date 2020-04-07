@@ -97,7 +97,7 @@ Future<void> nullPdamDialog(BuildContext context) async {
       barrierDismissible: false,
       builder: (BuildContext context) {
         Future.delayed(Duration(seconds: 2), () {
-          Navigator.of(context).pop(true);
+          // Navigator.of(context).pop(true);
         });
         return SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
           Center(
@@ -106,6 +106,31 @@ Future<void> nullPdamDialog(BuildContext context) async {
               alignment: Alignment.center,
               child: Text(
                 "Data tidak ditemukan silahkan periksa kembali wilayah dan nomor pelanggan anda",
+                style: TextStyle(color: Colors.green),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        ]);
+      });
+}
+
+Future<void> saldoMinDialog(BuildContext context) async {
+  return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.of(context).pushNamedAndRemoveUntil(
+          Routes.GagalScreen, (Route<dynamic> route) => false);
+        });
+        return SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
+          Center(
+            child: Container(
+              margin: EdgeInsets.all(40.0),
+              alignment: Alignment.center,
+              child: Text(
+                "Maaf Saldo Anda Tidak Mencukupi",
                 style: TextStyle(color: Colors.green),
                 textAlign: TextAlign.center,
               ),
