@@ -49,6 +49,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     var _onPressed;
 
     if (widget.tgl != null && widget.nm != null) {
@@ -124,8 +125,8 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) =>
-                          new PembayaranGagal(pesan: response.body)));
+                      builder: (__) => new PembayaranGagal(
+                          jenis: "kesehatan", pesan: response.body)));
               setState(() => _isLoading = false);
             }
           });
@@ -134,6 +135,8 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
     }
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
         bottomNavigationBar: BottomAppBar(
             color: Colors.transparent,
             child: Padding(
@@ -154,8 +157,9 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                     ])),
             elevation: 0),
         body: SingleChildScrollView(
+            reverse: true,
             child: Padding(
-                padding: const EdgeInsets.only(top: 12.0),
+                padding: EdgeInsets.only(top: 12.0, bottom: bottom),
                 child: _isLoading
                     ? Center(child: CircularProgressIndicator())
                     : Column(

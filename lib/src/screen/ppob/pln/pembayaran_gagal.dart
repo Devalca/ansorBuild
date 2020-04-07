@@ -5,7 +5,8 @@ import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 class PembayaranGagal extends StatefulWidget {
   @override
   final String pesan, jenis;
-  PembayaranGagal({this.pesan, this.jenis});
+  final int index;
+  PembayaranGagal({this.pesan, this.jenis, this.index});
 
   _PembayaranGagalState createState() => _PembayaranGagalState();
 }
@@ -47,8 +48,9 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (__) =>
-                                            new Listrik(index: 0,)));
+                                        builder: (__) => new Listrik(
+                                              index: widget.index,
+                                            )));
                               }),
                         ),
                       ),
@@ -85,8 +87,8 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                       color: Colors.red))
               : Text(
                   widget.jenis == "prabayar"
-                      ? "Transaksi Gagal\n" + widget.pesan.substring(12, 26)
-                      : "Transaksi Gagal\n" + widget.pesan,
+                      ? "Transaksi Gagal\n\n" + widget.pesan.substring(12, 26)
+                      : "Transaksi Gagal\n\n" + widget.pesan.substring(12, 26),
                   textAlign: TextAlign.center,
                   style: new TextStyle(
                       fontSize: 14.0,

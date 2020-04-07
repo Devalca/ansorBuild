@@ -43,10 +43,19 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
-        body: SingleChildScrollView(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
+      body: SingleChildScrollView(
+      reverse: true,
       child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: EdgeInsets.only(
+            top: 12.0,
+            left: 12.0,
+            right: 12.0,
+            bottom: bottom
+          ),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
                   Widget>[
@@ -60,9 +69,9 @@ class _LoginState extends State<Login> {
             ),
             Container(height: 20),
             Container(
-                child: Text("No HP",
-                    style: new TextStyle(fontSize: 12.0),
-                    textAlign: TextAlign.start)),
+              child: Text("No HP",
+                  style: new TextStyle(fontSize: 12.0),
+                  textAlign: TextAlign.start)),
             TextField(
               controller: _nohpController,
               keyboardType: TextInputType.phone,
@@ -81,6 +90,8 @@ class _LoginState extends State<Login> {
               },
             ),
             Container(height: 10),
+            Container(height: 70),
+            Container(height: 70),
             Container(
                 child: Text("Kata Sandi",
                     style: new TextStyle(fontSize: 12.0),
