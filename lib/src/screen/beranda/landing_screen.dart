@@ -1,4 +1,6 @@
 import 'package:ansor_build/src/screen/login/login.dart';
+import 'package:ansor_build/src/screen/register/register.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +12,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  LocalService _localServices = LocalService();
 
   Future cekLogin() async{
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -45,7 +48,34 @@ class _LandingPageState extends State<LandingPage> {
             child: FloatingActionButton(
               backgroundColor: Colors.transparent,
               child: Image.asset("lib/src/assets/scan_qr.png"),
-              onPressed: () {},
+              onPressed: () {
+                walletId = "0";
+                userId = "0";
+                isLogin = false;
+
+                _localServices
+                    .saveWalletId(walletId)
+                    .then((bool committed) {
+                  print(walletId);
+                });
+
+                _localServices
+                    .saveUserId(userId)
+                    .then((bool committed) {
+                  print(userId);
+                });
+
+                _localServices
+                    .isLogin(isLogin)
+                    .then((bool committed) {
+                  print(isLogin);
+                });
+
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (__) => new RegisterPage()));
+              },
             ),
           ),
         ),

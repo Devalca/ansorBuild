@@ -230,69 +230,69 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                               ),
                             ),
                             Divider(height: 12, color: Colors.black),
-                            Container(
-                                child: Text("Logout",
-                                    style: new TextStyle(fontSize: 12.0),
-                                    textAlign: TextAlign.left)),
-                            new GestureDetector(
-                              onTap: () {
-                                walletId = "0";
-                                userId = "0";
-                                isLogin = false;
+                            // Container(
+                            //     child: Text("Logout",
+                            //         style: new TextStyle(fontSize: 12.0),
+                            //         textAlign: TextAlign.left)),
+                            // new GestureDetector(
+                            //   onTap: () {
+                            //     walletId = "0";
+                            //     userId = "0";
+                            //     isLogin = false;
 
-                                _localServices
-                                    .saveWalletId(walletId)
-                                    .then((bool committed) {
-                                  print(walletId);
-                                });
+                            //     _localServices
+                            //         .saveWalletId(walletId)
+                            //         .then((bool committed) {
+                            //       print(walletId);
+                            //     });
 
-                                _localServices
-                                    .saveUserId(userId)
-                                    .then((bool committed) {
-                                  print(userId);
-                                });
+                            //     _localServices
+                            //         .saveUserId(userId)
+                            //         .then((bool committed) {
+                            //       print(userId);
+                            //     });
 
-                                _localServices
-                                    .isLogin(isLogin)
-                                    .then((bool committed) {
-                                  print(isLogin);
-                                });
+                            //     _localServices
+                            //         .isLogin(isLogin)
+                            //         .then((bool committed) {
+                            //       print(isLogin);
+                            //     });
 
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (__) => new RegisterPage()));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                width: double.infinity,
-                                height: 40.0,
-                                child: Column(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Logout",
-                                                style: new TextStyle(
-                                                    fontSize: 14.0)),
-                                          ),
-                                          Container(
-                                            child: Icon(
-                                              Icons.keyboard_arrow_down,
-                                              color: Colors.black,
-                                              size: 24.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                            //     Navigator.push(
+                            //         context,
+                            //         new MaterialPageRoute(
+                            //             builder: (__) => new RegisterPage()));
+                            //   },
+                            //   child: Container(
+                            //     padding: const EdgeInsets.only(top: 10.0),
+                            //     width: double.infinity,
+                            //     height: 40.0,
+                            //     child: Column(
+                            //       children: <Widget>[
+                            //         Expanded(
+                            //           child: Row(
+                            //             mainAxisAlignment:
+                            //                 MainAxisAlignment.spaceBetween,
+                            //             children: <Widget>[
+                            //               Container(
+                            //                 child: Text("Logout",
+                            //                     style: new TextStyle(
+                            //                         fontSize: 14.0)),
+                            //               ),
+                            //               Container(
+                            //                 child: Icon(
+                            //                   Icons.keyboard_arrow_down,
+                            //                   color: Colors.black,
+                            //                   size: 24.0,
+                            //                 ),
+                            //               ),
+                            //             ],
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                           ]))));
   }
 }
