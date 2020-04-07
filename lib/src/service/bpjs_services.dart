@@ -71,17 +71,5 @@ class BpjsServices {
     );
     return response;
   }
-
-  Future<bool> saveUrl(String url) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("url", url);
-    return prefs.commit();
-  }
-
-  Future<String> getUrl() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String url = prefs.getString("url");
-    return url;
-  }
 }
 

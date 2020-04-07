@@ -1,4 +1,6 @@
+import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'beranda_screen.dart';
 
@@ -8,6 +10,14 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+
+  Future cekLogin() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if(pref.getBool("isLogin") == false){
+      Navigator.push(context, MaterialPageRoute(builder: (context) => new Login()));
+    }
+  }
+
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
     BerandaPage(),
@@ -16,6 +26,12 @@ class _LandingPageState extends State<LandingPage> {
     BerandaPage(),
     BerandaPage(),
   ];
+
+  @override
+  void initState(){
+    super.initState();
+    cekLogin();
+  }
 
   @override
   Widget build(BuildContext context) {

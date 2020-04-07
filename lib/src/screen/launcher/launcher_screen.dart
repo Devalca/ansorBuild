@@ -1,6 +1,9 @@
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
+import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LauncherPage extends StatefulWidget {
   @override
@@ -15,14 +18,30 @@ class _LauncherPageState extends State<LauncherPage> {
     startLaunching();
   }
 
-  startLaunching() async {
-    var duration = const Duration(seconds: 1);
-    return new Timer(duration, () {
+  Future startLaunching() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (pref.getBool("isLogin") == true) {
+      var duration = const Duration(seconds: 1);
+      return new Timer(duration, () {
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (_) {
+          return LandingPage();
+        }));
+      });
+    }else{
       Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (_) {
-        return LandingPage();
+          return Login();
       }));
-    });
+    }
   }
+
+  // startLaunching() async {
+  //   var duration = const Duration(seconds: 1);
+  //   return new Timer(duration, () {
+  //     Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (_) {
+  //       return LandingPage();
+  //     }));
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
