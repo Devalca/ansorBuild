@@ -186,22 +186,15 @@ class _PdamPageState extends State<PdamPage> {
       PostPdam postPdam = PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
       if (nomor != null || wilayah != null) {
         _pdamService.createPostPdam(postPdam).then((response) async {
+          Map blok = jsonDecode(response.body);
+          userUid = blok['id'].toString();
           if (response.statusCode == 200) {
-            Map blok = jsonDecode(response.body);
-            userUid = blok['id'].toString();
-            var blokMsg = blok["message"];
-            if (blokMsg == "data tidak ada") {
-              PdamDialog().pdamNullDialog(context);
-            } else if (blokMsg == "anda sudah bayar untuk bulan ini") {
-              PdamDialog().pdamDoneDialog(context);
-            } else {
-              PdamDialog().pdamLoadDialog(context);
-              _localService.saveIdName(userUid).then((bool committed) {
-                  print("INI Header :" + userUid);
-                });
-            }
-          } else {
-            print("INI STATUS CODE: " + response.statusCode.toString());
+            PdamDialog().pdamLoadDialog(context);
+            _localService.saveIdName(userUid).then((bool committed) {});
+          } else if (response.statusCode == 422) {
+            PdamDialog().pdamNullDialog(context);
+          } else if (response.statusCode == 406) {
+            PdamDialog().pdamDoneDialog(context);
           }
         });
       }
