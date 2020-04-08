@@ -18,7 +18,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   Future<void> getContacts() async {
-    final Iterable<Contact> contacts = await ContactsService.getContacts();
+    final Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
     setState(() {
       _contacts = contacts;
     });
@@ -131,7 +131,7 @@ class _ContactsPage2State extends State<ContactsPage2> {
   }
 
   Future<void> getContacts() async {
-    final Iterable<Contact> contacts = await ContactsService.getContacts();
+    final Iterable<Contact> contacts = await ContactsService.getContacts(withThumbnails: false);
     setState(() {
       _contacts = contacts;
     });
