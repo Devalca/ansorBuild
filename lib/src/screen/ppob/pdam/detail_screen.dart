@@ -322,20 +322,18 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
               noPelanggan: nomor,
               namaWilayah: wilayah);
           _pdamService.createPdamPay(postPdam).then((response) async {
+            var headerUrl = response.headers['location'];
             if (response.headers != null) {
-              Map blok = jsonDecode(response.body);
-              var headerUrl = response.headers['location'];
-              if (blok["message"] ==
-                  "saldo anda tidak cukup untuk melakukan pembayaran ini") {
-                saldoMinDialog(context);
-              } else {
-                PdamDialog().nPdamDialog(context);
-                _localService.saveUrlName(headerUrl).then((bool committed) {
-                  print("INI Header :" + headerUrl);
-                });
-              }
-            } else {
-              return print("Hasil Response : " + response.toString());
+              // if (blok["message"] ==
+              //     "saldo anda tidak cukup untuk melakukan pembayaran ini") {
+              //   saldoMinDialog(context);
+              // } else {
+              PdamDialog().nPdamDialog(context);
+              _localService.saveUrlName(headerUrl).then((bool committed) {
+                print("INI Header :" + headerUrl);
+              });
+            } else if (response.statusCode == 403) {
+              saldoMinDialog(context);
             }
           });
         },
