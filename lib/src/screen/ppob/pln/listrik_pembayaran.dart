@@ -29,6 +29,8 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
   String _transactionId = "";
   String url = "";
   String noMeter2 = "";
+  int total2 = 0;
+  int saldo = 0;
 
   int nominal2 = 0;
 
@@ -92,140 +94,169 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                       color: Colors.green,
                       onPressed: () async {
                         setState(() => _isLoading = true);
-                        String id = _transactionId;
-                        String transactionId = id.substring(10);
-                        String noMeter = noMeter2;
-                        int nominal = nominal2;
-
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        String walletId = prefs.getString("walletId");
-                        String userId = prefs.getString("userId");
-
-                        print("transactionId: " + transactionId);
-                        print("noMeter: " + noMeter);
-                        print("walletId: " + walletId);
-                        print("userId: " + userId);
-
-                        PostPascaTransaction pascaTransaction =
-                            PostPascaTransaction(
-                                noMeter: noMeter,
-                                transactionId: transactionId,
-                                userId: userId,
-                                walletId: walletId);
-
-                        PostPraTransaction praTransaction = PostPraTransaction(
-                            noMeter: noMeter,
-                            nominal: nominal,
-                            transactionId: transactionId,
-                            userId: userId,
-                            walletId: walletId);
-
-                        if (widget.status == "pascabayar") {
-                          _plnServices
-                              .postPascaTransaction(pascaTransaction)
-                              .then((response) async {
-                            print(response.statusCode);
-                            if (response.statusCode == 302) {
-                              print('Berhasil');
-                              url = response.headers['location'];
-                              print("url: " + url);
-
-                              _plnServices
-                                  .saveTransactionId(url)
-                                  .then((bool committed) {
-                                print(url);
+                        if (total2 > saldo) {
+                          setState(() => _isLoading = false);
+                          return showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Saldo Anda Tidak Mencukupi",
+                                      style: TextStyle(color: Colors.green)),
+                                  content: Text(
+                                      "Saldo anda kurang untuk melakuan transaksi ini!!!"),
+                                  actions: <Widget>[
+                                    MaterialButton(
+                                      elevation: 5.0,
+                                      child: Text("OK",
+                                          style:
+                                              TextStyle(color: Colors.green)),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
+                                );
                               });
-
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          status: widget.status)));
-                              setState(() => _isLoading = false);
-                            } else if (response.statusCode == 200) {
-                              print('Berhasil');
-
-                              Map data = jsonDecode(response.body);
-                              id = data['id'].toString();
-                              url = '/ppob/detail/pln/' + id;
-                              print("url: " + url);
-
-                              _plnServices
-                                  .saveTransactionId(url)
-                                  .then((bool committed) {
-                                print(url);
-                              });
-
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          status: widget.status)));
-                              setState(() => _isLoading = false);
-                            } else {
-                              print("Gagal");
-                              print(response.statusCode);
-
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranGagal()));
-                              setState(() => _isLoading = false);
-                            }
-                          });
                         } else {
-                          _plnServices
-                              .postPraTransaction(praTransaction)
-                              .then((response) async {
-                            print(response.statusCode);
-                            if (response.statusCode == 302) {
-                              print('Berhasil');
-                              url = response.headers['location'];
-                              print("url: " + url);
+                          String id = _transactionId;
+                          String transactionId = id.substring(10);
+                          String noMeter = noMeter2;
+                          int nominal = nominal2;
 
-                              _plnServices
-                                  .saveTransactionId(url)
-                                  .then((bool committed) {
-                                print(url);
-                              });
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          String walletId = prefs.getString("walletId");
+                          String userId = prefs.getString("userId");
 
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          status: widget.status)));
-                              setState(() => _isLoading = false);
-                            } else if (response.statusCode == 200) {
-                              print('Berhasil');
+                          print("transactionId: " + transactionId);
+                          print("noMeter: " + noMeter);
+                          print("walletId: " + walletId);
+                          print("userId: " + userId);
 
-                              Map data = jsonDecode(response.body);
-                              id = data['id'].toString();
-                              url = '/ppob/detail/pln/' + id;
-                              print("url: " + url);
+                          PostPascaTransaction pascaTransaction =
+                              PostPascaTransaction(
+                                  noMeter: noMeter,
+                                  transactionId: transactionId,
+                                  userId: userId,
+                                  walletId: walletId);
 
-                              _plnServices
-                                  .saveTransactionId(url)
-                                  .then((bool committed) {
-                                print(url);
-                              });
+                          PostPraTransaction praTransaction =
+                              PostPraTransaction(
+                                  noMeter: noMeter,
+                                  nominal: nominal,
+                                  transactionId: transactionId,
+                                  userId: userId,
+                                  walletId: walletId);
 
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          status: widget.status)));
-                              setState(() => _isLoading = false);
-                            } else {
-                              print("Gagal");
+                          if (widget.status == "pascabayar") {
+                            _plnServices
+                                .postPascaTransaction(pascaTransaction)
+                                .then((response) async {
                               print(response.statusCode);
+                              if (response.statusCode == 302) {
+                                print('Berhasil');
+                                url = response.headers['location'];
+                                print("url: " + url);
 
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranGagal()));
-                              setState(() => _isLoading = false);
-                            }
-                          });
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            status: widget.status)));
+                                setState(() => _isLoading = false);
+                              } else if (response.statusCode == 200) {
+                                print('Berhasil');
+
+                                Map data = jsonDecode(response.body);
+                                id = data['id'].toString();
+                                url = '/ppob/detail/pln/' + id;
+                                print("url: " + url);
+
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            status: widget.status)));
+                                setState(() => _isLoading = false);
+                              } else {
+                                print("Gagal");
+                                print(response.statusCode);
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranGagal()));
+                                setState(() => _isLoading = false);
+                              }
+                            });
+                          } else {
+                            _plnServices
+                                .postPraTransaction(praTransaction)
+                                .then((response) async {
+                              print(response.statusCode);
+                              if (response.statusCode == 302) {
+                                print('Berhasil');
+                                url = response.headers['location'];
+                                print("url: " + url);
+
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            status: widget.status)));
+                                setState(() => _isLoading = false);
+                              } else if (response.statusCode == 200) {
+                                print('Berhasil');
+
+                                Map data = jsonDecode(response.body);
+                                id = data['id'].toString();
+                                url = '/ppob/detail/pln/' + id;
+                                print("url: " + url);
+
+                                _plnServices
+                                    .saveTransactionId(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            status: widget.status)));
+                                setState(() => _isLoading = false);
+                              } else {
+                                print("Gagal");
+                                print(response.statusCode);
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) =>
+                                            new PembayaranGagal()));
+                                setState(() => _isLoading = false);
+                              }
+                            });
+                          }
                         }
                       },
                     ),
@@ -241,15 +272,16 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                     FutureBuilder<Album>(
                       future: fetchAlbum(),
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData && snapshot.data != null) {
                           DateTime periode = snapshot.data.createdAt;
 
                           noMeter2 = snapshot.data.no_meter;
                           nominal2 = snapshot.data.nominal;
+                          total2 = snapshot.data.total;
 
-                          if (snapshot.data == null) {
-                            return Text("Tidak ada Data");
-                          } else {
+                          // if (snapshot.data == null) {
+                          //   return Text("Tidak ada Data");
+                          // } else {
                             return (Container(
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -531,6 +563,8 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                       _walletService.getSaldo(),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasData) {
+                                                      saldo = snapshot.data
+                                                          .data[0].saldoAkhir;
                                                       return Text(NumberFormat
                                                               .simpleCurrency(
                                                                   locale: 'id',
@@ -744,11 +778,11 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                     // )
                                   ]),
                             ));
-                          }
+                          // }
                         } else if (snapshot.hasError) {
-                          // return Text(
-                          //     "Nomor Meter yang Anda Masukkan Tidak Terdaftar");
-                          return Text("${snapshot.error}");
+                          return Text(
+                              "Gagal Memuat Detail Pembayaran Listrik");
+                          // return Text("${snapshot.error}");
                         }
 
                         return Center(child: CircularProgressIndicator());

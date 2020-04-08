@@ -50,6 +50,11 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     return arr.join(" - ");
   }
 
+  tgl(data){
+    var data2 = data.toString();
+    return data2.substring(8, 10);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +136,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tgl(periode) + tanggal(periode).substring(1) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(
@@ -356,7 +361,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                               Container( height: 15 ),
                               
                               Center(
-                                child: Text(tanggal(periode) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
+                                child: Text(tgl(periode) + tanggal(periode).substring(1) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
                               ),
 
                               Center(

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 
-String id, transactionId, namaPelanggan;
+String id, transactionId, namaPelanggan, message;
 
 class PlnServices {
   String baseUrl = "http://103.9.125.18:3000/ppob";

@@ -55,6 +55,11 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     }
   }
 
+  tgl(data) {
+    var data2 = data.toString();
+    return data2.substring(8, 10);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,7 +156,8 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(height: 15),
                                               Center(
                                                 child: Text(
-                                                    tanggal(createdAt) +
+                                                    tgl(createdAt) +
+                                                        tanggal(createdAt).substring(1) +
                                                         ", " +
                                                         DateFormat('HH:mm')
                                                             .format(createdAt),

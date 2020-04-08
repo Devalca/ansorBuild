@@ -30,11 +30,14 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
 
   String _url = "";
   String _urlkerja = "";
+  String url = "";
   String noVa2 = "";
   String periode2 = "";
-  String url = "";
   String periodeByr2 = "";
   String noKtp2 = "";
+  int totalSehat2 = 0;
+  int totalKerja2 = 0;
+  int saldo = 0;
 
   @override
   void initState() {
@@ -107,144 +110,207 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                         setState(() => _isLoading = true);
 
                         if (widget.jenis == "kesehatan") {
-                          String transactionId = widget.url.substring(21);
-                          String noVa = noVa2;
-                          String periode = periode2;
+                          if (totalSehat2 > saldo) {
+                            setState(() => _isLoading = false);
+                            return showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Saldo Anda tidak Mencukupi",
+                                        style: TextStyle(color: Colors.green)),
+                                    content: Text(
+                                        "Saldo anda kurang untuk melakuan transaksi ini!!!"),
+                                    actions: <Widget>[
+                                      MaterialButton(
+                                        elevation: 5.0,
+                                        child: Text("OK",
+                                            style:
+                                                TextStyle(color: Colors.green)),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          } else {
+                            String transactionId = widget.url.substring(21);
+                            String noVa = noVa2;
+                            String periode = periode2;
 
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          String walletId = prefs.getString("walletId");
-                          String userId = prefs.getString("userId");
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            String walletId = prefs.getString("walletId");
+                            String userId = prefs.getString("userId");
 
-                          print("transactionId " + transactionId);
-                          print("noVa " + noVa);
-                          print("periode " + periode);
-                          print("userId " + userId);
-                          print("walletId " + walletId);
+                            print("transactionId " + transactionId);
+                            print("noVa " + noVa);
+                            print("periode " + periode);
+                            print("userId " + userId);
+                            print("walletId " + walletId);
 
-                          PostPembayaran pembayaran = PostPembayaran(
+                            PostPembayaran pembayaran = PostPembayaran(
+                                userId: userId,
+                                walletId: walletId,
+                                transactionId: transactionId,
+                                noVa: noVa,
+                                periode: periode);
+
+                            _bpjsServices
+                                .postPembayaran(pembayaran)
+                                .then((response) async {
+                              if (response.statusCode == 200) {
+                                print("berhasil body: " + response.body);
+                                print(response.statusCode);
+
+                                Map data = jsonDecode(response.body);
+                                transactionId =
+                                    data['transactionId'].toString();
+                                print("transactionId: " + transactionId);
+
+                                url = '/ppob/bpjs/detail/kesehatan/' +
+                                    transactionId;
+                                print("url: " + url);
+
+                                _localServices
+                                    .saveUrl(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            jenis: widget.jenis)));
+                                setState(() => _isLoading = false);
+                              } else if (response.statusCode == 302) {
+                                print("berhasil body: " + response.body);
+                                print(response.statusCode);
+
+                                url = response.headers['location'];
+                                print("url: " + url);
+
+                                _localServices
+                                    .saveUrl(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
+
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            jenis: widget.jenis)));
+                                setState(() => _isLoading = false);
+                              } else {
+                                print("error: " + response.body);
+                                print(response.statusCode);
+                              }
+                            });
+                          }
+                        } else {
+                          if (totalKerja2 > saldo) {
+                            setState(() => _isLoading = false);
+                            return showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Saldo Anda Tidak Mencukupi",
+                                        style: TextStyle(color: Colors.green)),
+                                    content: Text(
+                                        "Saldo anda kurang untuk melakuan transaksi ini!!!"),
+                                    actions: <Widget>[
+                                      MaterialButton(
+                                        elevation: 5.0,
+                                        child: Text("OK",
+                                            style:
+                                                TextStyle(color: Colors.green)),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          } else {
+                            String transactionId =
+                                widget.urlkerja.substring(27);
+                            String periodeByr = periodeByr2;
+                            String noKtp = noKtp2;
+
+                            SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            String walletId = prefs.getString("walletId");
+                            String userId = prefs.getString("userId");
+
+                            print("transactionId " + transactionId);
+                            print("periodeByr " + periodeByr);
+                            print("noKtp " + noKtp);
+                            print("userId " + userId);
+                            print("walletId " + walletId);
+
+                            PostBayarKerja bayarKerja = PostBayarKerja(
+                              periodeByr: periodeByr,
+                              noKtp: noKtp,
                               userId: userId,
                               walletId: walletId,
                               transactionId: transactionId,
-                              noVa: noVa,
-                              periode: periode);
+                            );
 
-                          _bpjsServices
-                              .postPembayaran(pembayaran)
-                              .then((response) async {
-                            if (response.statusCode == 200) {
-                              print("berhasil body: " + response.body);
-                              print(response.statusCode);
+                            _bpjsServices
+                                .postBayarKerja(bayarKerja)
+                                .then((response) async {
+                              if (response.statusCode == 200) {
+                                print("berhasil body: " + response.body);
+                                print(response.statusCode);
 
-                              Map data = jsonDecode(response.body);
-                              transactionId = data['transactionId'].toString();
-                              print("transactionId: " + transactionId);
+                                Map data = jsonDecode(response.body);
+                                transactionId =
+                                    data['transactionId'].toString();
+                                print("transactionId: " + transactionId);
 
-                              url = '/ppob/bpjs/detail/kesehatan/' +
-                                  transactionId;
-                              print("url: " + url);
+                                url = '/ppob/bpjs/detail/kesehatan/' +
+                                    transactionId;
+                                print("url: " + url);
 
-                              _localServices.saveUrl(url).then((bool committed) {
-                                print(url);
-                              });
+                                _localServices
+                                    .saveUrl(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
 
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          jenis: widget.jenis)));
-                              setState(() => _isLoading = false);
-                            } else if (response.statusCode == 302) {
-                              print("berhasil body: " + response.body);
-                              print(response.statusCode);
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            jenis: widget.jenis)));
+                                setState(() => _isLoading = false);
+                              } else if (response.statusCode == 302) {
+                                print("berhasil body: " + response.body);
+                                print(response.statusCode);
 
-                              url = response.headers['location'];
-                              print("url: " + url);
+                                url = response.headers['location'];
+                                print("url: " + url);
 
-                              _localServices.saveUrl(url).then((bool committed) {
-                                print(url);
-                              });
+                                _localServices
+                                    .saveUrl(url)
+                                    .then((bool committed) {
+                                  print(url);
+                                });
 
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          jenis: widget.jenis)));
-                              setState(() => _isLoading = false);
-                            } else {
-                              print("error: " + response.body);
-                              print(response.statusCode);
-                            }
-                          });
-                        } else {
-                          String transactionId = widget.urlkerja.substring(27);
-                          String periodeByr = periodeByr2;
-                          String noKtp = noKtp2;
-
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          String walletId = prefs.getString("walletId");
-                          String userId = prefs.getString("userId");
-
-                          print("transactionId " + transactionId);
-                          print("periodeByr " + periodeByr);
-                          print("noKtp " + noKtp);
-                          print("userId " + userId);
-                          print("walletId " + walletId);
-
-                          PostBayarKerja bayarKerja = PostBayarKerja(
-                            periodeByr: periodeByr,
-                            noKtp: noKtp,
-                            userId: userId,
-                            walletId: walletId,
-                            transactionId: transactionId,
-                          );
-
-                          _bpjsServices
-                              .postBayarKerja(bayarKerja)
-                              .then((response) async {
-                            if (response.statusCode == 200) {
-                              print("berhasil body: " + response.body);
-                              print(response.statusCode);
-
-                              Map data = jsonDecode(response.body);
-                              transactionId = data['transactionId'].toString();
-                              print("transactionId: " + transactionId);
-
-                              url = '/ppob/bpjs/detail/kesehatan/' +
-                                  transactionId;
-                              print("url: " + url);
-
-                              _localServices.saveUrl(url).then((bool committed) {
-                                print(url);
-                              });
-
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          jenis: widget.jenis)));
-                              setState(() => _isLoading = false);
-                            } else if (response.statusCode == 302) {
-                              print("berhasil body: " + response.body);
-                              print(response.statusCode);
-
-                              url = response.headers['location'];
-                              print("url: " + url);
-
-                              _localServices.saveUrl(url).then((bool committed) {
-                                print(url);
-                              });
-
-                              Navigator.push(
-                                  context,
-                                  new MaterialPageRoute(
-                                      builder: (__) => new PembayaranBerhasil(
-                                          jenis: widget.jenis)));
-                              setState(() => _isLoading = false);
-                            } else {
-                              print("error: " + response.body);
-                              print(response.statusCode);
-                            }
-                          });
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (__) => new PembayaranBerhasil(
+                                            jenis: widget.jenis)));
+                                setState(() => _isLoading = false);
+                              } else {
+                                print("error: " + response.body);
+                                print(response.statusCode);
+                              }
+                            });
+                          }
                         }
                       },
                     ),
@@ -270,6 +336,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                 periode2 = snapshot.data.data[0].periode
                                     .toString()
                                     .substring(0, 10);
+                                totalSehat2 = snapshot.data.data[0].total;
 
                                 return (Container(
                                     child: Column(
@@ -388,7 +455,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                                 locale: 'id',
                                                                 decimalDigits:
                                                                     0)
-                                                        .format(0)),
+                                                        .format(2500)),
                                                   ),
                                                 ],
                                               ),
@@ -474,6 +541,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                       _walletService.getSaldo(),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasData) {
+                                                      saldo = snapshot.data
+                                                          .data[0].saldoAkhir;
                                                       return Text(NumberFormat
                                                               .simpleCurrency(
                                                                   locale: 'id',
@@ -501,9 +570,9 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                   ],
                                 )));
                               } else if (snapshot.hasError) {
-                                // return Center(
-                                // child: Text("Gagal Memuat Detail Pembayaran"));
-                                return Text("${snapshot.error}");
+                                return Center(
+                                child: Text("Gagal Memuat Detail Pembayaran Kesehatan"));
+                                // return Text("${snapshot.error}");
                               }
                               return Center(child: CircularProgressIndicator());
                             },
@@ -516,6 +585,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                 periodeByr2 =
                                     snapshot.data.data[0].periodeByr.toString();
                                 noKtp2 = snapshot.data.data[0].noKtp;
+                                totalKerja2 = snapshot.data.data[0].total;
 
                                 return (Container(
                                     child: Column(
@@ -788,6 +858,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                       _walletService.getSaldo(),
                                                   builder: (context, snapshot) {
                                                     if (snapshot.hasData) {
+                                                      saldo = snapshot.data
+                                                          .data[0].saldoAkhir;
                                                       return Text(NumberFormat
                                                               .simpleCurrency(
                                                                   locale: 'id',
@@ -817,7 +889,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                               } else if (snapshot.hasError) {
                                 return Center(
                                     child:
-                                        Text("Gagal Memuat Detail Pembayaran"));
+                                        Text("Gagal Memuat Detail Pembayaran Ketenagakerjaan"));
                                 // return Text("${snapshot.error}");
                               }
                               return Center(child: CircularProgressIndicator());
