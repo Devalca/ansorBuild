@@ -300,9 +300,9 @@ class _DetailPageState extends State<DetailPage> {
                                         "saldo anda tidak cukup untuk melakukan pembayaran ini") {
                                       saldoMinDialog(context);
                                     } else {
-                                      mixDialog(context);
+                                      PulsaDialog().nPulsaDialog(context);
                                       _localService
-                                          .savePulsaId(userUid)
+                                          .saveIdName(userUid)
                                           .then((bool committed) {
                                         print("INI USERID :" + userUid);
                                       });

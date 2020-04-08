@@ -236,8 +236,8 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
-            if (userUid == null) {
-              pascaGagalDialog(context);
+            if (userUid == "null") {
+              PulsaDialog().pascaGagalDialog(context);
               setState(() {
                 _isHide = false;
               });
