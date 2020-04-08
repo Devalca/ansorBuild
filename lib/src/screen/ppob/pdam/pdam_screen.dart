@@ -186,7 +186,6 @@ class _PdamPageState extends State<PdamPage> {
       PostPdam postPdam = PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
       if (nomor != null || wilayah != null) {
         _pdamService.createPostPdam(postPdam).then((response) async {
-          print(response.body);
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
