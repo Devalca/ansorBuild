@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:indonesia/indonesia.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BpjsPembayaran extends StatefulWidget {
   final String jenis;
@@ -102,7 +103,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                       child:
                           Text('BAYAR', style: TextStyle(color: Colors.white)),
                       color: Colors.green,
-                      onPressed: () {
+                      onPressed: () async {
                         setState(() => _isLoading = true);
 
                         if (widget.jenis == "kesehatan") {
@@ -110,13 +111,19 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                           String noVa = noVa2;
                           String periode = periode2;
 
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          String walletId = prefs.getString("walletId");
+                          String userId = prefs.getString("userId");
+
                           print("transactionId " + transactionId);
                           print("noVa " + noVa);
                           print("periode " + periode);
+                          print("userId " + userId);
+                          print("walletId " + walletId);
 
                           PostPembayaran pembayaran = PostPembayaran(
-                              userId: 1,
-                              walletId: 1,
+                              userId: userId,
+                              walletId: walletId,
                               transactionId: transactionId,
                               noVa: noVa,
                               periode: periode);
@@ -173,15 +180,21 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                           String periodeByr = periodeByr2;
                           String noKtp = noKtp2;
 
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          String walletId = prefs.getString("walletId");
+                          String userId = prefs.getString("userId");
+
                           print("transactionId " + transactionId);
                           print("periodeByr " + periodeByr);
                           print("noKtp " + noKtp);
+                          print("userId " + userId);
+                          print("walletId " + walletId);
 
                           PostBayarKerja bayarKerja = PostBayarKerja(
                             periodeByr: periodeByr,
                             noKtp: noKtp,
-                            userId: 1,
-                            walletId: 1,
+                            userId: userId,
+                            walletId: walletId,
                             transactionId: transactionId,
                           );
 

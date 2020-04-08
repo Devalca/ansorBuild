@@ -41,6 +41,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     var _onPressed;
 
     if (widget.bln != null) {
@@ -116,7 +117,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                   context,
                   new MaterialPageRoute(
                       builder: (__) =>
-                          new PembayaranGagal(pesan: response.body)));
+                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: response.body)));
               setState(() => _isLoading = false);
             }
           });
@@ -125,6 +126,8 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       bottomNavigationBar: BottomAppBar(
         color: Colors.transparent,
         
@@ -152,8 +155,9 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
         elevation: 0
       ),
       body: SingleChildScrollView(
+        reverse: true,
         child: Padding(
-          padding: const EdgeInsets.only(top: 12.0),
+          padding: EdgeInsets.only(top: 12.0, bottom: bottom),
           child: _isLoading ? Center(child: CircularProgressIndicator()) :  Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

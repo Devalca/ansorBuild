@@ -5,6 +5,7 @@ import 'package:ansor_build/src/screen/ppob/pln/listrik_pembayaran.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ListrikPascabayar extends StatefulWidget {
   @override
@@ -23,18 +24,23 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
 
   @override
   Widget build(BuildContext context) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom;
     var _onPressed;
 
     if (_noMeterController.text.isNotEmpty) {
-      _onPressed = () {
+      _onPressed = () async {
         setState(() {
           _isLoading = true;
         });
 
         String noMeter = _noMeterController.text.toString();
 
-        PostPascabayar pascabayar =
-            PostPascabayar(noMeter: noMeter, userId: 1, walletId: 1);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String walletId = prefs.getString("walletId");
+        String userId = prefs.getString("userId");
+
+        PostPascabayar pascabayar = PostPascabayar(
+            noMeter: noMeter, userId: userId, walletId: walletId);
 
         _plnServices.postPascabayar(pascabayar).then((response) async {
           if (response.statusCode == 302) {
@@ -55,36 +61,36 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                         new ListrikPembayaran(status: "pascabayar")));
             setState(() => _isLoading = false);
           } else if (response.statusCode == 200) {
-            print("berhasil body: " + response.body);
+            // print("berhasil body: " + response.body);
+            // print(response.statusCode);
+
+            // Map data = jsonDecode(response.body);
+            // transactionId = data['transactionId'].toString();
+            // print("transactionId: " + transactionId);
+
+            // url = '/ppob/pln/' + transactionId;
+            // print("url: " + url);
+
+            // _plnServices.saveTransactionId(url).then((bool committed) {
+            //   print(url);
+            // });
+
+            // Navigator.push(
+            //     context,
+            //     new MaterialPageRoute(
+            //         builder: (__) =>
+            //             new ListrikPembayaran(status: "pascabayar")));
+            // setState(() => _isLoading = false);
+
+            print("error: " + response.body);
             print(response.statusCode);
-
-            Map data = jsonDecode(response.body);
-            transactionId = data['transactionId'].toString();
-            print("transactionId: " + transactionId);
-
-            url = '/ppob/pln/' + transactionId;
-            print("url: " + url);
-
-            _plnServices.saveTransactionId(url).then((bool committed) {
-              print(url);
-            });
 
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (__) =>
-                        new ListrikPembayaran(status: "pascabayar")));
+                    builder: (__) => new PembayaranGagal(
+                        jenis: "pascabayar", pesan: response.body, index: 1)));
             setState(() => _isLoading = false);
-
-            // print("error: " + response.body);
-            //   print(response.statusCode);
-
-            //   Navigator.push(
-            //       context,
-            //       new MaterialPageRoute(
-            //           builder: (__) => new PembayaranGagal(
-            //               jenis: "prabayar", pesan: response.body)));
-            //   setState(() => _isLoading = false);
           } else {
             print("error: " + response.body);
             print(response.statusCode);
@@ -101,6 +107,8 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
     }
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
         bottomNavigationBar: BottomAppBar(
             color: Colors.transparent,
             child: Padding(
@@ -121,8 +129,9 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                     ])),
             elevation: 0),
         body: SingleChildScrollView(
+            reverse: true,
             child: Padding(
-                padding: const EdgeInsets.only(top: 12.0),
+                padding: EdgeInsets.only(top: 12.0, bottom: bottom),
                 child: _isLoading
                     ? Center(child: CircularProgressIndicator())
                     : Column(

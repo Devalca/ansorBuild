@@ -9,8 +9,8 @@ class PostPascabayar {
   String transactionId;
   String noMeter;
   String status;
-  int userId;
-  int walletId;
+  String userId;
+  String walletId;
 
   PostPascabayar({
     this.transactionId,
@@ -160,8 +160,8 @@ class PostPascaTransaction{
   String noToken;
   String noTransaksi;
   String createdAt;
-  int userId;
-  int walletId;
+  String userId;
+  String walletId;
 
   PostPascaTransaction({
     this.transactionId,
@@ -291,8 +291,8 @@ class PostPrabayar {
   String nominal;
   int total;
   String createdAt;
-  int userId;
-  int walletId;
+  String userId;
+  String walletId;
 
   PostPrabayar({ 
     this.id,
@@ -353,8 +353,8 @@ class PostPraTransaction {
   String noToken;
   String noTransaksi;
   String createdAt;
-  int userId;
-  int walletId;
+  String userId;
+  String walletId;
 
   PostPraTransaction({ 
     this.transactionId,

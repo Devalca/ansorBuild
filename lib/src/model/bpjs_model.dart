@@ -123,8 +123,8 @@ PostPembayaran pembayaranFromJson(String str) =>
 String pembayaranToJson(PostPembayaran data) => json.encode(data.toJson());
 
 class PostPembayaran {
-  int userId;
-  int walletId;
+  String userId;
+  String walletId;
   String transactionId;
   String noVa;
   String periode;
@@ -380,8 +380,8 @@ String bayarKerjaToJson(PostBayarKerja data) => json.encode(data.toJson());
 class PostBayarKerja {
   String periodeByr;
   String noKtp;
-  int userId;
-  int walletId;
+  String userId;
+  String walletId;
   String transactionId;
 
   PostBayarKerja({
