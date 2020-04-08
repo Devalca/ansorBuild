@@ -116,11 +116,15 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
               print("error: " + response.body);
               print(response.statusCode);
 
+              Map data = jsonDecode(response.body);
+              message = data['message'].toString();
+              print("message: " + message);
+
               Navigator.push(
                   context,
                   new MaterialPageRoute(
                       builder: (__) =>
-                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: response.body, index: 1)));
+                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: message, index: 1)));
               setState(() => _isLoading = false);
             }
           });

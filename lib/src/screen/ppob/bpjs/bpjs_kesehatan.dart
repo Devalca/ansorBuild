@@ -123,11 +123,15 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
               print("error: " + response.body);
               print(response.statusCode);
 
+              Map data = jsonDecode(response.body);
+              message = data['message'].toString();
+              print("message: " + message);
+
               Navigator.push(
                   context,
                   new MaterialPageRoute(
                       builder: (__) => new PembayaranGagal(
-                          jenis: "kesehatan", pesan: response.body, index: 0)));
+                          jenis: "kesehatan", pesan: message, index: 0)));
               setState(() => _isLoading = false);
             }
           });
