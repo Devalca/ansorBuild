@@ -26,6 +26,7 @@ class _MainPulsaState extends State<MainPulsa> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.white,
           // resizeToAvoidBottomPadding: false,
           appBar: AppBar(
             iconTheme: IconThemeData(
@@ -45,7 +46,8 @@ class _MainPulsaState extends State<MainPulsa> {
           ),
           body: SingleChildScrollView(
             child: Container(
-              height: 850,
+              color: Colors.white,
+              height: 770,
               child: Stack(
                 fit: StackFit.expand,
                 overflow: Overflow.clip,

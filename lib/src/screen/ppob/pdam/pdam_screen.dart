@@ -187,8 +187,11 @@ class _PdamPageState extends State<PdamPage> {
         _pdamService.createPostPdam(postPdam).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
-            if (blok["message"] == "data tidak ada") {
+            var blokMsg = blok["message"];
+            if (blokMsg == "data tidak ada") {
               nullPdamDialog(context);
+            } else if (blokMsg == "anda sudah bayar untuk bulan ini"){
+              donePdamDialog(context);
             } else {
               var userUid = blok['data'][0]['id'];
               var koId = userUid.toString();
