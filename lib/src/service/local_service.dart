@@ -5,9 +5,9 @@ String walletId, userId, message;
 bool isLogin;
 
 class LocalService {
-  Future<bool> saveNameId(String transId) async {
+  Future<bool> savePulsaId(String transPulsaId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("transId", transId);
+    prefs.setString("transPulsaId", transPulsaId);
     return prefs.commit();
   }
 
@@ -23,10 +23,16 @@ class LocalService {
     return transUrl;
   }
 
-  Future<String> getNameId() async {
+  Future<String> getPulsaId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String transId = prefs.getString("transId");
-    return transId;
+    String transPulsaId = prefs.getString("transPulsaId");
+    return transPulsaId;
+  }
+
+  Future<String> getNamaProv() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String transProvider = prefs.getString("transProvider");
+    return transProvider;
   }
 
   // LOGIN

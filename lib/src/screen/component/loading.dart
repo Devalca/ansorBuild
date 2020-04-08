@@ -1,5 +1,8 @@
 import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget centerLoading() {
   return Center(
@@ -9,35 +12,6 @@ Widget centerLoading() {
       child: CircularProgressIndicator(),
     ),
   );
-}
-
-Future<void> underDialog(BuildContext context) async {
-  return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return new WillPopScope(
-            onWillPop: () async => false,
-            child:
-                SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
-              Center(
-                child: Column(children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Fitur Belum Bisa Digunakan!",
-                    style: TextStyle(color: Colors.green),
-                  ),
-                  RaisedButton(
-                      child: Text("Kembali"),
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      })
-                ]),
-              )
-            ]));
-      });
 }
 
 Future<void> pascaGagalDialog(BuildContext context) async {
@@ -244,6 +218,37 @@ Future<void> registSuksesDialog(BuildContext context) {
       );
     },
   );
+}
+
+Future<void> mixDialog(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String transPulsaId = prefs.getString("transPulsaId");
+  return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        Future.delayed(Duration(seconds: 4), () {
+           Navigator.push(context,
+                MaterialPageRoute(builder: (__) => SesPulsaPage(transPulsaId)));
+        });
+        return new WillPopScope(
+            onWillPop: () async => false,
+            child:
+                SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
+              Center(
+                child: Column(children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Mohon Tunggu....",
+                    style: TextStyle(color: Colors.green),
+                  )
+                ]),
+              )
+            ]));
+      });
 }
 
 Future<void> loadingDialog(BuildContext context) async {

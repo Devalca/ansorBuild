@@ -277,7 +277,6 @@ class _DetailPageState extends State<DetailPage> {
                             child: RaisedButton(
                               color: Colors.green,
                               onPressed: () {
-                                loadingDialog(context);
                                 int transactionId = int.parse(widget.koId);
                                 String nomorHp =
                                     snapshot.data.data[0].noHp.toString();
@@ -296,19 +295,18 @@ class _DetailPageState extends State<DetailPage> {
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
-                                    var userUid = blok['id'];
-                                    var koId = userUid.toString();
+                                    userUid = blok['id'].toString();
                                     if (blok["message"] ==
                                         "saldo anda tidak cukup untuk melakukan pembayaran ini") {
                                       saldoMinDialog(context);
                                     } else {
-                                      await Future.delayed(
-                                          const Duration(seconds: 4));
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SesPulsaPage(koId)));
+                                      mixDialog(context);
+                                      _localService
+                                          .savePulsaId(userUid)
+                                          .then((bool committed) {
+                                        print("INI USERID :" + userUid);
+                                      });
+                                     
                                     }
                                   } else {
                                     print("INI STATUS CODE: " +

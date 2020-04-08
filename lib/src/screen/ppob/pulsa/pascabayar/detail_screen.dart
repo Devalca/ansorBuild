@@ -311,20 +311,18 @@ class _DetailPageState extends State<DetailPage> {
                                     .createPayPasca(post)
                                     .then((response) async {
                                   if (response.statusCode == 200) {
-                                     Map blok = jsonDecode(response.body);
-                                    var userUid = blok['id'];
-                                    var koId = userUid.toString();
+                                    Map blok = jsonDecode(response.body);
+                                    userUid = blok['id'];
                                     if (blok["message"] ==
                                         "saldo anda tidak cukup untuk melakukan pembayaran ini") {
                                       saldoMinDialog(context);
                                     } else {
-                                      await Future.delayed(
-                                          const Duration(seconds: 4));
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SesPulsaPage(koId)));
+                                       mixDialog(context);
+                                      _localService
+                                          .savePulsaId(userUid)
+                                          .then((bool committed) {
+                                        print("INI USERID :" + userUid);
+                                      });
                                     }
                                   }  else {
                                     print("Status Code" +

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/list_screen.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -168,9 +169,9 @@ class _PdamPageState extends State<PdamPage> {
           inputNomor = val;
         },
         decoration: InputDecoration(
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(width: 1, color: Colors.grey)),
-            hintText: "Contoh : 123456",
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.grey)),
+          hintText: "Contoh : 123456",
         ),
       ),
     );
@@ -187,21 +188,16 @@ class _PdamPageState extends State<PdamPage> {
         _pdamService.createPostPdam(postPdam).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
+            var userUid = blok['id'].toString();
             var blokMsg = blok["message"];
             if (blokMsg == "data tidak ada") {
               nullPdamDialog(context);
-            } else if (blokMsg == "anda sudah bayar untuk bulan ini"){
+            } else if (blokMsg == "anda sudah bayar untuk bulan ini") {
               donePdamDialog(context);
             } else {
-              var userUid = blok['data'][0]['id'];
-              var koId = userUid.toString();
-              if (userUid == null) {
-                print("user id Kosong");
-              } else {
-                await Future.delayed(const Duration(seconds: 4));
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (__) => DetailPagePdam(koId)));
-              }
+              await Future.delayed(const Duration(seconds: 4));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (__) => DetailPagePdam(userUid)));
             }
           } else {
             print("INI STATUS CODE: " + response.statusCode.toString());
