@@ -22,6 +22,7 @@ class _PdamPageState extends State<PdamPage> {
   bool _validate = true;
   final GlobalKey<FormState> _key = GlobalKey();
   PdamService _pdamService = PdamService();
+  LocalService _localService = LocalService();
   String inputNomor, inputWilayah;
   TextEditingController _controllerWilayah = TextEditingController();
   TextEditingController _controllerNomor = TextEditingController();
@@ -180,24 +181,25 @@ class _PdamPageState extends State<PdamPage> {
   void _sendToServer() {
     if (_key.currentState.validate()) {
       _key.currentState.save();
-      loadingDialog(context);
       String nomor = _controllerNomor.text.toString();
       String wilayah = _controllerWilayah.text = widget.namaKotaKab;
       PostPdam postPdam = PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
       if (nomor != null || wilayah != null) {
         _pdamService.createPostPdam(postPdam).then((response) async {
+          print(response.body);
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
-            var userUid = blok['id'].toString();
+            userUid = blok['id'].toString();
             var blokMsg = blok["message"];
             if (blokMsg == "data tidak ada") {
-              nullPdamDialog(context);
+              PdamDialog().pdamNullDialog(context);
             } else if (blokMsg == "anda sudah bayar untuk bulan ini") {
-              donePdamDialog(context);
+              PdamDialog().pdamDoneDialog(context);
             } else {
-              await Future.delayed(const Duration(seconds: 4));
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (__) => DetailPagePdam(userUid)));
+              PdamDialog().pdamLoadDialog(context);
+              _localService.saveIdName(userUid).then((bool committed) {
+                  print("INI Header :" + userUid);
+                });
             }
           } else {
             print("INI STATUS CODE: " + response.statusCode.toString());

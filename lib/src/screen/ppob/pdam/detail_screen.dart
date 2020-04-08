@@ -313,7 +313,6 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
       child: RaisedButton(
         color: Colors.green,
         onPressed: () {
-          loadingDialog(context);
           String nomor = _detailForDisplay[0].noPelanggan;
           String wilayah = _detailForDisplay[0].namaWilayah;
           int idWallet = int.parse(_idWallet);
@@ -325,15 +324,15 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           _pdamService.createPdamPay(postPdam).then((response) async {
             if (response.headers != null) {
               Map blok = jsonDecode(response.body);
-              if (blok["message"] ==  "saldo anda tidak cukup untuk melakukan pembayaran ini") {
+              var headerUrl = response.headers['location'];
+              if (blok["message"] ==
+                  "saldo anda tidak cukup untuk melakukan pembayaran ini") {
                 saldoMinDialog(context);
               } else {
-                var headerUrl = response.headers['location'];
-                await Future.delayed(const Duration(seconds: 4));
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SelesaiPage(headerUrl)));
+                PdamDialog().nPdamDialog(context);
+                _localService.saveUrlName(headerUrl).then((bool committed) {
+                  print("INI Header :" + headerUrl);
+                });
               }
             } else {
               return print("Hasil Response : " + response.toString());

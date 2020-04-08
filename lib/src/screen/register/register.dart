@@ -273,13 +273,13 @@ class _RegisterPageState extends State<RegisterPage> {
             _registService.postRegist(users).then((response) async {
               if (response.statusCode == 200) {
                 if (response.body == "already existed!") {
-                  registGagalDialog(context);
+                  RegistDialog().registGagalDialog(context);
                   _controllerNama.clear();
                   _controllerEmail.clear();
                   _controllerNomor.clear();
                   _controllerPsd.clear();
                 } else {
-                  registSuksesDialog(context);
+                  RegistDialog().registSuksesDialog(context);
                   _controllerNama.clear();
                   _controllerEmail.clear();
                   _controllerNomor.clear();

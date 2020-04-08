@@ -296,7 +296,6 @@ class _DetailPageState extends State<DetailPage> {
                             child: RaisedButton(
                               color: Colors.green,
                               onPressed: () {
-                                loadingDialog(context);
                                 int transactionId = int.parse(widget.koId);
                                 String nomorHp =
                                     snapshot.data.data[0].noHp.toString();
@@ -317,9 +316,9 @@ class _DetailPageState extends State<DetailPage> {
                                         "saldo anda tidak cukup untuk melakukan pembayaran ini") {
                                       saldoMinDialog(context);
                                     } else {
-                                       mixDialog(context);
+                                       PulsaDialog().nPulsaDialog(context);
                                       _localService
-                                          .savePulsaId(userUid)
+                                          .saveIdName(userUid)
                                           .then((bool committed) {
                                         print("INI USERID :" + userUid);
                                       });

@@ -263,7 +263,7 @@ class _PulsaPageState extends State<PulsaPage> {
                     color: Colors.green,
                     onPressed: () {
                       if (inputNominal == null) {
-                        nullNominalDialog(context);
+                        PulsaDialog().praNullNominalDialog(context);
                       } else {
                         setState(() {
                           _isHide = true;
