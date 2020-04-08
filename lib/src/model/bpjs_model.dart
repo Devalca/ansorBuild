@@ -85,6 +85,8 @@ class DataKesehatan {
   int noVa;
   String namaPelanggan;
   int jumlahKeluarga;
+  int totalTagihan;
+  int adminFee;
   int total;
   DateTime periode;
   int jlhBulan;
@@ -94,6 +96,8 @@ class DataKesehatan {
       this.noVa,
       this.namaPelanggan,
       this.jumlahKeluarga,
+      this.totalTagihan,
+      this.adminFee,
       this.total,
       this.periode,
       this.jlhBulan});
@@ -103,6 +107,8 @@ class DataKesehatan {
       noVa: json['no_va'],
       namaPelanggan: json['nama_pelanggan'],
       jumlahKeluarga: json['jlh_keluarga'],
+      totalTagihan: json['total_tagihan'],
+      adminFee: json['admin_fee'],
       total: json['total'],
       periode: DateTime.parse(json['periode']),
       jlhBulan: json['jlh_bulan']);
@@ -112,6 +118,8 @@ class DataKesehatan {
         "no_va": noVa,
         "nama_pelanggan": namaPelanggan,
         "jlh_keluarga": jumlahKeluarga,
+        "total_tagihan": totalTagihan,
+        "admin_fee": adminFee,
         "total": total,
         "periode": periode,
         "jlh_bulan": jlhBulan
@@ -325,6 +333,7 @@ class DataKetenagakerjaan {
   int jp;
   int periodeByr;
   int totalTagihan;
+  int adminFee;
   int total;
   DateTime createdAt;
 
@@ -339,6 +348,7 @@ class DataKetenagakerjaan {
       this.jp,
       this.periodeByr,
       this.totalTagihan,
+      this.adminFee,
       this.total,
       this.createdAt});
 
@@ -354,6 +364,7 @@ class DataKetenagakerjaan {
         jp: json['jp'],
         periodeByr: json['periode_byr'],
         totalTagihan: json['total_tagihan'],
+        adminFee: json['admin_fee'],
         total: json['total'],
         createdAt: DateTime.parse(json['createdAt']),
       );
@@ -368,6 +379,7 @@ class DataKetenagakerjaan {
         "jht": jht,
         "periode_byr": periodeByr,
         "total_tagihan": totalTagihan,
+        "admin_fee": adminFee,
         "total": total,
         "createdAt": createdAt
       };

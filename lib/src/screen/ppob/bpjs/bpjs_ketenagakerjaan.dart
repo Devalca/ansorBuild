@@ -57,6 +57,8 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
         } else {
           String noKtp = _noKTPController.text.toString();
 
+          print("periodeByrLanjut :" + widget.periode.toString());
+
           PostKetenagakerjaan ketenagakerjaan =
               PostKetenagakerjaan(periodeByr: widget.periode, noKtp: noKtp);
 

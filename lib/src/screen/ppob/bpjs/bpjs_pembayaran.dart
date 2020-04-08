@@ -234,8 +234,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                   );
                                 });
                           } else {
-                            String transactionId =
-                                widget.urlkerja.substring(27);
+                            String transactionId = widget.urlkerja.substring(27);
                             String periodeByr = periodeByr2;
                             String noKtp = noKtp2;
 
@@ -245,7 +244,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                             String userId = prefs.getString("userId");
 
                             print("transactionId " + transactionId);
-                            print("periodeByr " + periodeByr);
+                            print("periodeByrBayar " + periodeByr);
                             print("noKtp " + noKtp);
                             print("userId " + userId);
                             print("walletId " + walletId);
@@ -433,8 +432,10 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                                 locale: 'id',
                                                                 decimalDigits:
                                                                     0)
-                                                        .format(snapshot.data
-                                                            .data[0].total)),
+                                                        .format(snapshot
+                                                            .data
+                                                            .data[0]
+                                                            .totalTagihan)),
                                                   ),
                                                 ],
                                               ),
@@ -455,7 +456,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                                 locale: 'id',
                                                                 decimalDigits:
                                                                     0)
-                                                        .format(2500)),
+                                                        .format(snapshot.data
+                                                            .data[0].adminFee)),
                                                   ),
                                                 ],
                                               ),
@@ -571,7 +573,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                 )));
                               } else if (snapshot.hasError) {
                                 return Center(
-                                child: Text("Gagal Memuat Detail Pembayaran Kesehatan"));
+                                    child: Text(
+                                        "Gagal Memuat Detail Pembayaran Kesehatan"));
                                 // return Text("${snapshot.error}");
                               }
                               return Center(child: CircularProgressIndicator());
@@ -773,7 +776,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                           .simpleCurrency(
                                                               locale: 'id',
                                                               decimalDigits: 0)
-                                                      .format(1500)),
+                                                      .format(snapshot.data
+                                                          .data[0].adminFee)),
                                                 ),
                                               ],
                                             ),
@@ -888,8 +892,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                 )));
                               } else if (snapshot.hasError) {
                                 return Center(
-                                    child:
-                                        Text("Gagal Memuat Detail Pembayaran Ketenagakerjaan"));
+                                    child: Text(
+                                        "Gagal Memuat Detail Pembayaran Ketenagakerjaan"));
                                 // return Text("${snapshot.error}");
                               }
                               return Center(child: CircularProgressIndicator());
