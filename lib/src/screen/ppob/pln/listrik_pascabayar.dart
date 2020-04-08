@@ -61,36 +61,42 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                         new ListrikPembayaran(status: "pascabayar")));
             setState(() => _isLoading = false);
           } else if (response.statusCode == 200) {
-            // print("berhasil body: " + response.body);
-            // print(response.statusCode);
-
-            // Map data = jsonDecode(response.body);
-            // transactionId = data['transactionId'].toString();
-            // print("transactionId: " + transactionId);
-
-            // url = '/ppob/pln/' + transactionId;
-            // print("url: " + url);
-
-            // _plnServices.saveTransactionId(url).then((bool committed) {
-            //   print(url);
-            // });
-
-            // Navigator.push(
-            //     context,
-            //     new MaterialPageRoute(
-            //         builder: (__) =>
-            //             new ListrikPembayaran(status: "pascabayar")));
-            // setState(() => _isLoading = false);
-
-            print("error: " + response.body);
+            print("berhasil body: " + response.body);
             print(response.statusCode);
 
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (__) => new PembayaranGagal(
-                        jenis: "pascabayar", pesan: response.body, index: 1)));
-            setState(() => _isLoading = false);
+            Map data = jsonDecode(response.body);
+            transactionId = data['transactionId'].toString();
+            message = data['message'];
+
+            if(message != null){
+              print("message" + message);
+
+              print("response body: " + response.body);
+              print(response.statusCode);
+
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (__) => new PembayaranGagal(
+                          jenis: "pascabayar", pesan: response.body, index: 1)));
+              setState(() => _isLoading = false);
+            }else if(transactionId != null){
+              print("transactionId: " + transactionId);
+
+              url = '/ppob/pln/' + transactionId;
+              print("url: " + url);
+
+              _plnServices.saveTransactionId(url).then((bool committed) {
+                print(url);
+              });
+
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (__) =>
+                          new ListrikPembayaran(status: "pascabayar")));
+              setState(() => _isLoading = false);
+            }
           } else {
             print("error: " + response.body);
             print(response.statusCode);

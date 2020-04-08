@@ -6,6 +6,7 @@ import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 import 'package:ansor_build/src/model/bpjs_model.dart';
+import 'package:flutter/services.dart';
 
 class BpjsKetenagakerjaan extends StatefulWidget {
   final String bln;
@@ -90,7 +91,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                   context,
                   new MaterialPageRoute(
                       builder: (__) =>
-                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: response.body)));
+                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: response.body, index: 1)));
               setState(() => _isLoading = false);
             } else if (response.statusCode == 302) {
               print("berhasil body: " + response.body);
@@ -117,7 +118,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                   context,
                   new MaterialPageRoute(
                       builder: (__) =>
-                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: response.body)));
+                          new PembayaranGagal(jenis: "ketenagakerjaan", pesan: response.body, index: 1)));
               setState(() => _isLoading = false);
             }
           });
@@ -171,6 +172,9 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
               ),
 
               TextField(
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(16),
+                ],
                 controller: _noKTPController,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(

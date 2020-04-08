@@ -9,6 +9,7 @@ import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
+import 'package:flutter/services.dart';
 
 class BpjsKesehatan extends StatefulWidget {
   final String tgl;
@@ -99,7 +100,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                   context,
                   new MaterialPageRoute(
                       builder: (__) => new PembayaranGagal(
-                          jenis: "kesehatan", pesan: response.body)));
+                          jenis: "kesehatan", pesan: response.body, index: 0)));
               setState(() => _isLoading = false);
             } else if (response.statusCode == 302) {
               print("berhasil body: " + response.body);
@@ -126,7 +127,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                   context,
                   new MaterialPageRoute(
                       builder: (__) => new PembayaranGagal(
-                          jenis: "kesehatan", pesan: response.body)));
+                          jenis: "kesehatan", pesan: response.body, index: 0)));
               setState(() => _isLoading = false);
             }
           });
@@ -170,6 +171,9 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                                     style: new TextStyle(fontSize: 12.0),
                                     textAlign: TextAlign.left)),
                             TextField(
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(9),
+                              ],
                               controller: _noVAController,
                               keyboardType: TextInputType.phone,
                               decoration: InputDecoration(

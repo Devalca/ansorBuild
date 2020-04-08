@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 class PembayaranGagal extends StatefulWidget {
   final String pesan, jenis;
-  PembayaranGagal({this.pesan, this.jenis});
+  final int index;
+  PembayaranGagal({this.pesan, this.jenis, this.index});
 
   @override
   _PembayaranGagalState createState() => _PembayaranGagalState();
@@ -47,7 +48,8 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (__) => new Bpjs(index: 0)));
+                                        builder: (__) =>
+                                            new Bpjs(index: widget.index)));
                               }),
                         ),
                       ),
