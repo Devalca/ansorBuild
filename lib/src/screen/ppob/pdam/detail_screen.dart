@@ -325,7 +325,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           _pdamService.createPdamPay(postPdam).then((response) async {
             if (response.headers != null) {
               Map blok = jsonDecode(response.body);
-              if (blok["saldo"] == 0) {
+              if (blok["message"] ==  "saldo anda tidak cukup untuk melakukan pembayaran ini") {
                 saldoMinDialog(context);
               } else {
                 var headerUrl = response.headers['location'];

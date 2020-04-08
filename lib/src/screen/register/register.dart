@@ -217,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
       return "Tidak Boleh Kosong";
     } else if (value.substring(0,2) != "08") {
       return "Gunakan Format ID '08'";
-    } else if (value.length == 10 && value.length == 11 && value.length == 12 && value.length == 13) {
+    } else if (value.length <= 10 && value.length <= 11 && value.length <= 12 && value.length <= 13) {
       return "Format Nomor Salah";
     } 
     return null;

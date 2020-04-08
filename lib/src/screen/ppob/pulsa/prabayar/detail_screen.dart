@@ -283,7 +283,7 @@ class _DetailPageState extends State<DetailPage> {
                                     snapshot.data.data[0].noHp.toString();
                                 int nominal = int.parse(
                                     snapshot.data.data[0].nominal.toString());
-                                int idWallet = int.parse(_idWallet); 
+                                int idWallet = int.parse(_idWallet);
                                 Post post = Post(
                                     transactionId: transactionId,
                                     noHp: nomorHp,
@@ -296,24 +296,19 @@ class _DetailPageState extends State<DetailPage> {
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
-                                    if (blok["saldo"] == 0) {
+                                    var userUid = blok['id'];
+                                    var koId = userUid.toString();
+                                    if (blok["message"] ==
+                                        "saldo anda tidak cukup untuk melakukan pembayaran ini") {
                                       saldoMinDialog(context);
                                     } else {
-                                      var userUid =
-                                          blok['data'][0]['id'];
-                                      //  userUid = blok['id'].toString();
-                                      var koId = userUid.toString();
-                                      if (userUid == null) {
-                                        print("user id Kosong");
-                                      } else {
-                                        await Future.delayed(
-                                            const Duration(seconds: 4));
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SesPulsaPage(koId)));
-                                      }
+                                      await Future.delayed(
+                                          const Duration(seconds: 4));
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SesPulsaPage(koId)));
                                     }
                                   } else {
                                     print("INI STATUS CODE: " +
