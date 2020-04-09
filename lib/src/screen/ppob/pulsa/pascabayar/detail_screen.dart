@@ -42,7 +42,6 @@ class _DetailPageState extends State<DetailPage> {
     });
   }
 
-
   Future<Album> fetchAlbum() async {
     // String baseUrl = "http://192.168.10.11:3000/ppob/pulsa/";
     // String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/pulsa/";
@@ -148,8 +147,8 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Periode'),
                                           ),
                                           Container(
-                                            child: Text(
-                                                formatTanggal(dateTime).toString()),
+                                            child: Text(formatTanggal(dateTime)
+                                                .toString()),
                                           ),
                                         ],
                                       ),
@@ -178,7 +177,9 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Biaya Pelayanan'),
                                           ),
                                           Container(
-                                             child: Text(formatRupiah(snapshot.data.data[0].adminFee).replaceAll("Rp ", "Rp")),
+                                            child: Text(formatRupiah(snapshot
+                                                    .data.data[0].adminFee)
+                                                .replaceAll("Rp ", "Rp")),
                                           ),
                                         ],
                                       ),
@@ -299,7 +300,7 @@ class _DetailPageState extends State<DetailPage> {
                                 int transactionId = int.parse(widget.koId);
                                 String nomorHp =
                                     snapshot.data.data[0].noHp.toString();
-                                int idWallet = int.parse(_idWallet); 
+                                int idWallet = int.parse(_idWallet);
                                 Post post = Post(
                                   userId: idWallet,
                                   walletId: idWallet,
@@ -311,20 +312,19 @@ class _DetailPageState extends State<DetailPage> {
                                     .then((response) async {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
-                                    userUid = blok['id'];
-                                    if (blok["message"] ==
-                                        "saldo anda tidak cukup untuk melakukan pembayaran ini") {
-                                      saldoMinDialog(context);
-                                    } else {
-                                       PulsaDialog().nPulsaDialog(context);
-                                      _localService
-                                          .saveIdName(userUid)
-                                          .then((bool committed) {
-                                        print("INI USERID :" + userUid);
-                                      });
-                                    }
-                                  }  else {
-                                    print("Status Code" +
+                                    userUid = blok['id'].toString();
+                                    PulsaDialog().nPulsaDialog(context);
+                                    _localService
+                                        .saveIdName(userUid)
+                                        .then((bool committed) {
+                                      print("INI USERID :" + userUid);
+                                    });
+                                  } else if (response.statusCode == 409) {
+                                    PulsaDialog().pascaDoneDialog(context);
+                                  } else if (response.statusCode == 403) {
+                                    saldoMinDialog(context);
+                                  } else {
+                                    print("INI STATUS CODE: " +
                                         response.statusCode.toString());
                                   }
                                 });

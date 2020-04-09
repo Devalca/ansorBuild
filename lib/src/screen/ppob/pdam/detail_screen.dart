@@ -324,17 +324,14 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           _pdamService.createPdamPay(postPdam).then((response) async {
             var headerUrl = response.headers['location'];
             if (response.headers != null) {
-              // if (blok["message"] ==
-              //     "saldo anda tidak cukup untuk melakukan pembayaran ini") {
-              //   saldoMinDialog(context);
-              // } else {
+              if (response.statusCode == 403) {
+              saldoMinDialog(context);
+              } else {
               PdamDialog().nPdamDialog(context);
               _localService.saveUrlName(headerUrl).then((bool committed) {
-                print("INI Header :" + headerUrl);
               });
-            } else if (response.statusCode == 403) {
-              saldoMinDialog(context);
-            }
+              }
+            } 
           });
         },
         child: Text(

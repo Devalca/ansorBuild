@@ -28,7 +28,7 @@ class PdamService {
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: postPdamToJson(postPdam),
     );
-    print("INI RESPONSE :" + response.body);
+    print("INI RESPONSE NYA : " + response.body);
     return response;
   }
 
@@ -38,7 +38,6 @@ class PdamService {
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         body: postPdamToJson(postPdam),
       );
-      print(response.body);
       return response;
   }
 }

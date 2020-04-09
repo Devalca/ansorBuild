@@ -39,7 +39,7 @@ class _PdamPageState extends State<PdamPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.pop(context, true);
+              Navigator.pop(context, true);              
             }),
         backgroundColor: Colors.white,
         title: Text(
@@ -186,15 +186,17 @@ class _PdamPageState extends State<PdamPage> {
       PostPdam postPdam = PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
       if (nomor != null || wilayah != null) {
         _pdamService.createPostPdam(postPdam).then((response) async {
-          Map blok = jsonDecode(response.body);
-          userUid = blok['id'].toString();
           if (response.statusCode == 200) {
+            Map blok = jsonDecode(response.body);
+            userUid = blok['data'][0]['id'].toString();
             PdamDialog().pdamLoadDialog(context);
             _localService.saveIdName(userUid).then((bool committed) {});
           } else if (response.statusCode == 422) {
             PdamDialog().pdamNullDialog(context);
           } else if (response.statusCode == 406) {
             PdamDialog().pdamDoneDialog(context);
+          } else {
+            print("INI STATUS CODE : " + response.statusCode.toString());
           }
         });
       }

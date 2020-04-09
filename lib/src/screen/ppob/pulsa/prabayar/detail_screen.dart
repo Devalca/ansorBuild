@@ -296,18 +296,14 @@ class _DetailPageState extends State<DetailPage> {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
                                     userUid = blok['id'].toString();
-                                    if (blok["message"] ==
-                                        "saldo anda tidak cukup untuk melakukan pembayaran ini") {
-                                      saldoMinDialog(context);
-                                    } else {
-                                      PulsaDialog().nPulsaDialog(context);
-                                      _localService
-                                          .saveIdName(userUid)
-                                          .then((bool committed) {
-                                        print("INI USERID :" + userUid);
-                                      });
-                                     
-                                    }
+                                    PulsaDialog().nPulsaDialog(context);
+                                    _localService
+                                        .saveIdName(userUid)
+                                        .then((bool committed) {
+                                      print("INI USERID :" + userUid);
+                                    });
+                                  } else if (response.statusCode == 403) {
+                                    saldoMinDialog(context);
                                   } else {
                                     print("INI STATUS CODE: " +
                                         response.statusCode.toString());
