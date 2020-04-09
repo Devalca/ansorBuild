@@ -31,8 +31,9 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
     // String baseUrl = "https://afternoon-waters-38775.herokuapp.com/ppob/detail/pulsa/";
     String baseUrl = "http://103.9.125.18:3000/ppob/detail/pulsa/";
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String transPulsaId = prefs.getString("transPulsaId");
-    final response = await http.get(baseUrl+transPulsaId);
+    String transIdName = prefs.getString("transIdName");
+ 
+    final response = await http.get(baseUrl+transIdName);
     if (response.statusCode == 200) {
       return postTransFromJson(response.body);
     } else {
