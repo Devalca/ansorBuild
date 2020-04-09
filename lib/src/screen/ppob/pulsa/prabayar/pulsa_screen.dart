@@ -218,7 +218,8 @@ class _PulsaPageState extends State<PulsaPage> {
                       }
                     }
                   } else {
-                    return Text('Result: ${snapshot.error}');
+                    // return Text('Result: ${snapshot.error}');
+                    return centerLoading();
                   }
               }
               return Container(
