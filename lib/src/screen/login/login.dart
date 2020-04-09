@@ -8,6 +8,7 @@ import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
@@ -61,11 +62,7 @@ class _LoginState extends State<Login> {
               padding: EdgeInsets.only(
                   top: 12.0, left: 12.0, right: 12.0, bottom: bottom),
               child: _isLoading
-                  ? Center(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[CircularProgressIndicator()]))
+                  ? Center(heightFactor: 30,child: CircularProgressIndicator())
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -84,6 +81,9 @@ class _LoginState extends State<Login> {
                                   style: new TextStyle(fontSize: 12.0),
                                   textAlign: TextAlign.start)),
                           TextField(
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(13),
+                            ],
                             controller: _nohpController,
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(

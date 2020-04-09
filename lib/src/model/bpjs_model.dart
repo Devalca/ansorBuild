@@ -192,6 +192,8 @@ class DataBerhasil {
   int noVa;
   String namaPelanggan;
   int jumlahKeluarga;
+  int totalTagihan;
+  int adminFee;
   int total;
   DateTime periode;
   int jlhBulan;
@@ -205,6 +207,8 @@ class DataBerhasil {
       this.noVa,
       this.namaPelanggan,
       this.jumlahKeluarga,
+      this.totalTagihan,
+      this.adminFee,
       this.total,
       this.periode,
       this.jlhBulan,
@@ -218,6 +222,8 @@ class DataBerhasil {
         noVa: json['no_va'],
         namaPelanggan: json['nama_pelanggan'],
         jumlahKeluarga: json['jlh_keluarga'],
+        totalTagihan: json['total_tagihan'],
+        adminFee: json['admin_fee'],
         total: json['total'],
         periode: DateTime.parse(json['periode']),
         jlhBulan: json['jlh_bulan'],
@@ -232,6 +238,8 @@ class DataBerhasil {
         "no_va": noVa,
         "nama_pelanggan": namaPelanggan,
         "jlh_keluarga": jumlahKeluarga,
+        "total_tagihan": totalTagihan,
+        "admin_fee": adminFee,
         "total": total,
         "periode": periode,
         "jlh_bulan": jlhBulan,
@@ -420,7 +428,8 @@ class PostBayarKerja {
       };
 }
 
-BerhasilKerja berhasilKerjaFromJson(String str) => BerhasilKerja.fromJson(json.decode(str));
+BerhasilKerja berhasilKerjaFromJson(String str) =>
+    BerhasilKerja.fromJson(json.decode(str));
 String berhasilKerjaToJson(BerhasilKerja data) => json.encode(data.toJson());
 
 class BerhasilKerja {
@@ -480,7 +489,8 @@ class DataBerhasilKerja {
       this.noTransaksi,
       this.createdAt});
 
-  factory DataBerhasilKerja.fromJson(Map<String, dynamic> json) => DataBerhasilKerja(
+  factory DataBerhasilKerja.fromJson(Map<String, dynamic> json) =>
+      DataBerhasilKerja(
         id: json['id'],
         userId: json['userId'],
         walletId: json['walletId'],
