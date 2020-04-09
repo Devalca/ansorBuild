@@ -47,7 +47,7 @@ class _MainPulsaState extends State<MainPulsa> {
           body: SingleChildScrollView(
             child: Container(
               color: Colors.white,
-              height: 770,
+              height: 900,
               child: Stack(
                 fit: StackFit.expand,
                 overflow: Overflow.clip,

@@ -163,7 +163,7 @@ class PulsaDialog {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          Future.delayed(Duration(milliseconds: 450), () {
+          Future.delayed(Duration(seconds: 1), () {
             Navigator.of(context).pop(true);
           });
           return new WillPopScope(
@@ -178,6 +178,35 @@ class PulsaDialog {
                         ),
                         Text(
                           "Nomor Tidak Terdaftar",
+                          style: TextStyle(color: Colors.green),
+                        ),
+                      ]),
+                    )
+                  ]));
+        });
+  }
+
+  Future<void> pascaDoneDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 2), () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                Routes.LandingScreen, (Route<dynamic> route) => false);
+          });
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: SimpleDialog(
+                  backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Center(
+                      child: Column(children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Transaksi pembayaran pascabayar telah berhasil",
                           style: TextStyle(color: Colors.green),
                         ),
                       ]),
@@ -225,7 +254,9 @@ class PdamDialog {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (__) => DetailPagePdam(transIdName)));
+                    builder: (__) => DetailPagePdam(transIdName))).then((result) {
+                       Navigator.of(context).pop();
+                    });
           });
           return new WillPopScope(
               onWillPop: () async => false,

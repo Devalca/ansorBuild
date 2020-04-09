@@ -29,6 +29,7 @@ class _PulsaPageState extends State<PulsaPage> {
   var logoProv = "";
   var testProv;
   var cekNo;
+  String _idWallet;
   bool _validate = false;
   bool _isHide = false;
   int _nominalIndex = -1;
@@ -36,12 +37,12 @@ class _PulsaPageState extends State<PulsaPage> {
   GlobalKey<FormState> _key = GlobalKey();
   PulsaService _pulsaService = PulsaService();
   TextEditingController _controllerNomor = TextEditingController();
+  LocalService _localService = LocalService();
   List<Nominal> _nominal = List<Nominal>();
   List<Nominal> _nominalForDisplay = List<Nominal>();
   List<Provider> _provider = List<Provider>();
   List<Provider> _providerForDisplay = List<Provider>();
-  static const platform =
-      const MethodChannel('flutter_contacts/launch_contacts');
+  static const platform = MethodChannel('flutter_contacts/launch_contacts');
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class _PulsaPageState extends State<PulsaPage> {
         }
       }
     });
+    _localService.getWalletId().then(updateWallet);
     super.initState();
   }
 
@@ -80,16 +82,24 @@ class _PulsaPageState extends State<PulsaPage> {
     super.dispose();
   }
 
+   void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       // resizeToAvoidBottomPadding: false,
       body: Container(
+          padding: EdgeInsets.symmetric(horizontal: 6.0),
         child: Form(
             key: _key,
             autovalidate: _validate,
-            child: SingleChildScrollView(child: _isHideValidasi())),
+            child: _isHideValidasi()),
       ),
     );
   }
@@ -210,6 +220,7 @@ class _PulsaPageState extends State<PulsaPage> {
                         List<Listharga> hargaList =
                             snapshot.data.data[i].listharga;
                         return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             _btnListView(hargaList),
                             _btnNext()
@@ -368,6 +379,7 @@ class _PulsaPageState extends State<PulsaPage> {
       String nomor = inputNomor.toString();
       // int nominal = int.parse(inputNominal.toString());
       String providerNama = namaProv.toString();
+      int idWallet = int.parse(_idWallet);
       int nominal = inputNominal == ""
           ? int.parse(cekNo.toString())
           : int.parse(inputNominal.toString());
@@ -375,17 +387,16 @@ class _PulsaPageState extends State<PulsaPage> {
         Post post = Post(
             noHp: nomor,
             nominal: nominal,
-            userId: 1,
-            walletId: 1,
+            userId: idWallet,
+            walletId: idWallet,
             provider: providerNama);
         _pulsaService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
-            var koId = userUid;
             await Future.delayed(const Duration(seconds: 4));
             Navigator.push(context,
-                MaterialPageRoute(builder: (__) => DetailPage(koId, namaProv)));
+                MaterialPageRoute(builder: (__) => DetailPage(userUid, namaProv)));
             setState(() {
               _isHide = false;
             });

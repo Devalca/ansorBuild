@@ -251,7 +251,6 @@ class _SelesaiPageState extends State<SelesaiPage> {
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }
-
             return Container(
               alignment: Alignment.center,
               child: Center(
