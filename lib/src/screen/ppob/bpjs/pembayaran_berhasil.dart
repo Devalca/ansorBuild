@@ -1,6 +1,5 @@
 import 'package:ansor_build/src/model/bpjs_model.dart';
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
-import 'package:ansor_build/src/service/bpjs_services.dart';
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -67,7 +66,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
           leading: new IconButton(
             icon: new Icon(Icons.close),
             onPressed: () => Navigator.push(context,
-                new MaterialPageRoute(builder: (__) => new BerandaPage())),
+                new MaterialPageRoute(builder: (__) => new LandingPage())),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
@@ -93,7 +92,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                             Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                    builder: (__) => new BerandaPage()));
+                                    builder: (__) => LandingPage()));
                             setState(() => _isLoading = false);
                           },
                         ),
@@ -157,7 +156,8 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Center(
                                                 child: Text(
                                                     tgl(createdAt) +
-                                                        tanggal(createdAt).substring(1) +
+                                                        tanggal(createdAt)
+                                                            .substring(1) +
                                                         ", " +
                                                         DateFormat('HH:mm')
                                                             .format(createdAt),
@@ -450,7 +450,8 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Center(
                                                 child: Text(
                                                     tgl(createdAt) +
-                                                        tanggal(createdAt).substring(1) +
+                                                        tanggal(createdAt)
+                                                            .substring(1) +
                                                         ", " +
                                                         DateFormat('HH:mm')
                                                             .format(createdAt),

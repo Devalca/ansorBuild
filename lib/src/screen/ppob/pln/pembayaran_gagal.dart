@@ -1,4 +1,4 @@
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 
@@ -21,7 +21,7 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
           leading: new IconButton(
             icon: new Icon(Icons.close),
             onPressed: () => Navigator.push(context,
-                new MaterialPageRoute(builder: (__) => new BerandaPage())),
+                new MaterialPageRoute(builder: (__) => new LandingPage())),
           ),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(
@@ -69,7 +69,7 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                               Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (__) => BerandaPage()));
+                                      builder: (__) => LandingPage()));
                               setState(() => _isLoading = false);
                             },
                           ),

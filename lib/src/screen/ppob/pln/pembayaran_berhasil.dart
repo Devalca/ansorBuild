@@ -1,4 +1,4 @@
-import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:indonesia/indonesia.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,16 +41,16 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
     }
   }
 
-  token(data){
+  token(data) {
     var arr = new List(3);
     var item = data.length;
-    arr[0]=data.substring(0,4);
-    arr[1]=data.substring(4,8);
-    arr[2]=data.substring(8,item);
+    arr[0] = data.substring(0, 4);
+    arr[1] = data.substring(4, 8);
+    arr[2] = data.substring(8, item);
     return arr.join(" - ");
   }
 
-  tgl(data){
+  tgl(data) {
     var data2 = data.toString();
     return data2.substring(8, 10);
   }
@@ -58,486 +58,654 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(Icons.close),
-          onPressed: () => Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage())),
+        appBar: AppBar(
+          leading: new IconButton(
+            icon: new Icon(Icons.close),
+            onPressed: () => Navigator.push(context,
+                new MaterialPageRoute(builder: (__) => new LandingPage())),
+          ),
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(
+            color: Colors.black,
+          ),
         ),
-        backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.transparent,
-        child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    width: 333,
-                    height: 35,
-                    child: RaisedButton(
-                      child: Text('SELESAI',
-                          style: TextStyle(color: Colors.green)),
-                      color: Colors.white,
-                      onPressed: () {
-                        setState(() => _isLoading = true);
-                        Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (__) => new BerandaPage(index: 0)));
-                        setState(() => _isLoading = false);
-                      },
-                    ),
-                  )
-                ])),
-        elevation: 0),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-
-              FutureBuilder<Detail>(
-                future: fetchDetail(),
-                builder: (context, snapshot) {
-
-                  if (snapshot.hasData && snapshot.data != null) {
-                    DateTime periode = snapshot.data.createdAt;
-                    if(widget.status == "prabayar"){
-                      return(
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              
-                              Center(
-                                child: Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                                    border: Border.all(color: Colors.grey[300], width: 1)
-                                  ),
-                                ),
-                              ),
-
-                              Container( height: 10 ),
-
-                              Center(
-                                child: Text("Transaksi Berhasil", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.green)),
-                              ),
-                              
-                              Container( height: 15 ),
-                              
-                              Center(
-                                child: Text(tgl(periode) + tanggal(periode).substring(1) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
-                              ),
-
-                              Center(
-                                child: Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
-                              ),
-                              
-                              Container( height: 25 ),
-
-                              Text("Nomor Token", textAlign: TextAlign.start ,style: new TextStyle(fontSize: 14.0)),
-
-                              Container( height: 10 ),
-
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                                width: double.infinity,
-                                height: 50.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(color: Colors.grey[300], width: 1)
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        bottomNavigationBar: BottomAppBar(
+            color: Colors.transparent,
+            child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 333,
+                        height: 35,
+                        child: RaisedButton(
+                          child: Text('SELESAI',
+                              style: TextStyle(color: Colors.green)),
+                          color: Colors.white,
+                          onPressed: () {
+                            setState(() => _isLoading = true);
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (__) => new LandingPage()));
+                            setState(() => _isLoading = false);
+                          },
+                        ),
+                      )
+                    ])),
+            elevation: 0),
+        body: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      FutureBuilder<Detail>(
+                          future: fetchDetail(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              DateTime periode = snapshot.data.createdAt;
+                              if (widget.status == "prabayar") {
+                                return (Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(
-                                            child: Text(token(snapshot.data.noToken), style: new TextStyle(fontSize: 14.0)),
-                                          ),
-                                          Container(
-                                            child: Text("Salin", style: new TextStyle(fontSize: 12.0, color: Colors.green)),
-                                          ),
-                                        ],
+                                      Center(
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 100.0,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0)),
+                                              border: Border.all(
+                                                  color: Colors.grey[300],
+                                                  width: 1)),
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ),
 
-                              Container( height: 15 ),
+                                      Container(height: 10),
 
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
+                                      Center(
+                                        child: Text("Transaksi Berhasil",
+                                            style: new TextStyle(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.green)),
+                                      ),
 
-                              Container( height: 10 ),
+                                      Container(height: 15),
 
-                              Container(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                  top: 12.0,
-                                  bottom: 12.0
-                                ),
-                                width: double.infinity,
-                                height: 200.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(color: Colors.grey[300],width: 1)
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    
-                                    Expanded(
-                                      flex: 1,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      Center(
+                                        child: Text(
+                                            tgl(periode) +
+                                                tanggal(periode).substring(1) +
+                                                ", " +
+                                                DateFormat('HH:mm')
+                                                    .format(periode),
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                new TextStyle(fontSize: 12.0)),
+                                      ),
+
+                                      Center(
+                                        child: Text("via Un1ty",
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                new TextStyle(fontSize: 12.0)),
+                                      ),
+
+                                      Container(height: 25),
+
+                                      Text("Nomor Token",
+                                          textAlign: TextAlign.start,
+                                          style: new TextStyle(fontSize: 14.0)),
+
+                                      Container(height: 10),
+
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0),
+                                        width: double.infinity,
+                                        height: 50.0,
+                                        decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            border: Border.all(
+                                                color: Colors.grey[300],
+                                                width: 1)),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        token(snapshot
+                                                            .data.noToken),
+                                                        style: new TextStyle(
+                                                            fontSize: 14.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text("Salin",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0,
+                                                            color:
+                                                                Colors.green)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      Container(height: 15),
+
+                                      Text("Detail",
+                                          textAlign: TextAlign.start,
+                                          style: new TextStyle(fontSize: 14.0)),
+
+                                      Container(height: 10),
+
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 10.0,
+                                            right: 10.0,
+                                            top: 12.0,
+                                            bottom: 12.0),
+                                        width: double.infinity,
+                                        height: 200.0,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            border: Border.all(
+                                                color: Colors.grey[300],
+                                                width: 1)),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 1,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Jenis Layanan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        "Token Listrik " +
+                                                            NumberFormat.simpleCurrency(
+                                                                    locale:
+                                                                        'id',
+                                                                    decimalDigits:
+                                                                        0)
+                                                                .format(snapshot
+                                                                    .data
+                                                                    .nominal),
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        "Nama Pelanggan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot
+                                                            .data.namaPelanggan,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        "No Meter/ID Pelanggan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot.data.noMeter,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Tarif/Daya",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot.data.tarif +
+                                                            '/' +
+                                                            snapshot.data.daya,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total Kwh",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot.data.totalKwh
+                                                            .toString(),
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        "Nomor Transaksi",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot
+                                                            .data.noTransaksi,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total Tagihan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        NumberFormat
+                                                                .simpleCurrency(
+                                                                    locale:
+                                                                        'id',
+                                                                    decimalDigits:
+                                                                        0)
+                                                            .format(snapshot
+                                                                .data.total),
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      // Container( height: 15 ),
+
+                                      // Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
+
+                                      // Container(
+                                      //   decoration: BoxDecoration(
+                                      //     border: Border.all(color: Colors.green),
+                                      //   ),
+                                      //   alignment: Alignment.bottomCenter,
+                                      //   child: SizedBox(
+                                      //     width :double.infinity,
+                                      //     height: 35,
+                                      //     child: RaisedButton(
+                                      //       child: Text('SELESAI', style: TextStyle(color: Colors.green)),
+                                      //       color: Colors.white,
+                                      //       onPressed: () {
+                                      //         setState(() => _isLoading = true);
+                                      //         Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
+                                      //         setState(() => _isLoading = false);
+                                      //       },
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ])));
+                              } else if (widget.status == "pascabayar") {
+                                return (Container(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(
-                                            child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
+                                      Center(
+                                        child: Container(
+                                          width: 100.0,
+                                          height: 100.0,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              shape: BoxShape.rectangle,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5.0)),
+                                              border: Border.all(
+                                                  color: Colors.grey[300],
+                                                  width: 1)),
+                                        ),
                                       ),
-                                    ),
 
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Nama Pelanggan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.namaPelanggan, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
+                                      Container(height: 10),
+
+                                      Center(
+                                        child: Text("Transaksi Berhasil",
+                                            style: new TextStyle(
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.green)),
                                       ),
-                                    ),
 
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("No Meter/ID Pelanggan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.noMeter, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
+                                      Container(height: 15),
+
+                                      Center(
+                                        child: Text(
+                                            tgl(periode) +
+                                                tanggal(periode).substring(1) +
+                                                ", " +
+                                                DateFormat('HH:mm')
+                                                    .format(periode),
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                new TextStyle(fontSize: 12.0)),
                                       ),
-                                    ),
 
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Tarif/Daya", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.tarif + '/' + snapshot.data.daya, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
+                                      Center(
+                                        child: Text("via Un1ty",
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                new TextStyle(fontSize: 12.0)),
                                       ),
-                                    ),
 
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Total Kwh", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.totalKwh.toString(), style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
+                                      Container(height: 25),
+
+                                      Text("Detail",
+                                          textAlign: TextAlign.start,
+                                          style: new TextStyle(fontSize: 14.0)),
+
+                                      Container(height: 10),
+
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 10.0,
+                                            right: 10.0,
+                                            top: 12.0,
+                                            bottom: 12.0),
+                                        width: double.infinity,
+                                        height: 200.0,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            border: Border.all(
+                                                color: Colors.grey[300],
+                                                width: 1)),
+                                        child: Column(
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 1,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Jenis Layanan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        "Token Listrik " +
+                                                            NumberFormat.simpleCurrency(
+                                                                    locale:
+                                                                        'id',
+                                                                    decimalDigits:
+                                                                        0)
+                                                                .format(snapshot
+                                                                    .data
+                                                                    .nominal),
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        "Nama Pelanggan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot
+                                                            .data.namaPelanggan,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        "No Meter/ID Pelanggan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot.data.noMeter,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Tarif/Daya",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot.data.tarif +
+                                                            '/' +
+                                                            snapshot.data.daya,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total Kwh",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot.data.totalKwh
+                                                            .toString(),
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text(
+                                                        "Nomor Transaksi",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        snapshot
+                                                            .data.noTransaksi,
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Container(
+                                                    child: Text("Total Tagihan",
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                  Container(
+                                                    child: Text(
+                                                        NumberFormat
+                                                                .simpleCurrency(
+                                                                    locale:
+                                                                        'id',
+                                                                    decimalDigits:
+                                                                        0)
+                                                            .format(snapshot
+                                                                .data.total),
+                                                        style: new TextStyle(
+                                                            fontSize: 12.0)),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
 
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Nomor Transaksi", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.noTransaksi, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                      // Container( height: 15 ),
 
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Total Tagihan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                      // Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
 
-                                  ],
-                                ),
-                              ),
-                              
-                              // Container( height: 15 ),
-
-                              // Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
-
-                              // Container(
-                              //   decoration: BoxDecoration(
-                              //     border: Border.all(color: Colors.green),
-                              //   ),
-                              //   alignment: Alignment.bottomCenter,
-                              //   child: SizedBox(
-                              //     width :double.infinity,
-                              //     height: 35,
-                              //     child: RaisedButton(
-                              //       child: Text('SELESAI', style: TextStyle(color: Colors.green)),
-                              //       color: Colors.white,
-                              //       onPressed: () {
-                              //         setState(() => _isLoading = true);
-                              //         Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
-                              //         setState(() => _isLoading = false);
-                              //       },
-                              //     ),
-                              //   ),
-                              // ),
-                            ]
-                          )
-                        )
-                      );
-                    }else if(widget.status == "pascabayar"){
-                      return(
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-
-                              Center(
-                                child: Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                                    border: Border.all(color: Colors.grey[300], width: 1)
-                                  ),
-                                ),
-                              ),
-
-                              Container( height: 10 ),
-
-                              Center(
-                                child: Text("Transaksi Berhasil", style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold, color: Colors.green)),
-                              ),
-
-                              Container( height: 15 ),
-                              
-                              Center(
-                                child: Text(tgl(periode) + tanggal(periode).substring(1) + ", " + DateFormat('HH:mm').format(periode), textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
-                              ),
-
-                              Center(
-                                child: Text("via Un1ty", textAlign: TextAlign.center, style: new TextStyle(fontSize: 12.0)),
-                              ),
-
-                              Container( height: 25 ),
-
-                              Text("Detail", textAlign: TextAlign.start, style: new TextStyle(fontSize: 14.0)),
-
-                              Container( height: 10 ),
-
-                              Container(
-                                padding: const EdgeInsets.only(
-                                  left: 10.0,
-                                  right: 10.0,
-                                  top: 12.0,
-                                  bottom: 12.0
-                                ),
-                                width: double.infinity,
-                                height: 200.0,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(color: Colors.grey[300],width: 1)
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    
-                                    Expanded(
-                                      flex: 1,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Jenis Layanan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text("Token Listrik " + NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.nominal), style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Nama Pelanggan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.namaPelanggan, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("No Meter/ID Pelanggan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.noMeter, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Tarif/Daya", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.tarif + '/' + snapshot.data.daya, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Total Kwh", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.totalKwh.toString(), style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Nomor Transaksi", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot.data.noTransaksi, style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Total Tagihan", style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                          Container(
-                                            child: Text(NumberFormat.simpleCurrency(locale: 'id', decimalDigits: 0).format(snapshot.data.total), style: new TextStyle(fontSize: 12.0)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                              ),
-                              
-                              // Container( height: 15 ),
-
-                              // Container( height: 1, width: double.infinity, color: Colors.grey[300] ),
-
-                              // Container(
-                              //   decoration: BoxDecoration(
-                              //     border: Border.all(color: Colors.green),
-                              //   ),
-                              //   alignment: Alignment.bottomCenter,
-                              //   child: Column(
-                              //     mainAxisAlignment: MainAxisAlignment.end,
-                              //     crossAxisAlignment: CrossAxisAlignment.center,
-                              //     children: <Widget>[
-                              //       SizedBox(
-                              //         width :double.infinity,
-                              //         height: 35,
-                              //         child: RaisedButton(
-                              //           child: Text('SELESAI', style: TextStyle(color: Colors.green)),
-                              //           color: Colors.white,
-                              //           onPressed: () {
-                              //             setState(() => _isLoading = true);
-                              //             Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
-                              //             setState(() => _isLoading = false);
-                              //           },
-                              //         ),
-                              //       ),
-                              //     ]
-                              //   )
-                              // ),
-                            ]
-                          )
-                        )
-                      );
-                    }
-                  }else if (snapshot.hasError) {
-                    return Text("${snapshot.error}");
-                  }
-                  return Center(child:CircularProgressIndicator());
-                }
-              )
-            ]
-          )
-        )
-      )
-    );
+                                      // Container(
+                                      //   decoration: BoxDecoration(
+                                      //     border: Border.all(color: Colors.green),
+                                      //   ),
+                                      //   alignment: Alignment.bottomCenter,
+                                      //   child: Column(
+                                      //     mainAxisAlignment: MainAxisAlignment.end,
+                                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                                      //     children: <Widget>[
+                                      //       SizedBox(
+                                      //         width :double.infinity,
+                                      //         height: 35,
+                                      //         child: RaisedButton(
+                                      //           child: Text('SELESAI', style: TextStyle(color: Colors.green)),
+                                      //           color: Colors.white,
+                                      //           onPressed: () {
+                                      //             setState(() => _isLoading = true);
+                                      //             Navigator.push(context, new MaterialPageRoute(builder: (__) => new BerandaPage()));
+                                      //             setState(() => _isLoading = false);
+                                      //           },
+                                      //         ),
+                                      //       ),
+                                      //     ]
+                                      //   )
+                                      // ),
+                                    ])));
+                              }
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return Center(child: CircularProgressIndicator());
+                          })
+                    ]))));
   }
 }
