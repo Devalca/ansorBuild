@@ -158,29 +158,37 @@ class _BerandaPageState extends State<BerandaPage> {
                   child: FutureBuilder<Wallet>(
                     future: _walletService.getSaldo(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData)
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
                           return Center(
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                          formatRupiah(snapshot
-                                                  .data.data[0].saldoAkhir)
-                                              .replaceAll("Rp ", "Rp"),
-                                          style: TextStyle(fontSize: 24.0)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child: Text("Koneksi Terputus"),
                           );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
+                        case ConnectionState.waiting:
+                          return centerLoading();
+                        default:
+                          if (snapshot.hasData) {
+                            return Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                            formatRupiah(snapshot
+                                                    .data.data[0].saldoAkhir)
+                                                .replaceAll("Rp ", "Rp"),
+                                            style: TextStyle(fontSize: 24.0)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            // return Text('MOHON TUNGGU...');
+                            return Text('Result: ${snapshot.error}');
+                          }
                       }
-                      return Text('MOHON TUNGGU...');
                     },
                   ),
                 ),
@@ -343,15 +351,17 @@ class _BerandaPageState extends State<BerandaPage> {
     return InkWell(
       onTap: () {
         if (ppobService.title == "PULSA") {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainPulsa("", "")));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MainPulsa("", "")));
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Listrik(index: widget.index)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Listrik(index: widget.index)));
         } else if (ppobService.title == "Air PDAM") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PdamPage("")));
-        }else if (ppobService.title == "BPJS") {
+        } else if (ppobService.title == "BPJS") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Bpjs()));
         } else {
@@ -426,8 +436,10 @@ class _BerandaPageState extends State<BerandaPage> {
             if (productService.length != null) {
               return InkWell(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => DetailKatalogPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailKatalogPage()));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 16.0),

@@ -82,12 +82,11 @@ class _PulsaPageState extends State<PulsaPage> {
     super.dispose();
   }
 
-   void updateWallet(String idWallet) {
+  void updateWallet(String idWallet) {
     setState(() {
       this._idWallet = idWallet;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +94,9 @@ class _PulsaPageState extends State<PulsaPage> {
       backgroundColor: Colors.white,
       // resizeToAvoidBottomPadding: false,
       body: Container(
-          padding: EdgeInsets.symmetric(horizontal: 6.0),
-        child: Form(
-            key: _key,
-            autovalidate: _validate,
-            child: _isHideValidasi()),
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        child:
+            Form(key: _key, autovalidate: _validate, child: _isHideValidasi()),
       ),
     );
   }
@@ -125,6 +122,11 @@ class _PulsaPageState extends State<PulsaPage> {
           padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
           child: TextFormField(
               inputFormatters: [LengthLimitingTextInputFormatter(12)],
+              keyboardType: TextInputType.phone,
+              validator: validateNomor,
+              onSaved: (String val) {
+                inputNomor = val;
+              },
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Colors.grey)),
@@ -179,11 +181,6 @@ class _PulsaPageState extends State<PulsaPage> {
                     });
                   }
                 }
-              },
-              keyboardType: TextInputType.phone,
-              validator: validateNomor,
-              onSaved: (String val) {
-                inputNomor = val;
               }),
         ),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -277,9 +274,6 @@ class _PulsaPageState extends State<PulsaPage> {
                       if (inputNominal == null) {
                         PulsaDialog().praNullNominalDialog(context);
                       } else {
-                        setState(() {
-                          _isHide = true;
-                        });
                         sendToServer();
                       }
                     },
@@ -365,8 +359,11 @@ class _PulsaPageState extends State<PulsaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Nomor Salah";
+    if (value.length <= 10 &&
+        value.length <= 11 &&
+        value.length <= 12 &&
+        value.length <= 13) {
+      return "Format Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
     }
@@ -376,6 +373,9 @@ class _PulsaPageState extends State<PulsaPage> {
   void sendToServer() {
     if (_key.currentState.validate()) {
       _key.currentState.save();
+      setState(() {
+        _isHide = true;
+      });
       String nomor = inputNomor.toString();
       // int nominal = int.parse(inputNominal.toString());
       String providerNama = namaProv.toString();

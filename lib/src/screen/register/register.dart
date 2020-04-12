@@ -48,8 +48,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Container(
-                    height: 100,
-                    width: 200,
+                    height: 65,
+                    width: 150,
                     margin: EdgeInsets.only(bottom: 60),
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15.0),

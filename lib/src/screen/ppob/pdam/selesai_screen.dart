@@ -89,7 +89,7 @@ class _SelesaiPageState extends State<SelesaiPage> {
                                 ),
                                 Container(
                                   child: Text(
-                                      "${formatTanggal(dateLunas)} ${formatterTime.toString()}"),
+                                      "${formatTanggal(dateLunas)}, ${formatterTime.toString()}"),
                                 ),
                                 Container(
                                   child: Text('via Un1ty'),
