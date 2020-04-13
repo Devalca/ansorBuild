@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:ansor_build/src/service/local_service.dart';
@@ -14,10 +15,11 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   LocalService _localServices = LocalService();
 
-  Future cekLogin() async{
+  Future cekLogin() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    if(pref.getBool("isLogin") == false){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => new Login()));
+    if (pref.getBool("isLogin") == false) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => new Login()));
     }
   }
 
@@ -31,7 +33,7 @@ class _LandingPageState extends State<LandingPage> {
   ];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     cekLogin();
   }
@@ -53,28 +55,20 @@ class _LandingPageState extends State<LandingPage> {
                 userId = "0";
                 isLogin = false;
 
-                _localServices
-                    .saveWalletId(walletId)
-                    .then((bool committed) {
+                _localServices.saveWalletId(walletId).then((bool committed) {
                   print(walletId);
                 });
 
-                _localServices
-                    .saveUserId(userId)
-                    .then((bool committed) {
+                _localServices.saveUserId(userId).then((bool committed) {
                   print(userId);
                 });
 
-                _localServices
-                    .isLogin(isLogin)
-                    .then((bool committed) {
+                _localServices.isLogin(isLogin).then((bool committed) {
                   print(isLogin);
                 });
 
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (__) => new RegisterPage()));
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    Routes.LoginScreen, (Route<dynamic> route) => false);
               },
             ),
           ),

@@ -8,13 +8,12 @@ import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart'
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/permissions_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PulsaPascaPage extends StatefulWidget {
-  final String noValue2;
-  PulsaPascaPage(this.noValue2);
 
   @override
   _PulsaPascaPageState createState() => _PulsaPascaPageState();
@@ -36,34 +35,42 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
 
   @override
   void initState() {
-    setState(() {
-      if (widget.noValue2 == null) {
-        print("noValue2 Kosong");
-      } else if (widget.noValue2 != "") {
-        _controllerNomor.text = widget.noValue2
-            .toString()
-            .replaceAll("+62", "0")
-            .replaceAll("-", "")
-            .replaceAll(" ", "");
-        if (_controllerNomor.text != null) {
-          cekNo = _controllerNomor.text;
-          testProv = cekNo.substring(0, 4);
-        }
-      }
-    });
     _localService.getWalletId().then(updateWallet);
     super.initState();
   }
 
-  void dispose() {
-    _controllerNomor.dispose();
-    super.dispose();
-  }
-
-  void updateWallet(String idWallet) {
+   void updateWallet(String idWallet) {
     setState(() {
       this._idWallet = idWallet;
     });
+  }
+
+    void moveToContactPage() async {
+    final passNomor = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+          fullscreenDialog: true, builder: (context) => ContactsPage2()),
+    );
+    updateNomorPasca(passNomor);
+  }
+
+  void updateNomorPasca(String passNomor) {
+    setState(() {
+        if (passNomor != null) {
+        _controllerNomor.text = passNomor
+            .toString()
+            .replaceAll("+62", "0")
+            .replaceAll("-", "")
+            .replaceAll(" ", "");
+            cekNo = _controllerNomor.text;
+          testProv = cekNo.substring(0, 4);
+      }
+    });
+  }
+
+    void dispose() {
+    _controllerNomor.dispose();
+    super.dispose();
   }
 
   @override
@@ -119,9 +126,14 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 50, top: 4),
+                        padding: EdgeInsets.only(right: 44, top: 4),
                         height: 30,
-                        child: Image.network(logoProv),
+                        child: logoProv == ""
+                            ? Container(
+                                height: 5,
+                                width: 5,
+                              )
+                            : Image.network(logoProv),
                       ),
                       Container(
                           padding: EdgeInsets.only(
@@ -179,7 +191,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(top: 12.0),
-                    child: Text('Nomor Handphone'),
+                    child: Text("Nomor Handphone"),
                   ),
                   Padding(
                       padding: const EdgeInsets.only(top: 12.0),
@@ -226,7 +238,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                   child: RaisedButton(
                     color: Colors.green,
                     onPressed: () {
-                        _sendToServer();
+                      _sendToServer();
                     },
                     child: Text(
                       'BELI',
@@ -283,8 +295,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     final PermissionStatus permissionStatus =
         await PermissionsService().getPermissionContact();
     if (permissionStatus == PermissionStatus.granted) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ContactsPage2()));
+      moveToContactPage();
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => ContactsPage2()));
     } else {
       PermissionsService().requestContactsPermission(onPermissionDenied: () {
         print('Permission has been denied');
