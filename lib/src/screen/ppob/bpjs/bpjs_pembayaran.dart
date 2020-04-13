@@ -393,7 +393,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                   ),
                                                   Container(
                                                     child: Text(tanggal(periode)
-                                                        .substring(1)),
+                                                        .substring(2)),
                                                   ),
                                                 ],
                                               ),
