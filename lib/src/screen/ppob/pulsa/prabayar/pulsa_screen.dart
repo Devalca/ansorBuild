@@ -93,7 +93,7 @@ class _PulsaPageState extends State<PulsaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       // resizeToAvoidBottomPadding: false,
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 6.0),
         child:
             Form(key: _key, autovalidate: _validate, child: _isHideValidasi()),
@@ -106,7 +106,7 @@ class _PulsaPageState extends State<PulsaPage> {
       return _formPulsaInput();
     } else {
       return Container(
-        height: 400,
+        height: 200,
         child: centerLoading(),
       );
     }
@@ -194,7 +194,7 @@ class _PulsaPageState extends State<PulsaPage> {
                   );
                 case ConnectionState.waiting:
                   return Container(
-                    height: 400,
+                    height: 200,
                     child: centerLoading(),
                   );
                 default:

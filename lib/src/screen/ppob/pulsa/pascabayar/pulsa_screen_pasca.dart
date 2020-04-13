@@ -154,7 +154,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             return Text("Jaringan Bermasalah");
           }
           return Container(
-            height: 400,
+            height: 200,
             alignment: Alignment.center,
             child: Center(
               child: CircularProgressIndicator(),
@@ -187,49 +187,63 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(bottom: 10),
-              child: Column(
-                children: <Widget>[
-                  Divider(color: Colors.black),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          // children: <Widget>[Text('Total'), Text('Rp')],
-                        ),
-                      ),
-                      Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: RaisedButton(
-                            onPressed: () {
-                              _sendToServer();
-                            },
-                            child: Text(
-                              "beli".toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            color: Colors.green,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            )
+            _btnNext()
           ],
         ),
       );
     } else {
       return centerLoading();
     }
+  }
+
+    Widget _btnNext() {
+    return Container(
+      margin: EdgeInsets.only(top: 10.0),
+      child: Column(
+        children: <Widget>[
+          Divider(
+            height: 12,
+            color: Colors.black,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // children: <Widget>[
+                  //   Container(
+                  //     child: Text('Total'),
+                  //   ),
+                  //   Container(
+                  //       child: Text(hargaNominal == null ? "" : hargaNominal)),
+                  // ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: 100.0,
+                  child: RaisedButton(
+                    color: Colors.green,
+                    onPressed: () {
+                      if (inputNominal == null) {
+                        PulsaDialog().praNullNominalDialog(context);
+                      } else {
+                        _sendToServer();
+                      }
+                    },
+                    child: Text(
+                      'BELI',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   void _sendToServer() {
