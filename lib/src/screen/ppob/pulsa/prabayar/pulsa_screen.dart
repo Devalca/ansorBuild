@@ -93,7 +93,7 @@ class _PulsaPageState extends State<PulsaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       // resizeToAvoidBottomPadding: false,
-      body: SingleChildScrollView(
+      body: Container(
         padding: EdgeInsets.symmetric(horizontal: 6.0),
         child:
             Form(key: _key, autovalidate: _validate, child: _isHideValidasi()),
@@ -359,9 +359,7 @@ class _PulsaPageState extends State<PulsaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    if (value.length <= 10 &&
-        value.length <= 11 &&
-        value.length <= 12 &&
+    if (value.length < 9 &&
         value.length <= 13) {
       return "Format Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
