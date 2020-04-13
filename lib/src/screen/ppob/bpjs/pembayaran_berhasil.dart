@@ -379,7 +379,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                           .data
                                                                           .data[
                                                                               0]
-                                                                          .totalTagihan),
+                                                                          .total),
                                                                   style: new TextStyle(
                                                                       fontSize:
                                                                           12.0)),
@@ -807,7 +807,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                           .data
                                                                           .data[
                                                                               0]
-                                                                          .totalTagihan),
+                                                                          .total),
                                                                   style: new TextStyle(
                                                                       fontSize:
                                                                           12.0)),
