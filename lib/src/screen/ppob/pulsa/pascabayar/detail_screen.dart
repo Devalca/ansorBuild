@@ -147,7 +147,7 @@ class _DetailPageState extends State<DetailPage> {
                                             child: Text('Periode'),
                                           ),
                                           Container(
-                                            child: Text(formatTanggal(dateTime)
+                                            child: Text(formatBlnTahun(dateTime)
                                                 .toString()),
                                           ),
                                         ],
