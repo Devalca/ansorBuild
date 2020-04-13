@@ -159,6 +159,7 @@ class _LoginState extends State<Login> {
                         child:
                             Text("OK", style: TextStyle(color: Colors.green)),
                         onPressed: () {
+                          setState(() => _isLoading = false);
                           Navigator.of(context).pop();
                         },
                       )
