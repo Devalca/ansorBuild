@@ -141,8 +141,8 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                                       Center(
                                         child: Text(
-                                            tgl(periode) +
-                                                tanggal(periode).substring(1) +
+                                            tgl(periode) + " " +
+                                                tanggal(periode).substring(2) +
                                                 ", " +
                                                 DateFormat('HH:mm')
                                                     .format(periode),
@@ -460,8 +460,8 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
 
                                       Center(
                                         child: Text(
-                                            tgl(periode) +
-                                                tanggal(periode).substring(1) +
+                                            tgl(periode) + " " +
+                                                tanggal(periode).substring(2) +
                                                 ", " +
                                                 DateFormat('HH:mm')
                                                     .format(periode),

@@ -429,7 +429,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                                       Container(
                                                         child: Text(
                                                             tanggal(periode)
-                                                                .substring(1)),
+                                                                .substring(2)),
                                                       ),
                                                     ],
                                                   ),
