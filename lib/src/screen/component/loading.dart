@@ -3,6 +3,7 @@ import 'package:ansor_build/src/screen/ppob/pdam/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
+import 'package:ansor_build/src/screen/ppob/trans_gagal.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -52,14 +53,19 @@ Future<void> saldoMinDialog(BuildContext context) async {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            title: Text('Saldo Tidak Cukup', style: TextStyle(color: Colors.green)),
+            title: Text('Saldo Tidak Cukup',
+                style: TextStyle(color: Colors.green)),
             content: const Text(
                 'Silahkan lakukan pengisian ulang saldo sebelum melakukan transaksi lagi'),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (_) => TransGagalPage()))
+                      .then((result) {
+                    Navigator.of(context).pop();
+                  });
                 },
               ),
             ],
@@ -162,45 +168,49 @@ class PulsaDialog {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Nomor Tidak Terdaftar', style: TextStyle(color: Colors.green)),
-            content: const Text(
-                'Silahkan periksa kembali nomor yang anda masukan'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      });
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text('Nomor Tidak Terdaftar',
+                  style: TextStyle(color: Colors.green)),
+              content: const Text(
+                  'Silahkan periksa kembali nomor yang anda masukan'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Future<void> pascaDoneDialog(BuildContext context) async {
     return showDialog<void>(
         context: context,
         barrierDismissible: false,
-         builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Transkasi pembayaran sedang di proses mohon tunggu', style: TextStyle(color: Colors.green),),
-            // actions: <Widget>[
-            //   FlatButton(
-            //     child: Text('Ok'),
-            //     onPressed: () {
-            //       Navigator.of(context).pop();
-            //     },
-            //   ),
-            // ],
-          ),
-        );
-      });
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text(
+                'Transkasi pembayaran sedang di proses mohon tunggu',
+                style: TextStyle(color: Colors.green),
+              ),
+              // actions: <Widget>[
+              //   FlatButton(
+              //     child: Text('Ok'),
+              //     onPressed: () {
+              //       Navigator.of(context).pop();
+              //     },
+              //   ),
+              // ],
+            ),
+          );
+        });
   }
 
   Future<void> praNullNominalDialog(BuildContext context) async {
@@ -209,21 +219,24 @@ class PulsaDialog {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Pemberitahuan', style: TextStyle(color: Colors.green),),
-            content: const Text(
-                'Silahkan pilih nominal sebelum melanjutkan pembelian pulsa'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                 Navigator.of(context).pop();
-                },
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text(
+                'Pemberitahuan',
+                style: TextStyle(color: Colors.green),
               ),
-            ],
-          ),
-        );
+              content: const Text(
+                  'Silahkan pilih nominal sebelum melanjutkan pembelian pulsa'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
         });
   }
 }
@@ -240,11 +253,12 @@ class PdamDialog {
         builder: (BuildContext context) {
           Future.delayed(Duration(seconds: 4), () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (__) => DetailPagePdam(transIdName))).then((result) {
-                       Navigator.of(context).pop();
-                    });
+                    context,
+                    MaterialPageRoute(
+                        builder: (__) => DetailPagePdam(transIdName)))
+                .then((result) {
+              Navigator.of(context).pop();
+            });
           });
           return new WillPopScope(
               onWillPop: () async => false,
@@ -306,22 +320,25 @@ class PdamDialog {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-           return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Data Tidak Ditemukan', style: TextStyle(color: Colors.green),),
-            content: const Text(
-                'Wilayah dan no pelanggan tidak cocok, silahkan periksa kembali data yang anda masukan'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                 Navigator.of(context).pop();
-                },
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text(
+                'Data Tidak Ditemukan',
+                style: TextStyle(color: Colors.green),
               ),
-            ],
-          ),
-        );
+              content: const Text(
+                  'Wilayah dan no pelanggan tidak cocok, silahkan periksa kembali data yang anda masukan'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
         });
   }
 
@@ -331,21 +348,24 @@ class PdamDialog {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Pemberitahuan', style: TextStyle(color: Colors.green),),
-            content: const Text(
-                'Anda sudah membayar untuk bulan ini'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                 Navigator.of(context).pop();
-                },
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text(
+                'Pemberitahuan',
+                style: TextStyle(color: Colors.green),
               ),
-            ],
-          ),
-        );
+              content: const Text('Anda sudah membayar untuk bulan ini'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Routes.LandingScreen, (Route<dynamic> route) => false);
+                  },
+                ),
+              ],
+            ),
+          );
         });
   }
 }
