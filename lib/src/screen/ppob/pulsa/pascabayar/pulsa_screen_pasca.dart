@@ -80,7 +80,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
       return "Nomor Boleh Kosong";
-    } else if (value.length <= 10 && value.length <= 11 && value.length <= 12 && value.length <= 13) {
+    } else if (value.length < 9 && value.length <= 13) {
       return "Format Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
@@ -196,7 +196,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     }
   }
 
-    Widget _btnNext() {
+  Widget _btnNext() {
     return Container(
       margin: EdgeInsets.only(top: 10.0),
       child: Column(
@@ -226,11 +226,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                   child: RaisedButton(
                     color: Colors.green,
                     onPressed: () {
-                      if (inputNominal == null) {
-                        PulsaDialog().praNullNominalDialog(context);
-                      } else {
                         _sendToServer();
-                      }
                     },
                     child: Text(
                       'BELI',
