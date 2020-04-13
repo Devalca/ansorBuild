@@ -29,7 +29,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   getAllContacts() async {
-    List<Contact> _contacts = (await ContactsService.getContacts()).toList();
+    List<Contact> _contacts = (await ContactsService.getContacts(withThumbnails: false)).toList();
     setState(() {
       contacts = _contacts;
     });
