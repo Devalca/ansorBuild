@@ -118,11 +118,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     title: Text(contact.displayName),
                       onTap: () {
                       String noValue = contact.phones.elementAt(0).value;
-                      String noValue2;
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainPulsa(noValue, noValue2)));
+                      Navigator.pop(context, noValue);
                     },
                     subtitle: Text(
                       contact.phones.elementAt(0).value
@@ -259,11 +255,7 @@ class _ContactsPage2State extends State<ContactsPage2> {
                     title: Text(contact.displayName),
                      onTap: () {
                       String noValue2 = contact.phones.elementAt(0).value;
-                      String noValue;
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainPulsa(noValue, noValue2)));
+                      Navigator.pop(context, noValue2);
                      },
                     subtitle: Text(
                       contact.phones.elementAt(0).value

@@ -47,7 +47,7 @@ class _MainPulsaState extends State<MainPulsa> {
           body: SingleChildScrollView(
             child: Container(
               color: Colors.white,
-              height: 900,
+              height: 950,
               child: Stack(
                 fit: StackFit.expand,
                 overflow: Overflow.clip,
@@ -112,7 +112,7 @@ class _MainPulsaState extends State<MainPulsa> {
                         physics: NeverScrollableScrollPhysics(),
                         children: <Widget>[
                           PulsaPage(noValue),
-                          PulsaPascaPage(noValue2),
+                          PulsaPascaPage(),
                         ],
                       ),
                     ),

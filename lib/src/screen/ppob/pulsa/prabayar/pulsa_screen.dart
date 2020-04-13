@@ -58,34 +58,42 @@ class _PulsaPageState extends State<PulsaPage> {
         _providerForDisplay = _provider;
       });
     });
-    setState(() {
-      if (widget.noValue == null) {
-        print("noValue Kosong");
-      } else if (widget.noValue != "") {
-        _controllerNomor.text = widget.noValue
-            .toString()
-            .replaceAll("+62", "0")
-            .replaceAll("-", "")
-            .replaceAll(" ", "");
-        if (_controllerNomor.text != null) {
-          cekNo = _controllerNomor.text;
-          testProv = cekNo.substring(0, 4);
-        }
-      }
-    });
     _localService.getWalletId().then(updateWallet);
     super.initState();
-  }
-
-  void dispose() {
-    _controllerNomor.dispose();
-    super.dispose();
   }
 
   void updateWallet(String idWallet) {
     setState(() {
       this._idWallet = idWallet;
     });
+  }
+
+  void moveToContactPage() async {
+    final passNomor = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+          fullscreenDialog: true, builder: (context) => ContactsPage()),
+    );
+    updateNomorPasca(passNomor);
+  }
+
+  void updateNomorPasca(String passNomor) {
+    setState(() {
+      if (passNomor != null) {
+        _controllerNomor.text = passNomor
+            .toString()
+            .replaceAll("+62", "0")
+            .replaceAll("-", "")
+            .replaceAll(" ", "");
+        cekNo = _controllerNomor.text;
+        testProv = cekNo.substring(0, 4);
+      }
+    });
+  }
+
+    void dispose() {
+    _controllerNomor.dispose();
+    super.dispose();
   }
 
   @override
@@ -359,8 +367,7 @@ class _PulsaPageState extends State<PulsaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    if (value.length < 9 &&
-        value.length <= 13) {
+    if (value.length < 9 && value.length <= 13) {
       return "Format Nomor Salah";
     } else if (!regExp.hasMatch(value)) {
       return "Harus Angka";
@@ -393,8 +400,10 @@ class _PulsaPageState extends State<PulsaPage> {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
             await Future.delayed(const Duration(seconds: 4));
-            Navigator.push(context,
-                MaterialPageRoute(builder: (__) => DetailPage(userUid, namaProv)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (__) => DetailPage(userUid, namaProv)));
             setState(() {
               _isHide = false;
             });
@@ -418,8 +427,9 @@ class _PulsaPageState extends State<PulsaPage> {
     final PermissionStatus permissionStatus =
         await PermissionsService().getPermissionContact();
     if (permissionStatus == PermissionStatus.granted) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ContactsPage()));
+      moveToContactPage();
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => ContactsPage()));
     } else {
       PermissionsService().requestContactsPermission(onPermissionDenied: () {
         print('Permission has been denied');
