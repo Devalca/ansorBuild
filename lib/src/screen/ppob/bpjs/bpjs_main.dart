@@ -1,4 +1,5 @@
 import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_kesehatan.dart'
     as kesehatan;
@@ -53,11 +54,10 @@ class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin {
                 color: Colors.black,
               ),
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        Routes.LandingScreen, (Route<dynamic> route) => false);
-                  }),
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () => Navigator.push(context,
+                    new MaterialPageRoute(builder: (__) => new LandingPage())),
+              ),
               elevation: 0.2,
               backgroundColor: Colors.white,
               title: Text(
