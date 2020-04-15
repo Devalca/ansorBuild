@@ -1,5 +1,6 @@
 import 'package:ansor_build/src/model/bpjs_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
 import 'package:ansor_build/src/service/local_service.dart';
@@ -85,7 +86,10 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
             leading: IconButton(
                 icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.pop(context, true);
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (__) => new Bpjs()));
                 }),
             backgroundColor: Colors.white,
             title: Text(

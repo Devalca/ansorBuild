@@ -450,9 +450,9 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(height: 15),
                                               Center(
                                                 child: Text(
-                                                    tgl(createdAt) +
+                                                    tgl(createdAt) + " " +
                                                         tanggal(createdAt)
-                                                            .substring(1) +
+                                                            .substring(2) +
                                                         ", " +
                                                         DateFormat('HH:mm')
                                                             .format(createdAt),

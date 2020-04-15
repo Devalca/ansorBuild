@@ -44,7 +44,10 @@ class _BpjsBulanState extends State<BpjsBulan> {
             leading: IconButton(
                 icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  Navigator.pop(context, true);
+                  Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (__) => new Bpjs()));
                 }),
             backgroundColor: Colors.white,
             title: Text(

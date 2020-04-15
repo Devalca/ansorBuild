@@ -188,15 +188,15 @@ class _LoginState extends State<Login> {
                           Center(
                             child: Container(
                                 margin: EdgeInsets.symmetric(horizontal: 12.0),
-                                height: 80.0,
-                                width: 190.0,
+                                height: 110.0,
+                                width: 220.0,
                                 child: Image.asset(
                                     'lib/src/assets/lapakSahabat.png')),
                           ),
                           Container(height: 20),
                           Container(
                               child: Text("No HP",
-                                  style: new TextStyle(fontSize: 12.0),
+                                  style: new TextStyle(fontSize: 14.0),
                                   textAlign: TextAlign.start)),
                           TextField(
                             inputFormatters: [
@@ -221,7 +221,7 @@ class _LoginState extends State<Login> {
                           Container(height: 10),
                           Container(
                               child: Text("Kata Sandi",
-                                  style: new TextStyle(fontSize: 12.0),
+                                  style: new TextStyle(fontSize: 14.0),
                                   textAlign: TextAlign.start)),
                           TextField(
                             controller: _passwordController,
