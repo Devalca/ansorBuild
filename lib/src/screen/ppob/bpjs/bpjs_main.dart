@@ -1,5 +1,4 @@
-import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
+import 'package:ansor_build/src/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_kesehatan.dart'
     as kesehatan;
@@ -10,7 +9,14 @@ class Bpjs extends StatefulWidget {
   final int index, periode;
   final String tgl, nm, bln;
   final String noVa, noKtp;
-  Bpjs({this.index, this.tgl, this.nm, this.bln, this.periode, this.noVa, this.noKtp});
+  Bpjs(
+      {this.index,
+      this.tgl,
+      this.nm,
+      this.bln,
+      this.periode,
+      this.noVa,
+      this.noKtp});
 
   @override
   _BpjsState createState() => _BpjsState();
@@ -47,11 +53,11 @@ class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin {
                 color: Colors.black,
               ),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  Navigator.pop(context, true);
-                }
-              ),
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Routes.LandingScreen, (Route<dynamic> route) => false);
+                  }),
               elevation: 0.2,
               backgroundColor: Colors.white,
               title: Text(
@@ -100,8 +106,12 @@ class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin {
                     body: TabBarView(
                       physics: NeverScrollableScrollPhysics(),
                       children: <Widget>[
-                        kesehatan.BpjsKesehatan(tgl: widget.tgl, nm: widget.nm, noVa: widget.noVa),
-                        ketenagakerjaan.BpjsKetenagakerjaan(bln: widget.bln, periode: widget.periode, noKtp: widget.noKtp),
+                        kesehatan.BpjsKesehatan(
+                            tgl: widget.tgl, nm: widget.nm, noVa: widget.noVa),
+                        ketenagakerjaan.BpjsKetenagakerjaan(
+                            bln: widget.bln,
+                            periode: widget.periode,
+                            noKtp: widget.noKtp),
                       ],
                     ),
                   ),
