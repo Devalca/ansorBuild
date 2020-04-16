@@ -476,7 +476,7 @@ class _BerandaPageState extends State<BerandaPage> {
       padding: EdgeInsets.only(
         left: 16.0,
         right: 16.0,
-        bottom: 16.0,
+        bottom: 30.0,
       ),
       child: Column(
         children: <Widget>[
@@ -510,7 +510,6 @@ class _BerandaPageState extends State<BerandaPage> {
                       ),
                       Container(
                           height: 30,
-                          width: 80,
                           decoration: BoxDecoration(
                               color: Colors.green,
                               border: Border.all(width: 1, color: Colors.green),
