@@ -28,6 +28,7 @@ dependencies:
   indonesia: ^1.0.1
   permission_handler: ^4.0.0
   contacts_service: ^0.3.10
+  pin_entry_text_field: ^0.1.4
   # contact_picker: ^0.0.2
 
   # The following adds the Cupertino Icons font to your application.
@@ -55,7 +56,9 @@ flutter:
     # Example Icon
     - lib/src/assets/qr-code.png
     # Logo Apps
-    - lib/src/assets/lapakSahabat.png
+    - lib/src/assets/lapak_sahabat.png
+    - lib/src/assets/sahabat_text.png
+    - lib/src/assets/sahabat_logo.png
     # Iklan Apps
     - lib/src/assets/BANNER_PULSA.jpg
     - lib/src/assets/BANNER_ATAS.jpg
@@ -66,7 +69,6 @@ flutter:
     - lib/src/assets/LISTRIK.png
     - lib/src/assets/PDAM.png
     - lib/src/assets/PULSA.png
-    - lib/src/assets/lapak_sahabat.png
     - lib/src/assets/XMLID_2.svg
     - lib/src/assets/produk.jpeg
     - lib/src/assets/CARI_MASJID.png

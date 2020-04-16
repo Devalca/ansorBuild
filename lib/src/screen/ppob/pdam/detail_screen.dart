@@ -83,13 +83,16 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           future: getDetailId(),
           builder: (context, snapshot) {
             if (_detailForDisplay.length == 0) {
-              return centerLoading();
+              // return centerLoading();
+              return Text('Result: ${snapshot.error}');
             } else {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
-                  return Text('Mulai');
+                  // return Text('Mulai');
+                  return Text('Result: ${snapshot.error}');
                 case ConnectionState.waiting:
-                  return centerLoading();
+                  // return centerLoading();
+                  return Text('Result: ${snapshot.error}');
                 default:
                   if (snapshot.hasData) {
                     return SingleChildScrollView(

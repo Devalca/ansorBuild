@@ -4,6 +4,7 @@ import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/trans_gagal.dart';
+import 'package:ansor_build/src/screen/register/pin.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -116,8 +117,10 @@ class RegistDialog {
               FlatButton(
                 child: Text('Ok'),
                 onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      Routes.LoginScreen, (Route<dynamic> route) => false);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (_) => PinRegistPage()));
+                  // Navigator.of(context).pushNamedAndRemoveUntil(
+                  //     Routes.LoginScreen, (Route<dynamic> route) => false);
                 },
               ),
             ],
