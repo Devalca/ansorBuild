@@ -269,7 +269,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                                                   : Colors.grey[300],
                                               width: 1)),
                                       width: 158,
-                                      height: 58,
                                       padding: const EdgeInsets.all(10.0),
                                       child: SingleChildScrollView(
                                           child: new Column(
@@ -315,7 +314,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                                                   : Colors.grey[300],
                                               width: 1)),
                                       width: 158,
-                                      height: 58,
                                       padding: const EdgeInsets.all(10.0),
                                       child: SingleChildScrollView(
                                           child: new Column(
@@ -370,7 +368,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                                                   : Colors.grey[300],
                                               width: 1)),
                                       width: 158,
-                                      height: 58,
                                       padding: const EdgeInsets.all(10.0),
                                       child: SingleChildScrollView(
                                           child: new Column(
@@ -417,7 +414,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                                                   : Colors.grey[300],
                                               width: 1)),
                                       width: 158,
-                                      height: 58,
                                       padding: const EdgeInsets.all(10.0),
                                       child: SingleChildScrollView(
                                           child: new Column(
@@ -472,7 +468,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                                                   : Colors.grey[300],
                                               width: 1)),
                                       width: 158,
-                                      height: 58,
                                       padding: const EdgeInsets.all(10.0),
                                       child: SingleChildScrollView(
                                           child: new Column(
@@ -519,7 +514,6 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                                                   : Colors.grey[300],
                                               width: 1)),
                                       width: 158,
-                                      height: 58,
                                       padding: const EdgeInsets.all(10.0),
                                       child: SingleChildScrollView(
                                           child: new Column(
