@@ -18,7 +18,7 @@ class _LauncherPageState extends State<LauncherPage> {
   }
 
   startLaunching() async {
-    var duration = const Duration(seconds: 6);
+    var duration = const Duration(seconds: 3);
     return new Timer(duration, () {
       userLogin();
     });
