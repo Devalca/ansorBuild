@@ -1,8 +1,7 @@
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/detail_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/trans_gagal.dart';
 import 'package:ansor_build/src/screen/register/pin.dart';
 import 'package:flutter/material.dart';
@@ -295,7 +294,7 @@ class PdamDialog {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (__) => DetailPagePdam(transUrlName)));
+                    builder: (__) => SesPdamPage(transUrlName)));
           });
           return new WillPopScope(
               onWillPop: () async => false,

@@ -191,7 +191,7 @@ class _LoginState extends State<Login> {
                                 height: 110.0,
                                 width: 220.0,
                                 child: Image.asset(
-                                    'lib/src/assets/lapakSahabat.png')),
+                                    'lib/src/assets/lapak_sahabat.png')),
                           ),
                           Container(height: 20),
                           Container(
