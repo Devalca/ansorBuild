@@ -432,7 +432,7 @@ class _LoginState extends State<Login> {
                                         fontSize: 14.0, color: Colors.black),
                                     children: <TextSpan>[
                                       TextSpan(
-                                          text: " Daftar",
+                                          text: " DAFTAR",
                                           style: TextStyle(
                                               fontSize: 14.0,
                                               color: Colors.green)),
