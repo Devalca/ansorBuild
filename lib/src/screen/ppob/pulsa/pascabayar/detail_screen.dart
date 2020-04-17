@@ -313,12 +313,12 @@ class _DetailPageState extends State<DetailPage> {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
                                     userUid = blok['id'].toString();
-                                    PulsaDialog().nPulsaDialog(context);
                                     _localService
                                         .saveIdName(userUid)
                                         .then((bool committed) {
                                       print("INI USERID :" + userUid);
                                     });
+                                    PulsaDialog().nPulsaDialog(context);
                                   } else if (response.statusCode == 409) {
                                     PulsaDialog().pascaDoneDialog(context);
                                   } else if (response.statusCode == 403) {

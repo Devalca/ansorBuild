@@ -9,7 +9,6 @@ import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../selseai_screen.dart';
 
 class DetailPage extends StatefulWidget {
   final String koId;
@@ -98,7 +97,7 @@ class _DetailPageState extends State<DetailPage> {
                                     height: 90.0,
                                     width: 90.0,
                                     child:
-                                        Image.asset("lib/src/assets/PULSA.png"),
+                                        Image.asset("lib/src/assets/PULSA.png",  fit: BoxFit.fill,),
                                   ),
                                   Container(
                                     padding: const EdgeInsets.only(top: 5.0),
@@ -296,12 +295,12 @@ class _DetailPageState extends State<DetailPage> {
                                   if (response.statusCode == 200) {
                                     Map blok = jsonDecode(response.body);
                                     userUid = blok['id'].toString();
-                                    PulsaDialog().nPulsaDialog(context);
                                     _localService
                                         .saveIdName(userUid)
                                         .then((bool committed) {
                                       print("INI USERID :" + userUid);
                                     });
+                                    PulsaDialog().nPulsaDialog(context);
                                   } else if (response.statusCode == 403) {
                                     saldoMinDialog(context);
                                   } else {

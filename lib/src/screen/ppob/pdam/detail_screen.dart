@@ -83,16 +83,16 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           future: getDetailId(),
           builder: (context, snapshot) {
             if (_detailForDisplay.length == 0) {
-              // return centerLoading();
-              return Text('Result: ${snapshot.error}');
+              return centerLoading();
+              // return Text('Result: ${snapshot.error}');
             } else {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
                   // return Text('Mulai');
-                  return Text('Result: ${snapshot.error}');
+                  return Center(child: Text('${snapshot.error}'));
                 case ConnectionState.waiting:
-                  // return centerLoading();
-                  return Text('Result: ${snapshot.error}');
+                  return centerLoading();
+                // return Text('Result: ${snapshot.error}');
                 default:
                   if (snapshot.hasData) {
                     return SingleChildScrollView(
@@ -126,7 +126,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                               ],
                             )));
                   } else {
-                    return Text('Result: ${snapshot.error}');
+                    return Center(child: Text('${snapshot.error}'));
                   }
               }
             }
@@ -328,13 +328,12 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
             var headerUrl = response.headers['location'];
             if (response.headers != null) {
               if (response.statusCode == 403) {
-              saldoMinDialog(context);
+                saldoMinDialog(context);
               } else {
-              PdamDialog().nPdamDialog(context);
-              _localService.saveUrlName(headerUrl).then((bool committed) {
-              });
+                _localService.saveUrlName(headerUrl).then((bool committed) {});
+                PdamDialog().nPdamDialog(context);
               }
-            } 
+            }
           });
         },
         child: Text(

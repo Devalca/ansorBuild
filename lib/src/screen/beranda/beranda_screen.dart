@@ -442,18 +442,24 @@ class _BerandaPageState extends State<BerandaPage> {
                             builder: (context) => DetailKatalogPage()));
                   },
                   child: Container(
-                    margin: EdgeInsets.only(right: 16.0),
+                    margin: EdgeInsets.only(right: 10.0),
                     child: Column(
                       children: <Widget>[
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            // "lib/src/assets/produk.jpeg",
-                            productService[index].photos[1].photo,
-                            width: 132.0,
-                            height: 132.0,
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Container(
+                              width: 132.0, 
+                                      height: 132.0,
+                              child: productService[index].photos[0].photo == ""
+                                  ? Image.asset(
+                                      'lib/src/assets/placeholder.jpg',
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.network(
+                                      productService[index].photos[0].photo,
+                                       fit: BoxFit.fill,
+                                    ),
+                            )),
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),
                         ),

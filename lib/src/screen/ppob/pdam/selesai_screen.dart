@@ -7,15 +7,15 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class SelesaiPage extends StatefulWidget {
+class SesPdamPage extends StatefulWidget {
   final String headerUrl;
-  SelesaiPage(this.headerUrl);
+  SesPdamPage(this.headerUrl);
 
   @override
-  _SelesaiPageState createState() => _SelesaiPageState();
+  _SesPdamPageState createState() => _SesPdamPageState();
 }
 
-class _SelesaiPageState extends State<SelesaiPage> {
+class _SesPdamPageState extends State<SesPdamPage> {
   Future<DetailTrans> futureTrans;
 
   Future<DetailTrans> getDetailTrans() async {
@@ -28,11 +28,6 @@ class _SelesaiPageState extends State<SelesaiPage> {
       print("SATATUS Response: " + response.toString());
       throw Exception('Failed to load album');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
