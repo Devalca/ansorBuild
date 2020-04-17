@@ -188,8 +188,8 @@ class _LoginState extends State<Login> {
                           Center(
                             child: Container(
                                 margin: EdgeInsets.symmetric(horizontal: 12.0),
-                                height: 110.0,
-                                width: 220.0,
+                                height: 120.0,
+                                width: 230.0,
                                 child: Image.asset(
                                     'lib/src/assets/lapakSahabat.png')),
                           ),
@@ -407,7 +407,7 @@ class _LoginState extends State<Login> {
                             Container(
                                 child: Text("Lupa Password?",
                                     style: new TextStyle(
-                                      fontSize: 12.0,
+                                      fontSize: 14.0,
                                       color: Colors.green,
                                     ),
                                     textAlign: TextAlign.center)),
@@ -429,12 +429,12 @@ class _LoginState extends State<Login> {
                                 text: TextSpan(
                                     text: "Belum Punya Akun?",
                                     style: new TextStyle(
-                                        fontSize: 12.0, color: Colors.black),
+                                        fontSize: 14.0, color: Colors.black),
                                     children: <TextSpan>[
                                       TextSpan(
                                           text: " Daftar",
                                           style: TextStyle(
-                                              fontSize: 12.0,
+                                              fontSize: 14.0,
                                               color: Colors.green)),
                                     ]),
                               )),
