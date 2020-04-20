@@ -448,17 +448,13 @@ class _BerandaPageState extends State<BerandaPage> {
                         ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
                             child: Container(
-                              width: 132.0, 
-                                      height: 132.0,
-                              child: productService[index].photos[0].photo == ""
-                                  ? Image.asset(
-                                      'lib/src/assets/placeholder.jpg',
-                                      fit: BoxFit.fill,
-                                    )
-                                  : Image.network(
-                                      productService[index].photos[0].photo,
-                                       fit: BoxFit.fill,
-                                    ),
+                              width: 132.0,
+                              height: 132.0,
+                              child: FadeInImage.assetNetwork(
+                                  fadeInCurve: Curves.bounceIn,
+                                  placeholder: 'lib/src/assets/placeholder.jpg',
+                                  fit: BoxFit.fill,
+                                  image: productService[index].photos[0].photo),
                             )),
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),

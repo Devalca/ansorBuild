@@ -14,7 +14,6 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PulsaPascaPage extends StatefulWidget {
-
   @override
   _PulsaPascaPageState createState() => _PulsaPascaPageState();
 }
@@ -39,13 +38,13 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     super.initState();
   }
 
-   void updateWallet(String idWallet) {
+  void updateWallet(String idWallet) {
     setState(() {
       this._idWallet = idWallet;
     });
   }
 
-    void moveToContactPage() async {
+  void moveToContactPage() async {
     final passNomor = await Navigator.push(
       context,
       CupertinoPageRoute(
@@ -56,19 +55,19 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
 
   void updateNomorPasca(String passNomor) {
     setState(() {
-        if (passNomor != null) {
+      if (passNomor != null) {
         _controllerNomor.text = passNomor
             .toString()
             .replaceAll("+62", "0")
             .replaceAll("-", "")
             .replaceAll(" ", "");
-            cekNo = _controllerNomor.text;
-          testProv = cekNo.substring(0, 4);
+        cekNo = _controllerNomor.text;
+        testProv = cekNo.substring(0, 4);
       }
     });
   }
 
-    void dispose() {
+  void dispose() {
     _controllerNomor.dispose();
     super.dispose();
   }
@@ -86,11 +85,13 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
-      return "Nomor Boleh Kosong";
-    } else if (value.length < 9 && value.length <= 13) {
-      return "Format Nomor Salah";
+      return "Wajib diisi";
+    } else if (value.substring(0, 2) != "08") {
+      return "Format nomor salah";
+    } else if (value.length < 10) {
+      return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
+      return "Format nomor salah";
     }
     return null;
   }
@@ -103,7 +104,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             List<Provider> providers = snapshot.data.data;
             return TextFormField(
               inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
+                LengthLimitingTextInputFormatter(13),
               ],
               controller: _controllerNomor,
               keyboardType: TextInputType.phone,
@@ -152,11 +153,16 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         mobi = providers[i].namaProvider;
                         logoProv = providers[i].file.toString();
                       });
+                    } else {
+                      setState(() {
+                        _validate = true;
+                      });
                     }
                   } else if (value.length == 3) {
                     setState(() {
                       mobi = "";
                       logoProv = "";
+                      _validate = false;
                     });
                   }
                 }
@@ -295,6 +301,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     final PermissionStatus permissionStatus =
         await PermissionsService().getPermissionContact();
     if (permissionStatus == PermissionStatus.granted) {
+            setState(() {
+        _validate = false;
+      });
       moveToContactPage();
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => ContactsPage2()));

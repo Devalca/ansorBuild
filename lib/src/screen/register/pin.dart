@@ -33,7 +33,9 @@ class _PinRegistPageState extends State<PinRegistPage> {
                 Container(
                     margin: EdgeInsets.only(top: 10.0, bottom: 70.0),
                     child: Text(
-                        "Silahkan buat PIN untuk menambah keamanan akun Anda")),
+                        "Silahkan buat PIN untuk menambah keamanan akun Anda",
+                        textAlign: TextAlign.center,
+                        )),
                 PinEntryTextField(
                   fields: 6,
                   onSubmit: (String pin) {

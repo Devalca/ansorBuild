@@ -91,7 +91,7 @@ class _PulsaPageState extends State<PulsaPage> {
     });
   }
 
-    void dispose() {
+  void dispose() {
     _controllerNomor.dispose();
     super.dispose();
   }
@@ -129,7 +129,7 @@ class _PulsaPageState extends State<PulsaPage> {
         Padding(
           padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
           child: TextFormField(
-              inputFormatters: [LengthLimitingTextInputFormatter(12)],
+              inputFormatters: [LengthLimitingTextInputFormatter(13)],
               keyboardType: TextInputType.phone,
               validator: validateNomor,
               onSaved: (String val) {
@@ -180,12 +180,17 @@ class _PulsaPageState extends State<PulsaPage> {
                         logoProv = _providerForDisplay[i].file.toString();
                         testProv = "";
                       });
+                    } else {
+                      setState(() {
+                        _validate = true;
+                      });
                     }
                   } else if (value.length == 3) {
                     setState(() {
                       idProv = "";
                       namaProv = "";
                       logoProv = "";
+                      _validate = false;
                     });
                   }
                 }
@@ -367,10 +372,14 @@ class _PulsaPageState extends State<PulsaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    if (value.length < 9 && value.length <= 13) {
-      return "Format Nomor Salah";
+    if (value.isEmpty) {
+      return "Wajib diisi";
+    } else if (value.substring(0, 2) != "08") {
+      return "Format nomor salah";
+    } else if (value.length < 10) {
+      return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
+      return "Format nomor salah";
     }
     return null;
   }

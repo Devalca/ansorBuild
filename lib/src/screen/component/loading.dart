@@ -1,5 +1,7 @@
 import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/detail_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/trans_gagal.dart';
@@ -53,16 +55,16 @@ Future<void> saldoMinDialog(BuildContext context) async {
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
-            title: Text('Saldo Tidak Cukup',
+            title: Text('Transaksi Gagal',
                 style: TextStyle(color: Colors.green)),
             content: const Text(
-                'Silahkan lakukan pengisian ulang saldo sebelum melakukan transaksi lagi'),
+                "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo"),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
                 onPressed: () {
                   Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => TransGagalPage()))
+                          MaterialPageRoute(builder: (_) => MainPulsa("", "")))
                       .then((result) {
                     Navigator.of(context).pop();
                   });
@@ -87,7 +89,7 @@ class RegistDialog {
           child: AlertDialog(
             title: Text('Pendaftaran Gagal'),
             content: const Text(
-                'Email atau Nomor anda sudah terdaftar silahkan periksa kembali'),
+                'Email atau Nomor HP sudah terdaftar'),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
@@ -111,13 +113,13 @@ class RegistDialog {
           child: AlertDialog(
             title: Text('Pendaftaran Berhasil'),
             content: const Text(
-                'Silahkan Login Menggunakan Email dan Password yang baru saja anda buat'),
+                "Silahkan login menggunakan No. HP dan kata sandi yang didaftarkan"),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
                 onPressed: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => PinRegistPage()));
+                      MaterialPageRoute(builder: (_) => Login()));
                   // Navigator.of(context).pushNamedAndRemoveUntil(
                   //     Routes.LoginScreen, (Route<dynamic> route) => false);
                 },
@@ -173,10 +175,10 @@ class PulsaDialog {
           return WillPopScope(
             onWillPop: () async => false,
             child: AlertDialog(
-              title: Text('Nomor Tidak Terdaftar',
-                  style: TextStyle(color: Colors.green)),
+              // title: Text('Nomor Tidak Terdaftar',
+              //     style: TextStyle(color: Colors.green)),
               content: const Text(
-                  'Silahkan periksa kembali nomor yang anda masukan'),
+                  'Nomor tidak terdaftar'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Ok'),
@@ -224,11 +226,11 @@ class PulsaDialog {
             onWillPop: () async => false,
             child: AlertDialog(
               title: Text(
-                'Pemberitahuan',
+                'Pembelian Gagal',
                 style: TextStyle(color: Colors.green),
               ),
               content: const Text(
-                  'Silahkan pilih nominal sebelum melanjutkan pembelian pulsa'),
+                  "Silahkan pilih nominal"),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Ok'),
