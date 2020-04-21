@@ -274,6 +274,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
+            print(userUid);
             await Future.delayed(const Duration(seconds: 4));
             Navigator.push(context,
                 MaterialPageRoute(builder: (__) => DetailPage(userUid)));

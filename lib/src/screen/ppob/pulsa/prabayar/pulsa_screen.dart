@@ -32,7 +32,7 @@ class _PulsaPageState extends State<PulsaPage> {
   String _idWallet;
   bool _validate = false;
   bool _isHide = false;
-  int _nominalIndex = -1;
+  int _nominalIndex;
   String inputNomor, inputNominal, hargaNominal;
   GlobalKey<FormState> _key = GlobalKey();
   PulsaService _pulsaService = PulsaService();
@@ -87,6 +87,7 @@ class _PulsaPageState extends State<PulsaPage> {
             .replaceAll(" ", "");
         cekNo = _controllerNomor.text;
         testProv = cekNo.substring(0, 4);
+        logoProv = "";
       }
     });
   }
@@ -201,18 +202,9 @@ class _PulsaPageState extends State<PulsaPage> {
             future: _pulsaService.getNominal(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return Center(
-                    child: Text("Koneksi Terputus"),
-                  );
-                case ConnectionState.waiting:
-                  return Container(
-                    height: 200,
-                    child: centerLoading(),
-                  );
                 default:
                   if (snapshot.hasData) {
-                    for (var i = 0; i < snapshot.data.data.length; i++) {
+                    for (var i = 0; i < _nominalForDisplay.length; i++) {
                       for (var i = 0; i < _providerForDisplay.length; i++) {
                         if (testProv == _providerForDisplay[i].kodeProvider) {
                           namaProv = _providerForDisplay[i].namaProvider;
@@ -225,10 +217,10 @@ class _PulsaPageState extends State<PulsaPage> {
                           height: 350,
                         );
                       } else if (idProv ==
-                          snapshot.data.data[i].operatorId.toString()) {
+                          _nominalForDisplay[i].operatorId.toString()) {
                         print(idProv);
                         List<Listharga> hargaList =
-                            snapshot.data.data[i].listharga;
+                            _nominalForDisplay[i].listharga;
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -397,7 +389,10 @@ class _PulsaPageState extends State<PulsaPage> {
       int nominal = inputNominal == ""
           ? int.parse(cekNo.toString())
           : int.parse(inputNominal.toString());
-      if (nomor != null && nominal != null && providerNama != null) {
+      print(inputNominal);
+      if (nomor != null &&
+          nominal != null &&
+          providerNama != null) {
         Post post = Post(
             noHp: nomor,
             nominal: nominal,
@@ -436,6 +431,14 @@ class _PulsaPageState extends State<PulsaPage> {
     final PermissionStatus permissionStatus =
         await PermissionsService().getPermissionContact();
     if (permissionStatus == PermissionStatus.granted) {
+      if (_nominalIndex != null) {
+        setState(() {
+          _validate = false;
+          inputNominal = null;
+          hargaNominal = "";
+          _nominalIndex = null;
+        });
+      }
       moveToContactPage();
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => ContactsPage()));

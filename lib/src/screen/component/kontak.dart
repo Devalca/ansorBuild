@@ -116,7 +116,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   Contact contact = isSearching == true ? contactsFiltered[index] : contacts[index];
                   return ListTile(
                     title: Text(contact.displayName),
-                      onTap: () {
+                      onTap: () { 
                       String noValue = contact.phones.elementAt(0).value;
                       Navigator.pop(context, noValue);
                     },

@@ -22,7 +22,6 @@ class _MainPulsaState extends State<MainPulsa> {
   @override
   Widget build(BuildContext context) {
     String noValue = widget.noValue;
-    String noValue2 = widget.noValue2;
     return DefaultTabController(
       length: 2,
       child: Scaffold(

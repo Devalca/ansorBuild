@@ -68,8 +68,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
               DateTime dateTime = snapshot.data.data[0].periode;
               // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
               var formatterTime = DateFormat('HH:mm').format(dateTime);
-              return SingleChildScrollView(
-                child: Container(
+                return Container(
                   color: Colors.white,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,6 +128,12 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
+                                            snapshot.data.data[0].status == "Pascabayar" ? 
+                                              Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text('Periode'),
+                                            ) : Container(),
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
@@ -160,6 +165,13 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.end,
                                           children: <Widget>[
+                                            snapshot.data.data[0].status == "Pascabayar" ? 
+                                              Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(formatBlnTahun(dateTime)
+                                                  .toString())
+                                            ) : Container(),
                                             Container(
                                               margin:
                                                   EdgeInsets.only(bottom: 12.0),
@@ -207,7 +219,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                             color: Colors.black,
                           ),
                           Container(
-                            height: 50.0,
+                             height: 40.0,
                             margin: EdgeInsets.only(
                                 left: 16.0, right: 16.0, bottom: 20.0),
                             decoration: BoxDecoration(
@@ -229,8 +241,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                       ),
                     ],
                   ),
-                ),
-              );
+                );
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }

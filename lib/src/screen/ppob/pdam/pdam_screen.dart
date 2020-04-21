@@ -122,19 +122,19 @@ class _PdamPageState extends State<PdamPage> {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
-      return "Silahkan Masukan Nomor Pelanggan";
+      return "Wajib diisi";
     }
-    if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Nomor Salah";
+    if (value.length < 11) {
+      return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
+      return "Format nomor salah";
     }
     return null;
   }
 
   String validateWilayah(String value) {
     if (value == "Pilih Daerah") {
-      return "Silahkan Pilih Daerah Anda Yang Terdaftar";
+      return "Silahkan pilih nama wilayah";
     }
     return null;
   }
@@ -161,7 +161,7 @@ class _PdamPageState extends State<PdamPage> {
     return Container(
       child: TextFormField(
         inputFormatters: [
-          LengthLimitingTextInputFormatter(12),
+          LengthLimitingTextInputFormatter(11),
         ],
         controller: _controllerNomor,
         keyboardType: TextInputType.phone,

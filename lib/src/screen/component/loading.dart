@@ -1,6 +1,7 @@
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/detail_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
@@ -47,35 +48,6 @@ Widget centerLoading() {
 //       });
 // }
 
-Future<void> saldoMinDialog(BuildContext context) async {
-  return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
-          child: AlertDialog(
-            title: Text('Transaksi Gagal',
-                style: TextStyle(color: Colors.green)),
-            content: const Text(
-                "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo"),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Ok'),
-                onPressed: () {
-                  Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (_) => MainPulsa("", "")))
-                      .then((result) {
-                    Navigator.of(context).pop();
-                  });
-                },
-              ),
-            ],
-          ),
-        );
-      });
-}
-
 // Register Dialog Fungction
 
 class RegistDialog {
@@ -88,8 +60,7 @@ class RegistDialog {
           onWillPop: () async => false,
           child: AlertDialog(
             title: Text('Pendaftaran Gagal'),
-            content: const Text(
-                'Email atau Nomor HP sudah terdaftar'),
+            content: const Text('Email atau Nomor HP sudah terdaftar'),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),
@@ -118,10 +89,8 @@ class RegistDialog {
               FlatButton(
                 child: Text('Ok'),
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (_) => Login()));
-                  // Navigator.of(context).pushNamedAndRemoveUntil(
-                  //     Routes.LoginScreen, (Route<dynamic> route) => false);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      Routes.LoginScreen, (Route<dynamic> route) => false);
                 },
               ),
             ],
@@ -135,6 +104,36 @@ class RegistDialog {
 // Pulsa Dialog Fungction
 
 class PulsaDialog {
+  Future<void> saldoMinDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text('Transaksi Gagal',
+                  style: TextStyle(color: Colors.green)),
+              content: const Text(
+                  "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => MainPulsa("", ""))).then((result) {
+                      Navigator.of(context).pop();
+                    });
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   Future<void> nPulsaDialog(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String transIdName = prefs.getString("transIdName");
@@ -177,8 +176,7 @@ class PulsaDialog {
             child: AlertDialog(
               // title: Text('Nomor Tidak Terdaftar',
               //     style: TextStyle(color: Colors.green)),
-              content: const Text(
-                  'Nomor tidak terdaftar'),
+              content: const Text('Nomor tidak terdaftar'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Ok'),
@@ -229,8 +227,7 @@ class PulsaDialog {
                 'Pembelian Gagal',
                 style: TextStyle(color: Colors.green),
               ),
-              content: const Text(
-                  "Silahkan pilih nominal"),
+              content: const Text("Silahkan pilih nominal"),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Ok'),
@@ -248,6 +245,36 @@ class PulsaDialog {
 // PDAM Dialog Fungction
 
 class PdamDialog {
+  Future<void> saldoMinDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              title: Text('Transaksi Gagal',
+                  style: TextStyle(color: Colors.green)),
+              content: const Text(
+                  "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => PdamPage(""))).then((result) {
+                      Navigator.of(context).pop();
+                    });
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   Future<void> pdamLoadDialog(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String transIdName = prefs.getString("transIdName");
@@ -293,10 +320,8 @@ class PdamDialog {
         barrierDismissible: false,
         builder: (BuildContext context) {
           Future.delayed(Duration(seconds: 4), () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (__) => SesPdamPage(transUrlName)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (__) => SesPdamPage(transUrlName)));
           });
           return new WillPopScope(
               onWillPop: () async => false,
@@ -328,11 +353,10 @@ class PdamDialog {
             onWillPop: () async => false,
             child: AlertDialog(
               title: Text(
-                'Data Tidak Ditemukan',
+                ' Transaksi Gagal',
                 style: TextStyle(color: Colors.green),
               ),
-              content: const Text(
-                  'Wilayah dan no pelanggan tidak cocok, silahkan periksa kembali data yang anda masukan'),
+              content: const Text('Nama wilayah atau nomor salah'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Ok'),
@@ -355,16 +379,17 @@ class PdamDialog {
             onWillPop: () async => false,
             child: AlertDialog(
               title: Text(
-                'Pemberitahuan',
+                'Transaksi Gagal',
                 style: TextStyle(color: Colors.green),
               ),
-              content: const Text('Anda sudah membayar untuk bulan ini'),
+              content: const Text('Anda sudah melakukan pembayaran bulan in'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        Routes.LandingScreen, (Route<dynamic> route) => false);
+                    Navigator.of(context).pop();
+                    // Navigator.of(context).pushNamedAndRemoveUntil(
+                    //     Routes.LandingScreen, (Route<dynamic> route) => false);
                   },
                 ),
               ],
@@ -373,32 +398,3 @@ class PdamDialog {
         });
   }
 }
-
-// Future<void> nullDialog(BuildContext context) async {
-//   return showDialog<void>(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) {
-//         return new WillPopScope(
-//             onWillPop: () async => false,
-//             child:
-//                 SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
-//               Center(
-//                 child: Column(children: [
-//                   SizedBox(
-//                     height: 10,
-//                   ),
-//                   Text(
-//                     "Data harus lengkap!",
-//                     style: TextStyle(color: Colors.green),
-//                   ),
-//                   RaisedButton(
-//                       child: Text("Kembali"),
-//                       onPressed: () {
-//                         Navigator.of(context).pop(true);
-//                       })
-//                 ]),
-//               )
-//             ]));
-//       });
-// }

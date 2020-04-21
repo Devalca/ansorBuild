@@ -98,8 +98,8 @@ class _DetailPageState extends State<DetailPage> {
                                   Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 12.0),
-                                    height: 90.0,
-                                    width: 90.0,
+                                    height: 70.0,
+                                    width: 70.0,
                                     child: Image.asset(
                                       "lib/src/assets/PULSA.png",
                                       fit: BoxFit.fill,
@@ -322,7 +322,7 @@ class _DetailPageState extends State<DetailPage> {
                                   } else if (response.statusCode == 409) {
                                     PulsaDialog().pascaDoneDialog(context);
                                   } else if (response.statusCode == 403) {
-                                    saldoMinDialog(context);
+                                    PulsaDialog().saldoMinDialog(context);
                                   } else {
                                     print("INI STATUS CODE: " +
                                         response.statusCode.toString());
