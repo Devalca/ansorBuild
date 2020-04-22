@@ -56,8 +56,7 @@ class _SesPdamPageState extends State<SesPdamPage> {
               DateTime datePeriode = snapshot.data.data[0].periode;
               DateTime dateLunas = snapshot.data.data[0].tglBayar;
               var formatterTime = DateFormat('HH:mm').format(dateLunas);
-              return SingleChildScrollView(
-                child: Container(
+               return Container(
                   color: Colors.white,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,10 +215,11 @@ class _SesPdamPageState extends State<SesPdamPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Divider(
-                            color: Colors.black,
+                            height: 12,
+                            color: Colors.grey,
                           ),
                           Container(
-                            height: 50.0,
+                            height: 40.0,
                             margin: EdgeInsets.only(
                                 left: 16.0, right: 16.0, bottom: 20.0),
                             decoration: BoxDecoration(
@@ -241,8 +241,8 @@ class _SesPdamPageState extends State<SesPdamPage> {
                       ),
                     ],
                   ),
-                ),
-              );
+                );
+            
             } else if (snapshot.hasError) {
               return Text("${snapshot.error}");
             }

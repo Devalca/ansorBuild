@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/coba.dart';
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/launcher/launcher_screen.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         primarySwatch: Colors.green
       ),
-      home: LauncherPage(),
+      home: LandingPage(),
       routes: Routes.getRoutes(),
     );
   }

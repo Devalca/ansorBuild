@@ -14,38 +14,56 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PulsaPascaPage extends StatefulWidget {
-
   @override
   _PulsaPascaPageState createState() => _PulsaPascaPageState();
 }
 
 class _PulsaPascaPageState extends State<PulsaPascaPage> {
-  String mobi = "";
-  String logoProv = "";
-  bool _validate = false;
-  bool _isHide = false;
+  var nono;
   String cekNo;
   String testProv;
   String _idWallet;
+  String mobi = "";
+  String logoProv = "";
+  bool _validate = false;
   String inputNomor, inputNominal, hargaNominal;
   final GlobalKey<FormState> _key = GlobalKey();
   PulsaService _pulsaService = PulsaService();
   LocalService _localService = LocalService();
+  List<Provider> _provider = List<Provider>();
+  List<Provider> _providerForDisplay = List<Provider>();
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
   void initState() {
     _localService.getWalletId().then(updateWallet);
+    _pulsaService.getProvider().then((value) {
+      setState(() {
+        _provider.addAll(value.data);
+        _providerForDisplay = _provider;
+      });
+    });
+    _controllerNomor.addListener(() {
+      nono = _controllerNomor.text;
+      for (var i = 0; i < _providerForDisplay.length; i++) {
+        if (nono.substring(0, 4) == _providerForDisplay[i].kodeProvider) {
+          setState(() {
+            logoProv = _providerForDisplay[i].file.toString();
+            testProv = "";
+          });
+        }
+      }
+    });
     super.initState();
   }
 
-   void updateWallet(String idWallet) {
+  void updateWallet(String idWallet) {
     setState(() {
       this._idWallet = idWallet;
     });
   }
 
-    void moveToContactPage() async {
+  void moveToContactPage() async {
     final passNomor = await Navigator.push(
       context,
       CupertinoPageRoute(
@@ -56,19 +74,19 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
 
   void updateNomorPasca(String passNomor) {
     setState(() {
-        if (passNomor != null) {
+      if (passNomor != null) {
         _controllerNomor.text = passNomor
             .toString()
             .replaceAll("+62", "0")
             .replaceAll("-", "")
             .replaceAll(" ", "");
-            cekNo = _controllerNomor.text;
-          testProv = cekNo.substring(0, 4);
+        cekNo = _controllerNomor.text;
+        testProv = cekNo.substring(0, 4);
       }
     });
   }
 
-    void dispose() {
+  void dispose() {
     _controllerNomor.dispose();
     super.dispose();
   }
@@ -78,7 +96,36 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
-      body: Form(key: _key, autovalidate: _validate, child: _isHideValidasi()),
+      body: Form(key: _key, autovalidate: _validate, child: _formNomorInput()),
+    );
+  }
+
+  Widget _formNomorInput() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 12.0),
+                  child: Text("Nomor Handphone"),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: _buildTextFieldNomor()),
+              ],
+            ),
+          ),
+          _btnNext()
+        ],
+      ),
     );
   }
 
@@ -86,11 +133,13 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
-      return "Nomor Boleh Kosong";
-    } else if (value.length < 9 && value.length <= 13) {
-      return "Format Nomor Salah";
+      return "Wajib diisi";
+    } else if (value.substring(0, 2) != "08") {
+      return "Format nomor salah";
+    } else if (value.length < 10) {
+      return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
+      return "Format nomor salah";
     }
     return null;
   }
@@ -103,7 +152,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             List<Provider> providers = snapshot.data.data;
             return TextFormField(
               inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
+                LengthLimitingTextInputFormatter(13),
               ],
               controller: _controllerNomor,
               keyboardType: TextInputType.phone,
@@ -175,39 +224,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
         });
   }
 
-  Widget _isHideValidasi() {
-    if (_isHide == false) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 12.0),
-                    child: Text("Nomor Handphone"),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: _buildTextFieldNomor()),
-                ],
-              ),
-            ),
-            _btnNext()
-          ],
-        ),
-      );
-    } else {
-      return centerLoading();
-    }
-  }
-
   Widget _btnNext() {
     return Container(
       margin: EdgeInsets.only(top: 10.0),
@@ -260,25 +276,17 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
       String nomor = _controllerNomor.text.toString();
       int idWallet = int.parse(_idWallet);
       if (nomor != null) {
-        setState(() {
-          _isHide = true;
-        });
         Post post = Post(noHp: nomor, userId: idWallet, walletId: idWallet);
         _pulsaService.createPostPasca(post).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
-            await Future.delayed(const Duration(seconds: 4));
-            Navigator.push(context,
-                MaterialPageRoute(builder: (__) => DetailPage(userUid)));
-            setState(() {
-              _isHide = false;
+            _localService.saveIdName(userUid).then((bool committed) {
+              print("INI USERID :" + userUid);
             });
+            PulsaDialog().pascaLoadDialog(context);
           } else if (response.statusCode == 422) {
             PulsaDialog().pascaGagalDialog(context);
-            setState(() {
-              _isHide = false;
-            });
           } else {
             print("INI STATUS CODE: " + response.statusCode.toString());
           }
@@ -295,6 +303,9 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     final PermissionStatus permissionStatus =
         await PermissionsService().getPermissionContact();
     if (permissionStatus == PermissionStatus.granted) {
+      setState(() {
+        _validate = false;
+      });
       moveToContactPage();
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => ContactsPage2()));

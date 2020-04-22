@@ -15,7 +15,7 @@ final List child = map<Widget>(
   homeIklan,
   (index, i) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 16.0),
+      margin: EdgeInsets.all(5.0),
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         child: Stack(children: <Widget>[
@@ -56,9 +56,8 @@ class _IklanHomeState extends State<IklanHome> {
     return Column(children: [
       CarouselSlider(
         items: child,
-        enableInfiniteScroll: false,
         autoPlay: false,
-        viewportFraction: 1.0,
+        viewportFraction: 0.9,
         enlargeCenterPage: false,
         aspectRatio: 3.8,
         onPageChanged: (index) {

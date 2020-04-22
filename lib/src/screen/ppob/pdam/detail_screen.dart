@@ -95,36 +95,35 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                 // return Text('Result: ${snapshot.error}');
                 default:
                   if (snapshot.hasData) {
-                    return SingleChildScrollView(
-                        child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return Container(
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  _detailHeader(),
+                                  _detailBody(),
+                                  _detailPayment(),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 90.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      _detailHeader(),
-                                      _detailBody(),
-                                      _detailPayment(),
-                                    ],
-                                  ),
+                                Divider(
+                                  height: 12,
+                                  color: Colors.grey,
                                 ),
-                                Container(
-                                  height: 90.0,
-                                ),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Divider(
-                                      color: Colors.black,
-                                    ),
-                                    _detailButton()
-                                  ],
-                                ),
+                                _detailButton()
                               ],
-                            )));
+                            ),
+                          ],
+                        ));
                   } else {
                     return Center(child: Text('${snapshot.error}'));
                   }
@@ -142,8 +141,8 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.symmetric(horizontal: 12.0),
-            height: 90.0,
-            width: 90.0,
+            height: 70.0,
+            width: 70.0,
             child: Image.asset(
               "lib/src/assets/PDAM.png",
               fit: BoxFit.fill,
@@ -318,17 +317,19 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
         onPressed: () {
           String nomor = _detailForDisplay[0].noPelanggan;
           String wilayah = _detailForDisplay[0].namaWilayah;
+          int tagihan = _detailForDisplay[0].tagihan;
           int idWallet = int.parse(_idWallet);
           PostPdam postPdam = PostPdam(
               userId: idWallet,
               walletId: idWallet,
               noPelanggan: nomor,
-              namaWilayah: wilayah);
+              namaWilayah: wilayah,
+              tagihan: tagihan);
           _pdamService.createPdamPay(postPdam).then((response) async {
             var headerUrl = response.headers['location'];
             if (response.headers != null) {
               if (response.statusCode == 403) {
-                saldoMinDialog(context);
+                PdamDialog().saldoMinDialog(context);
               } else {
                 _localService.saveUrlName(headerUrl).then((bool committed) {});
                 PdamDialog().nPdamDialog(context);

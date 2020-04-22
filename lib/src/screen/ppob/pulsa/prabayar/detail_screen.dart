@@ -78,8 +78,7 @@ class _DetailPageState extends State<DetailPage> {
           future: fetchAlbum(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return SingleChildScrollView(
-                child: Container(
+                return Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -94,10 +93,12 @@ class _DetailPageState extends State<DetailPage> {
                                   Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 12.0),
-                                    height: 90.0,
-                                    width: 90.0,
-                                    child:
-                                        Image.asset("lib/src/assets/PULSA.png",  fit: BoxFit.fill,),
+                                    height: 70.0,
+                                    width: 70.0,
+                                    child: Image.asset(
+                                      "lib/src/assets/PULSA.png",
+                                      fit: BoxFit.fill,
+                                    ),
                                   ),
                                   Container(
                                     padding: const EdgeInsets.only(top: 5.0),
@@ -269,7 +270,8 @@ class _DetailPageState extends State<DetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Divider(
-                            color: Colors.black,
+                            height: 12,
+                            color: Colors.grey,
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -302,7 +304,7 @@ class _DetailPageState extends State<DetailPage> {
                                     });
                                     PulsaDialog().nPulsaDialog(context);
                                   } else if (response.statusCode == 403) {
-                                    saldoMinDialog(context);
+                                    PulsaDialog().saldoMinDialog(context);
                                   } else {
                                     print("INI STATUS CODE: " +
                                         response.statusCode.toString());
@@ -319,8 +321,7 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                     ],
                   ),
-                ),
-              );
+                );
             } else if (snapshot.hasError) {
               return Container(
                 alignment: Alignment.center,
