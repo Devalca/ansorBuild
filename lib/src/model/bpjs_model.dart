@@ -42,15 +42,17 @@ class PostKesehatan {
   String noVa;
   String periode;
 
-  PostKesehatan({
-    this.noVa,
-    this.periode,
-  });
+  PostKesehatan({this.noVa, this.periode});
 
-  factory PostKesehatan.fromJson(Map<String, dynamic> json) =>
-      PostKesehatan(noVa: json['noVa'], periode: json['periode']);
+  factory PostKesehatan.fromJson(Map<String, dynamic> json) => PostKesehatan(
+        noVa: json['noVa'],
+        periode: json['periode'],
+      );
 
-  Map<String, dynamic> toJson() => {"no_va": noVa, "periode": periode};
+  Map<String, dynamic> toJson() => {
+        "no_va": noVa,
+        "periode": periode,
+      };
 }
 
 DetailKesehatan detailKesehatanFromJson(String str) =>
@@ -291,16 +293,19 @@ class PostKetenagakerjaan {
   int periodeByr;
   String noKtp;
 
-  PostKetenagakerjaan({
-    this.periodeByr,
-    this.noKtp,
-  });
+  PostKetenagakerjaan(
+      {this.periodeByr, this.noKtp});
 
   factory PostKetenagakerjaan.fromJson(Map<String, dynamic> json) =>
       PostKetenagakerjaan(
-          periodeByr: json['periode_byr'], noKtp: json['no_ktp']);
+        periodeByr: json['periode_byr'],
+        noKtp: json['no_ktp'],
+      );
 
-  Map<String, dynamic> toJson() => {"periode_byr": periodeByr, "no_ktp": noKtp};
+  Map<String, dynamic> toJson() => {
+        "periode_byr": periodeByr,
+        "no_ktp": noKtp,
+      };
 }
 
 DetailKetenagakerjaan detailKetenagakerjaanFromJson(String str) =>

@@ -87,8 +87,8 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
                       color: Colors.red))
               : Text(
                   widget.jenis == "prabayar"
-                      ? "Transaksi Gagal\n\n" + widget.pesan.substring(12, 26)
-                      : "Transaksi Gagal\n\n" + widget.pesan.substring(12, 26),
+                      ? "Transaksi Gagal\n\n" + "Nomor Tidak ditemukan"
+                      : "Transaksi Gagal\n\n" + "Nomor Tidak Terdaftar",
                   textAlign: TextAlign.center,
                   style: new TextStyle(
                       fontSize: 14.0,

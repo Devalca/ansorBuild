@@ -89,8 +89,9 @@ class _BpjsState extends State<Bpjs> with SingleTickerProviderStateMixin {
                             onTap: (index) {
                               print(index);
                             },
-                            labelColor: Colors.green,
                             indicatorColor: Colors.green,
+                            labelColor: Colors.green,
+                            unselectedLabelColor: Colors.black38,
                             tabs: [
                               Container(
                                 child: Tab(text: 'Kesehatan'),
