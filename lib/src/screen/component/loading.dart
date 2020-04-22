@@ -3,6 +3,8 @@ import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/trans_gagal.dart';
@@ -134,6 +136,78 @@ class PulsaDialog {
         });
   }
 
+  Future<void> praLoadDialog(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String transIdName = prefs.getString("transIdName");
+    String transNameProv = prefs.getString("transNameProv");
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 4), () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (__) =>
+                        DetailPage(transIdName, transNameProv))).then((result) {
+              Navigator.of(context).pop();
+            });
+          });
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: SimpleDialog(
+                  backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Center(
+                      child: Column(children: [
+                        CircularProgressIndicator(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Mohon Tunggu....",
+                          style: TextStyle(color: Colors.green),
+                        )
+                      ]),
+                    )
+                  ]));
+        });
+  }
+
+  Future<void> pascaLoadDialog(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String transIdName = prefs.getString("transIdName");
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          Future.delayed(Duration(seconds: 4), () {
+           Navigator.push(context,
+                MaterialPageRoute(builder: (__) => PascaBayarDetailPage(transIdName))).then((result) {
+              Navigator.of(context).pop();
+            });
+          });
+          return new WillPopScope(
+              onWillPop: () async => false,
+              child: SimpleDialog(
+                  backgroundColor: Colors.white,
+                  children: <Widget>[
+                    Center(
+                      child: Column(children: [
+                        CircularProgressIndicator(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Mohon Tunggu....",
+                          style: TextStyle(color: Colors.green),
+                        )
+                      ]),
+                    )
+                  ]));
+        });
+  }
+
   Future<void> nPulsaDialog(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String transIdName = prefs.getString("transIdName");
@@ -261,10 +335,9 @@ class PdamDialog {
                 FlatButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => PdamPage(""))).then((result) {
+                    Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) => PdamPage("")))
+                        .then((result) {
                       Navigator.of(context).pop();
                     });
                   },
@@ -382,7 +455,7 @@ class PdamDialog {
                 'Transaksi Gagal',
                 style: TextStyle(color: Colors.green),
               ),
-              content: const Text('Anda sudah melakukan pembayaran bulan in'),
+              content: const Text('Anda sudah melakukan pembayaran bulan ini'),
               actions: <Widget>[
                 FlatButton(
                   child: Text('Ok'),

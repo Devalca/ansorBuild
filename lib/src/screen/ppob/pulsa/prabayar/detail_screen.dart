@@ -270,7 +270,8 @@ class _DetailPageState extends State<DetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Divider(
-                            color: Colors.black,
+                            height: 12,
+                            color: Colors.grey,
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 16.0),

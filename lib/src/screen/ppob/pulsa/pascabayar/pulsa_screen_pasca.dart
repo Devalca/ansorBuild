@@ -19,22 +19,41 @@ class PulsaPascaPage extends StatefulWidget {
 }
 
 class _PulsaPascaPageState extends State<PulsaPascaPage> {
-  String mobi = "";
-  String logoProv = "";
-  bool _validate = false;
-  bool _isHide = false;
+  var nono;
   String cekNo;
   String testProv;
   String _idWallet;
+  String mobi = "";
+  String logoProv = "";
+  bool _validate = false;
   String inputNomor, inputNominal, hargaNominal;
   final GlobalKey<FormState> _key = GlobalKey();
   PulsaService _pulsaService = PulsaService();
   LocalService _localService = LocalService();
+  List<Provider> _provider = List<Provider>();
+  List<Provider> _providerForDisplay = List<Provider>();
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
   void initState() {
     _localService.getWalletId().then(updateWallet);
+    _pulsaService.getProvider().then((value) {
+      setState(() {
+        _provider.addAll(value.data);
+        _providerForDisplay = _provider;
+      });
+    });
+    _controllerNomor.addListener(() {
+      nono = _controllerNomor.text;
+      for (var i = 0; i < _providerForDisplay.length; i++) {
+        if (nono.substring(0, 4) == _providerForDisplay[i].kodeProvider) {
+          setState(() {
+            logoProv = _providerForDisplay[i].file.toString();
+            testProv = "";
+          });
+        }
+      }
+    });
     super.initState();
   }
 
@@ -77,7 +96,36 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
-      body: Form(key: _key, autovalidate: _validate, child: _isHideValidasi()),
+      body: Form(key: _key, autovalidate: _validate, child: _formNomorInput()),
+    );
+  }
+
+  Widget _formNomorInput() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 12.0),
+                  child: Text("Nomor Handphone"),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: _buildTextFieldNomor()),
+              ],
+            ),
+          ),
+          _btnNext()
+        ],
+      ),
     );
   }
 
@@ -153,16 +201,11 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         mobi = providers[i].namaProvider;
                         logoProv = providers[i].file.toString();
                       });
-                    } else {
-                      setState(() {
-                        _validate = true;
-                      });
                     }
                   } else if (value.length == 3) {
                     setState(() {
                       mobi = "";
                       logoProv = "";
-                      _validate = false;
                     });
                   }
                 }
@@ -179,39 +222,6 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             ),
           );
         });
-  }
-
-  Widget _isHideValidasi() {
-    if (_isHide == false) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 12.0),
-                    child: Text("Nomor Handphone"),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 12.0),
-                      child: _buildTextFieldNomor()),
-                ],
-              ),
-            ),
-            _btnNext()
-          ],
-        ),
-      );
-    } else {
-      return centerLoading();
-    }
   }
 
   Widget _btnNext() {
@@ -266,26 +276,17 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
       String nomor = _controllerNomor.text.toString();
       int idWallet = int.parse(_idWallet);
       if (nomor != null) {
-        setState(() {
-          _isHide = true;
-        });
         Post post = Post(noHp: nomor, userId: idWallet, walletId: idWallet);
         _pulsaService.createPostPasca(post).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
-            print(userUid);
-            await Future.delayed(const Duration(seconds: 4));
-            Navigator.push(context,
-                MaterialPageRoute(builder: (__) => DetailPage(userUid)));
-            setState(() {
-              _isHide = false;
+            _localService.saveIdName(userUid).then((bool committed) {
+              print("INI USERID :" + userUid);
             });
+            PulsaDialog().pascaLoadDialog(context);
           } else if (response.statusCode == 422) {
             PulsaDialog().pascaGagalDialog(context);
-            setState(() {
-              _isHide = false;
-            });
           } else {
             print("INI STATUS CODE: " + response.statusCode.toString());
           }
@@ -302,7 +303,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     final PermissionStatus permissionStatus =
         await PermissionsService().getPermissionContact();
     if (permissionStatus == PermissionStatus.granted) {
-            setState(() {
+      setState(() {
         _validate = false;
       });
       moveToContactPage();

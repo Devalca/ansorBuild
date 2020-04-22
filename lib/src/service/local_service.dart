@@ -11,6 +11,12 @@ class LocalService {
     return prefs.commit();
   }
 
+    Future<bool> saveNameProv(String transNameProv) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("transNameProv", transNameProv);
+    return prefs.commit();
+  }
+
   Future<bool> saveUrlName(String transUrlName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("transUrlName", transUrlName);

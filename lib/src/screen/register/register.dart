@@ -48,12 +48,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Container(
-                    height: 65,
+                    height: 80,
                     width: 150,
                     margin: EdgeInsets.only(bottom: 60),
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15.0),
-                      child: Image.asset('lib/src/assets/lapakSahabat.png'),
+                      child: Image.asset('lib/src/assets/lapak_sahabat.png'),
                     ),
                   ),
                   Column(
@@ -192,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (value.isEmpty) {
       return 'Wajib diisi';
     } else if (!value.contains('@gmail.com')) {
-      return 'Silahkan gunakan gmail anda';
+      return 'Silahkan gunakan gmail Anda';
     }
     return null;
   }
@@ -224,7 +224,7 @@ class _RegisterPageState extends State<RegisterPage> {
     } else if (value.length < 10 ) {
       return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
-      return "Hanya boleh berupa angka";
+      return "Format nomor salah";
     }
     return null;
   }

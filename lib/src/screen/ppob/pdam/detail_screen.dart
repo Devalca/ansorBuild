@@ -95,35 +95,35 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                 // return Text('Result: ${snapshot.error}');
                 default:
                   if (snapshot.hasData) {
-                        return Container(
-                            color: Colors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return Container(
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  _detailHeader(),
+                                  _detailBody(),
+                                  _detailPayment(),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 90.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      _detailHeader(),
-                                      _detailBody(),
-                                      _detailPayment(),
-                                    ],
-                                  ),
+                                Divider(
+                                  height: 12,
+                                  color: Colors.grey,
                                 ),
-                                Container(
-                                  height: 90.0,
-                                ),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Divider(
-                                      color: Colors.grey,
-                                    ),
-                                    _detailButton()
-                                  ],
-                                ),
+                                _detailButton()
                               ],
-                            ));
+                            ),
+                          ],
+                        ));
                   } else {
                     return Center(child: Text('${snapshot.error}'));
                   }
@@ -141,7 +141,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.symmetric(horizontal: 12.0),
-            height:70.0,
+            height: 70.0,
             width: 70.0,
             child: Image.asset(
               "lib/src/assets/PDAM.png",

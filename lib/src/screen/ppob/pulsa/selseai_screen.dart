@@ -216,7 +216,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Divider(
-                            color: Colors.black,
+                            height: 12,
+                            color: Colors.grey,
                           ),
                           Container(
                              height: 40.0,

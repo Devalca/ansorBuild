@@ -215,6 +215,7 @@ class _SesPdamPageState extends State<SesPdamPage> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           Divider(
+                            height: 12,
                             color: Colors.grey,
                           ),
                           Container(

@@ -29,9 +29,9 @@ class _PulsaPageState extends State<PulsaPage> {
   var logoProv = "";
   var testProv;
   var cekNo;
+  var nono;
   String _idWallet;
   bool _validate = false;
-  bool _isHide = false;
   int _nominalIndex;
   String inputNomor, inputNominal, hargaNominal;
   GlobalKey<FormState> _key = GlobalKey();
@@ -59,6 +59,19 @@ class _PulsaPageState extends State<PulsaPage> {
       });
     });
     _localService.getWalletId().then(updateWallet);
+    _controllerNomor.addListener(() {
+      nono = _controllerNomor.text;
+      for (var i = 0; i < _providerForDisplay.length; i++) {
+        if (nono.substring(0, 4) == _providerForDisplay[i].kodeProvider) {
+          setState(() {
+            namaProv = _providerForDisplay[i].namaProvider;
+            idProv = _providerForDisplay[i].operatorId.toString();
+            logoProv = _providerForDisplay[i].file.toString();
+            testProv = "";
+          });
+        }
+      }
+    });
     super.initState();
   }
 
@@ -105,20 +118,9 @@ class _PulsaPageState extends State<PulsaPage> {
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 6.0),
         child:
-            Form(key: _key, autovalidate: _validate, child: _isHideValidasi()),
+            Form(key: _key, autovalidate: _validate, child: _formPulsaInput()),
       ),
     );
-  }
-
-  Widget _isHideValidasi() {
-    if (_isHide == false) {
-      return _formPulsaInput();
-    } else {
-      return Container(
-        height: 200,
-        child: centerLoading(),
-      );
-    }
   }
 
   Widget _formPulsaInput() {
@@ -181,17 +183,12 @@ class _PulsaPageState extends State<PulsaPage> {
                         logoProv = _providerForDisplay[i].file.toString();
                         testProv = "";
                       });
-                    } else {
-                      setState(() {
-                        _validate = true;
-                      });
                     }
                   } else if (value.length == 3) {
                     setState(() {
                       idProv = "";
                       namaProv = "";
                       logoProv = "";
-                      _validate = false;
                     });
                   }
                 }
@@ -225,7 +222,6 @@ class _PulsaPageState extends State<PulsaPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             _btnListView(hargaList),
-                            _btnNext()
                           ],
                         );
                       }
@@ -242,6 +238,7 @@ class _PulsaPageState extends State<PulsaPage> {
             },
           ),
         ]),
+        _btnNext()
       ],
     );
   }
@@ -276,11 +273,7 @@ class _PulsaPageState extends State<PulsaPage> {
                   child: RaisedButton(
                     color: Colors.green,
                     onPressed: () {
-                      if (inputNominal == null) {
-                        PulsaDialog().praNullNominalDialog(context);
-                      } else {
-                        sendToServer();
-                      }
+                      sendToServer();
                     },
                     child: Text(
                       'BELI',
@@ -373,15 +366,24 @@ class _PulsaPageState extends State<PulsaPage> {
     } else if (!regExp.hasMatch(value)) {
       return "Format nomor salah";
     }
+    // } else if (value.length == 4) {
+    //   for (var i = 0; i < _providerForDisplay.length; i++) {
+    //     if (value.length == 4) {
+    //       if (value.substring(0, 4) != _providerForDisplay[i].kodeProvider) {
+    //         return "Nomor provider tidak terdaftar";
+    //       }
+    //     }
+    //   }
+    // }
     return null;
   }
 
   void sendToServer() {
     if (_key.currentState.validate()) {
       _key.currentState.save();
-      setState(() {
-        _isHide = true;
-      });
+      inputNominal == null
+          ? PulsaDialog().praNullNominalDialog(context)
+          : print("Data Ditemukan");
       String nomor = inputNomor.toString();
       // int nominal = int.parse(inputNominal.toString());
       String providerNama = namaProv.toString();
@@ -389,10 +391,7 @@ class _PulsaPageState extends State<PulsaPage> {
       int nominal = inputNominal == ""
           ? int.parse(cekNo.toString())
           : int.parse(inputNominal.toString());
-      print(inputNominal);
-      if (nomor != null &&
-          nominal != null &&
-          providerNama != null) {
+      if (nomor != null && nominal != null && providerNama != null) {
         Post post = Post(
             noHp: nomor,
             nominal: nominal,
@@ -403,22 +402,20 @@ class _PulsaPageState extends State<PulsaPage> {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
-            await Future.delayed(const Duration(seconds: 4));
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (__) => DetailPage(userUid, namaProv)));
-            setState(() {
-              _isHide = false;
+            _localService.saveIdName(userUid).then((bool committed) {
+              print("INI USERID :" + userUid);
             });
+            _localService.saveNameProv(namaProv).then((bool committed) {
+              print("INI NAMAPROV :" + namaProv);
+            });
+            PulsaDialog().praLoadDialog(context);
             _key.currentState.reset();
           } else {
-            setState(() {
-              _isHide = false;
-            });
             print("INI STATUS CODE : " + response.statusCode.toString());
           }
         });
+      } else {
+        print("object");
       }
     } else {
       setState(() {
