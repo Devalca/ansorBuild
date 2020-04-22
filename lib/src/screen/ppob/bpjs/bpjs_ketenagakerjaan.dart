@@ -172,7 +172,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
               children: <Widget>[
                 Container(
                     child: Text("Nomor KTP",
-                        style: new TextStyle(fontSize: 12.0),
+                        style: new TextStyle(fontSize: 14.0),
                         textAlign: TextAlign.left)),
                 TextField(
                   inputFormatters: [
@@ -198,7 +198,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                 Container(height: 15),
                 Container(
                     child: Text("Bayar Untuk",
-                        style: new TextStyle(fontSize: 12.0),
+                        style: new TextStyle(fontSize: 14.0),
                         textAlign: TextAlign.left)),
                 Container(
                   padding: const EdgeInsets.only(top: 10.0),

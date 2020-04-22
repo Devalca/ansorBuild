@@ -293,8 +293,7 @@ class PostKetenagakerjaan {
   int periodeByr;
   String noKtp;
 
-  PostKetenagakerjaan(
-      {this.periodeByr, this.noKtp});
+  PostKetenagakerjaan({this.periodeByr, this.noKtp});
 
   factory PostKetenagakerjaan.fromJson(Map<String, dynamic> json) =>
       PostKetenagakerjaan(
@@ -403,7 +402,7 @@ PostBayarKerja bayarKerjaFromJson(String str) =>
 String bayarKerjaToJson(PostBayarKerja data) => json.encode(data.toJson());
 
 class PostBayarKerja {
-  String periodeByr;
+  int periodeByr;
   String noKtp;
   String userId;
   String walletId;
