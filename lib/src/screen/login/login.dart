@@ -213,7 +213,7 @@ class _LoginState extends State<Login> {
                                   ? null
                                   : "Wajib diisi",
                             ),
-                            style: new TextStyle(fontSize: 12.0),
+                            style: new TextStyle(fontSize: 14.0),
                             onChanged: (value) {
                               bool isFieldValid = value.trim().isNotEmpty;
                               if (isFieldValid != _fieldNohp) {
@@ -244,7 +244,7 @@ class _LoginState extends State<Login> {
                                       ? null
                                       : "Wajib diisi",
                             ),
-                            style: new TextStyle(fontSize: 12.0),
+                            style: new TextStyle(fontSize: 14.0),
                             onChanged: (value) {
                               bool isFieldValid = value.trim().isNotEmpty;
                               if (isFieldValid != _fieldPassword) {
@@ -254,9 +254,6 @@ class _LoginState extends State<Login> {
                           ),
                           Container(height: 10),
                           Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.green),
-                            ),
                             alignment: Alignment.bottomCenter,
                             child: SizedBox(
                               width: double.infinity,

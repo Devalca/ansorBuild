@@ -35,7 +35,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
   String url = "";
   String noVa2 = "";
   String periode2 = "";
-  String periodeByr2 = "";
+  int periodeByr2 = 0;
   String noKtp2 = "";
   int totalSehat2 = 0;
   int totalKerja2 = 0;
@@ -320,7 +320,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data.data.isNotEmpty) {
                         periodeByr2 =
-                            snapshot.data.data[0].periodeByr.toString();
+                            snapshot.data.data[0].periodeByr;
                         noKtp2 = snapshot.data.data[0].noKtp;
                         totalKerja2 = snapshot.data.data[0].total;
 
@@ -749,14 +749,14 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                     });
               } else {
                 String transactionId = widget.urlkerja.substring(27);
-                String periodeByr = periodeByr2;
+                int periodeByr = periodeByr2;
                 String noKtp = noKtp2;
 
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 String walletId = prefs.getString("walletId");
                 String userId = prefs.getString("userId");
 
-                print("periodeByr " + periodeByr);
+                print("periodeByr " + periodeByr.toString());
                 print("noKtp " + noKtp);
                 print("userId " + userId);
                 print("walletId " + walletId);
