@@ -6,10 +6,10 @@ import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_gagal.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
 import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_pembayaran.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BpjsKesehatan extends StatefulWidget {
   final String tgl;
@@ -35,9 +35,12 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
 
   bool _isLoading = false;
   bool _fieldNoVA;
+  bool error = true;
+  bool errorBulan = true;
 
   String url = "";
   String noVa = "";
+  String errorText = "";
 
   TextEditingController _noVAController = TextEditingController();
 
@@ -139,172 +142,316 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
       };
     }
 
+    Widget middleSection = new Expanded(
+      child: new Container(
+        padding: new EdgeInsets.only(top: 8.0),
+        child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                  child: Text("Nomor VA",
+                      style: new TextStyle(fontSize: 14.0),
+                      textAlign: TextAlign.left)),
+              TextField(
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(9),
+                  WhitelistingTextInputFormatter.digitsOnly
+                ],
+                controller: _noVAController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  hintText: 'Contoh: 123456789',
+                  errorText: error ? null : errorText,
+                ),
+                style: new TextStyle(fontSize: 14.0),
+                onChanged: (value) {
+                  if (value.length == 0) {
+                    return setState(
+                        () => {error = false, errorText = "Wajib diisi"});
+                  } else {
+                    return setState(() => error = true);
+                  }
+                },
+              ),
+              Container(height: 15),
+              Container(
+                  child: Text("Bayar Hingga",
+                      style: new TextStyle(fontSize: 14.0),
+                      textAlign: TextAlign.left)),
+              new GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (__) => new BpjsBulan(
+                              jenis: "kesehatan", noVa: _noVAController.text, index: 0)));
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  width: double.infinity,
+                  height: 40.0,
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: widget.nm == null
+                                  ? new Text("Januari 2020",
+                                      style: new TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.black54))
+                                  : new Text(widget.nm,
+                                      style: new TextStyle(fontSize: 14.0)),
+                            ),
+                            Container(
+                              child: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.black,
+                                size: 24.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Divider(height: 12, color: Colors.black87),
+              Container(height: 3),
+              Container(
+                  child: Text(
+                      errorBulan ? "" : "Silahkan Pilih Bulan Pembayaran",
+                      style: new TextStyle(fontSize: 12.0, color: Colors.red),
+                      textAlign: TextAlign.left)),
+            ]),
+      ),
+    );
+
+    Widget bottomBanner = new Column(children: <Widget>[
+      Divider(
+        height: 12,
+        color: Colors.black26,
+      ),
+      Container(height: 5),
+      Container(
+        height: 35.0,
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          verticalDirection: VerticalDirection.down,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[],
+              ),
+            ),
+            Container(
+              child: SizedBox(
+                width: 150,
+                height: 35,
+                child: RaisedButton(
+                  child: Text('LANJUT', style: TextStyle(color: Colors.white)),
+                  color: Colors.green,
+                  // onPressed: _onPressed,
+                  onPressed: () async {
+                    if (_noVAController.text.isEmpty) {
+                      setState(
+                          () => {error = false, errorText = "Wajib diisi"});
+                    } else if (_noVAController.text.length < 9) {
+                      setState(() =>
+                          {error = false, errorText = "Format Nomor Salah"});
+                    } else if (widget.nm == null) {
+                      // setState(() => errorBulan = false);
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              content: Text("Silahkan Pilih Bulan Pembayaran"),
+                              actions: <Widget>[
+                                MaterialButton(
+                                  elevation: 5.0,
+                                  child: Text("OK",
+                                      style: TextStyle(color: Colors.green)),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                    } else {
+                      setState(() => _isLoading = true);
+
+                      if (_noVAController.text.isEmpty) {
+                        setState(() {
+                          _isLoading = false;
+                          _fieldNoVA = true;
+                        });
+                      } else {
+                        String noVa = _noVAController.text.toString();
+                        String periode = tgl(widget.tgl);
+
+                        PostKesehatan kesehatan = PostKesehatan(
+                            noVa: noVa,
+                            periode: periode);
+
+                        // PostKesehatan kesehatan = PostKesehatan(noVa: "123456789", periode: "2020-01-01");
+
+                        _bpjsServices
+                            .postKesehatan(kesehatan)
+                            .then((response) async {
+                          if (response.statusCode == 200) {
+                            // print("berhasil body: " + response.body);
+                            // print(response.statusCode);
+
+                            // Map data = jsonDecode(response.body);
+                            // transactionId = data['transactionId'].toString();
+                            // print("transactionId: " + transactionId);
+
+                            // url = '/ppob/bpjs/kesehatan/' + transactionId;
+                            // print("url: " + url);
+
+                            // _bpjsServices.saveUrl(url).then((bool committed) {
+                            //   print(url);
+                            // });
+
+                            // Navigator.push(
+                            //     context,
+                            //     new MaterialPageRoute(
+                            //         builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
+                            // setState(() => _isLoading = false);
+
+                            print("error: " + response.body);
+                            print(response.statusCode);
+
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (__) => new PembayaranGagal(
+                                        jenis: "kesehatan",
+                                        pesan: response.body,
+                                        index: 0)));
+                            setState(() => _isLoading = false);
+                          } else if (response.statusCode == 302) {
+                            print("berhasil body: " + response.body);
+                            print(response.statusCode);
+
+                            url = response.headers['location'];
+                            print("url: " + url);
+
+                            _localServices.saveUrl(url).then((bool committed) {
+                              print(url);
+                            });
+
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (__) => new BpjsPembayaran(
+                                        jenis: "kesehatan", url: url, index: 0)));
+                            setState(() => _isLoading = false);
+                          } else if (response.statusCode == 422) {
+                            print("va: " + noVa);
+                            print("periode: " + periode);
+
+                            print("error: " + response.body);
+                            print(response.statusCode);
+
+                            Map data = jsonDecode(response.body);
+                            message = data['message'].toString();
+                            print("message: " + message);
+                            setState(() => {
+                                  error = false,
+                                  errorText = "Nomor Tidak Terdaftar",
+                                  _isLoading = false
+                                });
+                          } else if (response.statusCode == 406) {
+                            print("error: " + response.body);
+                            print(response.statusCode);
+
+                            print("va: " + noVa);
+                            print("periode: " + periode);
+
+                            Map data = jsonDecode(response.body);
+                            message = data['message'].toString();
+                            print("message: " + message);
+
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Transaksi Gagal",
+                                        style: TextStyle(color: Colors.green)),
+                                    content: Text(message),
+                                    actions: <Widget>[
+                                      MaterialButton(
+                                        elevation: 5.0,
+                                        child: Text("OK",
+                                            style:
+                                                TextStyle(color: Colors.green)),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+
+                            setState(() => _isLoading = false);
+                          } else {
+                            print("va: " + noVa);
+                            print("periode: " + periode);
+
+                            print("error: " + response.body);
+                            print(response.statusCode);
+
+                            Map data = jsonDecode(response.body);
+                            message = data['message'].toString();
+                            print("message: " + message);
+
+                            Navigator.push(
+                                context,
+                                new MaterialPageRoute(
+                                    builder: (__) => new PembayaranGagal(
+                                        jenis: "kesehatan",
+                                        pesan: message,
+                                        index: 0)));
+                            setState(() => _isLoading = false);
+                          }
+                        });
+                      }
+                    }
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Container(height: 10),
+    ]);
+
+    Widget body = new Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        middleSection,
+        bottomBanner,
+      ],
+    );
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         resizeToAvoidBottomPadding: false,
-        bottomNavigationBar: BottomAppBar(
-            color: Colors.transparent,
-            child: Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 150,
-                        height: 35,
-                        child: RaisedButton(
-                          child: Text('LANJUT',
-                              style: TextStyle(color: Colors.white)),
-                          color: Colors.green,
-                          onPressed: _onPressed,
-                        ),
-                      ),
-                    ])),
-            elevation: 0),
-        body: SingleChildScrollView(
-            reverse: true,
-            child: Padding(
-                padding: EdgeInsets.only(top: 12.0, bottom: bottom),
-                child: _isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                            Container(
-                                child: Text("Nomor VA",
-                                    style: new TextStyle(fontSize: 12.0),
-                                    textAlign: TextAlign.left)),
-                            TextField(
-                              inputFormatters: [
-                                LengthLimitingTextInputFormatter(9),
-                              ],
-                              controller: _noVAController,
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                hintText: 'Contoh: 123456789',
-                                errorText: _fieldNoVA == null || _fieldNoVA
-                                    ? null
-                                    : "Kolom Nomor VA harus diisi",
-                              ),
-                              style: new TextStyle(fontSize: 14.0),
-                              onChanged: (value) {
-                                bool isFieldValid = value.trim().isNotEmpty;
-                                if (isFieldValid != _fieldNoVA) {
-                                  setState(() => _fieldNoVA = isFieldValid);
-                                }
-                              },
-                            ),
-                            Container(height: 15),
-                            Container(
-                                child: Text("Bayar Hingga",
-                                    style: new TextStyle(fontSize: 12.0),
-                                    textAlign: TextAlign.left)),
-                            new GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (__) => new BpjsBulan(
-                                            jenis: "kesehatan",
-                                            noVa: _noVAController.text)));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                width: double.infinity,
-                                height: 40.0,
-                                child: Column(
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text(
-                                                widget.nm == null
-                                                    ? "Januari 2020"
-                                                    : widget.nm,
-                                                style: new TextStyle(
-                                                    fontSize: 14.0)),
-                                          ),
-                                          Container(
-                                            child: Icon(
-                                              Icons.keyboard_arrow_down,
-                                              color: Colors.black,
-                                              size: 24.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Divider(height: 12, color: Colors.black),
-                            // Container(
-                            //     child: Text("Logout",
-                            //         style: new TextStyle(fontSize: 12.0),
-                            //         textAlign: TextAlign.left)),
-                            // new GestureDetector(
-                            //   onTap: () {
-                            //     walletId = "0";
-                            //     userId = "0";
-                            //     isLogin = false;
-
-                            //     _localServices
-                            //         .saveWalletId(walletId)
-                            //         .then((bool committed) {
-                            //       print(walletId);
-                            //     });
-
-                            //     _localServices
-                            //         .saveUserId(userId)
-                            //         .then((bool committed) {
-                            //       print(userId);
-                            //     });
-
-                            //     _localServices
-                            //         .isLogin(isLogin)
-                            //         .then((bool committed) {
-                            //       print(isLogin);
-                            //     });
-
-                            //     Navigator.push(
-                            //         context,
-                            //         new MaterialPageRoute(
-                            //             builder: (__) => new RegisterPage()));
-                            //   },
-                            //   child: Container(
-                            //     padding: const EdgeInsets.only(top: 10.0),
-                            //     width: double.infinity,
-                            //     height: 40.0,
-                            //     child: Column(
-                            //       children: <Widget>[
-                            //         Expanded(
-                            //           child: Row(
-                            //             mainAxisAlignment:
-                            //                 MainAxisAlignment.spaceBetween,
-                            //             children: <Widget>[
-                            //               Container(
-                            //                 child: Text("Logout",
-                            //                     style: new TextStyle(
-                            //                         fontSize: 14.0)),
-                            //               ),
-                            //               Container(
-                            //                 child: Icon(
-                            //                   Icons.keyboard_arrow_down,
-                            //                   color: Colors.black,
-                            //                   size: 24.0,
-                            //                 ),
-                            //               ),
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
-                          ]))));
+        body: Padding(
+            padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+            child: body,
+          ),
+        );
   }
 }

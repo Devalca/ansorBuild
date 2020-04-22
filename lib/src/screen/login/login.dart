@@ -232,8 +232,8 @@ class _LoginState extends State<Login> {
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                 icon: Icon(_obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
+                                    ? Icons.visibility_off
+                                    : Icons.visibility),
                                 onPressed: () {
                                   _toggle();
                                 },
@@ -433,7 +433,7 @@ class _LoginState extends State<Login> {
                             Container(height: 10),
                             Divider(
                               height: 12,
-                              color: Colors.black,
+                              color: Colors.black54,
                             ),
                             Container(height: 10),
                             new GestureDetector(

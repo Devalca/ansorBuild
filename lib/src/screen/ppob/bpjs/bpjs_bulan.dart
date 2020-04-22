@@ -7,7 +7,8 @@ class BpjsBulan extends StatefulWidget {
   final String jenis;
   final String noVa;
   final String noKtp;
-  BpjsBulan({this.jenis, this.noVa, this.noKtp});
+  final int index;
+  BpjsBulan({this.jenis, this.noVa, this.noKtp, this.index});
 
   @override
   _BpjsBulanState createState() => _BpjsBulanState();
@@ -45,9 +46,9 @@ class _BpjsBulanState extends State<BpjsBulan> {
                 icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
                   Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (__) => new Bpjs()));
+                      context,
+                      new MaterialPageRoute(
+                          builder: (__) => new Bpjs(index: widget.index)));
                 }),
             backgroundColor: Colors.white,
             title: Text(

@@ -75,8 +75,9 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin {
                             borderRadius: BorderRadius.circular(6.0),
                           ),
                           child: TabBar(
-                            labelColor: Colors.green,
                             indicatorColor: Colors.green,
+                            labelColor: Colors.green,
+                            unselectedLabelColor: Colors.black38,
                             tabs: [
                               Container(
                                 child: Tab(text: 'Prabayar'),
