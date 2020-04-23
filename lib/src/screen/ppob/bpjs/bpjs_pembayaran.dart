@@ -644,7 +644,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                         title: Text("Transaksi Gagal",
                             style: TextStyle(color: Colors.green)),
                         content: Text(
-                            "Saldo Anda Tidak Cukup. Silahkan Melakukan Pengisian Saldo."),
+                            "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
                         actions: <Widget>[
                           MaterialButton(
                             elevation: 5.0,
@@ -734,7 +734,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                         title: Text("Transaksi Gagal",
                             style: TextStyle(color: Colors.green)),
                         content: Text(
-                            "Saldo Anda Tidak Cukup. Silahkan Melakukan Pengisian Saldo."),
+                            "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
                         actions: <Widget>[
                           MaterialButton(
                             elevation: 5.0,

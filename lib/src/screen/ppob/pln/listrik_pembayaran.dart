@@ -584,7 +584,7 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                       title: Text("Saldo Anda Tidak Mencukupi",
                           style: TextStyle(color: Colors.green)),
                       content: Text(
-                          "Saldo anda kurang untuk melakuan transaksi ini!!!"),
+                          "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
                       actions: <Widget>[
                         MaterialButton(
                           elevation: 5.0,

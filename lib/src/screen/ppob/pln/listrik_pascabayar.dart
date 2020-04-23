@@ -273,7 +273,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
 
                             return setState(() => {
                                   error = false,
-                                  errorText = "Nomor Tidak ditemukan",
+                                  errorText = "Nomor tidak terdaftar",
                                   _isLoading = false
                                 });
 

@@ -392,7 +392,7 @@ class _LoginState extends State<Login> {
                                                     style: TextStyle(
                                                         color: Colors.green)),
                                                 content: Text(
-                                                    "No HP atau Kata Sandi Salah!"),
+                                                    "No HP atau Kata Sandi Salah"),
                                                 actions: <Widget>[
                                                   MaterialButton(
                                                     elevation: 5.0,

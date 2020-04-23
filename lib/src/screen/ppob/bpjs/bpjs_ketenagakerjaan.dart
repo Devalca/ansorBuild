@@ -200,23 +200,23 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                     child: Text("Bayar Untuk",
                         style: new TextStyle(fontSize: 14.0),
                         textAlign: TextAlign.left)),
-                Container(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  width: double.infinity,
-                  height: 40.0,
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: new GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (__) => new BpjsBulan(
-                                        jenis: "ketenagakerjaan",
-                                        noKtp: _noKTPController.text,
-                                        index: 1)));
-                          },
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (__) => new BpjsBulan(
+                                jenis: "ketenagakerjaan",
+                                noKtp: _noKTPController.text,
+                                index: 1)));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    width: double.infinity,
+                    height: 40.0,
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -239,15 +239,58 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                             ],
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
+                // Container(
+                //   padding: const EdgeInsets.only(top: 10.0),
+                //   width: double.infinity,
+                //   height: 40.0,
+                //   child: Column(
+                //     children: <Widget>[
+                //       Expanded(
+                //         child: new GestureDetector(
+                //           onTap: () {
+                //             Navigator.push(
+                //                 context,
+                //                 new MaterialPageRoute(
+                //                     builder: (__) => new BpjsBulan(
+                //                         jenis: "ketenagakerjaan",
+                //                         noKtp: _noKTPController.text,
+                //                         index: 1)));
+                //           },
+                //           child: Row(
+                //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //             children: <Widget>[
+                //               Container(
+                //                 child: widget.bln == null
+                //                     ? new Text("1 Bulan",
+                //                         style: new TextStyle(
+                //                             fontSize: 14.0,
+                //                             color: Colors.black54))
+                //                     : new Text(widget.bln,
+                //                         style: new TextStyle(fontSize: 14.0)),
+                //               ),
+                //               Container(
+                //                 child: Icon(
+                //                   Icons.keyboard_arrow_down,
+                //                   color: Colors.black,
+                //                   size: 24.0,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Divider(height: 12, color: Colors.black),
                 Container(height: 3),
                 Container(
                     child: Text(
-                        errorBulan ? "" : "Silahkan Pilih Bulan Pembayaran",
+                        errorBulan ? "" : "Silahkan pilih bulan pembayaran",
                         style: new TextStyle(fontSize: 12.0, color: Colors.red),
                         textAlign: TextAlign.left)),
               ])),
@@ -296,8 +339,10 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
+                                title: Text("Transaksi Gagal",
+                                    style: TextStyle(color: Colors.green)),
                                 content:
-                                    Text("Silahkan Pilih Bulan Pembayaran"),
+                                    Text("Silahkan pilih bulan pembayaran"),
                                 actions: <Widget>[
                                   MaterialButton(
                                     elevation: 5.0,
@@ -403,7 +448,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                               print("message: " + message);
                               setState(() => {
                                     error = false,
-                                    errorText = "Nomor Tidak Terdaftar",
+                                    errorText = "Nomor tidak terdaftar",
                                     _isLoading = false
                                   });
                             } else if (response.statusCode == 406) {

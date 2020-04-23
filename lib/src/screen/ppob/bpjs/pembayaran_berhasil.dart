@@ -163,13 +163,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Jenis Layanan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "BPJS Kesehatan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -184,14 +184,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Nama Pelanggan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           snapshot.data.data[0]
                                                               .namaPelanggan,
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -206,7 +206,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "No VA/Keluarga",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -214,7 +214,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                               .data.data[0].noVa
                                                               .toString(),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -228,14 +228,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                     Container(
                                                       child: Text("Periode",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           tanggal(periode)
                                                               .substring(2),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -250,7 +250,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Jumlah Keluarga",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -258,7 +258,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                               .jumlahKeluarga
                                                               .toString(),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -273,7 +273,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Nomor Transaksi",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -281,7 +281,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                               .noTransaksi
                                                               .toString(),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -296,7 +296,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Total Tagihan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -309,7 +309,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .data[0]
                                                                   .total),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -418,13 +418,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Jenis Layanan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           "BPJS Ketenagakerjaan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -439,14 +439,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Nama Pelanggan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           snapshot.data.data[0]
                                                               .namaPemilik,
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -461,14 +461,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "No KTP/Peserta",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           snapshot.data.data[0]
                                                               .noKtp,
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -482,7 +482,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                     Container(
                                                       child: Text("Periode",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -491,7 +491,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .toString() +
                                                               " Bulan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -506,7 +506,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Jaminan Kecelakaan Kerja",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -519,7 +519,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .data[0]
                                                                   .jkk),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -534,7 +534,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Jaminan Kematian",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -547,7 +547,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .data[0]
                                                                   .jkm),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -562,7 +562,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Jaminan Hari Tua",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -575,7 +575,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .data[0]
                                                                   .jht),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -590,7 +590,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Jaminan Pensiun",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -603,7 +603,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .data[0]
                                                                   .jp),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -618,7 +618,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Biaya Pelayanan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -631,7 +631,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .data[0]
                                                                   .adminFee),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -646,14 +646,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Nomor Transaksi",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
                                                           snapshot.data.data[0]
                                                               .noTransaksi,
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
@@ -668,7 +668,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                       child: Text(
                                                           "Total Tagihan",
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                     Container(
                                                       child: Text(
@@ -681,7 +681,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                                   .data[0]
                                                                   .total),
                                                           style: new TextStyle(
-                                                              fontSize: 12.0)),
+                                                              fontSize: 13.0)),
                                                     ),
                                                   ],
                                                 ),
