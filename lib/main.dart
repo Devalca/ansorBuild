@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         primarySwatch: Colors.green
       ),
-      home: LandingPage(),
+      home: LauncherPage(),
       routes: Routes.getRoutes(),
     );
   }

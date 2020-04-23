@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
@@ -40,40 +42,44 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: _container[_bottomNavCurrentIndex],
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Container(
-          height: 80.0,
-          width: 80.0,
-          child: FittedBox(
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              child: Image.asset("lib/src/assets/scan_qr.png"),
-              onPressed: () {
-                walletId = "0";
-                userId = "0";
-                isLogin = false;
+    return WillPopScope(
+      onWillPop: _closeDialog,
+      child: Scaffold(
+          body: _container[_bottomNavCurrentIndex],
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: Container(
+            height: 80.0,
+            width: 80.0,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                child: Image.asset("lib/src/assets/scan_qr.png"),
+                onPressed: () {
+                  walletId = "0";
+                  userId = "0";
+                  isLogin = false;
 
-                _localServices.saveWalletId(walletId).then((bool committed) {
-                  print(walletId);
-                });
+                  _localServices.saveWalletId(walletId).then((bool committed) {
+                    print(walletId);
+                  });
 
-                _localServices.saveUserId(userId).then((bool committed) {
-                  print(userId);
-                });
+                  _localServices.saveUserId(userId).then((bool committed) {
+                    print(userId);
+                  });
 
-                _localServices.isLogin(isLogin).then((bool committed) {
-                  print(isLogin);
-                });
+                  _localServices.isLogin(isLogin).then((bool committed) {
+                    print(isLogin);
+                  });
 
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    Routes.LoginScreen, (Route<dynamic> route) => false);
-              },
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      Routes.LoginScreen, (Route<dynamic> route) => false);
+                },
+              ),
             ),
           ),
-        ),
-        bottomNavigationBar: _buildBottomNavigation());
+          bottomNavigationBar: _buildBottomNavigation()),
+    );
   }
 
   void navigationTapped(int index) {
@@ -154,5 +160,27 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ],
     );
+  }
+
+  Future<bool> _closeDialog() {
+    return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Peringatan'),
+            content: Text('Apakah anda yakin keluar dari aplikasi ini?'),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('Tidak'),
+              ),
+              FlatButton(
+                onPressed: () => exit(0),
+                // Navigator.of(context).pop(true)
+                child: Text('Ya'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }

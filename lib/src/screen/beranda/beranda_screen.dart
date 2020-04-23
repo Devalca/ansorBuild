@@ -6,6 +6,7 @@ import 'package:ansor_build/src/screen/component/iklan_kecil.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
 import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
+import 'package:ansor_build/src/screen/katalog/katalog_home.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
@@ -88,9 +89,14 @@ class _BerandaPageState extends State<BerandaPage> {
                               child: Text('Produk Daerah'),
                             ),
                             Container(
-                              child: Text(
-                                'Lihat Semuanya',
-                                style: TextStyle(color: Colors.green),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _toKatalog();
+                                },
+                                child: Text(
+                                  'Lihat Semuanya',
+                                  style: TextStyle(color: Colors.green),
+                                ),
                               ),
                             ),
                           ],
@@ -111,9 +117,16 @@ class _BerandaPageState extends State<BerandaPage> {
                             Container(
                               child: Text('Produk National'),
                             ),
-                            Container(
-                              child: Text('Lihat Semuanya',
-                                  style: TextStyle(color: Colors.green)),
+                           Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                  _toKatalog();
+                                },
+                                child: Text(
+                                  'Lihat Semuanya',
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -430,7 +443,7 @@ class _BerandaPageState extends State<BerandaPage> {
         padding: EdgeInsets.only(top: 12.0),
         physics: ClampingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: productService == null ? 0 : productService.length,
+        itemCount: productService == null ? 0 : productService.length = 3,
         itemBuilder: (context, index) {
           for (int i = 0; i < productService.length; i++) {
             if (productService.length != null) {
@@ -531,5 +544,10 @@ class _BerandaPageState extends State<BerandaPage> {
         ],
       ),
     );
+  }
+
+  _toKatalog() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => KatalogHomePage()));
   }
 }
