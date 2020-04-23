@@ -221,7 +221,7 @@ class _RegisterPageState extends State<RegisterPage> {
       return "Wajib diisi";
     } else if (value.substring(0, 2) != "08") {
       return "Format nomor salah";
-    } else if (value.length < 10 ) {
+    } else if (value.length < 10) {
       return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
       return "Format nomor salah";
@@ -255,10 +255,14 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validatePassword(String value) {
+    Pattern patttern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
+    RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
       return 'Wajib diisi';
     } else if (value.length < 6) {
       return 'Kata sandi minimal 6 digit';
+    } else if (!regExp.hasMatch(value)) {
+      return "Harus terdapat huruf kecil, huruf besar dan angka";
     }
     return null;
   }
