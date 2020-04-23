@@ -400,7 +400,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                               title: Text("Transaksi Gagal",
                                   style: TextStyle(color: Colors.green)),
                               content: Text(
-                                  "Nomor Meter dan Nominal Token Wajib diisi"),
+                                  "Nomor meter dan nominal token wajib diisi"),
                               actions: <Widget>[
                                 MaterialButton(
                                   elevation: 5.0,
@@ -428,7 +428,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                             return AlertDialog(
                               title: Text("Transaksi Gagal",
                                   style: TextStyle(color: Colors.green)),
-                              content: Text("Silahkan Pilih Nominal"),
+                              content: Text("Silahkan pilih nominal"),
                               actions: <Widget>[
                                 MaterialButton(
                                   elevation: 5.0,
@@ -451,8 +451,16 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                       // String nominal = this.nominal;
                       // String nominal = _nominalController.text.toString();
 
-                      PostPrabayar prabayar =
-                          PostPrabayar(noMeter: noMeter, nominal: nominal);
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      String walletId = prefs.getString("walletId");
+                      String userId = prefs.getString("userId");
+
+                      PostPrabayar prabayar = PostPrabayar(
+                          noMeter: noMeter,
+                          nominal: nominal,
+                          userId: userId,
+                          walletId: walletId);
 
                       _plnServices
                           .postPrabayar(prabayar)

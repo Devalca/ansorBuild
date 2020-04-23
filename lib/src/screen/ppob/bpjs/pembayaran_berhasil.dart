@@ -63,6 +63,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
   Widget build(BuildContext context) {
     Widget middleSection = Expanded(
       child: Container(
+        color: Colors.white,
           child: SingleChildScrollView(
         padding: const EdgeInsets.only(top: 12.0, left: 12.0, right: 12.0),
         child: new Column(
@@ -718,9 +719,9 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
         ),
         child: SizedBox(
           width: 333,
-          height: 35,
+          height: 40,
           child: RaisedButton(
-            child: Text('SELESAI', style: TextStyle(color: Colors.green)),
+            child: Text('SELESAI', style: TextStyle(color: Colors.green, fontSize: 16.0)),
             color: Colors.white,
             onPressed: () {
               setState(() => _isLoading = true);
@@ -754,6 +755,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
         iconTheme: IconThemeData(
           color: Colors.black,
         ),
+        elevation: 0.2,
       ),
       body: Padding(
         padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),

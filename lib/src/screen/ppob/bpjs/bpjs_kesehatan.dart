@@ -426,7 +426,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                             print("periode: " + periode);
 
                             Map data = jsonDecode(response.body);
-                            message = data['message'].toString();
+                            message = data['message'].toString().substring(32);
                             print("message: " + message);
 
                             showDialog(
@@ -435,7 +435,8 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                                   return AlertDialog(
                                     title: Text("Transaksi Gagal",
                                         style: TextStyle(color: Colors.green)),
-                                    content: Text(message),
+                                    content: Text(
+                                        "Pembayaran terakhir Anda" + message),
                                     actions: <Widget>[
                                       MaterialButton(
                                         elevation: 5.0,

@@ -73,550 +73,566 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
   Widget build(BuildContext context) {
     Widget middleSection = Expanded(
       child: new Container(
+          color: Colors.white,
           child: SingleChildScrollView(
-        padding: new EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
-        child: new Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            widget.jenis == "kesehatan"
-                ? FutureBuilder<DetailKesehatan>(
-                    future: fetchPembayaran(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data.data.isNotEmpty) {
-                        DateTime periode = snapshot.data.data[0].periode;
+            padding: new EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                widget.jenis == "kesehatan"
+                    ? FutureBuilder<DetailKesehatan>(
+                        future: fetchPembayaran(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData &&
+                              snapshot.data.data.isNotEmpty) {
+                            DateTime periode = snapshot.data.data[0].periode;
 
-                        noVa2 = snapshot.data.data[0].noVa.toString();
-                        periode2 = snapshot.data.data[0].periode
-                            .toString()
-                            .substring(0, 10);
-                        totalSehat2 = snapshot.data.data[0].total;
+                            noVa2 = snapshot.data.data[0].noVa.toString();
+                            periode2 = snapshot.data.data[0].periode
+                                .toString()
+                                .substring(0, 10);
+                            totalSehat2 = snapshot.data.data[0].total;
 
-                        return (Container(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              height: 85.0,
-                              child: Row(children: <Widget>[
-                                Container(
-                                  margin: EdgeInsets.only(right: 12.0),
-                                  height: 90.0,
-                                  width: 50.0,
-                                  child: Image.asset("lib/src/assets/BPJS.png"),
-                                ),
-                                Container(
-                                  child: Text("BPJS Kesehatan" +
-                                      "\n" +
-                                      "Nomor " +
-                                      snapshot.data.data[0].noVa.toString() +
-                                      "\n" +
-                                      snapshot.data.data[0].namaPelanggan),
-                                ),
-                              ]),
-                            ),
-                            Container(height: 15),
-                            Text("Detail Pembayaran",
-                                textAlign: TextAlign.start,
-                                style: new TextStyle(fontSize: 14.0)),
-                            Container(height: 15),
-                            Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
-                                width: double.infinity,
-                                height: 150.0,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                    border: Border.all(
-                                        color: Colors.grey[300], width: 1)),
+                            return (Container(
                                 child: Column(
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 1,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Periode"),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                                tanggal(periode).substring(2)),
-                                          ),
-                                        ],
-                                      ),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  height: 85.0,
+                                  child: Row(children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.only(right: 12.0),
+                                      height: 100.0,
+                                      width: 60.0,
+                                      child: Image.asset(
+                                          "lib/src/assets/BPJS.png"),
                                     ),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Jumlah Keluarga"),
-                                          ),
-                                          Container(
-                                            child: Text(snapshot
-                                                .data.data[0].jumlahKeluarga
-                                                .toString()),
-                                          ),
-                                        ],
-                                      ),
+                                    Container(
+                                      child: Text("BPJS Kesehatan" +
+                                          "\n" +
+                                          "Nomor " +
+                                          snapshot.data.data[0].noVa
+                                              .toString() +
+                                          "\n" +
+                                          snapshot.data.data[0].namaPelanggan),
                                     ),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Total Tagihan"),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                                NumberFormat.simpleCurrency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0)
-                                                    .format(snapshot.data
-                                                        .data[0].totalTagihan)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Biaya Pelayanan"),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                                NumberFormat.simpleCurrency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0)
-                                                    .format(snapshot.data
-                                                        .data[0].adminFee)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Divider(height: 12, color: Colors.black87),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            child: Text("Total"),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                                NumberFormat.simpleCurrency(
-                                                        locale: 'id',
-                                                        decimalDigits: 0)
-                                                    .format(snapshot
-                                                        .data.data[0].total)),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                            Container(height: 15),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              width: double.infinity,
-                              height: 80.0,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.rectangle,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(
-                                      color: Colors.grey[300], width: 1)),
-                              child: Column(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                  ]),
+                                ),
+                                Container(height: 15),
+                                Text("Detail Pembayaran",
+                                    textAlign: TextAlign.start,
+                                    style: new TextStyle(fontSize: 14.0)),
+                                Container(height: 15),
+                                Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    width: double.infinity,
+                                    height: 150.0,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        border: Border.all(
+                                            color: Colors.grey[300], width: 1)),
+                                    child: Column(
                                       children: <Widget>[
-                                        Container(
-                                          child: Text("Un1ty"),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text("Periode"),
+                                              ),
+                                              Container(
+                                                child: Text(tanggal(periode)
+                                                    .substring(2)),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                        Container(
-                                          child: Icon(
-                                            Icons.more_vert,
-                                            color: Colors.green,
-                                            size: 24.0,
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text("Jumlah Keluarga"),
+                                              ),
+                                              Container(
+                                                child: Text(snapshot
+                                                    .data.data[0].jumlahKeluarga
+                                                    .toString()),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text("Total Tagihan"),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                    NumberFormat.simpleCurrency(
+                                                            locale: 'id',
+                                                            decimalDigits: 0)
+                                                        .format(snapshot
+                                                            .data
+                                                            .data[0]
+                                                            .totalTagihan)),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text("Biaya Pelayanan"),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                    NumberFormat.simpleCurrency(
+                                                            locale: 'id',
+                                                            decimalDigits: 0)
+                                                        .format(snapshot.data
+                                                            .data[0].adminFee)),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Divider(
+                                            height: 12, color: Colors.black87),
+                                        Expanded(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Container(
+                                                child: Text("Total"),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                    NumberFormat.simpleCurrency(
+                                                            locale: 'id',
+                                                            decimalDigits: 0)
+                                                        .format(snapshot.data
+                                                            .data[0].total)),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ],
-                                    ),
-                                  ),
-                                  Divider(height: 12, color: Colors.black87),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          width: 10,
-                                          child: Icon(
-                                            Icons.account_balance_wallet,
-                                            color: Colors.green,
-                                            size: 24.0,
-                                          ),
+                                    )),
+                                Container(height: 15),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  width: double.infinity,
+                                  height: 80.0,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                      border: Border.all(
+                                          color: Colors.grey[300], width: 1)),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Un1ty"),
+                                            ),
+                                            Container(
+                                              child: Icon(
+                                                Icons.more_vert,
+                                                color: Colors.green,
+                                                size: 24.0,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                              right: 95.0),
-                                          child: Text("Saldo Un1ty",
-                                              style: new TextStyle(
-                                                  color: Colors.green)),
-                                        ),
-                                        Container(
-                                            child: FutureBuilder<Wallet>(
-                                          future: _walletService.getSaldo(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.hasData) {
-                                              saldo = snapshot
-                                                  .data.data[0].saldoAkhir;
-                                              return Text(
-                                                  NumberFormat.simpleCurrency(
-                                                          locale: 'id',
-                                                          decimalDigits: 0)
+                                      ),
+                                      Divider(
+                                          height: 12, color: Colors.black87),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              width: 10,
+                                              child: Icon(
+                                                Icons.account_balance_wallet,
+                                                color: Colors.green,
+                                                size: 24.0,
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.only(
+                                                  right: 95.0),
+                                              child: Text("Saldo Un1ty",
+                                                  style: new TextStyle(
+                                                      color: Colors.green)),
+                                            ),
+                                            Container(
+                                                child: FutureBuilder<Wallet>(
+                                              future: _walletService.getSaldo(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  saldo = snapshot
+                                                      .data.data[0].saldoAkhir;
+                                                  return Text(NumberFormat
+                                                          .simpleCurrency(
+                                                              locale: 'id',
+                                                              decimalDigits: 0)
                                                       .format(snapshot.data
                                                           .data[0].saldoAkhir));
-                                            } else if (snapshot.hasError) {
-                                              return Text("${snapshot.error}");
-                                            }
-                                            return CircularProgressIndicator();
-                                          },
-                                        )),
-                                      ],
-                                    ),
+                                                } else if (snapshot.hasError) {
+                                                  return Text(
+                                                      "${snapshot.error}");
+                                                }
+                                                return CircularProgressIndicator();
+                                              },
+                                            )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            Container(height: 15),
-                          ],
-                        )));
-                      } else if (snapshot.hasError) {
-                        return Center(
-                            child: Text(
-                                "Gagal Memuat Detail Pembayaran Kesehatan"));
-                        // return Text("${snapshot.error}");
-                      }
-                      return Center(child: CircularProgressIndicator());
-                    },
-                  )
-                : FutureBuilder<DetailKetenagakerjaan>(
-                    future: fetchKetenagakerjaan(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData && snapshot.data.data.isNotEmpty) {
-                        periodeByr2 =
-                            snapshot.data.data[0].periodeByr;
-                        noKtp2 = snapshot.data.data[0].noKtp;
-                        totalKerja2 = snapshot.data.data[0].total;
+                                ),
+                                Container(height: 15),
+                              ],
+                            )));
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text(
+                                    "Gagal Memuat Detail Pembayaran Kesehatan"));
+                            // return Text("${snapshot.error}");
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
+                      )
+                    : FutureBuilder<DetailKetenagakerjaan>(
+                        future: fetchKetenagakerjaan(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData &&
+                              snapshot.data.data.isNotEmpty) {
+                            periodeByr2 = snapshot.data.data[0].periodeByr;
+                            noKtp2 = snapshot.data.data[0].noKtp;
+                            totalKerja2 = snapshot.data.data[0].total;
 
-                        return (Container(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              height: 85.0,
-                              child: Row(children: <Widget>[
+                            return (Container(
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
                                 Container(
-                                  margin: EdgeInsets.only(right: 12.0),
-                                  height: 90.0,
-                                  width: 50.0,
-                                  child: Image.asset("lib/src/assets/BPJS.png"),
+                                  height: 85.0,
+                                  child: Row(children: <Widget>[
+                                    Container(
+                                      margin: EdgeInsets.only(right: 12.0),
+                                      height: 100.0,
+                                      width: 60.0,
+                                      child: Image.asset(
+                                          "lib/src/assets/BPJS.png"),
+                                    ),
+                                    Container(
+                                      child: Text("BPJS Ketenagakerjaan" +
+                                          "\n" +
+                                          "Nomor " +
+                                          snapshot.data.data[0].noKtp
+                                              .toString() +
+                                          "\n" +
+                                          snapshot.data.data[0].namaPemilik +
+                                          " - " +
+                                          snapshot.data.data[0].cabang),
+                                    ),
+                                  ]),
                                 ),
+                                Container(height: 15),
+                                Text("Detail Pembayaran",
+                                    textAlign: TextAlign.start,
+                                    style: new TextStyle(fontSize: 14.0)),
+                                Container(height: 15),
                                 Container(
-                                  child: Text("BPJS Ketenagakerjaan" +
-                                      "\n" +
-                                      "Nomor " +
-                                      snapshot.data.data[0].noKtp.toString() +
-                                      "\n" +
-                                      snapshot.data.data[0].namaPemilik +
-                                      " - " +
-                                      snapshot.data.data[0].cabang),
-                                ),
-                              ]),
-                            ),
-                            Container(height: 15),
-                            Text("Detail Pembayaran",
-                                textAlign: TextAlign.start,
-                                style: new TextStyle(fontSize: 14.0)),
-                            Container(height: 15),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              width: double.infinity,
-                              height: 240.0,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(
-                                      color: Colors.grey[300], width: 1)),
-                              child: Column(
-                                children: <Widget>[
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Periode"),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  width: double.infinity,
+                                  height: 240.0,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                      border: Border.all(
+                                          color: Colors.grey[300], width: 1)),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 1,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Periode"),
+                                            ),
+                                            Container(
+                                              child: Text(snapshot
+                                                      .data.data[0].periodeByr
+                                                      .toString() +
+                                                  " Bulan"),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          child: Text(snapshot
-                                                  .data.data[0].periodeByr
-                                                  .toString() +
-                                              " Bulan"),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                  "Jaminan Kecelakaan Kerja"),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  NumberFormat.simpleCurrency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0)
+                                                      .format(snapshot
+                                                          .data.data[0].jkk)),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child:
-                                              Text("Jaminan Kecelakaan Kerja"),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Jaminan Kematian"),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  NumberFormat.simpleCurrency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0)
+                                                      .format(snapshot
+                                                          .data.data[0].jkm)),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0)
-                                                  .format(snapshot
-                                                      .data.data[0].jkk)),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Jaminan Hari Tua"),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  NumberFormat.simpleCurrency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0)
+                                                      .format(snapshot
+                                                          .data.data[0].jht)),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Jaminan Kematian"),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Jaminan Pensiun"),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  NumberFormat.simpleCurrency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0)
+                                                      .format(snapshot
+                                                          .data.data[0].jp)),
+                                            ),
+                                          ],
                                         ),
-                                        Container(
-                                          child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0)
-                                                  .format(snapshot
-                                                      .data.data[0].jkm)),
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Total Tagihan"),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  NumberFormat.simpleCurrency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0)
+                                                      .format(snapshot
+                                                          .data
+                                                          .data[0]
+                                                          .totalTagihan)),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Jaminan Hari Tua"),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0)
-                                                  .format(snapshot
-                                                      .data.data[0].jht)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Jaminan Pensiun"),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0)
-                                                  .format(snapshot
-                                                      .data.data[0].jp)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Total Tagihan"),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0)
-                                                  .format(snapshot.data.data[0]
-                                                      .totalTagihan)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Biaya Pelayanan"),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0)
-                                                  .format(snapshot
-                                                      .data.data[0].adminFee)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(height: 12, color: Colors.black87),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Total"),
-                                        ),
-                                        Container(
-                                          child: Text(
-                                              NumberFormat.simpleCurrency(
-                                                      locale: 'id',
-                                                      decimalDigits: 0)
-                                                  .format(snapshot
-                                                      .data.data[0].total)),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(height: 15),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              width: double.infinity,
-                              height: 80.0,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  shape: BoxShape.rectangle,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0)),
-                                  border: Border.all(
-                                      color: Colors.grey[300], width: 1)),
-                              child: Column(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Text("Un1ty"),
-                                        ),
-                                        Container(
-                                          child: Icon(
-                                            Icons.more_vert,
-                                            color: Colors.green,
-                                            size: 24.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(height: 12, color: Colors.black87),
-                                  Expanded(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          width: 10,
-                                          child: Icon(
-                                            Icons.account_balance_wallet,
-                                            color: Colors.green,
-                                            size: 24.0,
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.only(
-                                              right: 95.0),
-                                          child: Text("Saldo Un1ty",
-                                              style: new TextStyle(
-                                                  color: Colors.green)),
-                                        ),
-                                        Container(
-                                            child: FutureBuilder<Wallet>(
-                                          future: _walletService.getSaldo(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.hasData) {
-                                              saldo = snapshot
-                                                  .data.data[0].saldoAkhir;
-                                              return Text(
+                                      ),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Biaya Pelayanan"),
+                                            ),
+                                            Container(
+                                              child: Text(
                                                   NumberFormat.simpleCurrency(
                                                           locale: 'id',
                                                           decimalDigits: 0)
                                                       .format(snapshot.data
-                                                          .data[0].saldoAkhir));
-                                            } else if (snapshot.hasError) {
-                                              return Text("${snapshot.error}");
-                                            }
-                                            return CircularProgressIndicator();
-                                          },
-                                        )),
-                                      ],
-                                    ),
+                                                          .data[0].adminFee)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Divider(
+                                          height: 12, color: Colors.black87),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Total"),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  NumberFormat.simpleCurrency(
+                                                          locale: 'id',
+                                                          decimalDigits: 0)
+                                                      .format(snapshot
+                                                          .data.data[0].total)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            Container(height: 15),
-                          ],
-                        )));
-                      } else if (snapshot.hasError) {
-                        return Center(
-                            child: Text(
-                                "Gagal Memuat Detail Pembayaran Ketenagakerjaan"));
-                        // return Text("${snapshot.error}");
-                      }
-                      return Center(child: CircularProgressIndicator());
-                    },
-                  )
-          ],
-        ),
-      )),
+                                ),
+                                Container(height: 15),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10.0),
+                                  width: double.infinity,
+                                  height: 80.0,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                      border: Border.all(
+                                          color: Colors.grey[300], width: 1)),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text("Un1ty"),
+                                            ),
+                                            Container(
+                                              child: Icon(
+                                                Icons.more_vert,
+                                                color: Colors.green,
+                                                size: 24.0,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Divider(
+                                          height: 12, color: Colors.black87),
+                                      Expanded(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              width: 10,
+                                              child: Icon(
+                                                Icons.account_balance_wallet,
+                                                color: Colors.green,
+                                                size: 24.0,
+                                              ),
+                                            ),
+                                            Container(
+                                              padding: const EdgeInsets.only(
+                                                  right: 95.0),
+                                              child: Text("Saldo Un1ty",
+                                                  style: new TextStyle(
+                                                      color: Colors.green)),
+                                            ),
+                                            Container(
+                                                child: FutureBuilder<Wallet>(
+                                              future: _walletService.getSaldo(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.hasData) {
+                                                  saldo = snapshot
+                                                      .data.data[0].saldoAkhir;
+                                                  return Text(NumberFormat
+                                                          .simpleCurrency(
+                                                              locale: 'id',
+                                                              decimalDigits: 0)
+                                                      .format(snapshot.data
+                                                          .data[0].saldoAkhir));
+                                                } else if (snapshot.hasError) {
+                                                  return Text(
+                                                      "${snapshot.error}");
+                                                }
+                                                return CircularProgressIndicator();
+                                              },
+                                            )),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(height: 15),
+                              ],
+                            )));
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text(
+                                    "Gagal Memuat Detail Pembayaran Ketenagakerjaan"));
+                            // return Text("${snapshot.error}");
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
+                      )
+              ],
+            ),
+          )),
     );
 
     Widget bottomBanner = new Column(children: <Widget>[
@@ -846,6 +862,7 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                               index: widget.index,
                             )));
               }),
+          elevation: 0.2,
           backgroundColor: Colors.white,
           title: Text(
             'Pembayaran',
