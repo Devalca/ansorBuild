@@ -102,10 +102,9 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                   child: Row(children: <Widget>[
                                     Container(
                                       margin: EdgeInsets.only(right: 12.0),
-                                      height: 100.0,
-                                      width: 60.0,
                                       child: Image.asset(
-                                          "lib/src/assets/BPJS.png"),
+                                          "lib/src/assets/BPJS.png",
+                                          scale: 0.8),
                                     ),
                                     Container(
                                       child: Text("BPJS Kesehatan" +
@@ -342,10 +341,9 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                   child: Row(children: <Widget>[
                                     Container(
                                       margin: EdgeInsets.only(right: 12.0),
-                                      height: 100.0,
-                                      width: 60.0,
                                       child: Image.asset(
-                                          "lib/src/assets/BPJS.png"),
+                                          "lib/src/assets/BPJS.png",
+                                          scale: 0.9),
                                     ),
                                     Container(
                                       child: Text("BPJS Ketenagakerjaan" +

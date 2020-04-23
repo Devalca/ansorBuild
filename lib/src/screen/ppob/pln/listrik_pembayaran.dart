@@ -94,10 +94,9 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                   Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 12.0),
-                                    height: 90.0,
-                                    width: 50.0,
                                     child: Image.asset(
-                                        "lib/src/assets/LISTRIK.png"),
+                                        "lib/src/assets/LISTRIK.png",
+                                        scale: 0.9),
                                   ),
                                   Container(
                                     child: Text("Token Listrik PLN\n" +
