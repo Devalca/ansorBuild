@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
@@ -12,29 +13,33 @@ import 'package:intl/intl.dart';
 
 import '../selseai_screen.dart';
 
-class DetailPage extends StatefulWidget {
+class PascaBayarDetailPage extends StatefulWidget {
   final String koId;
-  DetailPage(this.koId);
+  PascaBayarDetailPage(this.koId);
 
   @override
-  _DetailPageState createState() => _DetailPageState();
+  _PascaBayarDetailPageState createState() => _PascaBayarDetailPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _PascaBayarDetailPageState extends State<PascaBayarDetailPage> {
+  String _idWallet;
   DateTime dateTime;
   Future<Album> futureAlbum;
-  bool _isLoading = false;
   PulsaService _pulsaService = PulsaService();
   WalletService _walletService = WalletService();
   LocalService _localService = LocalService();
-  final cF = NumberFormat.currency(locale: 'ID');
-  String _id = "";
 
   @override
   void initState() {
     super.initState();
-    _localService.getNameId().then(updateId);
     futureAlbum = fetchAlbum();
+    _localService.getWalletId().then(updateWallet);
+  }
+
+  void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
+    });
   }
 
   Future<Album> fetchAlbum() async {
@@ -48,37 +53,6 @@ class _DetailPageState extends State<DetailPage> {
       print("SATATUS CODENYA: " + response.statusCode.toString());
       throw Exception('Failed to load album');
     }
-  }
-
-  static Future<void> _showLoadingDialog(BuildContext context) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          Future.delayed(Duration(seconds: 5), () {
-            Navigator.of(context).pop(true);
-          });
-          return WillPopScope(
-              onWillPop: () async => false,
-              child: SimpleDialog(
-                  backgroundColor: Colors.white,
-                  children: <Widget>[
-                    Center(
-                      child: Column(children: [
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.green,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Mohon Tunggu....",
-                          style: TextStyle(color: Colors.green),
-                        )
-                      ]),
-                    )
-                  ]));
-        });
   }
 
   @override
@@ -100,299 +74,283 @@ class _DetailPageState extends State<DetailPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: FutureBuilder<Album>(
-            future: futureAlbum,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                dateTime = snapshot.data.data[0].periode;
-                var formatterDate = DateFormat('MMMM yyyy').format(dateTime);
-                return Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.symmetric(vertical: 16.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 12.0),
-                                    height: 90.0,
-                                    width: 90.0,
-                                    child: Image.asset(
-                                      "lib/src/assets/PULSA.png",
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.only(top: 5.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text('Pulsa Pascabayar'),
-                                        Text('Nomor ' +
-                                            snapshot.data.data[0].noHp),
-                                        Text(snapshot.data.data[0].provider)
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Column(
+      body: Container(
+        color: Colors.white,
+        child: FutureBuilder<Album>(
+          future: futureAlbum,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              dateTime = snapshot.data.data[0].periode;
+              var formatterDate = DateFormat('MMMM yyyy').format(dateTime);
+              return Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Container(
-                                  padding: EdgeInsets.only(left: 16.0),
-                                  child: Text('Detail Pembayaran'),
+                                  margin:
+                                      EdgeInsets.symmetric(horizontal: 12.0),
+                                  height: 70.0,
+                                  width: 70.0,
+                                  child: Image.asset(
+                                    "lib/src/assets/PULSA.png",
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                                 Container(
-                                  margin: const EdgeInsets.all(16.0),
-                                  padding: const EdgeInsets.all(16.0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 1.0, color: Colors.grey[200]),
-                                  ),
+                                  padding: const EdgeInsets.only(top: 5.0),
                                   child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Row(
+                                      Text('Pulsa Pascabayar'),
+                                      Text('Nomor ' +
+                                          snapshot.data.data[0].noHp),
+                                      Text(snapshot.data.data[0].provider)
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(left: 16.0),
+                                child: Text('Detail Pembayaran'),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(16.0),
+                                padding: const EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      width: 1.0, color: Colors.grey[200]),
+                                ),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(bottom: 16.0),
+                                          child: Text('Periode'),
+                                        ),
+                                        Container(
+                                          child: Text(formatBlnTahun(dateTime)
+                                              .toString()),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(bottom: 16.0),
+                                          child: Text('Total Tagihan'),
+                                        ),
+                                        Container(
+                                            child: Text(formatRupiah(snapshot
+                                                    .data.data[0].nominal)
+                                                .replaceAll("Rp ", "Rp"))),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          padding:
+                                              EdgeInsets.only(bottom: 16.0),
+                                          child: Text('Biaya Pelayanan'),
+                                        ),
+                                        Container(
+                                          child: Text(formatRupiah(snapshot
+                                                  .data.data[0].adminFee)
+                                              .replaceAll("Rp ", "Rp")),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(),
+                                    Container(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
+                                            child: Text('Total'),
+                                          ),
+                                          Container(
+                                            child: Text(formatRupiah(snapshot
+                                                    .data.data[0].totalHarga)
+                                                .replaceAll("Rp ", "Rp")),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          // Container ke dua
+
+                          Container(
+                            margin: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              border: Border.all(
+                                  width: 1.0, color: Colors.grey[200]),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      child: Text('Un1ty'),
+                                    ),
+                                    Container(
+                                      child: Icon(
+                                        Icons.more_vert,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Container(
                                             padding:
-                                                EdgeInsets.only(bottom: 16.0),
-                                            child: Text('Periode'),
+                                                EdgeInsets.only(right: 10.0),
+                                            child: Icon(
+                                              Icons.account_balance_wallet,
+                                              color: Colors.green,
+                                            ),
                                           ),
                                           Container(
                                             child: Text(
-                                                formatTanggal(dateTime).toString()),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(bottom: 16.0),
-                                            child: Text('Total Tagihan'),
-                                          ),
-                                          Container(
-                                              child: Text(formatRupiah(snapshot
-                                                      .data.data[0].totalHarga)
-                                                  .replaceAll("Rp ", "Rp"))),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            padding:
-                                                EdgeInsets.only(bottom: 16.0),
-                                            child: Text('Biaya Pelayanan'),
-                                          ),
-                                          Container(
-                                            // snapshot.data.data[0].adminFee.toString()
-                                            child: Text("Rp0"),
-                                          ),
-                                        ],
-                                      ),
-                                      Divider(),
-                                      Container(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Container(
-                                              child: Text('Total'),
+                                              'Saldo Un1ty',
+                                              style: TextStyle(
+                                                  color: Colors.green),
                                             ),
-                                            Container(
-                                              child: Text(formatRupiah(snapshot
-                                                      .data.data[0].totalHarga)
-                                                  .replaceAll("Rp ", "Rp")),
-                                            ),
-                                          ],
-                                        ),
+                                          )
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Container(
+                                        child: FutureBuilder<Wallet>(
+                                      future: _walletService.getSaldo(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Text(formatRupiah(snapshot
+                                                  .data.data[0].saldoAkhir)
+                                              .replaceAll("Rp ", "Rp"));
+                                        } else if (snapshot.hasError) {
+                                          return Text("${snapshot.error}");
+                                        }
+                                        return Text("Loading ...");
+                                      },
+                                    )),
+                                  ],
                                 ),
                               ],
-                            ),
-
-                            // Container ke dua
-
-                            Container(
-                              margin: const EdgeInsets.all(16.0),
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                border: Border.all(
-                                    width: 1.0, color: Colors.grey[200]),
-                              ),
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text('Un1ty'),
-                                      ),
-                                      Container(
-                                        child: Icon(
-                                          Icons.more_vert,
-                                          color: Colors.green,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Divider(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding:
-                                                  EdgeInsets.only(right: 10.0),
-                                              child: Icon(
-                                                Icons.account_balance_wallet,
-                                                color: Colors.green,
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(
-                                                'Saldo Un1ty',
-                                                style: TextStyle(
-                                                    color: Colors.green),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                          child: FutureBuilder<Wallet>(
-                                        future: _walletService.getSaldo(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasData) {
-                                            return Text(formatRupiah(snapshot
-                                                    .data.data[0].saldoAkhir)
-                                                .replaceAll("Rp ", "Rp"));
-                                          } else if (snapshot.hasError) {
-                                            return Text("${snapshot.error}");
-                                          }
-                                          return CircularProgressIndicator();
-                                        },
-                                      )),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 90.0,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Divider(
-                            color: Colors.black,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 16.0),
-                            child: RaisedButton(
-                              color: Colors.green,
-                              onPressed: () {
-                                _showLoadingDialog(context);
-                                // setState(() => _isLoading = true);
-                                int transactionId = int.parse(_id.toString());
-                                String nomorHp =
-                                    snapshot.data.data[0].noHp.toString();
-                                int nominal = int.parse(
-                                    snapshot.data.data[0].nominal.toString());
-                                Post post = Post(
-                                  userId: 1,
-                                  walletId: 1,
-                                  noHp: nomorHp,
-                                  transactionId: transactionId,
-                                );
-                                _pulsaService
-                                    .createPayPasca(post)
-                                    .then((response) async {
-                                  if (response.statusCode == 200) {
-                                    Map blok = jsonDecode(response.body);
-                                    print("REsponse : "+ response.body);
-                                    var userUid = blok['id'].toString();
-                                    var koId = userUid;
-                                    if (userUid == "null") {
-                                      print("NUll user");
-                                    } else {
-                                      _localService
-                                          .saveNameId(userUid)
-                                          .then((bool committed) {});
-                                      await Future.delayed(
-                                          const Duration(seconds: 5));
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SesPulsaPage(koId)));
-                                    }
-                                  } else {
-                                    print("Status Code" +
-                                        response.statusCode.toString());
-                                  }
-                                });
-                              },
-                              child: Text(
-                                'BAYAR',
-                                style: TextStyle(color: Colors.white),
-                              ),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return Container(
-                alignment: Alignment.center,
-                child: Center(
-                  child: CircularProgressIndicator(),
+                    ),
+                    Container(
+                      height: 90.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Divider(
+                            height: 12,
+                            color: Colors.grey,
+                          ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: RaisedButton(
+                            color: Colors.green,
+                            onPressed: () {
+                              int transactionId = int.parse(widget.koId);
+                              String nomorHp =
+                                  snapshot.data.data[0].noHp.toString();
+                              int idWallet = int.parse(_idWallet);
+                              Post post = Post(
+                                userId: idWallet,
+                                walletId: idWallet,
+                                noHp: nomorHp,
+                                transactionId: transactionId,
+                              );
+                              _pulsaService
+                                  .createPayPasca(post)
+                                  .then((response) async {
+                                if (response.statusCode == 200) {
+                                  Map blok = jsonDecode(response.body);
+                                  userUid = blok['id'].toString();
+                                  _localService
+                                      .saveIdName(userUid)
+                                      .then((bool committed) {
+                                    print("INI USERID :" + userUid);
+                                  });
+                                  PulsaDialog().nPulsaDialog(context);
+                                } else if (response.statusCode == 409) {
+                                  PulsaDialog().pascaDoneDialog(context);
+                                } else if (response.statusCode == 403) {
+                                  PulsaDialog().saldoMinDialog(context);
+                                } else {
+                                  print("INI STATUS CODE: " +
+                                      response.statusCode.toString());
+                                }
+                              });
+                            },
+                            child: Text(
+                              'BAYAR',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               );
-            },
-          ),
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            return Container(
+              alignment: Alignment.center,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          },
         ),
       ),
     );
-  }
-
-  void updateId(String transId) {
-    setState(() {
-      this._id = transId;
-    });
   }
 }

@@ -1,12 +1,17 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/pulsa_model.dart';
+import 'package:ansor_build/src/routes/routes.dart';
+import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/permissions_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PulsaPascaPage extends StatefulWidget {
   @override
@@ -14,20 +19,71 @@ class PulsaPascaPage extends StatefulWidget {
 }
 
 class _PulsaPascaPageState extends State<PulsaPascaPage> {
+  var nono;
+  String cekNo;
+  String testProv;
+  String _idWallet;
   String mobi = "";
   String logoProv = "";
-  bool _isFieldNomor;
-  bool _validate = true;
-  bool _isLoading = false;
+  bool _validate = false;
   String inputNomor, inputNominal, hargaNominal;
   final GlobalKey<FormState> _key = GlobalKey();
-  LocalService _localService = LocalService();
   PulsaService _pulsaService = PulsaService();
+  LocalService _localService = LocalService();
+  List<Provider> _provider = List<Provider>();
+  List<Provider> _providerForDisplay = List<Provider>();
   TextEditingController _controllerNomor = TextEditingController();
 
   @override
   void initState() {
+    _localService.getWalletId().then(updateWallet);
+    _pulsaService.getProvider().then((value) {
+      setState(() {
+        _provider.addAll(value.data);
+        _providerForDisplay = _provider;
+      });
+    });
+    _controllerNomor.addListener(() {
+      nono = _controllerNomor.text;
+      for (var i = 0; i < _providerForDisplay.length; i++) {
+        if (nono.substring(0, 4) == _providerForDisplay[i].kodeProvider) {
+          setState(() {
+            logoProv = _providerForDisplay[i].file.toString();
+            testProv = "";
+          });
+        }
+      }
+    });
     super.initState();
+  }
+
+  void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
+    });
+  }
+
+  void moveToContactPage() async {
+    final passNomor = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+          fullscreenDialog: true, builder: (context) => ContactsPage2()),
+    );
+    updateNomorPasca(passNomor);
+  }
+
+  void updateNomorPasca(String passNomor) {
+    setState(() {
+      if (passNomor != null) {
+        _controllerNomor.text = passNomor
+            .toString()
+            .replaceAll("+62", "0")
+            .replaceAll("-", "")
+            .replaceAll(" ", "");
+        cekNo = _controllerNomor.text;
+        testProv = cekNo.substring(0, 4);
+      }
+    });
   }
 
   void dispose() {
@@ -35,137 +91,40 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
     super.dispose();
   }
 
-  static Future<void> _showLoadingDialog(BuildContext context) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          Future.delayed(Duration(seconds: 5), () {
-            Navigator.of(context).pop(true);
-          });
-          return new WillPopScope(
-              onWillPop: () async => false,
-              child: SimpleDialog(
-                  backgroundColor: Colors.white,
-                  children: <Widget>[
-                    Center(
-                      child: Column(children: [
-                        CircularProgressIndicator(
-                          backgroundColor: Colors.green,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Mohon Tunggu....",
-                          style: TextStyle(color: Colors.green),
-                        )
-                      ]),
-                    )
-                  ]));
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomPadding: false,
-      body: Form(
-        key: _key,
-        autovalidate: _validate,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Container(
-                color: Colors.white,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(top: 12.0),
-                      child: Text('Nomor Handphone'),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: _buildTextFieldNomor()),
-                  ],
+      body: Form(key: _key, autovalidate: _validate, child: _formNomorInput()),
+    );
+  }
+
+  Widget _formNomorInput() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 12.0),
+                  child: Text("Nomor Handphone"),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 10),
-                child: Column(
-                  children: <Widget>[
-                    Divider(color: Colors.black),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[Text('Total'), Text('Rp')],
-                          ),
-                        ),
-                        Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
-                            child: RaisedButton(
-                              onPressed: () {
-                                _showLoadingDialog(context);
-                                String nomor = _controllerNomor.text.toString();
-                                Post post =
-                                    Post(noHp: nomor, userId: 1, walletId: 1);
-                                _pulsaService
-                                    .createPostPasca(post)
-                                    .then((response) async {
-                                  if (response.statusCode == 200) {
-                                    Map blok = jsonDecode(response.body);
-                                    userUid = blok['id'].toString();
-                                    var koId = userUid;
-                                    print(userUid);
-                                    if (userUid == "null") {
-                                      print("NUll user");
-                                    } else {
-                                      _localService
-                                          .saveNameId(userUid)
-                                          .then((bool committed) {});
-                                      await new Future.delayed(
-                                          const Duration(seconds: 5));
-                                      Navigator.push(
-                                          context,
-                                          new MaterialPageRoute(
-                                              builder: (__) =>
-                                                  new DetailPage(koId)));
-                                    }
-                                  } else {
-                                    print("INI STATUS CODE: " +
-                                        response.statusCode.toString());
-                                  }
-                                });
-                              },
-                              child: Text(
-                                "beli".toUpperCase(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              color: Colors.green,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
+                Padding(
+                    padding: const EdgeInsets.only(top: 12.0),
+                    child: _buildTextFieldNomor()),
+              ],
+            ),
           ),
-        ),
+          _btnNext()
+        ],
       ),
     );
   }
@@ -173,10 +132,14 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Nomor Salah";
+    if (value.isEmpty) {
+      return "Wajib diisi";
+    } else if (value.substring(0, 2) != "08") {
+      return "Format nomor salah";
+    } else if (value.length < 10) {
+      return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
+      return "Format nomor salah";
     }
     return null;
   }
@@ -189,7 +152,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             List<Provider> providers = snapshot.data.data;
             return TextFormField(
               inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
+                LengthLimitingTextInputFormatter(13),
               ],
               controller: _controllerNomor,
               keyboardType: TextInputType.phone,
@@ -212,28 +175,28 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 50, top: 4),
+                        padding: EdgeInsets.only(right: 44, top: 4),
                         height: 30,
-                        child: Image.network(logoProv),
+                        child: logoProv == ""
+                            ? Container(
+                                height: 5,
+                                width: 5,
+                              )
+                            : Image.network(logoProv),
                       ),
-                     Container(
-                        padding:
-                            EdgeInsets.only(top: 6.0, right: 6.0, bottom: 10.0),
-                        child: GestureDetector(
-                            onTap: () async => underDialog(context),
-                            child: Image.asset("lib/src/assets/XMLID_2.png"))),
+                      Container(
+                          padding: EdgeInsets.only(
+                              top: 6.0, right: 6.0, bottom: 10.0),
+                          child: GestureDetector(
+                              onTap: () async => launchContacts(),
+                              child:
+                                  Image.asset("lib/src/assets/XMLID_2.png"))),
                     ],
-                  ),
-                  errorText: _isFieldNomor == null || _isFieldNomor
-                      ? null
-                      : "Tidak Boleh Kosong"),
+                  )),
               onChanged: (value) {
-                bool isFieldValid = value.trim().isNotEmpty;
                 for (var i = 0; i < snapshot.data.data.length; i++) {
                   if (value.length == 4) {
-                    if (isFieldValid != _isFieldNomor) {
-                      setState(() => _isFieldNomor = isFieldValid);
-                    } else if (value == providers[i].kodeProvider) {
+                    if (value.substring(0, 4) == providers[i].kodeProvider) {
                       setState(() {
                         mobi = providers[i].namaProvider;
                         logoProv = providers[i].file.toString();
@@ -252,7 +215,7 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
             return Text("Jaringan Bermasalah");
           }
           return Container(
-            height: 400,
+            height: 200,
             alignment: Alignment.center,
             child: Center(
               child: CircularProgressIndicator(),
@@ -260,40 +223,96 @@ class _PulsaPascaPageState extends State<PulsaPascaPage> {
           );
         });
   }
-}
 
-// Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: <Widget>[
-//                       Expanded(
-//                           flex: 3,
-//                           child: Container(child: _buildTextFieldNomor())),
-//                       Expanded(
-//                         flex: 1,
-//                         child: Container(
-//                           child: Row(
-//                             mainAxisAlignment:
-//                                 MainAxisAlignment.spaceBetween,
-//                             children: <Widget>[
-//                               Container(
-//                                   child: Container(
-//                                 height: 30.0,
-//                                 width: 30.0,
-//                                 child:
-//                                     Text(logoProv == "" ? "" : "Provider"),
-//                                 // child: Image.network(logoProv),
-//                               )),
-//                               Container(
-//                                 height: 30.0,
-//                                 width: 1.0,
-//                                 color: Colors.black,
-//                               ),
-//                               Container(
-//                                   child: Image.asset(
-//                                       "lib/src/assets/XMLID_2.png"))
-//                             ],
-//                           ),
-//                         ),
-//                       )
-//                     ],
-//                   ),
+  Widget _btnNext() {
+    return Container(
+      margin: EdgeInsets.only(top: 10.0),
+      child: Column(
+        children: <Widget>[
+          Divider(
+            height: 12,
+            color: Colors.black,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // children: <Widget>[
+                  //   Container(
+                  //     child: Text('Total'),
+                  //   ),
+                  //   Container(
+                  //       child: Text(hargaNominal == null ? "" : hargaNominal)),
+                  // ],
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  width: 100.0,
+                  child: RaisedButton(
+                    color: Colors.green,
+                    onPressed: () {
+                      _sendToServer();
+                    },
+                    child: Text(
+                      'BELI',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _sendToServer() {
+    if (_key.currentState.validate()) {
+      _key.currentState.save();
+      String nomor = _controllerNomor.text.toString();
+      int idWallet = int.parse(_idWallet);
+      if (nomor != null) {
+        Post post = Post(noHp: nomor, userId: idWallet, walletId: idWallet);
+        _pulsaService.createPostPasca(post).then((response) async {
+          if (response.statusCode == 200) {
+            Map blok = jsonDecode(response.body);
+            userUid = blok['id'].toString();
+            _localService.saveIdName(userUid).then((bool committed) {
+              print("INI USERID :" + userUid);
+            });
+            PulsaDialog().pascaLoadDialog(context);
+          } else if (response.statusCode == 422) {
+            PulsaDialog().pascaGagalDialog(context);
+          } else {
+            print("INI STATUS CODE: " + response.statusCode.toString());
+          }
+        });
+      }
+    } else {
+      setState(() {
+        _validate = true;
+      });
+    }
+  }
+
+  void launchContacts() async {
+    final PermissionStatus permissionStatus =
+        await PermissionsService().getPermissionContact();
+    if (permissionStatus == PermissionStatus.granted) {
+      setState(() {
+        _validate = false;
+      });
+      moveToContactPage();
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => ContactsPage2()));
+    } else {
+      PermissionsService().requestContactsPermission(onPermissionDenied: () {
+        print('Permission has been denied');
+      });
+    }
+  }
+}

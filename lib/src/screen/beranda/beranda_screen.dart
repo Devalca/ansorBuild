@@ -5,6 +5,8 @@ import 'package:ansor_build/src/screen/component/iklan_home.dart';
 import 'package:ansor_build/src/screen/component/iklan_kecil.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
+import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
+import 'package:ansor_build/src/screen/katalog/katalog_home.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
@@ -87,9 +89,14 @@ class _BerandaPageState extends State<BerandaPage> {
                               child: Text('Produk Daerah'),
                             ),
                             Container(
-                              child: Text(
-                                'Lihat Semuanya',
-                                style: TextStyle(color: Colors.green),
+                              child: GestureDetector(
+                                onTap: () {
+                                  _toKatalog();
+                                },
+                                child: Text(
+                                  'Lihat Semuanya',
+                                  style: TextStyle(color: Colors.green),
+                                ),
                               ),
                             ),
                           ],
@@ -110,9 +117,16 @@ class _BerandaPageState extends State<BerandaPage> {
                             Container(
                               child: Text('Produk National'),
                             ),
-                            Container(
-                              child: Text('Lihat Semuanya',
-                                  style: TextStyle(color: Colors.green)),
+                           Container(
+                              child: GestureDetector(
+                                onTap: () {
+                                  _toKatalog();
+                                },
+                                child: Text(
+                                  'Lihat Semuanya',
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -157,29 +171,37 @@ class _BerandaPageState extends State<BerandaPage> {
                   child: FutureBuilder<Wallet>(
                     future: _walletService.getSaldo(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasData)
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
                           return Center(
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  child: Row(
-                                    children: <Widget>[
-                                      Text(
-                                          formatRupiah(snapshot
-                                                  .data.data[0].saldoAkhir)
-                                              .replaceAll("Rp ", "Rp"),
-                                          style: TextStyle(fontSize: 24.0)),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child: Text("Koneksi Terputus"),
                           );
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
+                        case ConnectionState.waiting:
+                          return centerLoading();
+                        default:
+                          if (snapshot.hasData) {
+                            return Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text(
+                                            formatRupiah(snapshot
+                                                    .data.data[0].saldoAkhir)
+                                                .replaceAll("Rp ", "Rp"),
+                                            style: TextStyle(fontSize: 24.0)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            // return Text('MOHON TUNGGU...');
+                            return Text('Result: ${snapshot.error}');
+                          }
                       }
-                      return Text('MOHON TUNGGU...');
                     },
                   ),
                 ),
@@ -342,15 +364,17 @@ class _BerandaPageState extends State<BerandaPage> {
     return InkWell(
       onTap: () {
         if (ppobService.title == "PULSA") {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MainPulsa("")));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MainPulsa("", "")));
         } else if (ppobService.title == "Listrik PLN") {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Listrik(index: widget.index)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Listrik(index: widget.index)));
         } else if (ppobService.title == "Air PDAM") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PdamPage("")));
-        }else if (ppobService.title == "BPJS") {
+        } else if (ppobService.title == "BPJS") {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Bpjs()));
         } else {
@@ -419,27 +443,32 @@ class _BerandaPageState extends State<BerandaPage> {
         padding: EdgeInsets.only(top: 12.0),
         physics: ClampingScrollPhysics(),
         scrollDirection: Axis.horizontal,
-        itemCount: productService == null ? 0 : productService.length,
+        itemCount: productService == null ? 0 : productService.length = 3,
         itemBuilder: (context, index) {
           for (int i = 0; i < productService.length; i++) {
             if (productService.length != null) {
               return InkWell(
                   onTap: () {
-                    print('INI BARANG');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetailKatalogPage()));
                   },
                   child: Container(
-                    margin: EdgeInsets.only(right: 16.0),
+                    margin: EdgeInsets.only(right: 10.0),
                     child: Column(
                       children: <Widget>[
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            // "lib/src/assets/produk.jpeg",
-                            productService[index].photos[1].photo,
-                            width: 132.0,
-                            height: 132.0,
-                          ),
-                        ),
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Container(
+                              width: 132.0,
+                              height: 132.0,
+                              child: FadeInImage.assetNetwork(
+                                  fadeInCurve: Curves.bounceIn,
+                                  placeholder: 'lib/src/assets/placeholder.jpg',
+                                  fit: BoxFit.fill,
+                                  image: productService[index].photos[0].photo),
+                            )),
                         Padding(
                           padding: EdgeInsets.only(top: 8.0),
                         ),
@@ -462,7 +491,7 @@ class _BerandaPageState extends State<BerandaPage> {
       padding: EdgeInsets.only(
         left: 16.0,
         right: 16.0,
-        bottom: 16.0,
+        bottom: 30.0,
       ),
       child: Column(
         children: <Widget>[
@@ -496,7 +525,6 @@ class _BerandaPageState extends State<BerandaPage> {
                       ),
                       Container(
                           height: 30,
-                          width: 80,
                           decoration: BoxDecoration(
                               color: Colors.green,
                               border: Border.all(width: 1, color: Colors.green),
@@ -516,5 +544,10 @@ class _BerandaPageState extends State<BerandaPage> {
         ],
       ),
     );
+  }
+
+  _toKatalog() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => KatalogHomePage()));
   }
 }

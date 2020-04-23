@@ -1,13 +1,15 @@
+import 'dart:convert';
+
 import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class DetailPagePdam extends StatefulWidget {
   final String koId;
@@ -18,20 +20,20 @@ class DetailPagePdam extends StatefulWidget {
 }
 
 class _DetailPagePdamState extends State<DetailPagePdam> {
+  String _idWallet;
   DateTime dateTime;
   PdamService _pdamService = PdamService();
   WalletService _walletService = WalletService();
-  final cF = NumberFormat.currency(locale: 'ID');
+  LocalService _localService = LocalService();
   List<DetailData> _detail = List<DetailData>();
   List<DetailData> _detailForDisplay = List<DetailData>();
 
-    Future<DetailPdam> getDetailId() async {
+  Future<DetailPdam> getDetailId() async {
     String baseUrl = "http://103.9.125.18:3000/ppob/pdam/";
     final response = await http.get(
       baseUrl + widget.koId,
     );
     if (response.statusCode == 200) {
-      print(response.statusCode);
       return detailPdamFromJson(response.body);
     } else {
       throw Exception('Failed to load album dan SATATUS CODE : ' +
@@ -42,11 +44,18 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
   @override
   void initState() {
     super.initState();
+    _localService.getWalletId().then(updateWallet);
     getDetailId().then((value) {
       setState(() {
         _detail.addAll(value.data);
         _detailForDisplay = _detail;
       });
+    });
+  }
+
+  void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
     });
   }
 
@@ -75,46 +84,48 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           builder: (context, snapshot) {
             if (_detailForDisplay.length == 0) {
               return centerLoading();
+              // return Text('Result: ${snapshot.error}');
             } else {
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
-                  return Text('Mulai');
+                  // return Text('Mulai');
+                  return Center(child: Text('${snapshot.error}'));
                 case ConnectionState.waiting:
                   return centerLoading();
+                // return Text('Result: ${snapshot.error}');
                 default:
                   if (snapshot.hasData) {
-                    return SingleChildScrollView(
-                        child: Container(
-                            color: Colors.white,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    return Container(
+                        color: Colors.white,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              child: Column(
+                                children: <Widget>[
+                                  _detailHeader(),
+                                  _detailBody(),
+                                  _detailPayment(),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 90.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      _detailHeader(),
-                                      _detailBody(),
-                                      _detailPayment(),
-                                    ],
-                                  ),
+                                Divider(
+                                  height: 12,
+                                  color: Colors.grey,
                                 ),
-                                Container(
-                                  height: 90.0,
-                                ),
-                                Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Divider(
-                                      color: Colors.black,
-                                    ),
-                                    _detailButton()
-                                  ],
-                                ),
+                                _detailButton()
                               ],
-                            )));
+                            ),
+                          ],
+                        ));
                   } else {
-                    return Text('Result: ${snapshot.error}');
+                    return Center(child: Text('${snapshot.error}'));
                   }
               }
             }
@@ -130,8 +141,8 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.symmetric(horizontal: 12.0),
-            height: 90.0,
-            width: 90.0,
+            height: 70.0,
+            width: 70.0,
             child: Image.asset(
               "lib/src/assets/PDAM.png",
               fit: BoxFit.fill,
@@ -180,7 +191,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                     child: Text('Periode'),
                   ),
                   Container(
-                    child: Text(formatTanggal(dateTime).toString()),
+                    child: Text(formatBlnTahun(dateTime).toString()),
                   ),
                 ],
               ),
@@ -204,7 +215,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                     child: Text('Biaya Pelayanan'),
                   ),
                   Container(
-                    child: Text(formatRupiah(_detailForDisplay[0].adminFee)
+                      child: Text(formatRupiah(_detailForDisplay[0].adminFee)
                           .replaceAll("Rp ", "Rp"))),
                 ],
               ),
@@ -304,19 +315,25 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
       child: RaisedButton(
         color: Colors.green,
         onPressed: () {
-          loadingDialog(context);
           String nomor = _detailForDisplay[0].noPelanggan;
           String wilayah = _detailForDisplay[0].namaWilayah;
+          int tagihan = _detailForDisplay[0].tagihan;
+          int idWallet = int.parse(_idWallet);
           PostPdam postPdam = PostPdam(
-              userId: 1, walletId: 1, noPelanggan: nomor, namaWilayah: wilayah);
+              userId: idWallet,
+              walletId: idWallet,
+              noPelanggan: nomor,
+              namaWilayah: wilayah,
+              tagihan: tagihan);
           _pdamService.createPdamPay(postPdam).then((response) async {
+            var headerUrl = response.headers['location'];
             if (response.headers != null) {
-              var koId = "1";
-              var headerUrl = response.headers['location'];
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => SelesaiPage(koId, headerUrl)));
-            } else {
-              return print("Hasil Response : " + response.toString());
+              if (response.statusCode == 403) {
+                PdamDialog().saldoMinDialog(context);
+              } else {
+                _localService.saveUrlName(headerUrl).then((bool committed) {});
+                PdamDialog().nPdamDialog(context);
+              }
             }
           });
         },

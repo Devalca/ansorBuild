@@ -51,6 +51,7 @@ String postPdamToJson(PostPdam data) => json.encode(data.toJson());
 class PostPdam {
     int walletId;
     int userId;
+    int tagihan;
     String noPelanggan;
     String namaPelanggan;
     String namaWilayah;
@@ -58,6 +59,7 @@ class PostPdam {
     PostPdam({
       this.userId,
       this.walletId,
+      this.tagihan,
         this.noPelanggan,
         this.namaPelanggan,
         this.namaWilayah,
@@ -69,6 +71,7 @@ class PostPdam {
         noPelanggan: json["no_pelanggan"],
         namaPelanggan: json["nama_pelanggan"],
         namaWilayah: json["nama_wilayah"],
+        tagihan: json["tagihan"]
 
     );
 
@@ -78,6 +81,7 @@ class PostPdam {
         "no_pelanggan": noPelanggan,
         "nama_pelanggan": namaPelanggan,
         "nama_wilayah": namaWilayah,
+        "tagihan": tagihan,
     };
 
 }

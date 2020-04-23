@@ -5,28 +5,40 @@ String walletId, userId, message;
 bool isLogin;
 
 class LocalService {
-  Future<bool> saveNameId(String transId) async {
+  Future<bool> saveIdName(String transIdName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("transId", transId);
+    prefs.setString("transIdName", transIdName);
     return prefs.commit();
   }
 
-  Future<bool> saveUrlId(String transUrl) async {
+    Future<bool> saveNameProv(String transNameProv) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("transUrl", transUrl);
+    prefs.setString("transNameProv", transNameProv);
     return prefs.commit();
   }
 
-  Future<String> getUrlId() async {
+  Future<bool> saveUrlName(String transUrlName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String transUrl = prefs.getString("transUrl");
-    return transUrl;
+    prefs.setString("transUrlName", transUrlName);
+    return prefs.commit();
   }
 
-  Future<String> getNameId() async {
+  Future<String> getUrlName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String transId = prefs.getString("transId");
-    return transId;
+    String transUrlName = prefs.getString("transUrlName");
+    return transUrlName;
+  }
+
+  Future<String> getIdName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String transIdName = prefs.getString("transIdName");
+    return transIdName;
+  }
+
+  Future<String> getNamaProv() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String transProvider = prefs.getString("transProvider");
+    return transProvider;
   }
 
   // LOGIN
@@ -40,6 +52,12 @@ class LocalService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("walletId", walletId);
     return prefs.commit();
+  }
+
+  Future<String> getWalletId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String walletId = prefs.getString("walletId");
+    return walletId;
   }
 
   Future<bool> saveUserId(String userId) async {

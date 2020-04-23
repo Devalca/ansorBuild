@@ -29,20 +29,20 @@ class _PulsaPageState extends State<PulsaPage> {
   var logoProv = "";
   var testProv;
   var cekNo;
+  var nono;
+  String _idWallet;
   bool _validate = false;
-  int _nominalIndex = -1;
+  int _nominalIndex;
   String inputNomor, inputNominal, hargaNominal;
   GlobalKey<FormState> _key = GlobalKey();
   PulsaService _pulsaService = PulsaService();
-  LocalService _localService = LocalService();
-  final cF = NumberFormat.currency(locale: 'ID');
   TextEditingController _controllerNomor = TextEditingController();
+  LocalService _localService = LocalService();
   List<Nominal> _nominal = List<Nominal>();
   List<Nominal> _nominalForDisplay = List<Nominal>();
   List<Provider> _provider = List<Provider>();
   List<Provider> _providerForDisplay = List<Provider>();
-  static const platform =
-      const MethodChannel('flutter_contacts/launch_contacts');
+  static const platform = MethodChannel('flutter_contacts/launch_contacts');
 
   @override
   void initState() {
@@ -58,17 +58,51 @@ class _PulsaPageState extends State<PulsaPage> {
         _providerForDisplay = _provider;
       });
     });
-    setState(() {
-      if (widget.noValue != "") {
-        _controllerNomor.text =
-            widget.noValue.toString().replaceAll("+62", "0").replaceAll("-", "").replaceAll(" ", "");
-        if (_controllerNomor.text != null) {
-          cekNo = _controllerNomor.text;
-          testProv = cekNo.substring(0, 4);
+    _localService.getWalletId().then(updateWallet);
+    _controllerNomor.addListener(() {
+      nono = _controllerNomor.text;
+      for (var i = 0; i < _providerForDisplay.length; i++) {
+        if (nono.substring(0, 4) == _providerForDisplay[i].kodeProvider) {
+          setState(() {
+            namaProv = _providerForDisplay[i].namaProvider;
+            idProv = _providerForDisplay[i].operatorId.toString();
+            logoProv = _providerForDisplay[i].file.toString();
+            testProv = "";
+          });
         }
       }
     });
     super.initState();
+  }
+
+  void updateWallet(String idWallet) {
+    setState(() {
+      this._idWallet = idWallet;
+    });
+  }
+
+  void moveToContactPage() async {
+    final passNomor = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+          fullscreenDialog: true, builder: (context) => ContactsPage()),
+    );
+    updateNomorPasca(passNomor);
+  }
+
+  void updateNomorPasca(String passNomor) {
+    setState(() {
+      if (passNomor != null) {
+        _controllerNomor.text = passNomor
+            .toString()
+            .replaceAll("+62", "0")
+            .replaceAll("-", "")
+            .replaceAll(" ", "");
+        cekNo = _controllerNomor.text;
+        testProv = cekNo.substring(0, 4);
+        logoProv = "";
+      }
+    });
   }
 
   void dispose() {
@@ -80,12 +114,11 @@ class _PulsaPageState extends State<PulsaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       body: Container(
-        child: Form(
-            key: _key,
-            autovalidate: _validate,
-            child: SingleChildScrollView(child: _formPulsaInput())),
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        child:
+            Form(key: _key, autovalidate: _validate, child: _formPulsaInput()),
       ),
     );
   }
@@ -94,11 +127,17 @@ class _PulsaPageState extends State<PulsaPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Container(margin: EdgeInsets.only(top: 16.0), child: Text("Nomor Handphone")),
+        Container(
+            margin: EdgeInsets.only(top: 16.0), child: Text("Nomor Handphone")),
         Padding(
           padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
           child: TextFormField(
-              inputFormatters: [LengthLimitingTextInputFormatter(12)],
+              inputFormatters: [LengthLimitingTextInputFormatter(13)],
+              keyboardType: TextInputType.phone,
+              validator: validateNomor,
+              onSaved: (String val) {
+                inputNomor = val;
+              },
               decoration: InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(width: 1, color: Colors.grey)),
@@ -153,11 +192,6 @@ class _PulsaPageState extends State<PulsaPage> {
                     });
                   }
                 }
-              },
-              keyboardType: TextInputType.phone,
-              validator: validateNomor,
-              onSaved: (String val) {
-                inputNomor = val;
               }),
         ),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
@@ -165,18 +199,9 @@ class _PulsaPageState extends State<PulsaPage> {
             future: _pulsaService.getNominal(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return Center(
-                    child: Text("Koneksi Terputus"),
-                  );
-                case ConnectionState.waiting:
-                  return Container(
-                    height: 400,
-                    child: centerLoading(),
-                  );
                 default:
                   if (snapshot.hasData) {
-                    for (var i = 0; i < snapshot.data.data.length; i++) {
+                    for (var i = 0; i < _nominalForDisplay.length; i++) {
                       for (var i = 0; i < _providerForDisplay.length; i++) {
                         if (testProv == _providerForDisplay[i].kodeProvider) {
                           namaProv = _providerForDisplay[i].namaProvider;
@@ -187,23 +212,23 @@ class _PulsaPageState extends State<PulsaPage> {
                       if (idProv == "") {
                         return Container(
                           height: 350,
-                          child: centerLoading(),
                         );
                       } else if (idProv ==
-                          snapshot.data.data[i].operatorId.toString()) {
+                          _nominalForDisplay[i].operatorId.toString()) {
                         print(idProv);
                         List<Listharga> hargaList =
-                            snapshot.data.data[i].listharga;
+                            _nominalForDisplay[i].listharga;
                         return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             _btnListView(hargaList),
-                            _btnNext()
                           ],
                         );
                       }
                     }
                   } else {
-                    return Text('Result: ${snapshot.error}');
+                    // return Text('Result: ${snapshot.error}');
+                    return centerLoading();
                   }
               }
               return Container(
@@ -213,6 +238,7 @@ class _PulsaPageState extends State<PulsaPage> {
             },
           ),
         ]),
+        _btnNext()
       ],
     );
   }
@@ -246,7 +272,9 @@ class _PulsaPageState extends State<PulsaPage> {
                   width: 100.0,
                   child: RaisedButton(
                     color: Colors.green,
-                    onPressed: sendToServer,
+                    onPressed: () {
+                      sendToServer();
+                    },
                     child: Text(
                       'BELI',
                       style: TextStyle(color: Colors.white),
@@ -329,21 +357,37 @@ class _PulsaPageState extends State<PulsaPage> {
   String validateNomor(String value) {
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = RegExp(patttern);
-    if (value.length != 11 && value.length != 12 && value.length != 13) {
-      return "Nomor Salah";
+    if (value.isEmpty) {
+      return "Wajib diisi";
+    } else if (value.substring(0, 2) != "08") {
+      return "Format nomor salah";
+    } else if (value.length < 10) {
+      return "Format nomor salah";
     } else if (!regExp.hasMatch(value)) {
-      return "Harus Angka";
+      return "Format nomor salah";
     }
+    // } else if (value.length == 4) {
+    //   for (var i = 0; i < _providerForDisplay.length; i++) {
+    //     if (value.length == 4) {
+    //       if (value.substring(0, 4) != _providerForDisplay[i].kodeProvider) {
+    //         return "Nomor provider tidak terdaftar";
+    //       }
+    //     }
+    //   }
+    // }
     return null;
   }
 
   void sendToServer() {
-    loadingDialog(context);
     if (_key.currentState.validate()) {
       _key.currentState.save();
+      inputNominal == null
+          ? PulsaDialog().praNullNominalDialog(context)
+          : print("Data Ditemukan");
       String nomor = inputNomor.toString();
       // int nominal = int.parse(inputNominal.toString());
       String providerNama = namaProv.toString();
+      int idWallet = int.parse(_idWallet);
       int nominal = inputNominal == ""
           ? int.parse(cekNo.toString())
           : int.parse(inputNominal.toString());
@@ -351,29 +395,27 @@ class _PulsaPageState extends State<PulsaPage> {
         Post post = Post(
             noHp: nomor,
             nominal: nominal,
-            userId: 1,
-            walletId: 1,
+            userId: idWallet,
+            walletId: idWallet,
             provider: providerNama);
         _pulsaService.createPost(post).then((response) async {
           if (response.statusCode == 200) {
             Map blok = jsonDecode(response.body);
             userUid = blok['id'].toString();
-            var koId = userUid;
-            _localService.saveNameId(userUid).then((bool committed) {
-              print(userUid);
+            _localService.saveIdName(userUid).then((bool committed) {
+              print("INI USERID :" + userUid);
             });
-            await new Future.delayed(const Duration(seconds: 5));
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (__) => new DetailPage(koId, namaProv)));
+            _localService.saveNameProv(namaProv).then((bool committed) {
+              print("INI NAMAPROV :" + namaProv);
+            });
+            PulsaDialog().praLoadDialog(context);
             _key.currentState.reset();
           } else {
             print("INI STATUS CODE : " + response.statusCode.toString());
           }
         });
       } else {
-        print("Something Error");
+        print("object");
       }
     } else {
       setState(() {
@@ -386,8 +428,17 @@ class _PulsaPageState extends State<PulsaPage> {
     final PermissionStatus permissionStatus =
         await PermissionsService().getPermissionContact();
     if (permissionStatus == PermissionStatus.granted) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ContactsPage()));
+      if (_nominalIndex != null) {
+        setState(() {
+          _validate = false;
+          inputNominal = null;
+          hargaNominal = "";
+          _nominalIndex = null;
+        });
+      }
+      moveToContactPage();
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => ContactsPage()));
     } else {
       PermissionsService().requestContactsPermission(onPermissionDenied: () {
         print('Permission has been denied');

@@ -29,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
@@ -48,12 +48,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Container(
-                    height: 100,
-                    width: 200,
+                    height: 80,
+                    width: 150,
                     margin: EdgeInsets.only(bottom: 60),
                     child: Padding(
                       padding: const EdgeInsets.only(right: 15.0),
-                      child: Image.asset('lib/src/assets/lapakSahabat.png'),
+                      child: Image.asset('lib/src/assets/lapak_sahabat.png'),
                     ),
                   ),
                   Column(
@@ -161,14 +161,14 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validateName(String value) {
-    String patttern = r'(^[a-zA-Z]*$)';
+    String patttern = r'(^[a-zA-Z ]*$)';
     RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
-      return 'Nama Lengkap Harus Diisi';
+      return 'Wajib diisi';
     } else if (value.length < 3) {
       return 'Nama harus lebih dari 3';
     } else if (!regExp.hasMatch(value)) {
-      return "Hanya Boleh Huruf atau Alphabet";
+      return "Hanya boleh berupa huruf";
     }
 
     return null;
@@ -189,8 +189,10 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validateEmail(String value) {
-    if (!value.contains('@gmail.com')) {
-      return 'Silahkan gunakan gmail anda';
+    if (value.isEmpty) {
+      return 'Wajib diisi';
+    } else if (!value.contains('@gmail.com')) {
+      return 'Silahkan gunakan gmail Anda';
     }
     return null;
   }
@@ -200,9 +202,11 @@ class _RegisterPageState extends State<RegisterPage> {
       controller: _controllerNomor,
       keyboardType: TextInputType.phone,
       inputFormatters: [
-        LengthLimitingTextInputFormatter(12),
+        LengthLimitingTextInputFormatter(13),
       ],
-      decoration: InputDecoration(hintText: 'Masukkan Nomor Handphone'),
+      decoration: InputDecoration(
+        hintText: 'Masukkan Nomor Handphone',
+      ),
       validator: validateNomor,
       onSaved: (String value) {
         registNomor = value;
@@ -211,10 +215,16 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validateNomor(String value) {
+    String patttern = r'(^[0-9]*$)';
+    RegExp regExp = RegExp(patttern);
     if (value.isEmpty) {
-      return "Tidak Boleh Kosong";
-    } else if (value.length != 12) {
-      return "Harus 12";
+      return "Wajib diisi";
+    } else if (value.substring(0, 2) != "08") {
+      return "Format nomor salah";
+    } else if (value.length < 10) {
+      return "Format nomor salah";
+    } else if (!regExp.hasMatch(value)) {
+      return "Format nomor salah";
     }
     return null;
   }
@@ -245,8 +255,14 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   String validatePassword(String value) {
-    if (value.length < 6) {
-      return 'Kata Sandi Minimal 6 Karakter';
+    Pattern patttern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$';
+    RegExp regExp = RegExp(patttern);
+    if (value.isEmpty) {
+      return 'Wajib diisi';
+    } else if (value.length < 6) {
+      return 'Kata sandi minimal 6 digit';
+    } else if (!regExp.hasMatch(value)) {
+      return "Harus terdapat huruf kecil, huruf besar dan angka";
     }
     return null;
   }
@@ -269,25 +285,18 @@ class _RegisterPageState extends State<RegisterPage> {
             _registService.postRegist(users).then((response) async {
               if (response.statusCode == 200) {
                 if (response.body == "already existed!") {
-                  registGagalDialog(context);
+                  RegistDialog().registGagalDialog(context);
                   _controllerNama.clear();
                   _controllerEmail.clear();
                   _controllerNomor.clear();
                   _controllerPsd.clear();
                 } else {
-                  registSuksesDialog(context);
+                  RegistDialog().registSuksesDialog(context);
                   _controllerNama.clear();
                   _controllerEmail.clear();
                   _controllerNomor.clear();
                   _controllerPsd.clear();
                 }
-                print('Daftar SUkses');
-                // _statePrabayar.currentState.showSnackBar(SnackBar(
-                //     duration: Duration(minutes: 5),
-                //     content: Text("SEDANG PROSES")));
-                // await new Future.delayed(
-                //     const Duration(seconds: 2));
-                // setState(() => _isLoading = false);
               } else {
                 print("INI STATUS CODE : " + response.statusCode.toString());
               }
