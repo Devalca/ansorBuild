@@ -26,7 +26,7 @@ class _LauncherPageState extends State<LauncherPage> {
 
   Future userLogin() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    if (pref.getBool("isLogin") == true) {
+    if (pref.getBool("isLogin")) {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (_) {
         return LandingPage();
       }));
