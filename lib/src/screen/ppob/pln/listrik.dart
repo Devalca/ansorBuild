@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pulsa_screen_pasca.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pulsa_screen.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,10 @@ class _ListrikState extends State<Listrik> with SingleTickerProviderStateMixin {
               leading: IconButton(
                   icon: Icon(Icons.arrow_back_ios),
                   onPressed: () {
-                    Navigator.pop(context, true);
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (__) => new LandingPage()));
                   }),
               elevation: 0.2,
               backgroundColor: Colors.white,

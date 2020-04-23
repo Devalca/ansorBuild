@@ -72,7 +72,7 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      new GestureDetector(
+                                      InkWell(
                                           onTap: () {
                                             setState(() => _isLoading = true);
                                             Navigator.push(
@@ -92,14 +92,17 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: <Widget>[
-                                                Container(
-                                                    height: 30,
-                                                    child: Text(
-                                                      snapshot
-                                                          .data.data[i].nama,
-                                                      style: new TextStyle(
-                                                          fontSize: 16.0),
-                                                    )),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(top: 10.0,bottom: 0.0),
+                                                  child: Container(
+                                                      height: 30,
+                                                      child: Text(
+                                                        snapshot
+                                                            .data.data[i].nama,
+                                                        style: new TextStyle(
+                                                            fontSize: 16.0),
+                                                      )),
+                                                ),
                                                 Divider(
                                                   height: 12,
                                                   color: Colors.black,
@@ -127,7 +130,7 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          new GestureDetector(
+                                          InkWell(
                                               onTap: () {
                                                 setState(
                                                     () => _isLoading = true);
@@ -156,19 +159,21 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: <Widget>[
-                                                    Container(
-                                                        height: 30,
-                                                        child: Text(
-                                                          snapshot.data.data[i]
-                                                              .nama,
-                                                          style: new TextStyle(
-                                                              fontSize: 16.0),
-                                                        )),
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(top: 10.0,bottom: 0.0),
+                                                      child: Container(
+                                                          height: 30,
+                                                          child: Text(
+                                                            snapshot.data.data[i]
+                                                                .nama,
+                                                            style: new TextStyle(
+                                                                fontSize: 16.0),
+                                                          )),
+                                                    ),
                                                     Divider(
                                                       height: 12,
                                                       color: Colors.black,
                                                     ),
-                                                    Container(height: 15),
                                                   ]))),
                                         ]);
                                   },
