@@ -189,7 +189,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Jenis Layanan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
@@ -203,7 +203,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                             .format(snapshot
                                                                 .data.nominal),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -216,13 +216,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Nama Pelanggan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.namaPelanggan,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -235,14 +235,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Periode",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     tanggal(periode)
                                                         .substring(2),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -256,13 +256,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                 child: Text(
                                                     "No Meter/ID Pelanggan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.noMeter,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -275,7 +275,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Tarif/Daya",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
@@ -283,7 +283,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                         '/' +
                                                         snapshot.data.daya,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -296,14 +296,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Total Kwh",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.totalKwh
                                                         .toString(),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -316,13 +316,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Nomor Transaksi",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.noTransaksi,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -335,7 +335,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Total Tagihan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
@@ -345,7 +345,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                         .format(snapshot
                                                             .data.total),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -428,7 +428,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Jenis Layanan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
@@ -442,7 +442,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                             .format(snapshot
                                                                 .data.nominal),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -455,13 +455,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Nama Pelanggan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.namaPelanggan,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -474,14 +474,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Periode",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     tanggal(periode)
                                                         .substring(2),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -495,13 +495,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                 child: Text(
                                                     "No Meter/ID Pelanggan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.noMeter,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -514,7 +514,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Tarif/Daya",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
@@ -522,7 +522,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                         '/' +
                                                         snapshot.data.daya,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -535,14 +535,14 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Total Kwh",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.totalKwh
                                                         .toString(),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -555,13 +555,13 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Nomor Transaksi",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
                                                     snapshot.data.noTransaksi,
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),
@@ -574,7 +574,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                               Container(
                                                 child: Text("Total Tagihan",
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                               Container(
                                                 child: Text(
@@ -584,7 +584,7 @@ class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
                                                         .format(snapshot
                                                             .data.total),
                                                     style: new TextStyle(
-                                                        fontSize: 12.0)),
+                                                        fontSize: 13.0)),
                                               ),
                                             ],
                                           ),

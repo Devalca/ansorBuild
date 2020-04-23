@@ -25,6 +25,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
   bool press5 = false;
   bool press6 = false;
   bool error = true;
+  bool stotal = false;
 
   String nominal = "";
   String errorText = "";
@@ -83,6 +84,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                         this.press6 = false;
                         this.total = 21500;
                         this.nominal = "20000";
+                        this.stotal = true;
                       });
                     },
                     child: new Container(
@@ -123,6 +125,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                         this.press6 = false;
                         this.total = 51500;
                         this.nominal = "50000";
+                        this.stotal = true;
                       });
                     },
                     child: new Container(
@@ -170,6 +173,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                         this.press6 = false;
                         this.total = 101500;
                         this.nominal = "100000";
+                        this.stotal = true;
                       });
                     },
                     child: new Container(
@@ -211,6 +215,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                         this.press6 = false;
                         this.total = 251500;
                         this.nominal = "250000";
+                        this.stotal = true;
                       });
                     },
                     child: new Container(
@@ -258,6 +263,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                         this.press6 = false;
                         this.total = 501500;
                         this.nominal = "500000";
+                        this.stotal = true;
                       });
                     },
                     child: new Container(
@@ -299,6 +305,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                         this.press5 = false;
                         this.total = 1001500;
                         this.nominal = "1000000";
+                        this.stotal = true;
                       });
                     },
                     child: new Container(
@@ -385,17 +392,13 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                   color: Colors.green,
                   // onPressed: _onPressed,
                   onPressed: () async {
-                    if (_noMeterController.text.isEmpty &&
-                        (press1 == true ||
-                            press2 == true ||
-                            press3 == true ||
-                            press4 == true ||
-                            press5 == true ||
-                            press6 == true)) {
+                    if (_noMeterController.text.isEmpty && stotal == false) {
                       showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              title: Text("Transaksi Gagal",
+                                  style: TextStyle(color: Colors.green)),
                               content: Text(
                                   "Nomor Meter dan Nominal Token Wajib diisi"),
                               actions: <Widget>[
@@ -423,6 +426,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
+                              title: Text("Transaksi Gagal",
+                                  style: TextStyle(color: Colors.green)),
                               content: Text("Silahkan Pilih Nominal"),
                               actions: <Widget>[
                                 MaterialButton(
@@ -446,9 +451,8 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                       // String nominal = this.nominal;
                       // String nominal = _nominalController.text.toString();
 
-                      PostPrabayar prabayar = PostPrabayar(
-                          noMeter: noMeter,
-                          nominal: nominal);
+                      PostPrabayar prabayar =
+                          PostPrabayar(noMeter: noMeter, nominal: nominal);
 
                       _plnServices
                           .postPrabayar(prabayar)
@@ -507,7 +511,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
 
                           return setState(() => {
                                 error = false,
-                                errorText = "Nomor Tidak ditemukan",
+                                errorText = "Nomor tidak terdaftar",
                                 _isLoading = false
                               });
                         } else {

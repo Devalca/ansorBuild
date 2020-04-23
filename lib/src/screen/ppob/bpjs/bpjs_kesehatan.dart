@@ -178,13 +178,15 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                   child: Text("Bayar Hingga",
                       style: new TextStyle(fontSize: 14.0),
                       textAlign: TextAlign.left)),
-              new GestureDetector(
+              InkWell(
                 onTap: () {
                   Navigator.push(
                       context,
                       new MaterialPageRoute(
                           builder: (__) => new BpjsBulan(
-                              jenis: "kesehatan", noVa: _noVAController.text, index: 0)));
+                              jenis: "kesehatan",
+                              noVa: _noVAController.text,
+                              index: 0)));
                 },
                 child: Container(
                   padding: const EdgeInsets.only(top: 10.0),
@@ -219,6 +221,49 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                   ),
                 ),
               ),
+              // new GestureDetector(
+              //   onTap: () {
+              //     Navigator.push(
+              //         context,
+              //         new MaterialPageRoute(
+              //             builder: (__) => new BpjsBulan(
+              //                 jenis: "kesehatan",
+              //                 noVa: _noVAController.text,
+              //                 index: 0)));
+              //   },
+              //   child: Container(
+              //     padding: const EdgeInsets.only(top: 10.0),
+              //     width: double.infinity,
+              //     height: 40.0,
+              //     child: Column(
+              //       children: <Widget>[
+              //         Expanded(
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: <Widget>[
+              //               Container(
+              //                 child: widget.nm == null
+              //                     ? new Text("Januari 2020",
+              //                         style: new TextStyle(
+              //                             fontSize: 14.0,
+              //                             color: Colors.black54))
+              //                     : new Text(widget.nm,
+              //                         style: new TextStyle(fontSize: 14.0)),
+              //               ),
+              //               Container(
+              //                 child: Icon(
+              //                   Icons.keyboard_arrow_down,
+              //                   color: Colors.black,
+              //                   size: 24.0,
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Divider(height: 12, color: Colors.black87),
               Container(height: 3),
               Container(
@@ -265,14 +310,16 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                           () => {error = false, errorText = "Wajib diisi"});
                     } else if (_noVAController.text.length < 9) {
                       setState(() =>
-                          {error = false, errorText = "Format Nomor Salah"});
+                          {error = false, errorText = "Format nomor salah"});
                     } else if (widget.nm == null) {
                       // setState(() => errorBulan = false);
                       showDialog(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              content: Text("Silahkan Pilih Bulan Pembayaran"),
+                              title: Text("Transaksi Gagal",
+                                  style: TextStyle(color: Colors.green)),
+                              content: Text("Silahkan pilih bulan pembayaran"),
                               actions: <Widget>[
                                 MaterialButton(
                                   elevation: 5.0,
@@ -297,9 +344,8 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                         String noVa = _noVAController.text.toString();
                         String periode = tgl(widget.tgl);
 
-                        PostKesehatan kesehatan = PostKesehatan(
-                            noVa: noVa,
-                            periode: periode);
+                        PostKesehatan kesehatan =
+                            PostKesehatan(noVa: noVa, periode: periode);
 
                         // PostKesehatan kesehatan = PostKesehatan(noVa: "123456789", periode: "2020-01-01");
 
@@ -353,7 +399,9 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                                 context,
                                 new MaterialPageRoute(
                                     builder: (__) => new BpjsPembayaran(
-                                        jenis: "kesehatan", url: url, index: 0)));
+                                        jenis: "kesehatan",
+                                        url: url,
+                                        index: 0)));
                             setState(() => _isLoading = false);
                           } else if (response.statusCode == 422) {
                             print("va: " + noVa);
@@ -367,7 +415,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                             print("message: " + message);
                             setState(() => {
                                   error = false,
-                                  errorText = "Nomor Tidak Terdaftar",
+                                  errorText = "Nomor tidak terdaftar",
                                   _isLoading = false
                                 });
                           } else if (response.statusCode == 406) {
@@ -446,12 +494,12 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
     );
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        resizeToAvoidBottomPadding: false,
-        body: Padding(
-            padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-            child: body,
-          ),
-        );
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
+      body: Padding(
+        padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+        child: body,
+      ),
+    );
   }
 }
