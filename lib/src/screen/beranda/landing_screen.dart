@@ -56,24 +56,58 @@ class _LandingPageState extends State<LandingPage> {
                 backgroundColor: Colors.transparent,
                 child: Image.asset("lib/src/assets/scan_qr.png"),
                 onPressed: () {
-                  walletId = "0";
-                  userId = "0";
-                  isLogin = false;
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Logout",
+                              style: TextStyle(color: Colors.green)),
+                          content: Text(
+                              "Apakah anda yakin keluar dari aplikasi ini?"),
+                          actions: <Widget>[
+                            MaterialButton(
+                              elevation: 5.0,
+                              child: Text("TIDAK",
+                                  style: TextStyle(color: Colors.green)),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            MaterialButton(
+                              elevation: 5.0,
+                              child: Text("YA",
+                                  style: TextStyle(color: Colors.green)),
+                              onPressed: () {
+                                walletId = "0";
+                                userId = "0";
+                                isLogin = false;
 
-                  _localServices.saveWalletId(walletId).then((bool committed) {
-                    print(walletId);
-                  });
+                                _localServices
+                                    .saveWalletId(walletId)
+                                    .then((bool committed) {
+                                  print(walletId);
+                                });
 
-                  _localServices.saveUserId(userId).then((bool committed) {
-                    print(userId);
-                  });
+                                _localServices
+                                    .saveUserId(userId)
+                                    .then((bool committed) {
+                                  print(userId);
+                                });
 
-                  _localServices.isLogin(isLogin).then((bool committed) {
-                    print(isLogin);
-                  });
+                                _localServices
+                                    .isLogin(isLogin)
+                                    .then((bool committed) {
+                                  print(isLogin);
+                                });
 
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      Routes.LoginScreen, (Route<dynamic> route) => false);
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    Routes.LoginScreen,
+                                    (Route<dynamic> route) => false);
+                              },
+                            )
+                          ],
+                        );
+                      });
                 },
               ),
             ),
