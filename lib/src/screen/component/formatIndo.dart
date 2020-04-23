@@ -3,6 +3,9 @@ String formatRupiah(value, {String separator='.', String trailing=''}) {
 }
 
 String formatTanggal(DateTime date, {bool shortMonth=false}) {
+  if (date.day <= 9) {
+    	return "0${date.day} ${_convertToIndo(date.month, shortMonth)} ${date.year}";
+  }
 	return "${date.day} ${_convertToIndo(date.month, shortMonth)} ${date.year}";
 }
 

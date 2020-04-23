@@ -28,7 +28,7 @@ class PdamService {
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: postPdamToJson(postPdam),
     );
-    print("INI RESPONSE :" + response.body);
+    print("INI RESPONSE NYA : " + response.body);
     return response;
   }
 
@@ -38,20 +38,6 @@ class PdamService {
         headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         body: postPdamToJson(postPdam),
       );
-      print("INI RESPONSE Code:" + response.statusCode.toString());
       return response;
   }
-
-  // Future<DetailPdam> getDetailId() async {
-  //   final response = await http.get(
-  //     '$baseUrl/ppob/pdam/1',
-  //   );
-  //   if (response.statusCode == 200) {
-  //     print(response.statusCode);
-  //     return detailPdamFromJson(response.body);
-  //   } else {
-  //     throw Exception('Failed to load album dan SATATUS CODE : ' +
-  //         response.statusCode.toString());
-  //   }
-  // }
 }

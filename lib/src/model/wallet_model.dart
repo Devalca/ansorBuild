@@ -5,7 +5,7 @@ Wallet walletFromJson(String str) => Wallet.fromJson(json.decode(str));
 String walletToJson(Wallet data) => json.encode(data.toJson());
 
 class Wallet {
-    List<SldWallet> data;
+    List<DataWallet> data;
     String message;
 
     Wallet({
@@ -14,7 +14,7 @@ class Wallet {
     });
 
     factory Wallet.fromJson(Map<String, dynamic> json) => Wallet(
-        data: List<SldWallet>.from(json["data"].map((x) => SldWallet.fromJson(x))),
+        data: List<DataWallet>.from(json["data"].map((x) => DataWallet.fromJson(x))),
         message: json["message"],
     );
 
@@ -24,7 +24,7 @@ class Wallet {
     };
 }
 
-class SldWallet {
+class DataWallet {
     int walletId;
     int userId;
     String namaPemilik;
@@ -32,7 +32,7 @@ class SldWallet {
     int saldoAwal;
     int saldoAkhir;
 
-    SldWallet({
+    DataWallet({
         this.walletId,
         this.userId,
         this.namaPemilik,
@@ -41,7 +41,7 @@ class SldWallet {
         this.saldoAkhir,
     });
 
-    factory SldWallet.fromJson(Map<String, dynamic> json) => SldWallet(
+    factory DataWallet.fromJson(Map<String, dynamic> json) => DataWallet(
         walletId: json["walletId"],
         userId: json["userId"],
         namaPemilik: json["nama_pemilik"],
