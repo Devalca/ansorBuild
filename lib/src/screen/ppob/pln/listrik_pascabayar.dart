@@ -232,8 +232,13 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
 
                       String noMeter = _noMeterController.text.toString();
 
-                      PostPascabayar pascabayar =
-                          PostPascabayar(noMeter: noMeter);
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      String walletId = prefs.getString("walletId");
+                      String userId = prefs.getString("userId");
+
+                      PostPascabayar pascabayar = PostPascabayar(
+                          noMeter: noMeter, userId: userId, walletId: walletId);
 
                       _plnServices
                           .postPascabayar(pascabayar)

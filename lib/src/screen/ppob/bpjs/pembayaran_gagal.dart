@@ -27,6 +27,7 @@ class _PembayaranGagalState extends State<PembayaranGagal> {
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
+          elevation: 0.2,
         ),
         bottomNavigationBar: BottomAppBar(
             color: Colors.transparent,
