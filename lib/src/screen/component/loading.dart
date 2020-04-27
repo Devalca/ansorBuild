@@ -136,6 +136,29 @@ class PulsaDialog {
         });
   }
 
+  Future<void> pinDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              content: const Text(
+                  "PIN yang Anda masukkan salah silahkan periksa kembali"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
   Future<void> praLoadDialog(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String transIdName = prefs.getString("transIdName");
@@ -182,8 +205,11 @@ class PulsaDialog {
         barrierDismissible: false,
         builder: (BuildContext context) {
           Future.delayed(Duration(seconds: 4), () {
-           Navigator.push(context,
-                MaterialPageRoute(builder: (__) => PascaBayarDetailPage(transIdName))).then((result) {
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (__) => PascaBayarDetailPage(transIdName)))
+                .then((result) {
               Navigator.of(context).pop();
             });
           });

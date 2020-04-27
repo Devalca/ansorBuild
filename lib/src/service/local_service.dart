@@ -5,13 +5,49 @@ String walletId, userId, message;
 bool isLogin;
 
 class LocalService {
+  // Local Service Regist
+  Future<bool> saveRegist(
+      String saveNama, String saveNo, String saveEmail, String savePass) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("saveNama", saveNama);
+    prefs.setString("saveNo", saveNo);
+    prefs.setString("saveEmail", saveEmail);
+    prefs.setString("savePass", savePass);
+    return prefs.commit();
+  }
+
+  // LOCAL PayLoad Pulsa
+  Future<bool> savePayPulsa(int payTrans, String payNomor, int payNominal,
+      int payUserId, String payProvider) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("payTrans", payTrans);
+    prefs.setString("payNomor", payNomor);
+    prefs.setInt("payNominal", payNominal);
+    prefs.setInt("payUserId", payUserId);
+    prefs.setString("payProvider", payProvider);
+    return prefs.commit();
+  }
+
+  // Local payload Pdam
+    Future<bool> savePayPdam(int payTrans, String payNomor, int payNominal,
+      int payUserId, String payProvider) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("payTrans", payTrans);
+    prefs.setString("payNomor", payNomor);
+    prefs.setInt("payNominal", payNominal);
+    prefs.setInt("payUserId", payUserId);
+    prefs.setString("payProvider", payProvider);
+    return prefs.commit();
+  }
+
+  // LOCAL Service PPOB
   Future<bool> saveIdName(String transIdName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("transIdName", transIdName);
     return prefs.commit();
   }
 
-    Future<bool> saveNameProv(String transNameProv) async {
+  Future<bool> saveNameProv(String transNameProv) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("transNameProv", transNameProv);
     return prefs.commit();
