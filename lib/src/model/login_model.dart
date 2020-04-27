@@ -31,3 +31,33 @@ class PostLogin{
   };
 }
 
+LoginPin loginPinFromJson(String str) => LoginPin.fromJson(json.decode(str));
+String loginPinToJson(LoginPin data) => json.encode(data.toJson());
+
+class LoginPin{
+  String noHp;
+  int pin;
+  int walletId;
+  int userId;
+
+  LoginPin({
+    this.noHp,
+    this.pin,
+    this.walletId,
+    this.userId
+  });
+
+  factory LoginPin.fromJson(Map<String, dynamic> json) => LoginPin(
+    noHp: json["no_hp"],
+    pin: json["pin"],
+    walletId: json["walletId"],
+    userId: json["userId"]
+  );
+
+  Map<String, dynamic> toJson() =>{
+    "no_hp": noHp,
+    "pin": pin,
+    "walletId": walletId,
+    "userId": userId
+  };
+}
