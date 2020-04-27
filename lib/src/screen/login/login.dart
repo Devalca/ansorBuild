@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/login_model.dart';
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
+import 'package:ansor_build/src/screen/component/pin.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/login_services.dart';
@@ -298,35 +299,41 @@ class _LoginState extends State<Login> {
                                             "berhasil body: " + response.body);
                                         print(response.statusCode);
 
-                                        Map data = jsonDecode(response.body);
-                                        walletId = data["walletId"].toString();
-                                        userId = data["userId"].toString();
-                                        isLogin = true;
-                                        print("walletId: " + walletId);
-                                        print("userId: " + userId);
-                                        print("isLogin: " + isLogin.toString());
+                                        Navigator.push(
+                                            context,
+                                            new MaterialPageRoute(
+                                                builder: (__) =>
+                                                    new Pin(noHp: no_hp)));
 
-                                        _localServices
-                                            .saveWalletId(walletId)
-                                            .then((bool committed) {
-                                          print(walletId);
-                                        });
+                                        // Map data = jsonDecode(response.body);
+                                        // walletId = data["walletId"].toString();
+                                        // userId = data["userId"].toString();
+                                        // isLogin = true;
+                                        // print("walletId: " + walletId);
+                                        // print("userId: " + userId);
+                                        // print("isLogin: " + isLogin.toString());
 
-                                        _localServices
-                                            .saveUserId(userId)
-                                            .then((bool committed) {
-                                          print(userId);
-                                        });
+                                        // _localServices
+                                        //     .saveWalletId(walletId)
+                                        //     .then((bool committed) {
+                                        //   print(walletId);
+                                        // });
 
-                                        _localServices
-                                            .isLogin(isLogin)
-                                            .then((bool committed) {
-                                          print(isLogin);
-                                        });
+                                        // _localServices
+                                        //     .saveUserId(userId)
+                                        //     .then((bool committed) {
+                                        //   print(userId);
+                                        // });
 
-                                        setState(() => _isLoading = true);
+                                        // _localServices
+                                        //     .isLogin(isLogin)
+                                        //     .then((bool committed) {
+                                        //   print(isLogin);
+                                        // });
 
-                                        _toLanding();
+                                        // setState(() => _isLoading = true);
+
+                                        // _toLanding();
 
                                         // showDialog(
                                         //     context: context,

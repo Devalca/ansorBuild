@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 String userUid;
-String walletId, userId, message;
+String walletId, userId, message, pin;
 bool isLogin;
 
 class LocalService {
@@ -11,7 +11,7 @@ class LocalService {
     return prefs.commit();
   }
 
-    Future<bool> saveNameProv(String transNameProv) async {
+  Future<bool> saveNameProv(String transNameProv) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("transNameProv", transNameProv);
     return prefs.commit();
@@ -63,6 +63,18 @@ class LocalService {
   Future<bool> saveUserId(String userId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("userId", userId);
+    return prefs.commit();
+  }
+
+  Future<String> getPin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String pin = prefs.getString("pin");
+    return pin;
+  }
+
+  Future<bool> savePin(String pin) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("pin", pin);
     return prefs.commit();
   }
 

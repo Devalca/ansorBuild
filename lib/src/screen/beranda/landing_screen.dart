@@ -80,6 +80,7 @@ class _LandingPageState extends State<LandingPage> {
                               onPressed: () {
                                 walletId = "0";
                                 userId = "0";
+                                pin = "0";
                                 isLogin = false;
 
                                 _localServices
@@ -92,6 +93,12 @@ class _LandingPageState extends State<LandingPage> {
                                     .saveUserId(userId)
                                     .then((bool committed) {
                                   print(userId);
+                                });
+
+                                _localServices
+                                    .savePin(pin)
+                                    .then((bool committed) {
+                                  print(pin);
                                 });
 
                                 _localServices
