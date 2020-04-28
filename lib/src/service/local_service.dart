@@ -100,16 +100,34 @@ class LocalService {
     return prefs.commit();
   }
 
-  Future<String> getPin() async {
+  Future<String> getUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String pin = prefs.getString("pin");
-    return pin;
+    String userId = prefs.getString("userId");
+    return userId;
   }
 
   Future<bool> savePin(String pin) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("pin", pin);
     return prefs.commit();
+  }
+
+  Future<String> getPin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String pin = prefs.getString("pin");
+    return pin;
+  }
+
+  Future<bool> saveNoHp(String noHp) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("noHp", noHp);
+    return prefs.commit();
+  }
+
+  Future<String> getNoHp() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String noHp = prefs.getString("noHp");
+    return noHp;
   }
 
   // BPJS

@@ -215,7 +215,31 @@ class _LandingPageState extends State<LandingPage> {
                 child: Text('Tidak'),
               ),
               FlatButton(
-                onPressed: () => exit(0),
+                onPressed: () {
+                  walletId = "0";
+                  userId = "0";
+                  pin = "0";
+                  isLogin = false;
+
+                  _localServices.saveWalletId(walletId).then((bool committed) {
+                    print(walletId);
+                  });
+
+                  _localServices.saveUserId(userId).then((bool committed) {
+                    print(userId);
+                  });
+
+                  _localServices.savePin(pin).then((bool committed) {
+                    print(pin);
+                  });
+
+                  _localServices.isLogin(isLogin).then((bool committed) {
+                    print(isLogin);
+                  });
+
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      Routes.LoginScreen, (Route<dynamic> route) => false);
+                },
                 // Navigator.of(context).pop(true)
                 child: Text('Ya'),
               ),

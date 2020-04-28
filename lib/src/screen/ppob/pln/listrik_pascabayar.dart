@@ -79,7 +79,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) => new PembayaranGagal(
+                      builder: (__) => new PembayaranGagalPln(
                           jenis: "pascabayar",
                           pesan: response.body,
                           index: 1)));
@@ -108,7 +108,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
             Navigator.push(
                 context,
                 new MaterialPageRoute(
-                    builder: (__) => new PembayaranGagal(
+                    builder: (__) => new PembayaranGagalPln(
                         jenis: "pascabayar", pesan: response.body)));
             setState(() => _isLoading = false);
           }
@@ -237,6 +237,9 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                       String walletId = prefs.getString("walletId");
                       String userId = prefs.getString("userId");
 
+                      print("walletId" + walletId);
+                      print("userId" + userId);
+
                       PostPascabayar pascabayar = PostPascabayar(
                           noMeter: noMeter, userId: userId, walletId: walletId);
 
@@ -316,7 +319,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                           Navigator.push(
                               context,
                               new MaterialPageRoute(
-                                  builder: (__) => new PembayaranGagal(
+                                  builder: (__) => new PembayaranGagalPln(
                                       jenis: "pascabayar",
                                       pesan: response.body)));
                           setState(() => _isLoading = false);

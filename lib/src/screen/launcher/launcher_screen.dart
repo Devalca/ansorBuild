@@ -1,4 +1,5 @@
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
+import 'package:ansor_build/src/screen/component/pin.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -28,7 +29,7 @@ class _LauncherPageState extends State<LauncherPage> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (pref.getBool("isLogin") == true) {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (_) {
-        return LandingPage();
+        return Pin();
       }));
     } else {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (_) {

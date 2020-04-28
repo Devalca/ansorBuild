@@ -529,7 +529,7 @@ class _ListrikPrabayarState extends State<ListrikPrabayar> {
                           Navigator.push(
                               context,
                               new MaterialPageRoute(
-                                  builder: (__) => new PembayaranGagal(
+                                  builder: (__) => new PembayaranGagalPln(
                                       jenis: "prabayar",
                                       pesan: response.body)));
                           setState(() => _isLoading = false);

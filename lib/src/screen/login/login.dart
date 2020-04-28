@@ -299,11 +299,17 @@ class _LoginState extends State<Login> {
                                             "berhasil body: " + response.body);
                                         print(response.statusCode);
 
+                                        _localServices
+                                            .saveNoHp(no_hp)
+                                            .then((bool committed) {
+                                          print(no_hp);
+                                        });
+
                                         Navigator.push(
                                             context,
                                             new MaterialPageRoute(
                                                 builder: (__) =>
-                                                    new Pin(noHp: no_hp)));
+                                                    new Pin(statusbyr: "login")));
 
                                         // Map data = jsonDecode(response.body);
                                         // walletId = data["walletId"].toString();
