@@ -5,6 +5,7 @@ import 'package:ansor_build/src/model/login_model.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_berhasil.dart';
+import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_gagal.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
@@ -306,6 +307,15 @@ class _PinState extends State<Pin> {
                                     } else {
                                       print("error: " + response.body);
                                       print(response.statusCode);
+
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (__) =>
+                                                  new PembayaranGagalBpjs(
+                                                      jenis: "kesehatan",
+                                                      index: 0)));
+                                      setState(() => _isLoading = false);
                                     }
                                   });
                                 } else if (widget.statusbyr ==
@@ -409,6 +419,15 @@ class _PinState extends State<Pin> {
                                     } else {
                                       print("error: " + response.body);
                                       print(response.statusCode);
+
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (__) =>
+                                                  new PembayaranGagalBpjs(
+                                                      jenis: "kesehatan",
+                                                      index: 0)));
+                                      setState(() => _isLoading = false);
                                     }
                                   });
                                 } else if (widget.statusbyr == "pln") {
