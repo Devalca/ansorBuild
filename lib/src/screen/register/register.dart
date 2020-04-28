@@ -3,9 +3,12 @@ import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
+import 'package:ansor_build/src/screen/register/pin.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/regist_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -13,18 +16,32 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  RegistService _registService = RegistService();
-  final _regKey = GlobalKey<FormState>();
   bool _validate = false;
   bool showPsd = true;
   String registNama = '';
   String registEmail = '';
   String registPsd = '';
   String registNomor = '';
+  final _regKey = GlobalKey<FormState>();
+  LocalService _localService = LocalService();
   TextEditingController _controllerNama = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerNomor = TextEditingController();
   TextEditingController _controllerPsd = TextEditingController();
+
+  rmRegist() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("saveNama");
+    prefs.remove("saveNo");
+    prefs.remove("saveEmail");
+    prefs.remove("savePass");
+  }
+
+  @override
+  void initState() {
+    rmRegist();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,33 +293,13 @@ class _RegisterPageState extends State<RegisterPage> {
               registEmail != "" ||
               registNomor != "" ||
               registPsd != "") {
-            Users users = Users(
-              namaLengkap: registNama,
-              noHp: registNomor,
-              email: registEmail,
-              password: registPsd,
-            );
-            _registService.postRegist(users).then((response) async {
-              if (response.statusCode == 200) {
-                if (response.body == "already existed!") {
-                  RegistDialog().registGagalDialog(context);
-                  _controllerNama.clear();
-                  _controllerEmail.clear();
-                  _controllerNomor.clear();
-                  _controllerPsd.clear();
-                } else {
-                  RegistDialog().registSuksesDialog(context);
-                  _controllerNama.clear();
-                  _controllerEmail.clear();
-                  _controllerNomor.clear();
-                  _controllerPsd.clear();
-                }
-              } else {
-                print("INI STATUS CODE : " + response.statusCode.toString());
-              }
-            });
+            _localService
+                .saveRegist(registNama, registNomor, registEmail, registPsd)
+                .then((bool committed) {});
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PinRegistPage()));
           } else {
-            print("INI ERROR LOH");
+            print("Null Data");
           }
         }
       },

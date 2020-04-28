@@ -22,6 +22,7 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
 
   @override
   void initState() {
+    rmRegist();
     super.initState();
     futureTrans = fetchTrans();
   }
@@ -32,8 +33,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
     String baseUrl = "http://103.9.125.18:3000/ppob/detail/pulsa/";
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String transIdName = prefs.getString("transIdName");
- 
-    final response = await http.get(baseUrl+transIdName);
+
+    final response = await http.get(baseUrl + transIdName);
     if (response.statusCode == 200) {
       return postTransFromJson(response.body);
     } else {
@@ -45,8 +46,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-          onWillPop: () async => false,
-          child: Scaffold(
+      onWillPop: () async => false,
+      child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             elevation: 0.0,
@@ -70,181 +71,185 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                 DateTime dateTime = snapshot.data.data[0].periode;
                 // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
                 var formatterTime = DateFormat('HH:mm').format(dateTime);
-                  return Container(
-                    color: Colors.white,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(top: 30.0, bottom: 15.0),
-                                    height: 100.0,
-                                    width: 100.0,
-                                    color: Colors.grey[300],
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.all(12.0),
-                                    child: Text(
-                                      'Transaksi Berhasil',
-                                      style: TextStyle(
-                                          fontSize: 20.0, color: Colors.green),
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text(
-                                        "${formatTanggal(dateTime)}, ${formatterTime.toString()}"),
-                                  ),
-                                  Container(
-                                    child: Text('via Un1ty'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    margin: EdgeInsets.only(top: 70.0),
-                                    child: Text('Detail'),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.symmetric(vertical: 12.0),
-                                    padding: const EdgeInsets.all(16.0),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          width: 1.0, color: Colors.grey[200]),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              snapshot.data.data[0].status == "Pascabayar" ? 
-                                                Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text('Periode'),
-                                              ) : Container(),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text('Jenis Layanan'),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text('Nomor Handphone'),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text('Provider'),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text('Nomor Transaksi'),
-                                              ),
-                                              Container(
-                                                child: Text('Total Tagihan'),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: <Widget>[
-                                              snapshot.data.data[0].status == "Pascabayar" ? 
-                                                Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text(formatBlnTahun(dateTime)
-                                                    .toString())
-                                              ) : Container(),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text(
-                                                    snapshot.data.data[0].status),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text(
-                                                    snapshot.data.data[0].noHp),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text(snapshot
-                                                    .data.data[0].provider),
-                                              ),
-                                              Container(
-                                                margin:
-                                                    EdgeInsets.only(bottom: 12.0),
-                                                child: Text(snapshot
-                                                    .data.data[0].transactionId
-                                                    .toString()),
-                                              ),
-                                              Container(
-                                                child: Text(formatRupiah(dotUang)
-                                                    .replaceAll("Rp ", "Rp")),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Divider(
-                              height: 12,
-                              color: Colors.grey,
-                            ),
-                            Container(
-                               height: 40.0,
-                              margin: EdgeInsets.only(
-                                  left: 16.0, right: 16.0, bottom: 20.0),
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 1, color: Colors.green),
-                                  borderRadius: BorderRadius.circular(5.0)),
-                              child: FlatButton(
-                                onPressed: () {
-                                  _toLanding();
-                                },
-                                child: Text(
-                                  'Selesai'.toUpperCase(),
-                                  style: TextStyle(
-                                      color: Colors.green, fontSize: 20.0),
+                return Container(
+                  color: Colors.white,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  margin:
+                                      EdgeInsets.only(top: 30.0, bottom: 15.0),
+                                  height: 100.0,
+                                  width: 100.0,
+                                  color: Colors.grey[300],
                                 ),
+                                Container(
+                                  margin: EdgeInsets.all(12.0),
+                                  child: Text(
+                                    'Transaksi Berhasil',
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.green),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                      "${formatTanggal(dateTime)}, ${formatterTime.toString()}"),
+                                ),
+                                Container(
+                                  child: Text('via Un1ty'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.only(top: 70.0),
+                                  child: Text('Detail'),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 12.0),
+                                  padding: const EdgeInsets.all(16.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1.0, color: Colors.grey[200]),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            snapshot.data.data[0].status ==
+                                                    "Pascabayar"
+                                                ? Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 12.0),
+                                                    child: Text('Periode'),
+                                                  )
+                                                : Container(),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text('Jenis Layanan'),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text('Nomor Handphone'),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text('Provider'),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text('Nomor Transaksi'),
+                                            ),
+                                            Container(
+                                              child: Text('Total Tagihan'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: <Widget>[
+                                            snapshot.data.data[0].status ==
+                                                    "Pascabayar"
+                                                ? Container(
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 12.0),
+                                                    child: Text(
+                                                        formatBlnTahun(dateTime)
+                                                            .toString()))
+                                                : Container(),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(
+                                                  snapshot.data.data[0].status),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(
+                                                  snapshot.data.data[0].noHp),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(snapshot
+                                                  .data.data[0].provider),
+                                            ),
+                                            Container(
+                                              margin:
+                                                  EdgeInsets.only(bottom: 12.0),
+                                              child: Text(snapshot
+                                                  .data.data[0].transactionId
+                                                  .toString()),
+                                            ),
+                                            Container(
+                                              child: Text(formatRupiah(dotUang)
+                                                  .replaceAll("Rp ", "Rp")),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          Divider(
+                            height: 12,
+                            color: Colors.grey,
+                          ),
+                          Container(
+                            height: 40.0,
+                            margin: EdgeInsets.only(
+                                left: 16.0, right: 16.0, bottom: 20.0),
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 1, color: Colors.green),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: FlatButton(
+                              onPressed: () {
+                                _toLanding();
+                              },
+                              child: Text(
+                                'Selesai'.toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.green, fontSize: 20.0),
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
@@ -258,6 +263,15 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
             },
           )),
     );
+  }
+
+  rmRegist() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("payTrans");
+    prefs.remove("payNomor");
+    prefs.remove("payNominal");
+    prefs.remove("payUserId");
+    prefs.remove("payProvider");
   }
 
   _toLanding() {

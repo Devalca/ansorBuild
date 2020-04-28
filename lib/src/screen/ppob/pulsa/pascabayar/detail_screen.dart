@@ -4,6 +4,7 @@ import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
+import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pin_payload.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
@@ -288,9 +289,9 @@ class _PascaBayarDetailPageState extends State<PascaBayarDetailPage> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Divider(
-                            height: 12,
-                            color: Colors.grey,
-                          ),
+                          height: 12,
+                          color: Colors.grey,
+                        ),
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 16.0),
                           child: RaisedButton(
@@ -300,33 +301,22 @@ class _PascaBayarDetailPageState extends State<PascaBayarDetailPage> {
                               String nomorHp =
                                   snapshot.data.data[0].noHp.toString();
                               int idWallet = int.parse(_idWallet);
-                              Post post = Post(
-                                userId: idWallet,
-                                walletId: idWallet,
-                                noHp: nomorHp,
-                                transactionId: transactionId,
-                              );
-                              _pulsaService
-                                  .createPayPasca(post)
-                                  .then((response) async {
-                                if (response.statusCode == 200) {
-                                  Map blok = jsonDecode(response.body);
-                                  userUid = blok['id'].toString();
-                                  _localService
-                                      .saveIdName(userUid)
-                                      .then((bool committed) {
-                                    print("INI USERID :" + userUid);
-                                  });
-                                  PulsaDialog().nPulsaDialog(context);
-                                } else if (response.statusCode == 409) {
-                                  PulsaDialog().pascaDoneDialog(context);
-                                } else if (response.statusCode == 403) {
-                                  PulsaDialog().saldoMinDialog(context);
-                                } else {
-                                  print("INI STATUS CODE: " +
-                                      response.statusCode.toString());
-                                }
+                              _localService
+                                  .saveIdName(userUid)
+                                  .then((bool committed) {
+                                print("INI USERID :" + userUid);
+                                _localService
+                                    .savePayPulsa(
+                                        transactionId, nomorHp, 0, idWallet, "")
+                                    .then((bool committed) {
+                                  print(
+                                      "INI DATA :  ${transactionId.toString()} $nomorHp ${idWallet.toString()}");
+                                });
                               });
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PinPayLoad()));
                             },
                             child: Text(
                               'BAYAR',
