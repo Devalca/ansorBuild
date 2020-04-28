@@ -4,9 +4,8 @@ import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
+import 'package:ansor_build/src/screen/ppob/pdam/pin_payload.dart';
 import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +21,6 @@ class DetailPagePdam extends StatefulWidget {
 class _DetailPagePdamState extends State<DetailPagePdam> {
   String _idWallet;
   DateTime dateTime;
-  PdamService _pdamService = PdamService();
   WalletService _walletService = WalletService();
   LocalService _localService = LocalService();
   List<DetailData> _detail = List<DetailData>();
@@ -319,23 +317,14 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
           String wilayah = _detailForDisplay[0].namaWilayah;
           int tagihan = _detailForDisplay[0].tagihan;
           int idWallet = int.parse(_idWallet);
-          PostPdam postPdam = PostPdam(
-              userId: idWallet,
-              walletId: idWallet,
-              noPelanggan: nomor,
-              namaWilayah: wilayah,
-              tagihan: tagihan);
-          _pdamService.createPdamPay(postPdam).then((response) async {
-            var headerUrl = response.headers['location'];
-            if (response.headers != null) {
-              if (response.statusCode == 403) {
-                PdamDialog().saldoMinDialog(context);
-              } else {
-                _localService.saveUrlName(headerUrl).then((bool committed) {});
-                PdamDialog().nPdamDialog(context);
-              }
-            }
-          });
+          _localService
+              .savePayPdam(idWallet, nomor, wilayah, tagihan)
+              .then((bool committed) {
+                print("Berhasil");
+              });
+              Navigator.push(context, MaterialPageRoute(builder: 
+              (context) => PinPayLoad()
+              ));
         },
         child: Text(
           'BAYAR',

@@ -288,18 +288,17 @@ class _DetailPageState extends State<DetailPage> {
                                   .saveIdName(userUid)
                                   .then((bool committed) {
                                 print("INI USERID :" + userUid);
-                                _localService.savePayPulsa(
-                                    transactionId,
-                                    nomorHp,
-                                    nominal,
-                                    idWallet,
-                                    provider).then((bool committed) {
-                                      print("INI DATA :  ${transactionId.toString()} $nomorHp ${nominal.toString()} ${idWallet.toString()} $provider ");
+                                _localService
+                                    .savePayPulsa(transactionId, nomorHp,
+                                        nominal, idWallet, provider)
+                                    .then((bool committed) {
+                                      print("Berhasil");
                                     });
                               });
-                              Navigator.push(context, MaterialPageRoute(builder: 
-                              (context) => PinPayLoad()
-                              ));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PinPayLoad()));
                             },
                             child: Text(
                               'BAYAR',

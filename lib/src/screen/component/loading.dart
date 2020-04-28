@@ -22,6 +22,29 @@ Widget centerLoading() {
   );
 }
 
+  Future<void> pinDialog(BuildContext context) async {
+    return showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertDialog(
+              content: const Text(
+                  "PIN yang Anda masukkan salah silahkan periksa kembali"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
 // Future<void> loadingDialog(BuildContext context) async {
 //   return showDialog<void>(
 //       context: context,
@@ -128,29 +151,6 @@ class PulsaDialog {
                             builder: (_) => MainPulsa("", ""))).then((result) {
                       Navigator.of(context).pop();
                     });
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
-  Future<void> pinDialog(BuildContext context) async {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return WillPopScope(
-            onWillPop: () async => false,
-            child: AlertDialog(
-              content: const Text(
-                  "PIN yang Anda masukkan salah silahkan periksa kembali"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
                   },
                 ),
               ],

@@ -85,7 +85,7 @@ class _PinPayLoadState extends State<PinPayLoad> {
                       } else if (response.statusCode == 403) {
                         PulsaDialog().saldoMinDialog(context);
                       } else if (response.statusCode == 422) {
-                        PulsaDialog().pinDialog(context);
+                        pinDialog(context);
                       } else {
                         print("INI STATUS CODE: " +
                             response.statusCode.toString());

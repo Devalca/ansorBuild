@@ -1,9 +1,7 @@
-import 'dart:convert';
-
-import 'package:ansor_build/src/model/pulsa_model.dart';
+import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/pulsa_service.dart';
+import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +13,7 @@ class PinPayLoad extends StatefulWidget {
 
 class _PinPayLoadState extends State<PinPayLoad> {
   String konfirmPin;
-  PulsaService _pulsaService = PulsaService();
+  PdamService _pdamService = PdamService();
   LocalService _localService = LocalService();
 
   @override
@@ -58,37 +56,37 @@ class _PinPayLoadState extends State<PinPayLoad> {
                   onSubmit: (String pin) async {
                     SharedPreferences prefs =
                         await SharedPreferences.getInstance();
-                    int payTrans = prefs.getInt("payTrans");
-                    String payNomor = prefs.getString("payNomor");
                     int payUserId = prefs.getInt("payUserId");
+                    String payPelanggan = prefs.getString("payPelanggan");
+                    String payWilayah = prefs.getString("payWilayah");
+                    int payTagihan = prefs.getInt("payTagihan");
                     setState(() {
                       konfirmPin = pin;
                     });
-                    Post post = Post(
+                    PostPdam postPdam = PostPdam(
                         userId: payUserId,
                         walletId: payUserId,
-                        noHp: payNomor,
-                        transactionId: payTrans,
-                        pin: int.parse(konfirmPin));
-                    _pulsaService.createPayPasca(post).then((response) async {
-                      if (response.statusCode == 200) {
-                        Map blok = jsonDecode(response.body);
-                        userUid = blok['id'].toString();
-                        _localService
-                            .saveIdName(userUid)
-                            .then((bool committed) {
-                          print("INI USERID :" + userUid);
-                        });
-                        PulsaDialog().nPulsaDialog(context);
-                      } else if (response.statusCode == 409) {
-                        PulsaDialog().pascaDoneDialog(context);
-                      } else if (response.statusCode == 403) {
-                        PulsaDialog().saldoMinDialog(context);
-                      } else if (response.statusCode == 422) {
-                        PulsaDialog().pinDialog(context);
-                      } else {
-                        print("INI STATUS CODE: " +
-                            response.statusCode.toString());
+                        noPelanggan: payPelanggan,
+                        namaWilayah: payWilayah,
+                        tagihan: payTagihan,
+                         pin: int.parse(konfirmPin)
+                        );
+                    _pdamService.createPdamPay(postPdam).then((response) async {
+                      var headerUrl = response.headers['location'];
+                      print("INis attsu code : " + response.body);
+                      if (response.headers != null) {
+                        if (response.statusCode == 403) {
+                          PdamDialog().saldoMinDialog(context);
+                        } else if (response.statusCode == 422) {
+                          pinDialog(context);
+                        } else {
+                          _localService
+                              .saveUrlName(headerUrl)
+                              .then((bool committed) {
+                            print("Berhasil");
+                          });
+                          PdamDialog().nPdamDialog(context);
+                        }
                       }
                     });
                   },

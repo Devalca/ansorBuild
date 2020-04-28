@@ -75,6 +75,8 @@ class _PinPayLoadState extends State<PinPayLoad> {
                       provider: payProvider,
                       pin: int.parse(konfirmPin),
                     );
+                    print(
+                        "INI Det : ${payTrans.toString()} ${payNomor.toString()} ${payNominal.toString()} ${payUserId.toString()} $payProvider");
                     _pulsaService.createPay(post).then((response) async {
                       if (response.statusCode == 200) {
                         Map blok = jsonDecode(response.body);
@@ -88,7 +90,7 @@ class _PinPayLoadState extends State<PinPayLoad> {
                       } else if (response.statusCode == 403) {
                         PulsaDialog().saldoMinDialog(context);
                       } else if (response.statusCode == 422) {
-                        PulsaDialog().pinDialog(context);
+                        pinDialog(context);
                       } else {
                         print("INI STATUS CODE: " +
                             response.statusCode.toString());

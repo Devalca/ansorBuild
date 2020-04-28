@@ -29,14 +29,12 @@ class LocalService {
   }
 
   // Local payload Pdam
-    Future<bool> savePayPdam(int payTrans, String payNomor, int payNominal,
-      int payUserId, String payProvider) async {
+    Future<bool> savePayPdam(int payUserId, String payPelanggan, String payWilayah, int payTagihan) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("payTrans", payTrans);
-    prefs.setString("payNomor", payNomor);
-    prefs.setInt("payNominal", payNominal);
     prefs.setInt("payUserId", payUserId);
-    prefs.setString("payProvider", payProvider);
+    prefs.setString("payPelanggan", payPelanggan);
+    prefs.setString("payWilayah", payWilayah);
+    prefs.setInt("payTagihan", payTagihan);
     return prefs.commit();
   }
 
