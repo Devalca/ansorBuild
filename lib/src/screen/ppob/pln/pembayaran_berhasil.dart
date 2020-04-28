@@ -6,15 +6,15 @@ import 'package:intl/intl.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
 
-class PembayaranBerhasil extends StatefulWidget {
+class PembayaranBerhasilPln extends StatefulWidget {
   final String status;
-  PembayaranBerhasil({this.status});
+  PembayaranBerhasilPln({this.status});
 
   @override
-  _PembayaranBerhasilState createState() => _PembayaranBerhasilState();
+  _PembayaranBerhasilPlnState createState() => _PembayaranBerhasilPlnState();
 }
 
-class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
+class _PembayaranBerhasilPlnState extends State<PembayaranBerhasilPln> {
   bool _isLoading = false;
   String _url = "";
   PlnServices _plnServices = PlnServices();

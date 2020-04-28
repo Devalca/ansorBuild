@@ -138,28 +138,31 @@ class PostPembayaran {
   String transactionId;
   String noVa;
   String periode;
+  int pin;
 
-  PostPembayaran({
-    this.userId,
-    this.walletId,
-    this.transactionId,
-    this.noVa,
-    this.periode,
-  });
+  PostPembayaran(
+      {this.userId,
+      this.walletId,
+      this.transactionId,
+      this.noVa,
+      this.periode,
+      this.pin});
 
   factory PostPembayaran.fromJson(Map<String, dynamic> json) => PostPembayaran(
       userId: json['userId'],
       walletId: json['walletId'],
       transactionId: json['transactionId'],
       noVa: json['no_va'],
-      periode: json['periode']);
+      periode: json['periode'],
+      pin: json['pin']);
 
   Map<String, dynamic> toJson() => {
         "userId": userId,
         "walletId": walletId,
         "transactionId": transactionId,
         "no_va": noVa,
-        "periode": periode
+        "periode": periode,
+        "pin": pin
       };
 }
 
@@ -407,28 +410,31 @@ class PostBayarKerja {
   String userId;
   String walletId;
   String transactionId;
+  int pin;
 
-  PostBayarKerja({
-    this.periodeByr,
-    this.noKtp,
-    this.userId,
-    this.walletId,
-    this.transactionId,
-  });
+  PostBayarKerja(
+      {this.periodeByr,
+      this.noKtp,
+      this.userId,
+      this.walletId,
+      this.transactionId,
+      this.pin});
 
   factory PostBayarKerja.fromJson(Map<String, dynamic> json) => PostBayarKerja(
       periodeByr: json['periode_byr'],
       noKtp: json['no_ktp'],
       userId: json['userId'],
       walletId: json['walletId'],
-      transactionId: json['transactionId']);
+      transactionId: json['transactionId'],
+      pin: json['pin']);
 
   Map<String, dynamic> toJson() => {
         "periode_byr": periodeByr,
         "no_ktp": noKtp,
         "userId": userId,
         "walletId": walletId,
-        "transactionId": transactionId
+        "transactionId": transactionId,
+        "pin": pin
       };
 }
 

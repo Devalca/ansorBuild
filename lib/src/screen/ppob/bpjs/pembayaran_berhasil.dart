@@ -6,15 +6,15 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:indonesia/indonesia.dart';
 
-class PembayaranBerhasil extends StatefulWidget {
+class PembayaranBerhasilBpjs extends StatefulWidget {
   final String jenis;
-  PembayaranBerhasil({this.jenis});
+  PembayaranBerhasilBpjs({this.jenis});
 
   @override
-  _PembayaranBerhasilState createState() => _PembayaranBerhasilState();
+  _PembayaranBerhasilBpjsState createState() => _PembayaranBerhasilBpjsState();
 }
 
-class _PembayaranBerhasilState extends State<PembayaranBerhasil> {
+class _PembayaranBerhasilBpjsState extends State<PembayaranBerhasilBpjs> {
   bool _isLoading = false;
 
   String _url = "";

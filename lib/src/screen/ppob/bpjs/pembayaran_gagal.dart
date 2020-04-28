@@ -2,16 +2,16 @@ import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
 import 'package:flutter/material.dart';
 
-class PembayaranGagal extends StatefulWidget {
+class PembayaranGagalBpjs extends StatefulWidget {
   final String pesan, jenis;
   final int index;
-  PembayaranGagal({this.pesan, this.jenis, this.index});
+  PembayaranGagalBpjs({this.pesan, this.jenis, this.index});
 
   @override
-  _PembayaranGagalState createState() => _PembayaranGagalState();
+  _PembayaranGagalBpjsState createState() => _PembayaranGagalBpjsState();
 }
 
-class _PembayaranGagalState extends State<PembayaranGagal> {
+class _PembayaranGagalBpjsState extends State<PembayaranGagalBpjs> {
   bool _isLoading = false;
 
   @override

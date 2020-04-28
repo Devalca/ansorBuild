@@ -98,7 +98,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) => new PembayaranGagal(
+                      builder: (__) => new PembayaranGagalBpjs(
                           jenis: "ketenagakerjaan",
                           pesan: response.body,
                           index: 1)));
@@ -155,7 +155,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) => new PembayaranGagal(
+                      builder: (__) => new PembayaranGagalBpjs(
                           jenis: "ketenagakerjaan", pesan: message, index: 1)));
               setState(() => _isLoading = false);
             }
@@ -409,7 +409,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                               Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (__) => new PembayaranGagal(
+                                      builder: (__) => new PembayaranGagalBpjs(
                                           jenis: "ketenagakerjaan",
                                           pesan: response.body,
                                           index: 1)));
@@ -494,7 +494,7 @@ class _BpjsKetenagakerjaanState extends State<BpjsKetenagakerjaan> {
                               Navigator.push(
                                   context,
                                   new MaterialPageRoute(
-                                      builder: (__) => new PembayaranGagal(
+                                      builder: (__) => new PembayaranGagalBpjs(
                                           jenis: "ketenagakerjaan",
                                           pesan: message,
                                           index: 1)));

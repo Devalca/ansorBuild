@@ -102,7 +102,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) => new PembayaranGagal(
+                      builder: (__) => new PembayaranGagalBpjs(
                           jenis: "kesehatan", pesan: response.body, index: 0)));
               setState(() => _isLoading = false);
             } else if (response.statusCode == 302) {
@@ -133,7 +133,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) => new PembayaranGagal(
+                      builder: (__) => new PembayaranGagalBpjs(
                           jenis: "kesehatan", pesan: message, index: 0)));
               setState(() => _isLoading = false);
             }
@@ -379,7 +379,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                             Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                    builder: (__) => new PembayaranGagal(
+                                    builder: (__) => new PembayaranGagalBpjs(
                                         jenis: "kesehatan",
                                         pesan: response.body,
                                         index: 0)));
@@ -466,7 +466,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                             Navigator.push(
                                 context,
                                 new MaterialPageRoute(
-                                    builder: (__) => new PembayaranGagal(
+                                    builder: (__) => new PembayaranGagalBpjs(
                                         jenis: "kesehatan",
                                         pesan: message,
                                         index: 0)));
