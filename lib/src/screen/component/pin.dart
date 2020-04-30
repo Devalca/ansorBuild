@@ -207,6 +207,31 @@ class _PinState extends State<Pin> {
                                       setState(() => _isLoading = false);
                                     }
                                   });
+                                } else if (pin == 000000) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text("Pin Gagal",
+                                              style: TextStyle(
+                                                  color: Colors.green)),
+                                          content: Text(
+                                              "Anda belum mengatur pin Anda. Silahkan registrasi ulang"),
+                                          actions: <Widget>[
+                                            MaterialButton(
+                                              elevation: 5.0,
+                                              child: Text("OK",
+                                                  style: TextStyle(
+                                                      color: Colors.green)),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            )
+                                          ],
+                                        );
+                                      });
+
+                                  setState(() => _isLoading = false);
                                 } else if (widget.statusbyr ==
                                     "bpjskesehatan") {
                                   SharedPreferences prefs =

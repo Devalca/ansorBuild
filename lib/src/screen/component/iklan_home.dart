@@ -1,4 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart'; // Harus Update Package
+import 'package:ansor_build/src/screen/promo/promo.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 final List<String> homeIklan = [
@@ -78,7 +79,8 @@ class _IklanHomeState extends State<IklanHome> {
                   return Container(
                     width: 8.0,
                     height: 10.0,
-                    margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                    margin:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _current == index
@@ -89,11 +91,16 @@ class _IklanHomeState extends State<IklanHome> {
               ),
             ),
             Container(
+                child: new GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (__) => new Promo()));
+              },
               child: Text(
                 'Lihat Semua',
                 style: TextStyle(color: Colors.green),
               ),
-            )
+            ))
           ],
         ),
       ),
