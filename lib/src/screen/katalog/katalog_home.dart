@@ -1,5 +1,6 @@
 import 'package:ansor_build/src/model/katalog_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
+import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
 import 'package:ansor_build/src/service/katalog_service.dart';
 import 'package:flutter/material.dart';
 
@@ -51,42 +52,102 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
           ),
         ),
         body: Stack(
-          children: <Widget>[_buildListKatalog(), _buildSearchBar()],
+          children: <Widget>[
+            _buildListKatalog(),
+            _buildTabButton(),
+            _buildSearchBar()
+          ],
         ));
+  }
+
+  Widget _buildTabButton() {
+    return Container(
+      margin: EdgeInsets.only(top: 50),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
+      child: Container(
+        height: 40,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: <Widget>[
+            Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(width: 3.0, color: Colors.green))),
+                width: 100.0,
+                child: FlatButton(onPressed: null, child: Text("Semua"))),
+            Container(
+                width: 100.0,
+                child: FlatButton(onPressed: null, child: Text("Terbaru"))),
+            Container(
+                width: 100.0,
+                child: FlatButton(onPressed: null, child: Text("Terpopuler"))),
+            Container(
+                width: 100.0,
+                child: FlatButton(onPressed: null, child: Text("Sale!"))),
+          ],
+        ),
+      ),
+      // child: Row(
+      //   children: <Widget>[
+      //     Expanded(
+      // child: Container(
+      //     decoration: BoxDecoration(
+      //         color: Colors.white,
+      //         border: Border(
+      //             bottom: BorderSide(width: 3.0, color: Colors.green))),
+      //     child: FlatButton(onPressed: null, child: Text("Semua")))),
+      //     Expanded(child: FlatButton(onPressed: null, child: Text("Terbaru"))),
+      //     Expanded(
+      //         child: FlatButton(onPressed: null, child: Text("Terpopuler"))),
+      //     Expanded(child: FlatButton(onPressed: null, child: Text("Sale!")))
+      //   ],
+      // ),
+    );
   }
 
   Widget _buildSearchBar() {
     return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(bottom: BorderSide(width: 1.0, color: Colors.grey))),
-      padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10.0),
-      child: TextField(
-        onChanged: (text) {
-          text = text.toLowerCase();
-          setState(() {
-            _productForDisplay = _product.where((katalog) {
-              var barTitle = katalog.namaProduk.toLowerCase();
-              return barTitle.contains(text);
-            }).toList();
-          });
-        },
-        decoration: InputDecoration(
-            fillColor: Colors.grey[200],
-            filled: true,
-            hintText: "Cari Kota atau Kabupaten",
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.grey,
+      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 9,
+            child: TextField(
+              onChanged: (text) {
+                text = text.toLowerCase();
+                setState(() {
+                  _productForDisplay = _product.where((katalog) {
+                    var barTitle = katalog.namaProduk.toLowerCase();
+                    return barTitle.contains(text);
+                  }).toList();
+                });
+              },
+              decoration: InputDecoration(
+                  fillColor: Colors.grey[200],
+                  filled: true,
+                  hintText: "Cari apa saja?",
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey,
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)))),
             ),
-            contentPadding:
-                EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)))),
+          ),
+          Expanded(
+              flex: 1,
+              child: IconButton(icon: Icon(Icons.menu), onPressed: null))
+        ],
       ),
     );
   }
@@ -104,7 +165,6 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
             return centerLoading();
           default:
             if (snapshot.hasData) {
-              print(_productForDisplay);
               return _buildListBarang(_productForDisplay);
             } else {
               return Text('Result: ${snapshot.error}');
@@ -115,19 +175,23 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
   }
 
   Widget _buildListBarang(_productForDisplay) {
+    var size = MediaQuery.of(context).size;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2;
+    final double itemWidth = size.width / 1.6;
     return Stack(children: <Widget>[
       Container(
-        padding: EdgeInsets.only(top: 105.0),
+        padding: EdgeInsets.only(top: 90.0, left: 15.0, right: 15.0),
         color: Colors.white,
         child: GridView.builder(
           shrinkWrap: true,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            childAspectRatio: (itemWidth / itemHeight),
           ),
           itemBuilder: (context, index) {
-            return index == -1
-                ? Container()
-                : _buildListBarangItem(index);
+            return index == -1 ? Container() : _buildListBarangItem(index);
           },
           itemCount: _productForDisplay.length,
         ),
@@ -139,29 +203,39 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
   Widget _buildListBarangItem(index) {
     return GestureDetector(
       onTap: () {
-        print("INI Barang");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => DetailKatalogPage()));
       },
-       child: Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Container(
-                      width: 132.0,
-                      height: 132.0,
-                      child: FadeInImage.assetNetwork(
-                          placeholder: 'lib/src/assets/placeholder.jpg',
-                          fit: BoxFit.fill,
-                          image: _productForDisplay[index].photos[0].photo),
-                    )),
-                Padding(
-                  padding: EdgeInsets.only(top: 8.0),
-                ),
-                Text(_productForDisplay[index].namaProduk),
-        ],
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8.0),
+                  topRight: Radius.circular(8.0)),
+              child: FadeInImage.assetNetwork(
+                  placeholder: 'lib/src/assets/placeholder.jpg',
+                  fit: BoxFit.cover,
+                  height: 132,
+                  width: 300,
+                  image: _productForDisplay[index].photos[0].photo),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 8.0),
+            ),
+            Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      children: <Widget>[
+                        Text(_productForDisplay[index].namaProduk),
+                      ],
+                    ))),
+          ],
+        ),
       ),
-    ),
     );
   }
 }
