@@ -2,7 +2,7 @@
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pin_payload.dart';
+import 'package:ansor_build/src/screen/component/pin_payload.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
@@ -314,7 +314,7 @@ class _DetailPageState extends State<DetailPage> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  PinPayLoad()));
+                                                  PinPayloadPage("prabayar")));
                                     },
                                     child: Text(
                                       'BAYAR',

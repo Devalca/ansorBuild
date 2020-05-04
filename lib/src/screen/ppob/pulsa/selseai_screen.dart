@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
-import 'package:ansor_build/src/service/local_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -71,10 +70,8 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                 DateTime dateTime = snapshot.data.data[0].periode;
                 // var formatterDate = DateFormat('dd MMMM yyyy').format(dateTime);
                 var formatterTime = DateFormat('HH:mm').format(dateTime);
-                return Container(
-                  color: Colors.white,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                return SingleChildScrollView(
+                  child: Stack(
                     children: <Widget>[
                       Column(
                         children: <Widget>[
@@ -219,33 +216,54 @@ class _SesPulsaPageState extends State<SesPulsaPage> {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          Divider(
-                            height: 12,
-                            color: Colors.grey,
-                          ),
-                          Container(
-                            height: 40.0,
-                            margin: EdgeInsets.only(
-                                left: 16.0, right: 16.0, bottom: 20.0),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 1, color: Colors.green),
-                                borderRadius: BorderRadius.circular(5.0)),
-                            child: FlatButton(
-                              onPressed: () {
-                                _toLanding();
-                              },
-                              child: Text(
-                                'Selesai'.toUpperCase(),
-                                style: TextStyle(
-                                    color: Colors.green, fontSize: 20.0),
+                      Container(
+                        height: 720,
+                        child: Stack(
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 60),
+                                child: Divider(
+                                  height: 12,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: ConstrainedBox(
+                                constraints: const BoxConstraints(
+                                    minWidth: double.infinity),
+                                child: Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: Container(
+                                    height: 40.0,
+                                    margin: EdgeInsets.only(
+                                        left: 16.0, right: 16.0, bottom: 20.0),
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 1, color: Colors.green),
+                                        borderRadius:
+                                            BorderRadius.circular(5.0)),
+                                    child: FlatButton(
+                                      onPressed: () {
+                                        _toLanding();
+                                      },
+                                      child: Text(
+                                        'Selesai'.toUpperCase(),
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontSize: 20.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -55,17 +55,18 @@ class _IklanHomeState extends State<IklanHome> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      CarouselSlider(
+            CarouselSlider(
         items: child,
-        autoPlay: false,
-        viewportFraction: 0.9,
-        enlargeCenterPage: false,
-        aspectRatio: 3.8,
-        onPageChanged: (index) {
-          setState(() {
-            _current = index;
-          });
-        },
+        options: CarouselOptions(
+            autoPlay: false,
+            viewportFraction: 0.9,
+            enlargeCenterPage: false,
+            aspectRatio: 3.8,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            }),
       ),
       Container(
         padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 10.0),

@@ -1,6 +1,5 @@
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
-import 'package:ansor_build/src/screen/ppob/trans_gagal.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +14,6 @@ class Routes {
       Routes.LoginScreen: (context) => Login(), 
       Routes.RegisterScreen: (context) => RegisterPage(),
       Routes.LandingScreen: (context) => LandingPage(),
-      Routes.GagalScreen: (context) => TransGagalPage()
     };
   }
 }

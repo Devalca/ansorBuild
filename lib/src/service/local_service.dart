@@ -16,6 +16,17 @@ class LocalService {
     return prefs.commit();
   }
 
+  // Local Service Regist
+  Future<bool> saveList(List<String> imageList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setStringList("imageList", imageList);
+  }
+
+  Future<List<String>> _getList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getStringList("imageList");
+}
+
   // LOCAL PayLoad Pulsa
   Future<bool> savePayPulsa(int payTrans, String payNomor, int payNominal,
       int payUserId, String payProvider) async {
@@ -29,7 +40,8 @@ class LocalService {
   }
 
   // Local payload Pdam
-    Future<bool> savePayPdam(int payUserId, String payPelanggan, String payWilayah, int payTagihan) async {
+  Future<bool> savePayPdam(int payUserId, String payPelanggan,
+      String payWilayah, int payTagihan) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt("payUserId", payUserId);
     prefs.setString("payPelanggan", payPelanggan);

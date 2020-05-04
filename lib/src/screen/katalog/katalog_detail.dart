@@ -1,53 +1,27 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-final List<String> homeIklan = [
-  'lib/src/assets/produk.jpeg',
-  'lib/src/assets/produk.jpeg',
-  'lib/src/assets/produk.jpeg',
-];
-
-final Widget placeholder = Container(color: Colors.grey);
-
-final List child = map<Widget>(
-  homeIklan,
-  (index, i) {
-    return Container(
-      margin: EdgeInsets.all(5.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-        child: Stack(children: <Widget>[
-          Image.asset(i, fit: BoxFit.fill, width: 1000.0),
-          Positioned(
-            bottom: 0.0,
-            left: 0.0,
-            right: 0.0,
-            child: Container(
-              decoration: BoxDecoration(),
-              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-            ),
-          ),
-        ]),
-      ),
-    );
-  },
-).toList();
-
-List<T> map<T>(List list, Function handler) {
-  List<T> result = [];
-  for (var i = 0; i < list.length; i++) {
-    result.add(handler(i, list[i]));
-  }
-  return result;
-}
-
 class DetailKatalogPage extends StatefulWidget {
+  final String detNama;
+  final String detDes;
+  List<String> allPot;
+  DetailKatalogPage(
+      this.detNama, this.detDes, this.allPot);
+
   @override
   _DetailKatalogPageState createState() => _DetailKatalogPageState();
 }
 
 class _DetailKatalogPageState extends State<DetailKatalogPage> {
   int _current = 0;
+
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +35,12 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
           backgroundColor: Colors.white,
           leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
-              onPressed: () => Navigator.pop(context, true)),
+              onPressed: () {
+                // setState(() {
+                //   _produkImage.clear();
+                // });
+                Navigator.pop(context, true);
+              }),
           actions: [
             InkWell(
               onTap: () => print("object"),
@@ -69,7 +48,7 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
             ),
           ],
           title: Text(
-            'SearchBar Yakin?',
+            'Detail Produk',
             style: TextStyle(color: Colors.black),
           ),
         ),
@@ -84,51 +63,57 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
   }
 
   Widget _buildImageKatalog() {
+    List<String> _produkImage = widget.allPot;
     return Column(children: [
       CarouselSlider(
-        items: child,
-        autoPlay: false,
-        viewportFraction: 1.0,
-        enlargeCenterPage: false,
-        aspectRatio: 1.2,
-        onPageChanged: (index) {
-          setState(() {
-            _current = index;
-          });
-        },
-      ),
-      Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Container(),
-            Container(
-              child: Row(
-                children: map<Widget>(
-                  homeIklan,
-                  (index, url) {
-                    return Container(
-                      width: 8.0,
-                      height: 10.0,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 2.0, vertical: 6.0),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _current == index
-                              ? Colors.orange
-                              : Color.fromRGBO(0, 0, 0, 0.4)),
-                    );
-                  },
+        items: _produkImage.map((imgUrl) {
+          return Builder(
+            builder: (BuildContext context) {
+              return Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                decoration: BoxDecoration(
+                  color: Colors.green,
                 ),
-              ),
+                child: Image.network(
+                  imgUrl,
+                  fit: BoxFit.fill,
+                ),
+              );
+            },
+          );
+        }).toList(),
+        options: CarouselOptions(
+            autoPlay: false,
+            enlargeCenterPage: false,
+            aspectRatio: 1.3,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            }),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: _produkImage.map((url) {
+          int index = _produkImage.indexOf(url);
+          return Container(
+            width: 8.0,
+            height: 8.0,
+            margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _current == index
+                  ? Color.fromRGBO(0, 0, 0, 0.9)
+                  : Color.fromRGBO(0, 0, 0, 0.4),
             ),
-            Container(),
-          ],
-        ),
+          );
+        }).toList(),
       ),
       Divider(
-        height: 1.0,
-      )
+        thickness: 2.0,
+        height: 0.1,
+      ),
     ]);
   }
 
@@ -137,11 +122,11 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
       children: <Widget>[
         Container(
           padding: EdgeInsets.only(
-              top: 350.0, bottom: 40.0, left: 16.0, right: 16.0),
+              top: 330.0, left: 16.0, right: 16.0),
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Nama Barang Dari Katalog",
+                widget.detNama,
                 style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               )),
         ),
@@ -151,12 +136,16 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
 
   Widget _buildDesKatalog() {
     return Container(
-      padding: EdgeInsets.only(top: 400.0, left: 16.0, right: 16.0),
+      padding: EdgeInsets.only(top: 380.0, left: 16.0, right: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Divider(
-            height: 0.1,
+          Container(
+            padding: EdgeInsets.only(bottom: 5.0),
+            child: Divider(
+              thickness: 2.0,
+              height: 0.2,
+            ),
           ),
           Text(
             "Deskripsi Produk",
@@ -164,17 +153,15 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 12.0),
-            child: Text("Sepatu kulit asli cibadayut \nTipe C786876"),
+            child: Text(widget.detNama),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 12.0),
-            child: Text(
-                "Quality Premium made in cibaduyut \nsize tersedia 34-39 \nkelengkapan : spatu + BOX BINB"),
+            child: Text(widget.detDes),
           ),
           Container(
               padding: EdgeInsets.symmetric(vertical: 12.0),
-              child: Text(
-                  "Barang dijamin sesuai dengan gambar \nreal pic 100% jika barang tidak seusia gambar")),
+              child: Text(widget.detDes)),
         ],
       ),
     );

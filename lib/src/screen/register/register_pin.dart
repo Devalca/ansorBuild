@@ -1,4 +1,4 @@
-import 'package:ansor_build/src/screen/register/pin_konfirm.dart';
+import 'package:ansor_build/src/screen/register/register_pin_confirm.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 
@@ -40,7 +40,7 @@ class _PinRegistPageState extends State<PinRegistPage> {
                   fields: 6,
                   onSubmit: (String pin) {
                     Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (_) => PinKonfirmPage(pin)));
+                        MaterialPageRoute(builder: (_) => PinConfirmPage(pin)));
                   },
                 ),
               ],
