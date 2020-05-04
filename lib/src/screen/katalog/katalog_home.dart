@@ -2,7 +2,9 @@ import 'package:ansor_build/src/model/katalog_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
 import 'package:ansor_build/src/service/katalog_service.dart';
+import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class KatalogHomePage extends StatefulWidget {
   @override
@@ -10,6 +12,10 @@ class KatalogHomePage extends StatefulWidget {
 }
 
 class _KatalogHomePageState extends State<KatalogHomePage> {
+  bool filter1 = true;
+  bool filter2 = false;
+  bool filter3 = false;
+  bool filter4 = false;
   KatalogService _katalogService = KatalogService();
   List<DataKatalog> _dataKatalog = List<DataKatalog>();
   List<DataKatalog> _dataKatalogsForDisplay = List<DataKatalog>();
@@ -31,6 +37,38 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
       });
     });
     super.initState();
+  }
+
+  _filSemua() {
+     setState(() {
+      _productForDisplay.sort((a, b) {
+        return b.namaProduk.length.compareTo(a.namaProduk.length);
+      });
+    });
+  }
+
+  _filTerbaru() {
+    setState(() {
+      _productForDisplay.sort((a, b) {
+        return b.produkId.compareTo(a.produkId);
+      });
+    });
+  }
+
+    _filTerpopuler() {
+    setState(() {
+      _productForDisplay.sort((a, b) {
+        return b.priorityId.compareTo(a.priorityId);
+      });
+    });
+  }
+
+  _filSale() {
+    setState(() {
+      _productForDisplay.sort((a, b) {
+        return a.hargaProduk.compareTo(b.hargaProduk);
+      });
+    });
   }
 
   @override
@@ -75,36 +113,101 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border(
-                        bottom: BorderSide(width: 3.0, color: Colors.green))),
+                        bottom: BorderSide(
+                            width: 3.0,
+                            color: filter1 ? Colors.green : Colors.white))),
                 width: 100.0,
-                child: FlatButton(onPressed: null, child: Text("Semua"))),
+                child: FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        _filSemua();
+                        if (filter1 == false) {
+                          this.filter1 = !filter1;
+                          this.filter2 = false;
+                          this.filter3 = false;
+                          this.filter4 = false;
+                        }
+                      });
+                    },
+                    child: Text("Semua"))),
             Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 3.0,
+                            color: filter2 ? Colors.green : Colors.white))),
                 width: 100.0,
-                child: FlatButton(onPressed: null, child: Text("Terbaru"))),
+                child: FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        _filTerbaru();
+                        if (filter2 == true) {
+                          filter1 = false;
+                          filter3 = false;
+                          filter4 = false;
+                        } else {
+                          this.filter2 = !filter2;
+                          filter1 = false;
+                          filter3 = false;
+                          filter4 = false;
+                        }
+                      });
+                    },
+                    child: Text("Terbaru"))),
             Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 3.0,
+                            color: filter3 ? Colors.green : Colors.white))),
                 width: 100.0,
-                child: FlatButton(onPressed: null, child: Text("Terpopuler"))),
+                child: FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        _filTerpopuler();
+                        if (filter3 == true) {
+                          filter1 = false;
+                          filter2 = false;
+                          filter4 = false;
+                        } else {
+                          this.filter3 = !filter3;
+                          filter2 = false;
+                          filter1 = false;
+                          filter4 = false;
+                        }
+                      });
+                    },
+                    child: Text("Terpopuler"))),
             Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 3.0,
+                            color: filter4 ? Colors.green : Colors.white))),
                 width: 100.0,
-                child: FlatButton(onPressed: null, child: Text("Sale!"))),
+                child: FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        _filSale();
+                        if (filter4 == true) {
+                          filter1 = false;
+                          filter2 = false;
+                          filter3 = false;
+                        } else {
+                          this.filter4 = !filter4;
+                          filter3 = false;
+                          filter2 = false;
+                          filter1 = false;
+                        }
+                      });
+                    },
+                    child: Text("Sale!"))),
           ],
         ),
       ),
-      // child: Row(
-      //   children: <Widget>[
-      //     Expanded(
-      // child: Container(
-      //     decoration: BoxDecoration(
-      //         color: Colors.white,
-      //         border: Border(
-      //             bottom: BorderSide(width: 3.0, color: Colors.green))),
-      //     child: FlatButton(onPressed: null, child: Text("Semua")))),
-      //     Expanded(child: FlatButton(onPressed: null, child: Text("Terbaru"))),
-      //     Expanded(
-      //         child: FlatButton(onPressed: null, child: Text("Terpopuler"))),
-      //     Expanded(child: FlatButton(onPressed: null, child: Text("Sale!")))
-      //   ],
-      // ),
     );
   }
 
@@ -180,7 +283,7 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
     final double itemWidth = size.width / 1.6;
     return Stack(children: <Widget>[
       Container(
-        padding: EdgeInsets.only(top: 90.0, left: 15.0, right: 15.0),
+        padding: EdgeInsets.only(top: 95.0, left: 15.0, right: 15.0),
         color: Colors.white,
         child: GridView.builder(
           shrinkWrap: true,
@@ -201,10 +304,17 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
   }
 
   Widget _buildListBarangItem(index) {
+    var detNama = _productForDisplay[index].namaProduk;
+    var detDes = _productForDisplay[index].deskripsiProduk;
+    var detPot1 = _productForDisplay[index].photos[0].photo;
+    var detPot2 = _productForDisplay[index].photos[1].photo;
+    List<String> allPot = [detPot1, detPot2];
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => DetailKatalogPage()));
+            context,
+            MaterialPageRoute(
+                builder: (_) => DetailKatalogPage(detNama, detDes, allPot)));
       },
       child: Card(
         child: Column(

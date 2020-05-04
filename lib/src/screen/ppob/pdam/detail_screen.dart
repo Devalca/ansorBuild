@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:ansor_build/src/model/pdam_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/screen/ppob/pdam/pin_payload.dart';
+import 'package:ansor_build/src/screen/component/pin_payload.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
@@ -106,9 +104,6 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                                   _detailPayment(),
                                 ],
                               ),
-                            ),
-                            Container(
-                              height: 90.0,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -323,7 +318,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
                 print("Berhasil");
               });
               Navigator.push(context, MaterialPageRoute(builder: 
-              (context) => PinPayLoad()
+              (context) => PinPayloadPage("pdam")
               ));
         },
         child: Text(

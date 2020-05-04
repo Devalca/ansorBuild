@@ -56,15 +56,16 @@ class _IklanKecilState extends State<IklanKecil> {
     return Column(children: [
       CarouselSlider(
         items: child,
-        autoPlay: false,
-        viewportFraction: 0.9,
-        enlargeCenterPage: false,
-        aspectRatio: 6,
-        onPageChanged: (index) {
-          setState(() {
-            _current = index;
-          });
-        },
+        options: CarouselOptions(
+            autoPlay: false,
+            viewportFraction: 0.9,
+            enlargeCenterPage: false,
+            aspectRatio: 6,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            }),
       ),
       Container(
         padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 10.0),
@@ -77,7 +78,7 @@ class _IklanKecilState extends State<IklanKecil> {
                 (index, url) {
                   return Container(
                     width: 8.0,
-                    height: 10.0, 
+                    height: 10.0,
                     margin:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                     decoration: BoxDecoration(

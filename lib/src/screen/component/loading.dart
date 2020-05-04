@@ -1,5 +1,4 @@
 import 'package:ansor_build/src/routes/routes.dart';
-import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
@@ -7,8 +6,6 @@ import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/selseai_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pdam/selesai_screen.dart';
-import 'package:ansor_build/src/screen/ppob/trans_gagal.dart';
-import 'package:ansor_build/src/screen/register/pin.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,33 +42,29 @@ Widget centerLoading() {
         });
   }
 
-// Future<void> loadingDialog(BuildContext context) async {
-//   return showDialog<void>(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) {
-//         Future.delayed(Duration(seconds: 4), () {
-//           Navigator.of(context).pop(true);
-//         });
-//         return new WillPopScope(
-//             onWillPop: () async => false,
-//             child:
-//                 SimpleDialog(backgroundColor: Colors.white, children: <Widget>[
-//               Center(
-//                 child: Column(children: [
-//                   CircularProgressIndicator(),
-//                   SizedBox(
-//                     height: 10,
-//                   ),
-//                   Text(
-//                     "Mohon Tunggu....",
-//                     style: TextStyle(color: Colors.green),
-//                   )
-//                 ]),
-//               )
-//             ]));
-//       });
-// }
+  Future<void> underDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            title: Text('Under Maintenance'),
+            content: const Text('Maaf untuk sekarang fungsi atau service ini sedang dalam perbaikan terimakasih'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Kembali'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
 // Register Dialog Fungction
 

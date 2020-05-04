@@ -2,13 +2,11 @@
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/pin_payload.dart';
+import 'package:ansor_build/src/screen/component/pin_payload.dart';
 import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class PascaBayarDetailPage extends StatefulWidget {
   final String koId;
@@ -264,62 +262,67 @@ class _PascaBayarDetailPageState extends State<PascaBayarDetailPage> {
                             ],
                           ),
                         ),
-                            Container(
-                    height: 250,
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 50),
-                            child: Divider(
-                              height: 12,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ConstrainedBox(
-                            constraints:
-                                const BoxConstraints(minWidth: double.infinity),
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: RaisedButton(
-                                color: Colors.green,
-                                onPressed: () {
-                                  int transactionId = int.parse(widget.koId);
-                                  String nomorHp =
-                                      snapshot.data.data[0].noHp.toString();
-                                  int idWallet = int.parse(_idWallet);
-                                  _localService
-                                      .saveIdName(userUid)
-                                      .then((bool committed) {
-                                    print("INI USERID :" + userUid);
-                                    _localService
-                                        .savePayPulsa(transactionId, nomorHp, 0,
-                                            idWallet, "")
-                                        .then((bool committed) {
-                                      print(
-                                          "INI DATA :  ${transactionId.toString()} $nomorHp ${idWallet.toString()}");
-                                    });
-                                  });
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PinPayLoad()));
-                                },
-                                child: Text(
-                                  'BAYAR',
-                                  style: TextStyle(color: Colors.white),
+                        Container(
+                          height: 250,
+                          child: Stack(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 50),
+                                  child: Divider(
+                                    height: 12,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
-                            ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: ConstrainedBox(
+                                  constraints: const BoxConstraints(
+                                      minWidth: double.infinity),
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: RaisedButton(
+                                      color: Colors.green,
+                                      onPressed: () {
+                                        int transactionId =
+                                            int.parse(widget.koId);
+                                        String nomorHp = snapshot
+                                            .data.data[0].noHp
+                                            .toString();
+                                        int idWallet = int.parse(_idWallet);
+                                        _localService
+                                            .saveIdName(userUid)
+                                            .then((bool committed) {
+                                          print("INI USERID :" + userUid);
+                                          _localService
+                                              .savePayPulsa(transactionId,
+                                                  nomorHp, 0, idWallet, "")
+                                              .then((bool committed) {
+                                            print(
+                                                "INI DATA :  ${transactionId.toString()} $nomorHp ${idWallet.toString()}");
+                                          });
+                                        });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PinPayloadPage(
+                                                        "pascabayar")));
+                                      },
+                                      child: Text(
+                                        'BAYAR',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
                       ],
                     ),
                   ),
