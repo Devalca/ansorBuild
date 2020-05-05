@@ -61,3 +61,22 @@ class LoginPin{
     "userId": userId
   };
 }
+
+PostEmail emailFromJson(String str) => PostEmail.fromJson(json.decode(str));
+String emailToJson(PostEmail data) => json.encode(data.toJson());
+
+class PostEmail{
+  String email;
+
+  PostEmail({
+    this.email
+  });
+
+  factory PostEmail.fromJson(Map<String, dynamic> json) => PostEmail(
+    email: json["email"]
+  );
+
+  Map<String, dynamic> toJson() =>{
+    "email": email
+  };
+}
