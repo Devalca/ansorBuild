@@ -101,6 +101,9 @@ flutter:
     - lib/src/assets/bank/mybank.png
     - lib/src/assets/bank/ocbc.png
     - lib/src/assets/bank/permata.png
+    # promo
+    - lib/src/assets/promo.png
+    - lib/src/assets/detailPromo.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -24,4 +24,13 @@ class LoginServices {
     );
     return response;
   }
+
+  Future<http.Response> postEmail(PostEmail data) async {
+    var response = await http.post(
+      '$baseUrl/members/reverif',
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: emailToJson(data),
+    );
+    return response;
+  }
 }

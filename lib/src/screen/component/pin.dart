@@ -207,7 +207,7 @@ class _PinState extends State<Pin> {
                                       setState(() => _isLoading = false);
                                     }
                                   });
-                                } else if (pin == 000000) {
+                                } else if (pin == "000000") {
                                   showDialog(
                                       context: context,
                                       builder: (context) {

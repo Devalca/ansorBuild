@@ -4,6 +4,7 @@ import 'package:ansor_build/src/model/login_model.dart';
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/component/pin.dart';
+import 'package:ansor_build/src/screen/login/reverif.dart';
 import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/login_services.dart';
@@ -308,8 +309,8 @@ class _LoginState extends State<Login> {
                                         Navigator.push(
                                             context,
                                             new MaterialPageRoute(
-                                                builder: (__) =>
-                                                    new Pin(statusbyr: "login")));
+                                                builder: (__) => new Pin(
+                                                    statusbyr: "login")));
 
                                         // Map data = jsonDecode(response.body);
                                         // walletId = data["walletId"].toString();
@@ -363,6 +364,67 @@ class _LoginState extends State<Login> {
                                         //         ],
                                         //       );
                                         //     });
+
+                                        setState(() => _isLoading = false);
+                                      } else if (response.statusCode == 403) {
+                                        print("error: " + response.body);
+                                        print(response.statusCode);
+
+                                        Map data = jsonDecode(response.body);
+                                        message = data["message"].toString();
+
+                                        walletId = "0";
+                                        userId = "0";
+                                        isLogin = false;
+                                        print("walletId: " + walletId);
+                                        print("userId: " + userId);
+                                        print("isLogin: " + isLogin.toString());
+
+                                        _localServices
+                                            .saveWalletId(walletId)
+                                            .then((bool committed) {
+                                          print(walletId);
+                                        });
+
+                                        _localServices
+                                            .saveUserId(userId)
+                                            .then((bool committed) {
+                                          print(userId);
+                                        });
+
+                                        _localServices
+                                            .isLogin(isLogin)
+                                            .then((bool committed) {
+                                          print(isLogin);
+                                        });
+
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text("Login Gagal",
+                                                    style: TextStyle(
+                                                        color: Colors.green)),
+                                                content: Text(
+                                                    "Anda Belum melakukan aktivasi. Lakukan verifikasi email"),
+                                                actions: <Widget>[
+                                                  MaterialButton(
+                                                    elevation: 5.0,
+                                                    child: Text("OK",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.green)),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          new MaterialPageRoute(
+                                                              builder: (__) =>
+                                                                  new Reverif()));
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
 
                                         setState(() => _isLoading = false);
                                       } else {
