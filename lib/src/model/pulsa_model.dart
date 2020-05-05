@@ -313,6 +313,7 @@ class Post {
   int totalHarga;
   int transactionId;
   int userId;
+  int pin;
 
   Post(
       {this.id,
@@ -323,7 +324,8 @@ class Post {
       this.provider,
       this.totalHarga,
       this.transactionId,
-      this.userId});
+      this.userId,
+      this.pin});
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
       id: json["id"],
@@ -334,7 +336,8 @@ class Post {
       provider: json["provider"],
       totalHarga: json["total_harga"],
       transactionId: json['transactionId'],
-      userId: json["userId"]);
+      userId: json["userId"],
+      pin: json["pin"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -345,6 +348,7 @@ class Post {
         "provider": provider,
         "total_harga": totalHarga,
         "transactionId": transactionId,
-        "userId": userId
+        "userId": userId,
+        "pin": pin
       };
 }
