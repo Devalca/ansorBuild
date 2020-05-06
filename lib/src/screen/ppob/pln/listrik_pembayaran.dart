@@ -334,25 +334,25 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                            width: 10,
-                                            child: Icon(
-                                              Icons.account_balance_wallet,
-                                              color: Colors.green,
-                                              size: 24.0,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.account_balance_wallet,
+                                                  color: Colors.green,
+                                                  size: 24.0,
+                                                ),
+                                                Text(
+                                                  " Saldo Un1ty",
+                                                  style: new TextStyle(
+                                                      color: Colors.green),
+                                                  textAlign: TextAlign.left,
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          Container(
-                                            // padding: const EdgeInsets.only(
-                                            //     right: 95.0),
-                                            child: Text(
-                                              "Saldo Un1ty",
-                                              style: new TextStyle(
-                                                  color: Colors.green),
-                                              textAlign: TextAlign.left,
-                                            ),
-                                          ),
-                                          Container(),
-                                          Container(),
                                           Container(
                                               child: FutureBuilder<Wallet>(
                                             future: _walletService.getSaldo(),
