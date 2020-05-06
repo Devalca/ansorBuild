@@ -1,4 +1,5 @@
 import 'package:ansor_build/src/model/bpjs_model.dart';
+import 'package:ansor_build/src/screen/promo/MySeparator.dart';
 import 'package:ansor_build/src/screen/promo/promo.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,23 @@ class _DetailPromosiState extends State<DetailPromosi> {
                   child: Text(widget.desc,
                       style:
                           new TextStyle(color: Colors.black54, fontSize: 12.0)),
+                ),
+                Container(
+                  padding: new EdgeInsets.only(left: 12, right: 12),
+                  height: 10,
+                  color: Colors.white,
+                  child: Center(
+                    child: Container(
+                      width: double.infinity,
+                      child: Flex(
+                        direction: Axis.vertical,
+                        children: [
+                          Expanded(child: Container()),
+                          const MySeparator(),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 Container(
                   color: Colors.white,
@@ -109,7 +127,8 @@ class _DetailPromosiState extends State<DetailPromosi> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             IconButton(
-                                icon: Icon(Icons.arrow_forward_ios),
+                                icon: Icon(Icons.arrow_forward_ios,
+                                    color: Colors.grey),
                                 onPressed: () {
                                   // Navigator.push(
                                   //     context,
@@ -159,9 +178,8 @@ class _DetailPromosiState extends State<DetailPromosi> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             IconButton(
-                                icon: Icon(
-                                  Icons.arrow_forward_ios, 
-                                  color: Colors.grey,),
+                                icon: Icon(Icons.arrow_forward_ios,
+                                    color: Colors.grey),
                                 onPressed: () {
                                   // Navigator.push(
                                   //     context,
@@ -218,17 +236,17 @@ class _DetailPromosiState extends State<DetailPromosi> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.push(
-                  context, new MaterialPageRoute(builder: (__) => new Promo()));
-            }),
-        backgroundColor: Colors.transparent,
-      ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (__) => new Promo()));
+              }),
+          backgroundColor: Colors.transparent,
+          elevation: 0),
       body: Padding(
         padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
         child: body,
