@@ -1,12 +1,14 @@
 import 'package:ansor_build/src/model/katalog_model.dart';
+import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
 import 'package:ansor_build/src/service/katalog_service.dart';
-import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class KatalogHomePage extends StatefulWidget {
+  final String namaBarang;
+  KatalogHomePage(this.namaBarang);
+
   @override
   _KatalogHomePageState createState() => _KatalogHomePageState();
 }
@@ -16,11 +18,13 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
   bool filter2 = false;
   bool filter3 = false;
   bool filter4 = false;
+  String namaBarang;
   KatalogService _katalogService = KatalogService();
   List<DataKatalog> _dataKatalog = List<DataKatalog>();
   List<DataKatalog> _dataKatalogsForDisplay = List<DataKatalog>();
   List<Product> _product = List<Product>();
   List<Product> _productForDisplay = List<Product>();
+  TextEditingController _ctrlNamaBarang = TextEditingController();
 
   @override
   void initState() {
@@ -36,11 +40,20 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
         }
       });
     });
+    if (widget.namaBarang != "") {
+      setState(() {
+        _ctrlNamaBarang.text = widget.namaBarang.toLowerCase();
+      });
+    }
+    _ctrlNamaBarang.addListener(() {
+      namaBarang = _ctrlNamaBarang.text;
+    });
     super.initState();
   }
 
   _filSemua() {
-     setState(() {
+    setState(() {
+      _ctrlNamaBarang.text = "";
       _productForDisplay.sort((a, b) {
         return b.namaProduk.length.compareTo(a.namaProduk.length);
       });
@@ -49,14 +62,16 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
 
   _filTerbaru() {
     setState(() {
+      _ctrlNamaBarang.text = "";
       _productForDisplay.sort((a, b) {
         return b.produkId.compareTo(a.produkId);
       });
     });
   }
 
-    _filTerpopuler() {
+  _filTerpopuler() {
     setState(() {
+      _ctrlNamaBarang.text = "";
       _productForDisplay.sort((a, b) {
         return b.priorityId.compareTo(a.priorityId);
       });
@@ -65,37 +80,55 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
 
   _filSale() {
     setState(() {
+      _ctrlNamaBarang.text = "";
       _productForDisplay.sort((a, b) {
         return a.hargaProduk.compareTo(b.hargaProduk);
       });
     });
   }
 
+  void dispose() {
+    _ctrlNamaBarang.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          elevation: 0,
-          iconTheme: IconThemeData(
-            color: Colors.black,
-          ),
+    if (_ctrlNamaBarang.text != null) {
+      setState(() {
+        _productForDisplay = _product.where((katalog) {
+          var barTitle = katalog.namaProduk.toLowerCase();
+          return barTitle.contains(namaBarang.toString().toLowerCase());
+        }).toList();
+      });
+    }
+    return WillPopScope(
+      onWillPop: () => _toLanding(),
+      child: Scaffold(
           backgroundColor: Colors.white,
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () => Navigator.pop(context, true)),
-          title: Text(
-            'Produk Daerah',
-            style: TextStyle(color: Colors.black),
+          appBar: AppBar(
+            elevation: 0,
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ),
+            backgroundColor: Colors.white,
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back_ios), onPressed: () {
+                  _toLanding();
+                }),
+            title: Text(
+              'Produk Daerah',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
-        ),
-        body: Stack(
-          children: <Widget>[
-            _buildListKatalog(),
-            _buildTabButton(),
-            _buildSearchBar()
-          ],
-        ));
+          body: Stack(
+            children: <Widget>[
+              _buildListKatalog(),
+              _buildTabButton(),
+              _buildSearchBar()
+            ],
+          )),
+    );
   }
 
   Widget _buildTabButton() {
@@ -213,21 +246,15 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
 
   Widget _buildSearchBar() {
     return Container(
+      height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 18.0),
       child: Row(
         children: <Widget>[
           Expanded(
             flex: 9,
             child: TextField(
-              onChanged: (text) {
-                text = text.toLowerCase();
-                setState(() {
-                  _productForDisplay = _product.where((katalog) {
-                    var barTitle = katalog.namaProduk.toLowerCase();
-                    return barTitle.contains(text);
-                  }).toList();
-                });
-              },
+              autofocus: true,
+              controller: _ctrlNamaBarang,
               decoration: InputDecoration(
                   fillColor: Colors.grey[200],
                   filled: true,
@@ -347,5 +374,10 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
         ),
       ),
     );
+  }
+
+  _toLanding() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        Routes.LandingScreen, (Route<dynamic> route) => false);
   }
 }
