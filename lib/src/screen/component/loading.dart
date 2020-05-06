@@ -102,7 +102,9 @@ class RegistDialog {
           child: AlertDialog(
             title: Text('Pendaftaran Berhasil'),
             content: const Text(
-                "Silahkan login menggunakan No. HP dan kata sandi yang didaftarkan"),
+                "Silahkan periksa email yang baru saja Anda daftarkan untuk melanjutkan verifikasi akun"),
+            // content: const Text(
+            //     "Silahkan login menggunakan No. HP dan kata sandi yang didaftarkan"),
             actions: <Widget>[
               FlatButton(
                 child: Text('Ok'),

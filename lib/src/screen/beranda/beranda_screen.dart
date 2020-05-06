@@ -557,6 +557,6 @@ class _BerandaPageState extends State<BerandaPage> {
 
   _toKatalog() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => KatalogHomePage()));
+        context, MaterialPageRoute(builder: (context) => KatalogHomePage("")));
   }
 }

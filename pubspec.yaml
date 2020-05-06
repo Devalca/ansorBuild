@@ -30,6 +30,7 @@ dependencies:
   permission_handler: ^4.0.0
   contacts_service: ^0.3.10
   pin_entry_text_field: ^0.1.4
+  material_search: ^0.2.8
   # contact_picker: ^0.0.2
 
   # The following adds the Cupertino Icons font to your application.
