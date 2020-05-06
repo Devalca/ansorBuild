@@ -657,19 +657,24 @@ class _PembayaranBerhasilPlnState extends State<PembayaranBerhasilPln> {
           decoration: BoxDecoration(
             border: Border.all(color: Colors.green),
           ),
-          child: SizedBox(
-            width: 333,
-            height: 40,
-            child: RaisedButton(
-              child: Text('SELESAI',
-                  style: TextStyle(color: Colors.green, fontSize: 16.0)),
-              color: Colors.white,
-              onPressed: () {
-                setState(() => _isLoading = true);
-                Navigator.push(context,
-                    new MaterialPageRoute(builder: (__) => new LandingPage()));
-                setState(() => _isLoading = false);
-              },
+          child: Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: RaisedButton(
+                child: Text('SELESAI',
+                    style: TextStyle(color: Colors.green, fontSize: 16.0)),
+                color: Colors.white,
+                onPressed: () {
+                  setState(() => _isLoading = true);
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (__) => new LandingPage()));
+                  setState(() => _isLoading = false);
+                },
+              ),
             ),
           )),
       Container(height: 10),

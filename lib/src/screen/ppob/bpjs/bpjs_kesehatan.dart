@@ -56,8 +56,32 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
     var _onPressed;
 
-    if (widget.tgl != null && widget.nm != null) {
-      _onPressed = () {
+    kes() async {
+      if (_noVAController.text.isEmpty) {
+        setState(() => {error = false, errorText = "Wajib diisi"});
+      } else if (_noVAController.text.length < 9) {
+        setState(() => {error = false, errorText = "Format nomor salah"});
+      } else if (widget.nm == null) {
+        // setState(() => errorBulan = false);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Transaksi Gagal",
+                    style: TextStyle(color: Colors.green)),
+                content: Text("Silahkan pilih bulan pembayaran"),
+                actions: <Widget>[
+                  MaterialButton(
+                    elevation: 5.0,
+                    child: Text("OK", style: TextStyle(color: Colors.green)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      } else {
         setState(() => _isLoading = true);
 
         if (_noVAController.text.isEmpty) {
@@ -66,36 +90,15 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
             _fieldNoVA = true;
           });
         } else {
-          String noVa =
-              widget.noVa == "" ? _noVAController.text.toString() : widget.noVa;
+          String noVa = _noVAController.text.toString();
+          String periode = tgl(widget.tgl);
 
-          PostKesehatan kesehatan =
-              PostKesehatan(noVa: noVa, periode: tgl(widget.tgl));
+          PostKesehatan kesehatan = PostKesehatan(noVa: noVa, periode: periode);
 
           // PostKesehatan kesehatan = PostKesehatan(noVa: "123456789", periode: "2020-01-01");
 
           _bpjsServices.postKesehatan(kesehatan).then((response) async {
             if (response.statusCode == 200) {
-              // print("berhasil body: " + response.body);
-              // print(response.statusCode);
-
-              // Map data = jsonDecode(response.body);
-              // transactionId = data['transactionId'].toString();
-              // print("transactionId: " + transactionId);
-
-              // url = '/ppob/bpjs/kesehatan/' + transactionId;
-              // print("url: " + url);
-
-              // _bpjsServices.saveUrl(url).then((bool committed) {
-              //   print(url);
-              // });
-
-              // Navigator.push(
-              //     context,
-              //     new MaterialPageRoute(
-              //         builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
-              // setState(() => _isLoading = false);
-
               print("error: " + response.body);
               print(response.statusCode);
 
@@ -119,10 +122,60 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (__) =>
-                          new BpjsPembayaran(jenis: "kesehatan", url: url)));
+                      builder: (__) => new BpjsPembayaran(
+                          jenis: "kesehatan", url: url, index: 0)));
+              setState(() => _isLoading = false);
+            } else if (response.statusCode == 422) {
+              print("va: " + noVa);
+              print("periode: " + periode);
+
+              print("error: " + response.body);
+              print(response.statusCode);
+
+              Map data = jsonDecode(response.body);
+              message = data['message'].toString();
+              print("message: " + message);
+              setState(() => {
+                    error = false,
+                    errorText = "Nomor tidak terdaftar",
+                    _isLoading = false
+                  });
+            } else if (response.statusCode == 406) {
+              print("error: " + response.body);
+              print(response.statusCode);
+
+              print("va: " + noVa);
+              print("periode: " + periode);
+
+              Map data = jsonDecode(response.body);
+              message = data['message'].toString().substring(32);
+              print("message: " + message);
+
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("Transaksi Gagal",
+                          style: TextStyle(color: Colors.green)),
+                      content: Text("Pembayaran terakhir Anda" + message),
+                      actions: <Widget>[
+                        MaterialButton(
+                          elevation: 5.0,
+                          child:
+                              Text("OK", style: TextStyle(color: Colors.green)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )
+                      ],
+                    );
+                  });
+
               setState(() => _isLoading = false);
             } else {
+              print("va: " + noVa);
+              print("periode: " + periode);
+
               print("error: " + response.body);
               print(response.statusCode);
 
@@ -139,11 +192,12 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
             }
           });
         }
-      };
+      }
     }
 
     Widget middleSection = new Expanded(
       child: new Container(
+          child: SingleChildScrollView(
         padding: new EdgeInsets.only(top: 8.0),
         child: new Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -171,6 +225,9 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                   } else {
                     return setState(() => error = true);
                   }
+                },
+                onSubmitted: (value) {
+                  kes();
                 },
               ),
               Container(height: 15),
@@ -221,49 +278,6 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                   ),
                 ),
               ),
-              // new GestureDetector(
-              //   onTap: () {
-              //     Navigator.push(
-              //         context,
-              //         new MaterialPageRoute(
-              //             builder: (__) => new BpjsBulan(
-              //                 jenis: "kesehatan",
-              //                 noVa: _noVAController.text,
-              //                 index: 0)));
-              //   },
-              //   child: Container(
-              //     padding: const EdgeInsets.only(top: 10.0),
-              //     width: double.infinity,
-              //     height: 40.0,
-              //     child: Column(
-              //       children: <Widget>[
-              //         Expanded(
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: <Widget>[
-              //               Container(
-              //                 child: widget.nm == null
-              //                     ? new Text("Januari 2020",
-              //                         style: new TextStyle(
-              //                             fontSize: 14.0,
-              //                             color: Colors.black54))
-              //                     : new Text(widget.nm,
-              //                         style: new TextStyle(fontSize: 14.0)),
-              //               ),
-              //               Container(
-              //                 child: Icon(
-              //                   Icons.keyboard_arrow_down,
-              //                   color: Colors.black,
-              //                   size: 24.0,
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               Divider(height: 12, color: Colors.black87),
               Container(height: 3),
               Container(
@@ -272,7 +286,7 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                       style: new TextStyle(fontSize: 12.0, color: Colors.red),
                       textAlign: TextAlign.left)),
             ]),
-      ),
+      )),
     );
 
     Widget bottomBanner = new Column(children: <Widget>[
@@ -303,178 +317,158 @@ class _BpjsKesehatanState extends State<BpjsKesehatan> {
                 child: RaisedButton(
                   child: Text('LANJUT', style: TextStyle(color: Colors.white)),
                   color: Colors.green,
-                  // onPressed: _onPressed,
                   onPressed: () async {
-                    if (_noVAController.text.isEmpty) {
-                      setState(
-                          () => {error = false, errorText = "Wajib diisi"});
-                    } else if (_noVAController.text.length < 9) {
-                      setState(() =>
-                          {error = false, errorText = "Format nomor salah"});
-                    } else if (widget.nm == null) {
-                      // setState(() => errorBulan = false);
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text("Transaksi Gagal",
-                                  style: TextStyle(color: Colors.green)),
-                              content: Text("Silahkan pilih bulan pembayaran"),
-                              actions: <Widget>[
-                                MaterialButton(
-                                  elevation: 5.0,
-                                  child: Text("OK",
-                                      style: TextStyle(color: Colors.green)),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
-                    } else {
-                      setState(() => _isLoading = true);
+                    kes();
+                    // if (_noVAController.text.isEmpty) {
+                    //   setState(
+                    //       () => {error = false, errorText = "Wajib diisi"});
+                    // } else if (_noVAController.text.length < 9) {
+                    //   setState(() =>
+                    //       {error = false, errorText = "Format nomor salah"});
+                    // } else if (widget.nm == null) {
+                    //   // setState(() => errorBulan = false);
+                    //   showDialog(
+                    //       context: context,
+                    //       builder: (context) {
+                    //         return AlertDialog(
+                    //           title: Text("Transaksi Gagal",
+                    //               style: TextStyle(color: Colors.green)),
+                    //           content: Text("Silahkan pilih bulan pembayaran"),
+                    //           actions: <Widget>[
+                    //             MaterialButton(
+                    //               elevation: 5.0,
+                    //               child: Text("OK",
+                    //                   style: TextStyle(color: Colors.green)),
+                    //               onPressed: () {
+                    //                 Navigator.of(context).pop();
+                    //               },
+                    //             )
+                    //           ],
+                    //         );
+                    //       });
+                    // } else {
+                    //   setState(() => _isLoading = true);
 
-                      if (_noVAController.text.isEmpty) {
-                        setState(() {
-                          _isLoading = false;
-                          _fieldNoVA = true;
-                        });
-                      } else {
-                        String noVa = _noVAController.text.toString();
-                        String periode = tgl(widget.tgl);
+                    //   if (_noVAController.text.isEmpty) {
+                    //     setState(() {
+                    //       _isLoading = false;
+                    //       _fieldNoVA = true;
+                    //     });
+                    //   } else {
+                    //     String noVa = _noVAController.text.toString();
+                    //     String periode = tgl(widget.tgl);
 
-                        PostKesehatan kesehatan =
-                            PostKesehatan(noVa: noVa, periode: periode);
+                    //     PostKesehatan kesehatan =
+                    //         PostKesehatan(noVa: noVa, periode: periode);
 
-                        // PostKesehatan kesehatan = PostKesehatan(noVa: "123456789", periode: "2020-01-01");
+                    //     // PostKesehatan kesehatan = PostKesehatan(noVa: "123456789", periode: "2020-01-01");
 
-                        _bpjsServices
-                            .postKesehatan(kesehatan)
-                            .then((response) async {
-                          if (response.statusCode == 200) {
-                            // print("berhasil body: " + response.body);
-                            // print(response.statusCode);
+                    //     _bpjsServices
+                    //         .postKesehatan(kesehatan)
+                    //         .then((response) async {
+                    //       if (response.statusCode == 200) {
+                    //         print("error: " + response.body);
+                    //         print(response.statusCode);
 
-                            // Map data = jsonDecode(response.body);
-                            // transactionId = data['transactionId'].toString();
-                            // print("transactionId: " + transactionId);
+                    //         Navigator.push(
+                    //             context,
+                    //             new MaterialPageRoute(
+                    //                 builder: (__) => new PembayaranGagalBpjs(
+                    //                     jenis: "kesehatan",
+                    //                     pesan: response.body,
+                    //                     index: 0)));
+                    //         setState(() => _isLoading = false);
+                    //       } else if (response.statusCode == 302) {
+                    //         print("berhasil body: " + response.body);
+                    //         print(response.statusCode);
 
-                            // url = '/ppob/bpjs/kesehatan/' + transactionId;
-                            // print("url: " + url);
+                    //         url = response.headers['location'];
+                    //         print("url: " + url);
 
-                            // _bpjsServices.saveUrl(url).then((bool committed) {
-                            //   print(url);
-                            // });
+                    //         _localServices.saveUrl(url).then((bool committed) {
+                    //           print(url);
+                    //         });
 
-                            // Navigator.push(
-                            //     context,
-                            //     new MaterialPageRoute(
-                            //         builder: (__) => new BpjsPembayaran(jenis: "kesehatan")));
-                            // setState(() => _isLoading = false);
+                    //         Navigator.push(
+                    //             context,
+                    //             new MaterialPageRoute(
+                    //                 builder: (__) => new BpjsPembayaran(
+                    //                     jenis: "kesehatan",
+                    //                     url: url,
+                    //                     index: 0)));
+                    //         setState(() => _isLoading = false);
+                    //       } else if (response.statusCode == 422) {
+                    //         print("va: " + noVa);
+                    //         print("periode: " + periode);
 
-                            print("error: " + response.body);
-                            print(response.statusCode);
+                    //         print("error: " + response.body);
+                    //         print(response.statusCode);
 
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (__) => new PembayaranGagalBpjs(
-                                        jenis: "kesehatan",
-                                        pesan: response.body,
-                                        index: 0)));
-                            setState(() => _isLoading = false);
-                          } else if (response.statusCode == 302) {
-                            print("berhasil body: " + response.body);
-                            print(response.statusCode);
+                    //         Map data = jsonDecode(response.body);
+                    //         message = data['message'].toString();
+                    //         print("message: " + message);
+                    //         setState(() => {
+                    //               error = false,
+                    //               errorText = "Nomor tidak terdaftar",
+                    //               _isLoading = false
+                    //             });
+                    //       } else if (response.statusCode == 406) {
+                    //         print("error: " + response.body);
+                    //         print(response.statusCode);
 
-                            url = response.headers['location'];
-                            print("url: " + url);
+                    //         print("va: " + noVa);
+                    //         print("periode: " + periode);
 
-                            _localServices.saveUrl(url).then((bool committed) {
-                              print(url);
-                            });
+                    //         Map data = jsonDecode(response.body);
+                    //         message = data['message'].toString().substring(32);
+                    //         print("message: " + message);
 
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (__) => new BpjsPembayaran(
-                                        jenis: "kesehatan",
-                                        url: url,
-                                        index: 0)));
-                            setState(() => _isLoading = false);
-                          } else if (response.statusCode == 422) {
-                            print("va: " + noVa);
-                            print("periode: " + periode);
+                    //         showDialog(
+                    //             context: context,
+                    //             builder: (context) {
+                    //               return AlertDialog(
+                    //                 title: Text("Transaksi Gagal",
+                    //                     style: TextStyle(color: Colors.green)),
+                    //                 content: Text(
+                    //                     "Pembayaran terakhir Anda" + message),
+                    //                 actions: <Widget>[
+                    //                   MaterialButton(
+                    //                     elevation: 5.0,
+                    //                     child: Text("OK",
+                    //                         style:
+                    //                             TextStyle(color: Colors.green)),
+                    //                     onPressed: () {
+                    //                       Navigator.of(context).pop();
+                    //                     },
+                    //                   )
+                    //                 ],
+                    //               );
+                    //             });
 
-                            print("error: " + response.body);
-                            print(response.statusCode);
+                    //         setState(() => _isLoading = false);
+                    //       } else {
+                    //         print("va: " + noVa);
+                    //         print("periode: " + periode);
 
-                            Map data = jsonDecode(response.body);
-                            message = data['message'].toString();
-                            print("message: " + message);
-                            setState(() => {
-                                  error = false,
-                                  errorText = "Nomor tidak terdaftar",
-                                  _isLoading = false
-                                });
-                          } else if (response.statusCode == 406) {
-                            print("error: " + response.body);
-                            print(response.statusCode);
+                    //         print("error: " + response.body);
+                    //         print(response.statusCode);
 
-                            print("va: " + noVa);
-                            print("periode: " + periode);
+                    //         Map data = jsonDecode(response.body);
+                    //         message = data['message'].toString();
+                    //         print("message: " + message);
 
-                            Map data = jsonDecode(response.body);
-                            message = data['message'].toString().substring(32);
-                            print("message: " + message);
-
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text("Transaksi Gagal",
-                                        style: TextStyle(color: Colors.green)),
-                                    content: Text(
-                                        "Pembayaran terakhir Anda" + message),
-                                    actions: <Widget>[
-                                      MaterialButton(
-                                        elevation: 5.0,
-                                        child: Text("OK",
-                                            style:
-                                                TextStyle(color: Colors.green)),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
-                                });
-
-                            setState(() => _isLoading = false);
-                          } else {
-                            print("va: " + noVa);
-                            print("periode: " + periode);
-
-                            print("error: " + response.body);
-                            print(response.statusCode);
-
-                            Map data = jsonDecode(response.body);
-                            message = data['message'].toString();
-                            print("message: " + message);
-
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (__) => new PembayaranGagalBpjs(
-                                        jenis: "kesehatan",
-                                        pesan: message,
-                                        index: 0)));
-                            setState(() => _isLoading = false);
-                          }
-                        });
-                      }
-                    }
+                    //         Navigator.push(
+                    //             context,
+                    //             new MaterialPageRoute(
+                    //                 builder: (__) => new PembayaranGagalBpjs(
+                    //                     jenis: "kesehatan",
+                    //                     pesan: message,
+                    //                     index: 0)));
+                    //         setState(() => _isLoading = false);
+                    //       }
+                    //     });
+                    //   }
+                    // }
                   },
                 ),
               ),
