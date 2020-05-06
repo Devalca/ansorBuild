@@ -27,10 +27,15 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
-    var _onPressed;
 
-    if (_noMeterController.text.isNotEmpty) {
-      _onPressed = () async {
+    pas() async {
+      if (_noMeterController.text.isEmpty) {
+        setState(() => {error = false, errorText = "Wajib diisi"});
+      } else if (_noMeterController.text.length < 12 &&
+          _noMeterController.text.length != null) {
+        return setState(
+            () => {error = false, errorText = "Format Nomor Salah"});
+      } else {
         setState(() {
           _isLoading = true;
         });
@@ -40,6 +45,9 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         String walletId = prefs.getString("walletId");
         String userId = prefs.getString("userId");
+
+        print("walletId" + walletId);
+        print("userId" + userId);
 
         PostPascabayar pascabayar = PostPascabayar(
             noMeter: noMeter, userId: userId, walletId: walletId);
@@ -60,7 +68,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                 context,
                 new MaterialPageRoute(
                     builder: (__) =>
-                        new ListrikPembayaran(status: "pascabayar", index: 1)));
+                        new ListrikPembayaran(status: "pascabayar")));
             setState(() => _isLoading = false);
           } else if (response.statusCode == 200) {
             print("berhasil body: " + response.body);
@@ -76,14 +84,20 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
               print("response body: " + response.body);
               print(response.statusCode);
 
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (__) => new PembayaranGagalPln(
-                          jenis: "pascabayar",
-                          pesan: response.body,
-                          index: 1)));
-              setState(() => _isLoading = false);
+              return setState(() => {
+                    error = false,
+                    errorText = "Nomor tidak terdaftar",
+                    _isLoading = false
+                  });
+
+              // Navigator.push(
+              //     context,
+              //     new MaterialPageRoute(
+              //         builder: (__) => new PembayaranGagal(
+              //             jenis: "pascabayar",
+              //             pesan: response.body,
+              //             index: 1)));
+              // setState(() => _isLoading = false);
             } else if (transactionId != null) {
               print("transactionId: " + transactionId);
 
@@ -113,11 +127,12 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
             setState(() => _isLoading = false);
           }
         });
-      };
+      }
     }
 
     Widget middleSection = new Expanded(
       child: new Container(
+          child: SingleChildScrollView(
         padding: new EdgeInsets.only(top: 8.0),
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -126,7 +141,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                 child: Text("Nomor Meter/ID Pelanggan",
                     style: new TextStyle(fontSize: 14.0),
                     textAlign: TextAlign.left)),
-            TextFormField(
+            TextField(
               inputFormatters: [
                 LengthLimitingTextInputFormatter(12),
                 WhitelistingTextInputFormatter.digitsOnly
@@ -145,6 +160,9 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                 } else {
                   return setState(() => error = true);
                 }
+              },
+              onSubmitted: (value) {
+                pas();
               },
             ),
             Container(height: 15),
@@ -185,7 +203,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                     textAlign: TextAlign.left)),
           ],
         ),
-      ),
+      )),
     );
 
     Widget bottomBanner = new Column(children: <Widget>[
@@ -218,114 +236,7 @@ class _ListrikPascabayarState extends State<ListrikPascabayar> {
                   color: Colors.green,
                   // onPressed: _onPressed,
                   onPressed: () async {
-                    if (_noMeterController.text.isEmpty) {
-                      setState(
-                          () => {error = false, errorText = "Wajib diisi"});
-                    } else if (_noMeterController.text.length < 12 &&
-                        _noMeterController.text.length != null) {
-                      return setState(() =>
-                          {error = false, errorText = "Format Nomor Salah"});
-                    } else {
-                      setState(() {
-                        _isLoading = true;
-                      });
-
-                      String noMeter = _noMeterController.text.toString();
-
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-                      String walletId = prefs.getString("walletId");
-                      String userId = prefs.getString("userId");
-
-                      print("walletId" + walletId);
-                      print("userId" + userId);
-
-                      PostPascabayar pascabayar = PostPascabayar(
-                          noMeter: noMeter, userId: userId, walletId: walletId);
-
-                      _plnServices
-                          .postPascabayar(pascabayar)
-                          .then((response) async {
-                        if (response.statusCode == 302) {
-                          print("berhasil body: " + response.body);
-                          print(response.statusCode);
-
-                          url = response.headers['location'];
-                          print("url: " + url);
-
-                          _plnServices
-                              .saveTransactionId(url)
-                              .then((bool committed) {
-                            print(url);
-                          });
-
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (__) => new ListrikPembayaran(
-                                      status: "pascabayar")));
-                          setState(() => _isLoading = false);
-                        } else if (response.statusCode == 200) {
-                          print("berhasil body: " + response.body);
-                          print(response.statusCode);
-
-                          Map data = jsonDecode(response.body);
-                          transactionId = data['transactionId'].toString();
-                          message = data['message'];
-
-                          if (message != null) {
-                            print("message" + message);
-
-                            print("response body: " + response.body);
-                            print(response.statusCode);
-
-                            return setState(() => {
-                                  error = false,
-                                  errorText = "Nomor tidak terdaftar",
-                                  _isLoading = false
-                                });
-
-                            // Navigator.push(
-                            //     context,
-                            //     new MaterialPageRoute(
-                            //         builder: (__) => new PembayaranGagal(
-                            //             jenis: "pascabayar",
-                            //             pesan: response.body,
-                            //             index: 1)));
-                            // setState(() => _isLoading = false);
-                          } else if (transactionId != null) {
-                            print("transactionId: " + transactionId);
-
-                            url = '/ppob/pln/' + transactionId;
-                            print("url: " + url);
-
-                            _plnServices
-                                .saveTransactionId(url)
-                                .then((bool committed) {
-                              print(url);
-                            });
-
-                            Navigator.push(
-                                context,
-                                new MaterialPageRoute(
-                                    builder: (__) => new ListrikPembayaran(
-                                        status: "pascabayar")));
-                            setState(() => _isLoading = false);
-                          }
-                        } else {
-                          print("error: " + response.body);
-                          print(response.statusCode);
-
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (__) => new PembayaranGagalPln(
-                                      jenis: "pascabayar",
-                                      pesan: response.body)));
-                          setState(() => _isLoading = false);
-                        }
-                      });
-                    }
+                    pas();
                   },
                 ),
               ),

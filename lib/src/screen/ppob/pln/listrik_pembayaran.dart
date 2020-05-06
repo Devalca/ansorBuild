@@ -294,7 +294,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                         ],
                                       ),
                                     ),
-
                               Container(height: 15),
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -343,12 +342,17 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                             ),
                                           ),
                                           Container(
-                                            padding: const EdgeInsets.only(
-                                                right: 95.0),
-                                            child: Text("Saldo Un1ty",
-                                                style: new TextStyle(
-                                                    color: Colors.green)),
+                                            // padding: const EdgeInsets.only(
+                                            //     right: 95.0),
+                                            child: Text(
+                                              "Saldo Un1ty",
+                                              style: new TextStyle(
+                                                  color: Colors.green),
+                                              textAlign: TextAlign.left,
+                                            ),
                                           ),
+                                          Container(),
+                                          Container(),
                                           Container(
                                               child: FutureBuilder<Wallet>(
                                             future: _walletService.getSaldo(),
@@ -377,194 +381,6 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                                   ],
                                 ),
                               ),
-                              // Container(height: 160),
-                              // Container(
-                              //   alignment: Alignment.bottomCenter,
-                              //   child: Align(
-                              //     child: SizedBox(
-                              //       width: double.infinity,
-                              //       height: 35,
-                              //       child: RaisedButton(
-                              //         child: Text('BAYAR',
-                              //             style: TextStyle(
-                              //                 color: Colors.white)),
-                              //         color: Colors.green,
-                              //         onPressed: () {
-                              //           setState(() => _isLoading = true);
-                              //           String id = _transactionId;
-                              //           String transactionId =
-                              //               id.substring(10);
-                              //           String noMeter =
-                              //               snapshot.data.no_meter;
-                              //           int nominal =
-                              //               snapshot.data.nominal;
-
-                              //           print("transactionId: " +
-                              //               transactionId);
-                              //           print("noMeter: " + noMeter);
-
-                              //           PostPascaTransaction
-                              //               pascaTransaction =
-                              //               PostPascaTransaction(
-                              //                   noMeter: noMeter,
-                              //                   transactionId:
-                              //                       transactionId,
-                              //                   userId: 1,
-                              //                   walletId: 1);
-
-                              //           PostPraTransaction
-                              //               praTransaction =
-                              //               PostPraTransaction(
-                              //                   noMeter: noMeter,
-                              //                   nominal: nominal,
-                              //                   transactionId:
-                              //                       transactionId,
-                              //                   userId: 1,
-                              //                   walletId: 1);
-
-                              //           if (widget.status ==
-                              //               "pascabayar") {
-                              //             _plnServices
-                              //                 .postPascaTransaction(
-                              //                     pascaTransaction)
-                              //                 .then((response) async {
-                              //               print(response.statusCode);
-                              //               if (response.statusCode ==
-                              //                   302) {
-                              //                 print('Berhasil');
-                              //                 url = response
-                              //                     .headers['location'];
-                              //                 print("url: " + url);
-
-                              //                 _plnServices
-                              //                     .saveTransactionId(url)
-                              //                     .then((bool committed) {
-                              //                   print(url);
-                              //                 });
-
-                              //                 Navigator.push(
-                              //                     context,
-                              //                     new MaterialPageRoute(
-                              //                         builder: (__) =>
-                              //                             new PembayaranBerhasil(
-                              //                                 status: widget
-                              //                                     .status)));
-                              //                 setState(() =>
-                              //                     _isLoading = false);
-                              //               } else if (response
-                              //                       .statusCode ==
-                              //                   200) {
-                              //                 print('Berhasil');
-
-                              //                 Map data = jsonDecode(
-                              //                     response.body);
-                              //                 id = data['id'].toString();
-                              //                 url = '/ppob/detail/pln/' +
-                              //                     id;
-                              //                 print("url" + url);
-
-                              //                 _plnServices
-                              //                     .saveTransactionId(url)
-                              //                     .then((bool committed) {
-                              //                   print(url);
-                              //                 });
-
-                              //                 Navigator.push(
-                              //                     context,
-                              //                     new MaterialPageRoute(
-                              //                         builder: (__) =>
-                              //                             new PembayaranBerhasil(
-                              //                                 status: widget
-                              //                                     .status)));
-                              //                 setState(() =>
-                              //                     _isLoading = false);
-                              //               } else {
-                              //                 print("Gagal");
-                              //                 print(response.statusCode);
-
-                              //                 Navigator.push(
-                              //                     context,
-                              //                     new MaterialPageRoute(
-                              //                         builder: (__) =>
-                              //                             new PembayaranGagal()));
-                              //                 setState(() =>
-                              //                     _isLoading = false);
-                              //               }
-                              //             });
-                              //           } else {
-                              //             _plnServices
-                              //                 .postPraTransaction(
-                              //                     praTransaction)
-                              //                 .then((response) async {
-                              //               print(response.statusCode);
-                              //               if (response.statusCode ==
-                              //                   302) {
-                              //                 print('Berhasil');
-                              //                 url = response
-                              //                     .headers['location'];
-                              //                 print("url: " + url);
-
-                              //                 _plnServices
-                              //                     .saveTransactionId(url)
-                              //                     .then((bool committed) {
-                              //                   print(url);
-                              //                 });
-
-                              //                 Navigator.push(
-                              //                     context,
-                              //                     new MaterialPageRoute(
-                              //                         builder: (__) =>
-                              //                             new PembayaranBerhasil(
-                              //                                 status: widget
-                              //                                     .status)));
-                              //                 setState(() =>
-                              //                     _isLoading = false);
-                              //               } else if (response
-                              //                       .statusCode ==
-                              //                   200) {
-                              //                 print('Berhasil');
-
-                              //                 Map data = jsonDecode(
-                              //                     response.body);
-                              //                 id = data['id'].toString();
-                              //                 url = '/ppob/detail/pln/' +
-                              //                     id;
-                              //                 print("url" + url);
-
-                              //                 _plnServices
-                              //                     .saveTransactionId(url)
-                              //                     .then((bool committed) {
-                              //                   print(url);
-                              //                 });
-
-                              //                 Navigator.push(
-                              //                     context,
-                              //                     new MaterialPageRoute(
-                              //                         builder: (__) =>
-                              //                             new PembayaranBerhasil(
-                              //                                 status: widget
-                              //                                     .status)));
-                              //                 setState(() =>
-                              //                     _isLoading = false);
-                              //               } else {
-                              //                 print("Gagal");
-                              //                 print(response.statusCode);
-
-                              //                 Navigator.push(
-                              //                     context,
-                              //                     new MaterialPageRoute(
-                              //                         builder: (__) =>
-                              //                             new PembayaranGagal()));
-                              //                 setState(() =>
-                              //                     _isLoading = false);
-                              //               }
-                              //             });
-                              //           }
-                              //         },
-                              //       ),
-                              //     ),
-                              //   ),
-                              // )
                             ]),
                       ));
                     } else if (snapshot.hasError) {
@@ -585,43 +401,45 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
         color: Colors.black26,
       ),
       Container(height: 5),
-      SizedBox(
-        width: 333,
-        height: 35,
-        child: RaisedButton(
-          child: Text('BAYAR', style: TextStyle(color: Colors.white)),
-          color: Colors.green,
-          onPressed: () async {
-            setState(() => _isLoading = true);
-            if (total2 > saldo) {
-              setState(() => _isLoading = false);
-              return showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text("Transaksi Gagal",
-                          style: TextStyle(color: Colors.green)),
-                      content: Text(
-                          "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
-                      actions: <Widget>[
-                        MaterialButton(
-                          elevation: 5.0,
-                          child:
-                              Text("OK", style: TextStyle(color: Colors.green)),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        )
-                      ],
-                    );
-                  });
-            } else {
-              String id = _transactionId;
-              String transactionId = id.substring(10);
-              String noMeter = noMeter2;
-              int nominal = nominal2;
+      Padding(
+        padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+        child: SizedBox(
+          width: double.infinity,
+          height: 35,
+          child: RaisedButton(
+            child: Text('BAYAR', style: TextStyle(color: Colors.white)),
+            color: Colors.green,
+            onPressed: () async {
+              setState(() => _isLoading = true);
+              if (total2 > saldo) {
+                setState(() => _isLoading = false);
+                return showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text("Transaksi Gagal",
+                            style: TextStyle(color: Colors.green)),
+                        content: Text(
+                            "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
+                        actions: <Widget>[
+                          MaterialButton(
+                            elevation: 5.0,
+                            child: Text("OK",
+                                style: TextStyle(color: Colors.green)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                    });
+              } else {
+                String id = _transactionId;
+                String transactionId = id.substring(10);
+                String noMeter = noMeter2;
+                int nominal = nominal2;
 
-              Navigator.push(
+                Navigator.push(
                     context,
                     new MaterialPageRoute(
                         builder: (__) => new Pin(
@@ -631,10 +449,9 @@ class _ListrikPembayaranState extends State<ListrikPembayaran> {
                             noMeter: noMeter,
                             nominal: nominal,
                             status: widget.status)));
-
-              
-            }
-          },
+              }
+            },
+          ),
         ),
       ),
       Container(height: 10),

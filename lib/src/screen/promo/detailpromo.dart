@@ -251,39 +251,6 @@ class _DetailPromosiState extends State<DetailPromosi> {
         padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
         child: body,
       ),
-      // body: Stack(
-      //   children: <Widget>[
-      //     Image.asset(
-      //       'lib/src/assets/${widget.detailImg}.png',
-      //       fit: BoxFit.fitWidth,
-      //     ),
-      //     Container(
-      //       child: Container(
-      //         padding: EdgeInsets.all(12),
-      //         child: Text(
-      //           widget.title,
-      //           style: TextStyle(
-      //             color: Colors.black,
-      //             fontSize: 14,
-      //             fontWeight: FontWeight.bold,
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //     Positioned(
-      //       child: AppBar(
-      //         backgroundColor: Colors.transparent,
-      //         elevation: 0,
-      //         leading: IconButton(
-      //             icon: Icon(Icons.arrow_back_ios),
-      //             onPressed: () {
-      //               Navigator.push(context,
-      //                   new MaterialPageRoute(builder: (__) => new Promo()));
-      //             }),
-      //       ),
-      //     )
-      //   ],
-      // ),
     );
   }
 }

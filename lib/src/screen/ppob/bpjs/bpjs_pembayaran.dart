@@ -286,6 +286,8 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
                                                   style: new TextStyle(
                                                       color: Colors.green)),
                                             ),
+                                            Container(),
+                                            Container(),
                                             Container(
                                                 child: FutureBuilder<Wallet>(
                                               future: _walletService.getSaldo(),
@@ -640,218 +642,221 @@ class _BpjsPembayaranState extends State<BpjsPembayaran> {
         color: Colors.black26,
       ),
       Container(height: 5),
-      SizedBox(
-        width: 333,
-        height: 35,
-        child: RaisedButton(
-          child: Text('BAYAR', style: TextStyle(color: Colors.white)),
-          color: Colors.green,
-          onPressed: () async {
-            setState(() => _isLoading = true);
+      Padding(
+        padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+        child: SizedBox(
+          width: double.infinity,
+          height: 35,
+          child: RaisedButton(
+            child: Text('BAYAR', style: TextStyle(color: Colors.white)),
+            color: Colors.green,
+            onPressed: () async {
+              setState(() => _isLoading = true);
 
-            if (widget.jenis == "kesehatan") {
-              if (totalSehat2 > saldo) {
-                setState(() => _isLoading = false);
-                return showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Transaksi Gagal",
-                            style: TextStyle(color: Colors.green)),
-                        content: Text(
-                            "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
-                        actions: <Widget>[
-                          MaterialButton(
-                            elevation: 5.0,
-                            child: Text("OK",
-                                style: TextStyle(color: Colors.green)),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    });
+              if (widget.jenis == "kesehatan") {
+                if (totalSehat2 > saldo) {
+                  setState(() => _isLoading = false);
+                  return showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Transaksi Gagal",
+                              style: TextStyle(color: Colors.green)),
+                          content: Text(
+                              "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
+                          actions: <Widget>[
+                            MaterialButton(
+                              elevation: 5.0,
+                              child: Text("OK",
+                                  style: TextStyle(color: Colors.green)),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                } else {
+                  String transactionId = widget.url.substring(21);
+                  String noVa = noVa2;
+                  String periode = periode2;
+
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (__) => new Pin(
+                              statusbyr: "bpjskesehatan",
+                              transactionId: transactionId,
+                              noVa: noVa,
+                              periode: periode,
+                              jenis: widget.jenis)));
+
+                  // SharedPreferences prefs = await SharedPreferences.getInstance();
+                  // String walletId = prefs.getString("walletId");
+                  // String userId = prefs.getString("userId");
+
+                  // print("transactionId " + transactionId);
+                  // print("noVa " + noVa);
+                  // print("periode " + periode);
+                  // print("userId " + userId);
+                  // print("walletId " + walletId);
+
+                  // PostPembayaran pembayaran = PostPembayaran(
+                  //     userId: userId,
+                  //     walletId: walletId,
+                  //     transactionId: transactionId,
+                  //     noVa: noVa,
+                  //     periode: periode);
+
+                  // _bpjsServices.postPembayaran(pembayaran).then((response) async {
+                  //   if (response.statusCode == 200) {
+                  //     print("berhasil body: " + response.body);
+                  //     print(response.statusCode);
+
+                  //     Map data = jsonDecode(response.body);
+                  //     transactionId = data['transactionId'].toString();
+                  //     print("transactionId: " + transactionId);
+
+                  //     url = '/ppob/bpjs/detail/kesehatan/' + transactionId;
+                  //     print("url: " + url);
+
+                  //     _localServices.saveUrl(url).then((bool committed) {
+                  //       print(url);
+                  //     });
+
+                  //     Navigator.push(
+                  //         context,
+                  //         new MaterialPageRoute(
+                  //             builder: (__) =>
+                  //                 new PembayaranBerhasil(jenis: widget.jenis)));
+                  //     setState(() => _isLoading = false);
+                  //   } else if (response.statusCode == 302) {
+                  //     print("berhasil body: " + response.body);
+                  //     print(response.statusCode);
+
+                  //     url = response.headers['location'];
+                  //     print("url: " + url);
+
+                  //     _localServices.saveUrl(url).then((bool committed) {
+                  //       print(url);
+                  //     });
+
+                  //     Navigator.push(
+                  //         context,
+                  //         new MaterialPageRoute(
+                  //             builder: (__) =>
+                  //                 new PembayaranBerhasil(jenis: widget.jenis)));
+                  //     setState(() => _isLoading = false);
+                  //   } else {
+                  //     print("error: " + response.body);
+                  //     print(response.statusCode);
+                  //   }
+                  // });
+                }
               } else {
-                String transactionId = widget.url.substring(21);
-                String noVa = noVa2;
-                String periode = periode2;
+                if (totalKerja2 > saldo) {
+                  setState(() => _isLoading = false);
+                  return showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Transaksi Gagal",
+                              style: TextStyle(color: Colors.green)),
+                          content: Text(
+                              "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
+                          actions: <Widget>[
+                            MaterialButton(
+                              elevation: 5.0,
+                              child: Text("OK",
+                                  style: TextStyle(color: Colors.green)),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                } else {
+                  String transactionId = widget.urlkerja.substring(27);
+                  int periodeByr = periodeByr2;
+                  String noKtp = noKtp2;
 
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (__) => new Pin(
-                            statusbyr: "bpjskesehatan",
-                            transactionId: transactionId,
-                            noVa: noVa,
-                            periode: periode,
-                            jenis: widget.jenis)));
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (__) => new Pin(
+                              statusbyr: "bpjsketenagakerjaan",
+                              transactionId: widget.urlkerja.substring(27),
+                              periodeByr: periodeByr,
+                              noKtp: noKtp,
+                              jenis: widget.jenis)));
 
-                // SharedPreferences prefs = await SharedPreferences.getInstance();
-                // String walletId = prefs.getString("walletId");
-                // String userId = prefs.getString("userId");
+                  // SharedPreferences prefs = await SharedPreferences.getInstance();
+                  // String walletId = prefs.getString("walletId");
+                  // String userId = prefs.getString("userId");
 
-                // print("transactionId " + transactionId);
-                // print("noVa " + noVa);
-                // print("periode " + periode);
-                // print("userId " + userId);
-                // print("walletId " + walletId);
+                  // print("periodeByr " + periodeByr.toString());
+                  // print("noKtp " + noKtp);
+                  // print("userId " + userId);
+                  // print("walletId " + walletId);
+                  // print("transactionId " + transactionId);
 
-                // PostPembayaran pembayaran = PostPembayaran(
-                //     userId: userId,
-                //     walletId: walletId,
-                //     transactionId: transactionId,
-                //     noVa: noVa,
-                //     periode: periode);
+                  // PostBayarKerja bayarKerja = PostBayarKerja(
+                  //   periodeByr: periodeByr,
+                  //   noKtp: noKtp,
+                  //   userId: userId,
+                  //   walletId: walletId,
+                  //   transactionId: transactionId,
+                  // );
 
-                // _bpjsServices.postPembayaran(pembayaran).then((response) async {
-                //   if (response.statusCode == 200) {
-                //     print("berhasil body: " + response.body);
-                //     print(response.statusCode);
+                  // _bpjsServices.postBayarKerja(bayarKerja).then((response) async {
+                  //   if (response.statusCode == 200) {
+                  //     print("berhasil body: " + response.body);
+                  //     print(response.statusCode);
 
-                //     Map data = jsonDecode(response.body);
-                //     transactionId = data['transactionId'].toString();
-                //     print("transactionId: " + transactionId);
+                  //     Map data = jsonDecode(response.body);
+                  //     transactionId = data['transactionId'].toString();
+                  //     print("transactionId: " + transactionId);
 
-                //     url = '/ppob/bpjs/detail/kesehatan/' + transactionId;
-                //     print("url: " + url);
+                  //     url = '/ppob/bpjs/detail/kesehatan/' + transactionId;
+                  //     print("url: " + url);
 
-                //     _localServices.saveUrl(url).then((bool committed) {
-                //       print(url);
-                //     });
+                  //     _localServices.saveUrl(url).then((bool committed) {
+                  //       print(url);
+                  //     });
 
-                //     Navigator.push(
-                //         context,
-                //         new MaterialPageRoute(
-                //             builder: (__) =>
-                //                 new PembayaranBerhasil(jenis: widget.jenis)));
-                //     setState(() => _isLoading = false);
-                //   } else if (response.statusCode == 302) {
-                //     print("berhasil body: " + response.body);
-                //     print(response.statusCode);
+                  //     Navigator.push(
+                  //         context,
+                  //         new MaterialPageRoute(
+                  //             builder: (__) =>
+                  //                 new PembayaranBerhasil(jenis: widget.jenis)));
+                  //     setState(() => _isLoading = false);
+                  //   } else if (response.statusCode == 302) {
+                  //     print("berhasil body: " + response.body);
+                  //     print(response.statusCode);
 
-                //     url = response.headers['location'];
-                //     print("url: " + url);
+                  //     url = response.headers['location'];
+                  //     print("url: " + url);
 
-                //     _localServices.saveUrl(url).then((bool committed) {
-                //       print(url);
-                //     });
+                  //     _localServices.saveUrl(url).then((bool committed) {
+                  //       print(url);
+                  //     });
 
-                //     Navigator.push(
-                //         context,
-                //         new MaterialPageRoute(
-                //             builder: (__) =>
-                //                 new PembayaranBerhasil(jenis: widget.jenis)));
-                //     setState(() => _isLoading = false);
-                //   } else {
-                //     print("error: " + response.body);
-                //     print(response.statusCode);
-                //   }
-                // });
+                  //     Navigator.push(
+                  //         context,
+                  //         new MaterialPageRoute(
+                  //             builder: (__) =>
+                  //                 new PembayaranBerhasil(jenis: widget.jenis)));
+                  //     setState(() => _isLoading = false);
+                  //   } else {
+                  //     print("error: " + response.body);
+                  //     print(response.statusCode);
+                  //   }
+                  // });
+                }
               }
-            } else {
-              if (totalKerja2 > saldo) {
-                setState(() => _isLoading = false);
-                return showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text("Transaksi Gagal",
-                            style: TextStyle(color: Colors.green)),
-                        content: Text(
-                            "Saldo Anda tidak cukup. Silahkan melakukan pengisian saldo."),
-                        actions: <Widget>[
-                          MaterialButton(
-                            elevation: 5.0,
-                            child: Text("OK",
-                                style: TextStyle(color: Colors.green)),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    });
-              } else {
-                String transactionId = widget.urlkerja.substring(27);
-                int periodeByr = periodeByr2;
-                String noKtp = noKtp2;
-
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (__) => new Pin(
-                            statusbyr: "bpjsketenagakerjaan",
-                            transactionId: widget.urlkerja.substring(27),
-                            periodeByr: periodeByr,
-                            noKtp: noKtp,
-                            jenis: widget.jenis)));
-
-                // SharedPreferences prefs = await SharedPreferences.getInstance();
-                // String walletId = prefs.getString("walletId");
-                // String userId = prefs.getString("userId");
-
-                // print("periodeByr " + periodeByr.toString());
-                // print("noKtp " + noKtp);
-                // print("userId " + userId);
-                // print("walletId " + walletId);
-                // print("transactionId " + transactionId);
-
-                // PostBayarKerja bayarKerja = PostBayarKerja(
-                //   periodeByr: periodeByr,
-                //   noKtp: noKtp,
-                //   userId: userId,
-                //   walletId: walletId,
-                //   transactionId: transactionId,
-                // );
-
-                // _bpjsServices.postBayarKerja(bayarKerja).then((response) async {
-                //   if (response.statusCode == 200) {
-                //     print("berhasil body: " + response.body);
-                //     print(response.statusCode);
-
-                //     Map data = jsonDecode(response.body);
-                //     transactionId = data['transactionId'].toString();
-                //     print("transactionId: " + transactionId);
-
-                //     url = '/ppob/bpjs/detail/kesehatan/' + transactionId;
-                //     print("url: " + url);
-
-                //     _localServices.saveUrl(url).then((bool committed) {
-                //       print(url);
-                //     });
-
-                //     Navigator.push(
-                //         context,
-                //         new MaterialPageRoute(
-                //             builder: (__) =>
-                //                 new PembayaranBerhasil(jenis: widget.jenis)));
-                //     setState(() => _isLoading = false);
-                //   } else if (response.statusCode == 302) {
-                //     print("berhasil body: " + response.body);
-                //     print(response.statusCode);
-
-                //     url = response.headers['location'];
-                //     print("url: " + url);
-
-                //     _localServices.saveUrl(url).then((bool committed) {
-                //       print(url);
-                //     });
-
-                //     Navigator.push(
-                //         context,
-                //         new MaterialPageRoute(
-                //             builder: (__) =>
-                //                 new PembayaranBerhasil(jenis: widget.jenis)));
-                //     setState(() => _isLoading = false);
-                //   } else {
-                //     print("error: " + response.body);
-                //     print(response.statusCode);
-                //   }
-                // });
-              }
-            }
-          },
+            },
+          ),
         ),
       ),
       Container(height: 10),

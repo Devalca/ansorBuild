@@ -40,6 +40,138 @@ class _LoginState extends State<Login> {
     }
   }
 
+  login() {
+    if (_nohpController.text.isEmpty && _passwordController.text.isEmpty) {
+      setState(() => {_fieldNohp = false, _fieldPassword = false});
+    } else if (_nohpController.text.isEmpty) {
+      setState(() => _fieldNohp = false);
+    } else if (_passwordController.text.isEmpty) {
+      setState(() => _fieldPassword = false);
+    } else {
+      setState(() => _isLoading = true);
+      String no_hp = _nohpController.text.toString();
+      String password = _passwordController.text.toString();
+
+      print("no hp: " + no_hp + " password: " + password);
+
+      PostLogin login = PostLogin(no_hp: no_hp, password: password);
+
+      _loginServices.postLogin(login).then((response) async {
+        if (response.statusCode == 200) {
+          print("berhasil body: " + response.body);
+          print(response.statusCode);
+
+          _localServices.saveNoHp(no_hp).then((bool committed) {
+            print(no_hp);
+          });
+
+          Navigator.push(
+              context,
+              new MaterialPageRoute(
+                  builder: (__) => new Pin(statusbyr: "login")));
+
+          setState(() => _isLoading = false);
+        } else if (response.statusCode == 403) {
+          print("error: " + response.body);
+          print(response.statusCode);
+
+          Map data = jsonDecode(response.body);
+          message = data["message"].toString();
+
+          walletId = "0";
+          userId = "0";
+          isLogin = false;
+          print("walletId: " + walletId);
+          print("userId: " + userId);
+          print("isLogin: " + isLogin.toString());
+
+          _localServices.saveWalletId(walletId).then((bool committed) {
+            print(walletId);
+          });
+
+          _localServices.saveUserId(userId).then((bool committed) {
+            print(userId);
+          });
+
+          _localServices.isLogin(isLogin).then((bool committed) {
+            print(isLogin);
+          });
+
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Login Gagal",
+                      style: TextStyle(color: Colors.green)),
+                  content: Text(
+                      "Anda Belum melakukan aktivasi. Lakukan verifikasi email"),
+                  actions: <Widget>[
+                    MaterialButton(
+                      elevation: 5.0,
+                      child: Text("OK", style: TextStyle(color: Colors.green)),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (__) => new Reverif()));
+                      },
+                    )
+                  ],
+                );
+              });
+
+          setState(() => _isLoading = false);
+        } else {
+          print("error: " + response.body);
+          print(response.statusCode);
+
+          Map data = jsonDecode(response.body);
+          message = data["message"].toString();
+
+          walletId = "0";
+          userId = "0";
+          isLogin = false;
+          print("walletId: " + walletId);
+          print("userId: " + userId);
+          print("isLogin: " + isLogin.toString());
+
+          _localServices.saveWalletId(walletId).then((bool committed) {
+            print(walletId);
+          });
+
+          _localServices.saveUserId(userId).then((bool committed) {
+            print(userId);
+          });
+
+          _localServices.isLogin(isLogin).then((bool committed) {
+            print(isLogin);
+          });
+
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text("Login Gagal",
+                      style: TextStyle(color: Colors.green)),
+                  content: Text("No HP atau Kata Sandi Salah"),
+                  actions: <Widget>[
+                    MaterialButton(
+                      elevation: 5.0,
+                      child: Text("OK", style: TextStyle(color: Colors.green)),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                );
+              });
+
+          setState(() => _isLoading = false);
+        }
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -222,6 +354,9 @@ class _LoginState extends State<Login> {
                                 setState(() => _fieldNohp = isFieldValid);
                               }
                             },
+                            onSubmitted: (value) {
+                              login();
+                            },
                           ),
                           Container(height: 10),
                           Container(
@@ -253,6 +388,9 @@ class _LoginState extends State<Login> {
                                 setState(() => _fieldPassword = isFieldValid);
                               }
                             },
+                            onSubmitted: (value) {
+                              login();
+                            },
                           ),
                           Container(height: 10),
                           Container(
@@ -265,229 +403,8 @@ class _LoginState extends State<Login> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(color: Colors.white)),
                                 color: Colors.green,
-                                // onPressed: _onPressed,
                                 onPressed: () {
-                                  if (_nohpController.text.isEmpty &&
-                                      _passwordController.text.isEmpty) {
-                                    setState(() => {
-                                          _fieldNohp = false,
-                                          _fieldPassword = false
-                                        });
-                                  } else if (_nohpController.text.isEmpty) {
-                                    setState(() => _fieldNohp = false);
-                                  } else if (_passwordController.text.isEmpty) {
-                                    setState(() => _fieldPassword = false);
-                                  } else {
-                                    setState(() => _isLoading = true);
-                                    String no_hp =
-                                        _nohpController.text.toString();
-                                    String password =
-                                        _passwordController.text.toString();
-
-                                    print("no hp: " +
-                                        no_hp +
-                                        " password: " +
-                                        password);
-
-                                    PostLogin login = PostLogin(
-                                        no_hp: no_hp, password: password);
-
-                                    _loginServices
-                                        .postLogin(login)
-                                        .then((response) async {
-                                      if (response.statusCode == 200) {
-                                        print(
-                                            "berhasil body: " + response.body);
-                                        print(response.statusCode);
-
-                                        _localServices
-                                            .saveNoHp(no_hp)
-                                            .then((bool committed) {
-                                          print(no_hp);
-                                        });
-
-                                        Navigator.push(
-                                            context,
-                                            new MaterialPageRoute(
-                                                builder: (__) => new Pin(
-                                                    statusbyr: "login")));
-
-                                        // Map data = jsonDecode(response.body);
-                                        // walletId = data["walletId"].toString();
-                                        // userId = data["userId"].toString();
-                                        // isLogin = true;
-                                        // print("walletId: " + walletId);
-                                        // print("userId: " + userId);
-                                        // print("isLogin: " + isLogin.toString());
-
-                                        // _localServices
-                                        //     .saveWalletId(walletId)
-                                        //     .then((bool committed) {
-                                        //   print(walletId);
-                                        // });
-
-                                        // _localServices
-                                        //     .saveUserId(userId)
-                                        //     .then((bool committed) {
-                                        //   print(userId);
-                                        // });
-
-                                        // _localServices
-                                        //     .isLogin(isLogin)
-                                        //     .then((bool committed) {
-                                        //   print(isLogin);
-                                        // });
-
-                                        // setState(() => _isLoading = true);
-
-                                        // _toLanding();
-
-                                        // showDialog(
-                                        //     context: context,
-                                        //     builder: (context) {
-                                        //       return AlertDialog(
-                                        //         title: Text("Login Anda Berhasil",
-                                        //             style:
-                                        //                 TextStyle(color: Colors.green)),
-                                        //         content: Text(
-                                        //             "Anda Berhasil Login dengan nomor $no_hp"),
-                                        //         actions: <Widget>[
-                                        //           MaterialButton(
-                                        //             elevation: 5.0,
-                                        //             child: Text("OK",
-                                        //                 style: TextStyle(
-                                        //                     color: Colors.green)),
-                                        //             onPressed: () {
-                                        //               _toLanding();
-                                        //             },
-                                        //           )
-                                        //         ],
-                                        //       );
-                                        //     });
-
-                                        setState(() => _isLoading = false);
-                                      } else if (response.statusCode == 403) {
-                                        print("error: " + response.body);
-                                        print(response.statusCode);
-
-                                        Map data = jsonDecode(response.body);
-                                        message = data["message"].toString();
-
-                                        walletId = "0";
-                                        userId = "0";
-                                        isLogin = false;
-                                        print("walletId: " + walletId);
-                                        print("userId: " + userId);
-                                        print("isLogin: " + isLogin.toString());
-
-                                        _localServices
-                                            .saveWalletId(walletId)
-                                            .then((bool committed) {
-                                          print(walletId);
-                                        });
-
-                                        _localServices
-                                            .saveUserId(userId)
-                                            .then((bool committed) {
-                                          print(userId);
-                                        });
-
-                                        _localServices
-                                            .isLogin(isLogin)
-                                            .then((bool committed) {
-                                          print(isLogin);
-                                        });
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text("Login Gagal",
-                                                    style: TextStyle(
-                                                        color: Colors.green)),
-                                                content: Text(
-                                                    "Anda Belum melakukan aktivasi. Lakukan verifikasi email"),
-                                                actions: <Widget>[
-                                                  MaterialButton(
-                                                    elevation: 5.0,
-                                                    child: Text("OK",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.green)),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          new MaterialPageRoute(
-                                                              builder: (__) =>
-                                                                  new Reverif()));
-                                                    },
-                                                  )
-                                                ],
-                                              );
-                                            });
-
-                                        setState(() => _isLoading = false);
-                                      } else {
-                                        print("error: " + response.body);
-                                        print(response.statusCode);
-
-                                        Map data = jsonDecode(response.body);
-                                        message = data["message"].toString();
-
-                                        walletId = "0";
-                                        userId = "0";
-                                        isLogin = false;
-                                        print("walletId: " + walletId);
-                                        print("userId: " + userId);
-                                        print("isLogin: " + isLogin.toString());
-
-                                        _localServices
-                                            .saveWalletId(walletId)
-                                            .then((bool committed) {
-                                          print(walletId);
-                                        });
-
-                                        _localServices
-                                            .saveUserId(userId)
-                                            .then((bool committed) {
-                                          print(userId);
-                                        });
-
-                                        _localServices
-                                            .isLogin(isLogin)
-                                            .then((bool committed) {
-                                          print(isLogin);
-                                        });
-
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text("Login Gagal",
-                                                    style: TextStyle(
-                                                        color: Colors.green)),
-                                                content: Text(
-                                                    "No HP atau Kata Sandi Salah"),
-                                                actions: <Widget>[
-                                                  MaterialButton(
-                                                    elevation: 5.0,
-                                                    child: Text("OK",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.green)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  )
-                                                ],
-                                              );
-                                            });
-
-                                        setState(() => _isLoading = false);
-                                      }
-                                    });
-                                  }
+                                  login();
                                 },
                               ),
                             ),
