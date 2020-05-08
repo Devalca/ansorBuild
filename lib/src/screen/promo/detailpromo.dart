@@ -178,9 +178,10 @@ class _DetailPromosiState extends State<DetailPromosi> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             IconButton(
-                                icon: Icon(Icons.arrow_forward_ios,
-                                    color: Colors.grey),
-                                onPressed: () => _showToast(context),
+                              icon: Icon(Icons.arrow_forward_ios,
+                                  color: Colors.grey),
+                              onPressed: () => _showToast(context),
+                            )
                           ],
                         ),
                       ),
