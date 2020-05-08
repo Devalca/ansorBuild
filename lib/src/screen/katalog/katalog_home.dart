@@ -47,6 +47,12 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
     }
     _ctrlNamaBarang.addListener(() {
       namaBarang = _ctrlNamaBarang.text;
+      setState(() {
+        _productForDisplay = _product.where((katalog) {
+          var barTitle = katalog.namaProduk.toLowerCase();
+          return barTitle.contains(namaBarang.toString().toLowerCase());
+        }).toList();
+      });
     });
     super.initState();
   }
@@ -113,7 +119,8 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
             ),
             backgroundColor: Colors.white,
             leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios), onPressed: () {
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
                   _toLanding();
                 }),
             title: Text(
