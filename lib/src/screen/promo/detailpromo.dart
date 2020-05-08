@@ -180,13 +180,7 @@ class _DetailPromosiState extends State<DetailPromosi> {
                             IconButton(
                                 icon: Icon(Icons.arrow_forward_ios,
                                     color: Colors.grey),
-                                onPressed: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     new MaterialPageRoute(
-                                  //         builder: (__) =>
-                                  //             new Bpjs()));
-                                }),
+                                onPressed: () => _showToast(context),
                           ],
                         ),
                       ),
@@ -250,6 +244,17 @@ class _DetailPromosiState extends State<DetailPromosi> {
       body: Padding(
         padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
         child: body,
+      ),
+    );
+  }
+
+  void _showToast(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Berhasil diklaim'),
+        action: SnackBarAction(
+            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }
