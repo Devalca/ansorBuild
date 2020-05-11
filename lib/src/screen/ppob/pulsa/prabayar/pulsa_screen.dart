@@ -211,7 +211,7 @@ class _PulsaPageState extends State<PulsaPage> {
                       }
                       if (idProv == "") {
                         return Container(
-                          height: 350,
+                          height: 200,
                         );
                       } else if (idProv ==
                           _nominalForDisplay[i].operatorId.toString()) {
@@ -290,68 +290,71 @@ class _PulsaPageState extends State<PulsaPage> {
   }
 
   Widget _btnListView(List<Listharga> hargaList) {
-    return GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: hargaList == null ? 0 : hargaList.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          childAspectRatio: 2,
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          bool isSelected = _nominalIndex == index;
-          int a = hargaList[index].nominalPulsa;
-          int b = 1500;
-          var jmh = a + b;
-          return GestureDetector(
-            child: Container(
-              padding: EdgeInsets.all(12.0),
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                    color: isSelected
-                        ? Colors.green.withOpacity(0.8)
-                        : Colors.grey[700].withOpacity(0.5)),
-                color: Colors.white,
-              ),
-              child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      formatRupiah(hargaList[index].nominalPulsa)
-                          .replaceAll("Rp ", "")
-                          .toString(),
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: isSelected ? Colors.green : null),
-                    ),
-                    Text(
-                      formatRupiah(jmh).replaceAll("Rp ", "Rp"),
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+    return Container(
+        height: 200.0,
+        child: GridView.builder(
+            shrinkWrap: true,
+            // physics: NeverScrollableScrollPhysics(),
+            itemCount: hargaList == null ? 0 : hargaList.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 2,
             ),
-            onTap: () {
-              FocusScope.of(context).requestFocus(new FocusNode());
-              setState(() {
-                _nominalIndex = index;
-              });
-              if (_nominalIndex == index) {
-                inputNominal = hargaList[index].nominalPulsa.toString();
-                hargaNominal = formatRupiah(jmh).replaceAll("Rp ", "Rp");
-              }
-            },
-          );
-        });
+            itemBuilder: (BuildContext context, int index) {
+              bool isSelected = _nominalIndex == index;
+              int a = hargaList[index].nominalPulsa;
+              int b = 1500;
+              var jmh = a + b;
+              return GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.all(12.0),
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                        color: isSelected
+                            ? Colors.green.withOpacity(0.8)
+                            : Colors.grey[700].withOpacity(0.5)),
+                    color: Colors.white,
+                  ),
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          formatRupiah(hargaList[index].nominalPulsa)
+                              .replaceAll("Rp ", "")
+                              .toString(),
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: isSelected ? Colors.green : null),
+                        ),
+                        Text(
+                          formatRupiah(jmh).replaceAll("Rp ", "Rp"),
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  setState(() {
+                    _nominalIndex = index;
+                  });
+                  if (_nominalIndex == index) {
+                    inputNominal = hargaList[index].nominalPulsa.toString();
+                    hargaNominal = formatRupiah(jmh).replaceAll("Rp ", "Rp");
+                  }
+                },
+              );
+            }),
+    );
   }
 
   String validateNomor(String value) {
