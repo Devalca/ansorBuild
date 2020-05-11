@@ -60,7 +60,7 @@ class _DetailPagePdamState extends State<DetailPagePdam> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          elevation: 0.1,
+          elevation: 1,
           iconTheme: IconThemeData(
             color: Colors.black,
           ),
