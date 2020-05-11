@@ -93,6 +93,15 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
     });
   }
 
+      // if (_ctrlNamaBarang.text != null) {
+    //   setState(() {
+    //     _productForDisplay = _product.where((katalog) {
+    //       var barTitle = katalog.namaProduk.toLowerCase();
+    //       return barTitle.contains(namaBarang.toString().toLowerCase());
+    //     }).toList();
+    //   });
+    // }
+
   void dispose() {
     _ctrlNamaBarang.dispose();
     super.dispose();
@@ -100,14 +109,6 @@ class _KatalogHomePageState extends State<KatalogHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_ctrlNamaBarang.text != null) {
-      setState(() {
-        _productForDisplay = _product.where((katalog) {
-          var barTitle = katalog.namaProduk.toLowerCase();
-          return barTitle.contains(namaBarang.toString().toLowerCase());
-        }).toList();
-      });
-    }
     return WillPopScope(
       onWillPop: () => _toLanding(),
       child: Scaffold(
