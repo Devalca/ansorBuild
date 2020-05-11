@@ -48,17 +48,17 @@ class BerandaService {
     });
   }
 
-  Future<KatalogService> getKatalog() async {
-    var response = await http.get(
-      '$baseUrl/master-data/katalog-produk',
-      headers: {"accept": "application/json"},
-    );
-    if (response.statusCode == 200) {
-      return katalogServiceFromJson(response.body);
-    } else {
-      return null;
-    }
-  }
+  // Future<KatalogService> getKatalog() async {
+  //   var response = await http.get(
+  //     '$baseUrl/master-data/katalog-produk',
+  //     headers: {"accept": "application/json"},
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return katalogServiceFromJson(response.body);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   Future<List<BarangService>> fetchBarangService() async {
     List<BarangService> _goBarangServiceFeaturedList = [];

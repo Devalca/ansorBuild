@@ -1,4 +1,5 @@
 import 'package:ansor_build/src/model/branda_model.dart';
+import 'package:ansor_build/src/model/katalog_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/iklan_home.dart';
@@ -13,6 +14,7 @@ import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
 import 'package:ansor_build/src/service/beranda_service.dart';
+import 'package:ansor_build/src/service/katalog_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,6 +30,7 @@ class BerandaPage extends StatefulWidget {
 class _BerandaPageState extends State<BerandaPage> {
   WalletService _walletService = WalletService();
   BerandaService _berandaService = BerandaService();
+  KatalogService _katalogService = KatalogService();
   final cF = NumberFormat.currency(locale: 'ID');
 
   @override
@@ -117,7 +120,7 @@ class _BerandaPageState extends State<BerandaPage> {
                             Container(
                               child: Text('Produk National'),
                             ),
-                           Container(
+                            Container(
                               child: GestureDetector(
                                 onTap: () {
                                   _toKatalog();
@@ -407,8 +410,8 @@ class _BerandaPageState extends State<BerandaPage> {
         children: <Widget>[
           SizedBox(
             height: 200.0,
-            child: FutureBuilder<KatalogService>(
-                future: _berandaService.getKatalog(),
+            child: FutureBuilder<Katalog>(
+                future: _katalogService.getKatalog(),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
@@ -447,12 +450,18 @@ class _BerandaPageState extends State<BerandaPage> {
         itemBuilder: (context, index) {
           for (int i = 0; i < productService.length; i++) {
             if (productService.length != null) {
+              var detNama = productService[index].namaProduk;
+              var detDes = productService[index].deskripsiProduk;
+              var detPot1 = productService[index].photos[0].photo;
+              var detPot2 = productService[index].photos[1].photo;
+              List<String> allPot = [detPot1, detPot2];
               return InkWell(
                   onTap: () {
+                    // underDialog(context);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailKatalogPage()));
+                            builder: (context) => DetailKatalogPage(detNama, detDes, allPot)));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 10.0),
@@ -548,6 +557,6 @@ class _BerandaPageState extends State<BerandaPage> {
 
   _toKatalog() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => KatalogHomePage()));
+        context, MaterialPageRoute(builder: (context) => KatalogHomePage("")));
   }
 }

@@ -54,6 +54,7 @@ class DataKatalog {
 
 class Product {
     int produkId;
+    int priorityId;
     String namaProduk;
     int hargaProduk;
     String deskripsiProduk;
@@ -61,6 +62,7 @@ class Product {
 
     Product({
         this.produkId,
+        this.priorityId,
         this.namaProduk,
         this.hargaProduk,
         this.deskripsiProduk,
@@ -69,6 +71,7 @@ class Product {
 
     factory Product.fromJson(Map<String, dynamic> json) => Product(
         produkId: json["produkId"],
+        priorityId: json["priorityId"],
         namaProduk: json["nama_produk"],
         hargaProduk: json["harga_produk"],
         deskripsiProduk: json["deskripsi_produk"],
@@ -77,12 +80,14 @@ class Product {
 
     Map<String, dynamic> toJson() => {
         "produkId": produkId,
+        "priorityId": priorityId,
         "nama_produk": namaProduk,
         "harga_produk": hargaProduk,
         "deskripsi_produk": deskripsiProduk,
         "photos": List<dynamic>.from(photos.map((x) => x.toJson())),
     };
 }
+
 
 class Photo {
     String photo;

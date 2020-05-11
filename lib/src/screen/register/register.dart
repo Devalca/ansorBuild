@@ -1,11 +1,6 @@
-import 'package:ansor_build/src/model/user_model.dart';
 import 'package:ansor_build/src/routes/routes.dart';
-import 'package:ansor_build/src/screen/component/kontak.dart';
-import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/screen/login/login.dart';
-import 'package:ansor_build/src/screen/register/pin.dart';
+import 'package:ansor_build/src/screen/register/register_pin.dart';
 import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/regist_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';

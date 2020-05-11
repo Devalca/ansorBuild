@@ -1,12 +1,9 @@
 //Detail Pembayaran Prabayar
-import 'dart:convert';
 import 'package:ansor_build/src/model/pulsa_model.dart';
 import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
-import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/prabayar/pin_payload.dart';
+import 'package:ansor_build/src/screen/component/pin_payload.dart';
 import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -73,13 +70,13 @@ class _DetailPageState extends State<DetailPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Container(
-        child: FutureBuilder<Album>(
-          future: fetchAlbum(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Container(
-                child: Column(
+      body: FutureBuilder<Album>(
+        future: fetchAlbum(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Stack(
+              children: <Widget>[
+                Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
@@ -262,65 +259,72 @@ class _DetailPageState extends State<DetailPage> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: 90.0,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Divider(
-                          height: 12,
-                          color: Colors.grey,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: RaisedButton(
-                            color: Colors.green,
-                            onPressed: () {
-                              int transactionId = int.parse(widget.koId);
-                              String nomorHp =
-                                  snapshot.data.data[0].noHp.toString();
-                              int nominal = int.parse(
-                                  snapshot.data.data[0].nominal.toString());
-                              int idWallet = int.parse(_idWallet);
-                              var provider = widget.namaProv;
-                              _localService
-                                  .saveIdName(userUid)
-                                  .then((bool committed) {
-                                print("INI USERID :" + userUid);
-                                _localService
-                                    .savePayPulsa(transactionId, nomorHp,
-                                        nominal, idWallet, provider)
-                                    .then((bool committed) {
-                                      print("Berhasil");
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Stack(
+                        children: <Widget>[
+                          Divider(
+                            height: 12,
+                            color: Colors.grey,
+                          ),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(
+                                  minWidth: double.infinity),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                                child: RaisedButton(
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    int transactionId = int.parse(widget.koId);
+                                    String nomorHp =
+                                        snapshot.data.data[0].noHp.toString();
+                                    int nominal = int.parse(snapshot
+                                        .data.data[0].nominal
+                                        .toString());
+                                    int idWallet = int.parse(_idWallet);
+                                    var provider = widget.namaProv;
+                                    _localService
+                                        .saveIdName(userUid)
+                                        .then((bool committed) {
+                                      print("INI USERID :" + userUid);
+                                      _localService
+                                          .savePayPulsa(transactionId, nomorHp,
+                                              nominal, idWallet, provider)
+                                          .then((bool committed) {
+                                        print("Berhasil");
+                                      });
                                     });
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => PinPayLoad()));
-                            },
-                            child: Text(
-                              'BAYAR',
-                              style: TextStyle(color: Colors.white),
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PinPayloadPage("prabayar")));
+                                  },
+                                  child: Text(
+                                    'BAYAR',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              );
-            } else if (snapshot.hasError) {
-              return Container(
-                alignment: Alignment.center,
-                child:
-                    Center(child: Text("Transaksi Gagal Silahkan Coba lagi")),
-              );
-            }
-            return Container();
-          },
-        ),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Container(
+              alignment: Alignment.center,
+              child: Center(child: Text("Transaksi Gagal Silahkan Coba lagi")),
+            );
+          }
+          return Container();
+        },
       ),
     );
   }

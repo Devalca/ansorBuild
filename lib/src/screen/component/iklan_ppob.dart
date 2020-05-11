@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart'; // Harus Update Package
 import 'package:flutter/material.dart';
 
 final List<String> ppobIklan = [
@@ -54,15 +54,16 @@ class _IklanPpobState extends State<IklanPpob> {
     return Column(children: [
       CarouselSlider(
         items: child,
-        autoPlay: false,
-        viewportFraction: 0.9,
-        enlargeCenterPage: false,
-        aspectRatio: 3.0,
-        onPageChanged: (index) {
-          setState(() {
-            _current = index;
-          });
-        },
+        options: CarouselOptions(
+            autoPlay: false,
+            viewportFraction: 0.9,
+            enlargeCenterPage: false,
+            aspectRatio: 3.0,
+            onPageChanged: (index, reason) {
+              setState(() {
+                _current = index;
+              });
+            }),
       ),
       Container(
         padding: EdgeInsets.symmetric(horizontal: 26.0),
