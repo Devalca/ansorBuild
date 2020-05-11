@@ -188,268 +188,308 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
-    var _onPressed;
 
-    if (_nohpController.text.isNotEmpty &&
-        _passwordController.text.isNotEmpty) {
-      _onPressed = () async {
-        setState(() => _isLoading = true);
+    Widget middleSection = new Expanded(
+      child: new Container(
+          child: SingleChildScrollView(
+        padding: new EdgeInsets.only(
+            top: 12.0, left: 12.0, right: 12.0, bottom: bottom),
+        child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(height: 70),
+              Center(
+                child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 12.0),
+                    height: 120.0,
+                    width: 230.0,
+                    child: Image.asset('lib/src/assets/lapak_sahabat.png')),
+              ),
+              Container(height: 20),
+              Container(
+                  child: Text("No HP",
+                      style: new TextStyle(fontSize: 14.0),
+                      textAlign: TextAlign.start)),
+              TextField(
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(13),
+                ],
+                controller: _nohpController,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  hintText: 'Masukkan No HP',
+                  errorText:
+                      _fieldNohp == null || _fieldNohp ? null : "Wajib diisi",
+                ),
+                style: new TextStyle(fontSize: 14.0),
+                onChanged: (value) {
+                  bool isFieldValid = value.trim().isNotEmpty;
+                  if (isFieldValid != _fieldNohp) {
+                    setState(() => _fieldNohp = isFieldValid);
+                  }
+                },
+                onSubmitted: (value) {
+                  login();
+                },
+              ),
+              Container(height: 10),
+              Container(
+                  child: Text("Kata Sandi",
+                      style: new TextStyle(fontSize: 14.0),
+                      textAlign: TextAlign.start)),
+              TextField(
+                controller: _passwordController,
+                obscureText: _obscureText,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                        _obscureText ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () {
+                      _toggle();
+                    },
+                  ),
+                  hintText: 'Masukkan Kata Sandi',
+                  errorText: _fieldPassword == null || _fieldPassword
+                      ? null
+                      : "Wajib diisi",
+                ),
+                style: new TextStyle(fontSize: 14.0),
+                onChanged: (value) {
+                  bool isFieldValid = value.trim().isNotEmpty;
+                  if (isFieldValid != _fieldPassword) {
+                    setState(() => _fieldPassword = isFieldValid);
+                  }
+                },
+                onSubmitted: (value) {
+                  login();
+                },
+              ),
+              Container(height: 10),
+              Container(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 35,
+                  child: RaisedButton(
+                    child: Text('MASUK',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white)),
+                    color: Colors.green,
+                    onPressed: () {
+                      login();
+                    },
+                  ),
+                ),
+              ),
+              Container(height: 30),
+              Center(
+                  child: Column(children: <Widget>[
+                Container(
+                    child: Text("Lupa Password?",
+                        style: new TextStyle(
+                          fontSize: 14.0,
+                          color: Colors.green,
+                        ),
+                        textAlign: TextAlign.center)),
+                Container(height: 10),
+                Divider(
+                  height: 12,
+                  color: Colors.black54,
+                ),
+                Container(height: 10),
+                new GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (__) => new RegisterPage()));
+                  },
+                  child: Container(
+                      child: RichText(
+                    text: TextSpan(
+                        text: "Belum Punya Akun?",
+                        style:
+                            new TextStyle(fontSize: 14.0, color: Colors.black),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: " DAFTAR",
+                              style: TextStyle(
+                                  fontSize: 14.0, color: Colors.green)),
+                        ]),
+                  )),
+                )
+              ])),
+            ]),
+      )),
+    );
 
-        String no_hp = _nohpController.text.toString();
-        String password = _passwordController.text.toString();
+    Widget bottomBanner = new Column(children: <Widget>[
+      Center(
+          child: Text("version 1.0.8.9",
+              style: new TextStyle(
+                fontSize: 14.0,
+                color: Colors.green,
+              ),
+              textAlign: TextAlign.center)),
+      Container(height: 10),
+    ]);
 
-        print("no hp: " + no_hp + " password: " + password);
-
-        PostLogin login = PostLogin(no_hp: no_hp, password: password);
-
-        _loginServices.postLogin(login).then((response) async {
-          if (response.statusCode == 200) {
-            print("berhasil body: " + response.body);
-            print(response.statusCode);
-
-            Map data = jsonDecode(response.body);
-            walletId = data["walletId"].toString();
-            userId = data["userId"].toString();
-            isLogin = true;
-            print("walletId: " + walletId);
-            print("userId: " + userId);
-            print("isLogin: " + isLogin.toString());
-
-            _localServices.saveWalletId(walletId).then((bool committed) {
-              print(walletId);
-            });
-
-            _localServices.saveUserId(userId).then((bool committed) {
-              print(userId);
-            });
-
-            _localServices.isLogin(isLogin).then((bool committed) {
-              print(isLogin);
-            });
-
-            setState(() => _isLoading = true);
-
-            _toLanding();
-
-            // showDialog(
-            //     context: context,
-            //     builder: (context) {
-            //       return AlertDialog(
-            //         title: Text("Login Anda Berhasil",
-            //             style:
-            //                 TextStyle(color: Colors.green)),
-            //         content: Text(
-            //             "Anda Berhasil Login dengan nomor $no_hp"),
-            //         actions: <Widget>[
-            //           MaterialButton(
-            //             elevation: 5.0,
-            //             child: Text("OK",
-            //                 style: TextStyle(
-            //                     color: Colors.green)),
-            //             onPressed: () {
-            //               _toLanding();
-            //             },
-            //           )
-            //         ],
-            //       );
-            //     });
-
-            setState(() => _isLoading = false);
-          } else {
-            print("error: " + response.body);
-            print(response.statusCode);
-
-            Map data = jsonDecode(response.body);
-            message = data["message"].toString();
-
-            walletId = "0";
-            userId = "0";
-            isLogin = false;
-            print("walletId: " + walletId);
-            print("userId: " + userId);
-            print("isLogin: " + isLogin.toString());
-
-            _localServices.saveWalletId(walletId).then((bool committed) {
-              print(walletId);
-            });
-
-            _localServices.saveUserId(userId).then((bool committed) {
-              print(userId);
-            });
-
-            _localServices.isLogin(isLogin).then((bool committed) {
-              print(isLogin);
-            });
-
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text("Login Anda Gagal",
-                        style: TextStyle(color: Colors.green)),
-                    content: Text("No HP atau Password Anda Salah!!!"),
-                    actions: <Widget>[
-                      MaterialButton(
-                        elevation: 5.0,
-                        child:
-                            Text("OK", style: TextStyle(color: Colors.green)),
-                        onPressed: () {
-                          setState(() => _isLoading = false);
-                          Navigator.of(context).pop();
-                        },
-                      )
-                    ],
-                  );
-                });
-
-            setState(() => _isLoading = false);
-          }
-        });
-      };
-    }
+    Widget body = new Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        middleSection,
+        bottomBanner,
+      ],
+    );
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        resizeToAvoidBottomPadding: false,
-        body: SingleChildScrollView(
-          reverse: true,
-          child: Padding(
-              padding: EdgeInsets.only(
-                  top: 12.0, left: 12.0, right: 12.0, bottom: bottom),
-              child: _isLoading
-                  ? Center(heightFactor: 30, child: CircularProgressIndicator())
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                          Container(height: 70),
-                          Center(
-                            child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 12.0),
-                                height: 120.0,
-                                width: 230.0,
-                                child: Image.asset(
-                                    'lib/src/assets/lapak_sahabat.png')),
-                          ),
-                          Container(height: 20),
-                          Container(
-                              child: Text("No HP",
-                                  style: new TextStyle(fontSize: 14.0),
-                                  textAlign: TextAlign.start)),
-                          TextField(
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(13),
-                            ],
-                            controller: _nohpController,
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              hintText: 'Masukkan No HP',
-                              errorText: _fieldNohp == null || _fieldNohp
-                                  ? null
-                                  : "Wajib diisi",
-                            ),
-                            style: new TextStyle(fontSize: 14.0),
-                            onChanged: (value) {
-                              bool isFieldValid = value.trim().isNotEmpty;
-                              if (isFieldValid != _fieldNohp) {
-                                setState(() => _fieldNohp = isFieldValid);
-                              }
-                            },
-                            onSubmitted: (value) {
-                              login();
-                            },
-                          ),
-                          Container(height: 10),
-                          Container(
-                              child: Text("Kata Sandi",
-                                  style: new TextStyle(fontSize: 14.0),
-                                  textAlign: TextAlign.start)),
-                          TextField(
-                            controller: _passwordController,
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                icon: Icon(_obscureText
-                                    ? Icons.visibility_off
-                                    : Icons.visibility),
-                                onPressed: () {
-                                  _toggle();
-                                },
-                              ),
-                              hintText: 'Masukkan Kata Sandi',
-                              errorText:
-                                  _fieldPassword == null || _fieldPassword
-                                      ? null
-                                      : "Wajib diisi",
-                            ),
-                            style: new TextStyle(fontSize: 14.0),
-                            onChanged: (value) {
-                              bool isFieldValid = value.trim().isNotEmpty;
-                              if (isFieldValid != _fieldPassword) {
-                                setState(() => _fieldPassword = isFieldValid);
-                              }
-                            },
-                            onSubmitted: (value) {
-                              login();
-                            },
-                          ),
-                          Container(height: 10),
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            child: SizedBox(
-                              width: double.infinity,
-                              height: 35,
-                              child: RaisedButton(
-                                child: Text('MASUK',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.white)),
-                                color: Colors.green,
-                                onPressed: () {
-                                  login();
-                                },
-                              ),
-                            ),
-                          ),
-                          Container(height: 30),
-                          Center(
-                              child: Column(children: <Widget>[
-                            Container(
-                                child: Text("Lupa Password?",
-                                    style: new TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.green,
-                                    ),
-                                    textAlign: TextAlign.center)),
-                            Container(height: 10),
-                            Divider(
-                              height: 12,
-                              color: Colors.black54,
-                            ),
-                            Container(height: 10),
-                            new GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    new MaterialPageRoute(
-                                        builder: (__) => new RegisterPage()));
-                              },
-                              child: Container(
-                                  child: RichText(
-                                text: TextSpan(
-                                    text: "Belum Punya Akun?",
-                                    style: new TextStyle(
-                                        fontSize: 14.0, color: Colors.black),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                          text: " DAFTAR",
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Colors.green)),
-                                    ]),
-                              )),
-                            )
-                          ])),
-                        ])),
-        ));
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
+      body: Padding(
+        padding: new EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+        child: body,
+      ),
+      // body: SingleChildScrollView(
+      //   reverse: true,
+      //   child: Padding(
+      //       padding: EdgeInsets.only(
+      //           top: 12.0, left: 12.0, right: 12.0, bottom: bottom),
+      //       child: _isLoading
+      //           ? Center(heightFactor: 30, child: CircularProgressIndicator())
+      //           : Column(
+      //               crossAxisAlignment: CrossAxisAlignment.start,
+      //               children: <Widget>[
+      //                   Container(height: 70),
+      //                   Center(
+      //                     child: Container(
+      //                         margin: EdgeInsets.symmetric(horizontal: 12.0),
+      //                         height: 120.0,
+      //                         width: 230.0,
+      //                         child: Image.asset(
+      //                             'lib/src/assets/lapak_sahabat.png')),
+      //                   ),
+      //                   Container(height: 20),
+      //                   Container(
+      //                       child: Text("No HP",
+      //                           style: new TextStyle(fontSize: 14.0),
+      //                           textAlign: TextAlign.start)),
+      //                   TextField(
+      //                     inputFormatters: [
+      //                       LengthLimitingTextInputFormatter(13),
+      //                     ],
+      //                     controller: _nohpController,
+      //                     keyboardType: TextInputType.phone,
+      //                     decoration: InputDecoration(
+      //                       hintText: 'Masukkan No HP',
+      //                       errorText: _fieldNohp == null || _fieldNohp
+      //                           ? null
+      //                           : "Wajib diisi",
+      //                     ),
+      //                     style: new TextStyle(fontSize: 14.0),
+      //                     onChanged: (value) {
+      //                       bool isFieldValid = value.trim().isNotEmpty;
+      //                       if (isFieldValid != _fieldNohp) {
+      //                         setState(() => _fieldNohp = isFieldValid);
+      //                       }
+      //                     },
+      //                     onSubmitted: (value) {
+      //                       login();
+      //                     },
+      //                   ),
+      //                   Container(height: 10),
+      //                   Container(
+      //                       child: Text("Kata Sandi",
+      //                           style: new TextStyle(fontSize: 14.0),
+      //                           textAlign: TextAlign.start)),
+      //                   TextField(
+      //                     controller: _passwordController,
+      //                     obscureText: _obscureText,
+      //                     decoration: InputDecoration(
+      //                       suffixIcon: IconButton(
+      //                         icon: Icon(_obscureText
+      //                             ? Icons.visibility_off
+      //                             : Icons.visibility),
+      //                         onPressed: () {
+      //                           _toggle();
+      //                         },
+      //                       ),
+      //                       hintText: 'Masukkan Kata Sandi',
+      //                       errorText:
+      //                           _fieldPassword == null || _fieldPassword
+      //                               ? null
+      //                               : "Wajib diisi",
+      //                     ),
+      //                     style: new TextStyle(fontSize: 14.0),
+      //                     onChanged: (value) {
+      //                       bool isFieldValid = value.trim().isNotEmpty;
+      //                       if (isFieldValid != _fieldPassword) {
+      //                         setState(() => _fieldPassword = isFieldValid);
+      //                       }
+      //                     },
+      //                     onSubmitted: (value) {
+      //                       login();
+      //                     },
+      //                   ),
+      //                   Container(height: 10),
+      //                   Container(
+      //                     alignment: Alignment.bottomCenter,
+      //                     child: SizedBox(
+      //                       width: double.infinity,
+      //                       height: 35,
+      //                       child: RaisedButton(
+      //                         child: Text('MASUK',
+      //                             textAlign: TextAlign.center,
+      //                             style: TextStyle(color: Colors.white)),
+      //                         color: Colors.green,
+      //                         onPressed: () {
+      //                           login();
+      //                         },
+      //                       ),
+      //                     ),
+      //                   ),
+      //                   Container(height: 30),
+      //                   Center(
+      //                       child: Column(children: <Widget>[
+      //                     Container(
+      //                         child: Text("Lupa Password?",
+      //                             style: new TextStyle(
+      //                               fontSize: 14.0,
+      //                               color: Colors.green,
+      //                             ),
+      //                             textAlign: TextAlign.center)),
+      //                     Container(height: 10),
+      //                     Divider(
+      //                       height: 12,
+      //                       color: Colors.black54,
+      //                     ),
+      //                     Container(height: 10),
+      //                     new GestureDetector(
+      //                       onTap: () {
+      //                         Navigator.push(
+      //                             context,
+      //                             new MaterialPageRoute(
+      //                                 builder: (__) => new RegisterPage()));
+      //                       },
+      //                       child: Container(
+      //                           child: RichText(
+      //                         text: TextSpan(
+      //                             text: "Belum Punya Akun?",
+      //                             style: new TextStyle(
+      //                                 fontSize: 14.0, color: Colors.black),
+      //                             children: <TextSpan>[
+      //                               TextSpan(
+      //                                   text: " DAFTAR",
+      //                                   style: TextStyle(
+      //                                       fontSize: 14.0,
+      //                                       color: Colors.green)),
+      //                             ]),
+      //                       )),
+      //                     )
+      //                   ])),
+      //                 ])),
+      // )
+    );
   }
 
   _toLanding() {
