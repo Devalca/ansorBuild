@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
-import 'package:ansor_build/src/screen/register/register.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,7 +43,7 @@ class _LandingPageState extends State<LandingPage> {
       onWillPop: _closeDialog,
       child: Scaffold(
           body: _container[_bottomNavCurrentIndex],
-          floatingActionButtonLocation:
+           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Container(
             height: 80.0,
@@ -164,7 +161,7 @@ class _LandingPageState extends State<LandingPage> {
             height: 25,
             width: 25,
           ),
-          title: Text('Transfer', style: TextStyle(color: Colors.black)),
+          title: Text('Promo', style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.close),
@@ -184,7 +181,7 @@ class _LandingPageState extends State<LandingPage> {
             height: 25,
             width: 25,
           ),
-          title: Text('Histori', style: TextStyle(color: Colors.black)),
+          title: Text('Pesan', style: TextStyle(color: Colors.black)),
         ),
         BottomNavigationBarItem(
           activeIcon: Image.asset(

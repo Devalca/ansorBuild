@@ -8,8 +8,6 @@ import 'package:ansor_build/src/service/pdam_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'detail_screen.dart';
-
 class PdamPage extends StatefulWidget {
   final String namaKotaKab;
   PdamPage(this.namaKotaKab);

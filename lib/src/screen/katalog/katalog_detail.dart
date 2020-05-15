@@ -5,6 +5,12 @@ import 'package:ansor_build/src/service/katalog_service.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+// final List<String> _produkImage = [
+//   'lib/src/assets/BANNER_PULSA.jpg',
+//   'lib/src/assets/BANNER_PULSA.jpg',
+//   'lib/src/assets/BANNER_PULSA.jpg'
+// ];
+
 class DetailKatalogPage extends StatefulWidget {
   final String detNama;
   final String detDes;
@@ -16,14 +22,11 @@ class DetailKatalogPage extends StatefulWidget {
 }
 
 class _DetailKatalogPageState extends State<DetailKatalogPage> {
-  String _name;
   int _current = 0;
-  bool _isSaerch = false;
   KatalogService _katalogService = KatalogService();
   List<DataKatalog> _dataKatalog = List<DataKatalog>();
   List<DataKatalog> _dataKatalogsForDisplay = List<DataKatalog>();
   List<Product> _product = List<Product>();
-  List<Product> _productForDisplay = List<Product>();
 
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -42,7 +45,6 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
         for (int i = 0; i < _dataKatalogsForDisplay.length; i++) {
           setState(() {
             _product.addAll(_dataKatalogsForDisplay[i].products);
-            _productForDisplay = _product;
           });
         }
       });
@@ -75,8 +77,6 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
         body: SingleChildScrollView(
             child: Stack(
           children: <Widget>[
-            _buildDesKatalog(),
-            _buildTitleKatalog(),
             _buildImageKatalog(),
           ],
         )));
@@ -116,8 +116,8 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
         ),
         InkWell(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: 
-            (_) => KatalogSearchPage()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => KatalogSearchPage()));
           },
           child: Container(
             height: 50.0,
@@ -178,58 +178,62 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
             );
           }).toList(),
         ),
-        Divider(
-          thickness: 2.0,
-          height: 0.1,
-        ),
+        _buildTitleKatalog()
       ]),
     );
   }
 
   Widget _buildTitleKatalog() {
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(top: 330.0, left: 16.0, right: 16.0),
-          child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                widget.detNama,
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-              )),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDesKatalog() {
     return Container(
-      padding: EdgeInsets.only(top: 380.0, left: 16.0, right: 16.0),
+      padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Divider(
+            thickness: 2.0,
+            height: 0.1,
+          ),
           Container(
-            padding: EdgeInsets.only(bottom: 5.0),
+            padding: EdgeInsets.symmetric(vertical: 26.0),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "widget.detNama",
+                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                )),
+          ),
+          Container(
             child: Divider(
               thickness: 2.0,
               height: 0.2,
             ),
           ),
+          _buildDesKatalog(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDesKatalog() {
+    return Container(
+      padding: EdgeInsets.only(top: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
           Text(
             "Deskripsi Produk",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 12.0),
-            child: Text(widget.detNama),
+            padding: EdgeInsets.only(top: 12.0),
+            child: Text("widget.detNama"),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 12.0),
-            child: Text(widget.detDes),
+            padding: EdgeInsets.only(top: 12.0),
+            child: Text("widget.detDes"),
           ),
           Container(
-              padding: EdgeInsets.symmetric(vertical: 12.0),
-              child: Text(widget.detDes)),
+              padding: EdgeInsets.only(top: 12.0),
+              child: Text("widget.detDes")),
         ],
       ),
     );
