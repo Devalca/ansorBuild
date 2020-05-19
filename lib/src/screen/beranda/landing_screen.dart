@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
-import 'package:ansor_build/src/screen/register/register.dart';
+import 'package:ansor_build/src/screen/transfer/transfer.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
   int _bottomNavCurrentIndex = 0;
   List<Widget> _container = [
     BerandaPage(),
-    BerandaPage(),
+    Transfer(),
     BerandaPage(),
     BerandaPage(),
     BerandaPage(),
