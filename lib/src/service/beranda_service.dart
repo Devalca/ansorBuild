@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/model/branda_model.dart';
-import 'package:http/http.dart' as http;
 
 class BerandaService {
   // String baseUrl = "http://192.168.10.11:3000";

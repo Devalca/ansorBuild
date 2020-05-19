@@ -246,15 +246,20 @@ class ExpandableContainer extends StatelessWidget {
               ),
             ),
             Container(
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    child: Center(
-                      child: _boxDot(),
+              height: 35.0,
+              child: Expanded(
+                child: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Center(
+                        child: _boxDot(),
+                      ),
                     ),
-                  ),
-                  Text('Masukan 12345+ Nomor ponsel kamu : 12345 08xx-xxx-xxx')
-                ],
+                    Flexible(
+                        child: Text(
+                            'Masukan 12345+ Nomor ponsel kamu : 12345 08xx-xxx-xxx'))
+                  ],
+                ),
               ),
             ),
             Container(

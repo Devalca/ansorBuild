@@ -6,6 +6,7 @@ import 'package:ansor_build/src/screen/component/iklan_home.dart';
 import 'package:ansor_build/src/screen/component/iklan_kecil.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/component/saldo_appbar.dart';
+import 'package:ansor_build/src/screen/histori/histori_main.dart';
 import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
 import 'package:ansor_build/src/screen/katalog/katalog_home.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/bpjs_main.dart';
@@ -49,7 +50,10 @@ class _BerandaPageState extends State<BerandaPage> {
             color: Colors.white,
             child: Column(
               children: <Widget>[
-                _buildSaldoForm(),
+                _buildEmoneyMenu(),
+                Container(
+                  child: Divider(),
+                ),
                 _buildIklanOne(),
                 Container(
                   child: Column(
@@ -149,116 +153,6 @@ class _BerandaPageState extends State<BerandaPage> {
 
   // KUMPULAN WIDGET UNTUK HOME PAGE
 
-  Widget _buildSaldoForm() {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        children: <Widget>[
-          Container(
-              padding: const EdgeInsets.only(left: 16),
-              child: Row(
-                children: <Widget>[
-                  Icon(Icons.account_balance_wallet, color: Colors.green),
-                  Container(
-                    padding: EdgeInsets.only(left: 5.0),
-                    child: Text("Saldo"),
-                  )
-                ],
-              )),
-          Container(
-            padding: const EdgeInsets.only(left: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  child: FutureBuilder<Wallet>(
-                    future: _walletService.getSaldo(),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                          return Center(
-                            child: Text("Koneksi Terputus"),
-                          );
-                        case ConnectionState.waiting:
-                          return centerLoading();
-                        default:
-                          if (snapshot.hasData) {
-                            return Center(
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Text(
-                                            formatRupiah(snapshot
-                                                    .data.data[0].saldoAkhir)
-                                                .replaceAll("Rp ", "Rp"),
-                                            style: TextStyle(fontSize: 24.0)),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            // return Text('MOHON TUNGGU...');
-                            return Text('Result: ${snapshot.error}');
-                          }
-                      }
-                    },
-                  ),
-                ),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          IconButton(
-                              icon: Icon(
-                                Icons.refresh,
-                                color: Colors.green,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _walletService.getSaldo();
-                                });
-                              }),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TopupPage()));
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    border: Border.all(
-                                        width: 1.0, color: Colors.green),
-                                    borderRadius: BorderRadius.circular(5.0)),
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  'ISI SALDO',
-                                  style: TextStyle(
-                                      fontSize: 10.0, color: Colors.white),
-                                )),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Divider()
-        ],
-      ),
-    );
-  }
-
   Widget _buildIklanOne() {
     return InkWell(
       child: Container(
@@ -271,6 +165,178 @@ class _BerandaPageState extends State<BerandaPage> {
     return InkWell(
       child: Container(
         child: IklanKecil(),
+      ),
+    );
+  }
+
+  Widget _buildEmoneyMenu() {
+    return Container(
+      height: 120.0,
+      margin: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            height: 120.0,
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              child: Container(
+                margin: EdgeInsets.only(top: 45),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    InkWell(
+                      onTap: _toTopup,
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.add_circle_outline,
+                              size: 35.0,
+                              color: Colors.green,
+                            ),
+                            Text("Top Up")
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => underDialog(context),
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.sentiment_very_dissatisfied,
+                              size: 35.0,
+                              color: Colors.green,
+                            ),
+                            Text("Transfer")
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: _toHistori,
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.history,
+                              size: 35.0,
+                              color: Colors.green,
+                            ),
+                            Text("History")
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => underDialog(context),
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.code,
+                              size: 35.0,
+                              color: Colors.green,
+                            ),
+                            Text("MyQR")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Container(
+            height: 40.0,
+            child: Card(
+              color: Colors.green,
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Container(
+                    padding: EdgeInsets.only(left: 5.0),
+                    child: Container(
+                        child: Row(
+                      children: <Widget>[
+                        Icon(Icons.account_balance_wallet, color: Colors.white),
+                        Container(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Text(
+                            "Saldo",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      ],
+                    )),
+                  )),
+                  Container(
+                    height: 25,
+                    child: VerticalDivider(
+                      width: 10,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: FutureBuilder<Wallet>(
+                            future: _walletService.getSaldo(),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return Center(
+                                    child: Text("Koneksi Terputus"),
+                                  );
+                                case ConnectionState.waiting:
+                                  return Text(
+                                    "Mohon Tunggu...",
+                                    style: TextStyle(color: Colors.white),
+                                  );
+                                default:
+                                  if (snapshot.hasData) {
+                                    return Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                          formatRupiah(snapshot
+                                                  .data.data[0].saldoAkhir)
+                                              .replaceAll("Rp ", "Rp"),
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                    );
+                                  } else {
+                                    // return Text('MOHON TUNGGU...');
+                                    return Text('Result: ${snapshot.error}');
+                                  }
+                              }
+                            },
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 3.0),
+                          child: Icon(Icons.arrow_forward_ios,
+                              size: 15.0, color: Colors.white),
+                        ),
+                      ],
+                    )),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -461,7 +527,8 @@ class _BerandaPageState extends State<BerandaPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailKatalogPage(detNama, detDes, allPot)));
+                            builder: (context) =>
+                                DetailKatalogPage(detNama, detDes, allPot)));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 10.0),
@@ -555,8 +622,128 @@ class _BerandaPageState extends State<BerandaPage> {
     );
   }
 
+  // Widget _buildSaldoForm() {
+  //   return Container(
+  //     color: Colors.white,
+  //     child: Column(
+  //       children: <Widget>[
+  //         Container(
+  //             padding: const EdgeInsets.only(left: 16),
+  //             child: Row(
+  //               children: <Widget>[
+  //                 Icon(Icons.account_balance_wallet, color: Colors.green),
+  //                 Container(
+  //                   padding: EdgeInsets.only(left: 5.0),
+  //                   child: Text("Saldo"),
+  //                 )
+  //               ],
+  //             )),
+  //         Container(
+  //           padding: const EdgeInsets.only(left: 16),
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: <Widget>[
+  //               Container(
+  //                 child: FutureBuilder<Wallet>(
+  //                   future: _walletService.getSaldo(),
+  //                   builder: (context, snapshot) {
+  //                     switch (snapshot.connectionState) {
+  //                       case ConnectionState.none:
+  //                         return Center(
+  //                           child: Text("Koneksi Terputus"),
+  //                         );
+  //                       case ConnectionState.waiting:
+  //                         return centerLoading();
+  //                       default:
+  //                         if (snapshot.hasData) {
+  //                           return Center(
+  //                             child: Column(
+  //                               children: <Widget>[
+  //                                 Container(
+  //                                   child: Row(
+  //                                     children: <Widget>[
+  //                                       Text(
+  //                                           formatRupiah(snapshot
+  //                                                   .data.data[0].saldoAkhir)
+  //                                               .replaceAll("Rp ", "Rp"),
+  //                                           style: TextStyle(fontSize: 24.0)),
+  //                                     ],
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             ),
+  //                           );
+  //                         } else {
+  //                           // return Text('MOHON TUNGGU...');
+  //                           return Text('Result: ${snapshot.error}');
+  //                         }
+  //                     }
+  //                   },
+  //                 ),
+  //               ),
+  //               Container(
+  //                 child: Column(
+  //                   children: <Widget>[
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.end,
+  //                       crossAxisAlignment: CrossAxisAlignment.end,
+  //                       children: <Widget>[
+  //                         IconButton(
+  //                             icon: Icon(
+  //                               Icons.refresh,
+  //                               color: Colors.green,
+  //                             ),
+  //                             onPressed: () {
+  //                               setState(() {
+  //                                 _walletService.getSaldo();
+  //                               });
+  //                             }),
+  //                         FlatButton(
+  //                           onPressed: () {
+  //                             Navigator.push(
+  //                                 context,
+  //                                 MaterialPageRoute(
+  //                                     builder: (context) => TopupPage()));
+  //                           },
+  //                           child: Container(
+  //                               decoration: BoxDecoration(
+  //                                   color: Colors.green,
+  //                                   border: Border.all(
+  //                                       width: 1.0, color: Colors.green),
+  //                                   borderRadius: BorderRadius.circular(5.0)),
+  //                               padding: EdgeInsets.all(8.0),
+  //                               child: Text(
+  //                                 'ISI SALDO',
+  //                                 style: TextStyle(
+  //                                     fontSize: 10.0, color: Colors.white),
+  //                               )),
+  //                         )
+  //                       ],
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         Divider()
+  //       ],
+  //     ),
+  //   );
+  // }
+
   _toKatalog() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => KatalogHomePage("")));
+  }
+
+  _toTopup() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => TopupPage()));
+  }
+
+  _toHistori() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HistoriMainPage()));
   }
 }
