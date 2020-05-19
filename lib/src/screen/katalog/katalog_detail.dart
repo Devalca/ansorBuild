@@ -197,7 +197,7 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "widget.detNama",
+                  widget.detNama,
                   style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                 )),
           ),
@@ -225,15 +225,15 @@ class _DetailKatalogPageState extends State<DetailKatalogPage> {
           ),
           Container(
             padding: EdgeInsets.only(top: 12.0),
-            child: Text("widget.detNama"),
+            child: Text(widget.detNama),
           ),
           Container(
             padding: EdgeInsets.only(top: 12.0),
-            child: Text("widget.detDes"),
+            child: Text(widget.detDes),
           ),
           Container(
               padding: EdgeInsets.only(top: 12.0),
-              child: Text("widget.detDes")),
+              child: Text(widget.detDes)),
         ],
       ),
     );

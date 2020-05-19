@@ -175,145 +175,167 @@ class _BerandaPageState extends State<BerandaPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Stack(
         children: <Widget>[
-          Expanded(
-            child: Container(
-              height: 120.0,
-              child: Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(top: 45),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      InkWell(
-                        onTap: _toTopup,
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.add_circle_outline,
-                                size: 35.0,
-                                color: Colors.green,
-                              ),
-                              Text("Top Up")
-                            ],
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => underDialog(context),
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.sentiment_very_dissatisfied,
-                                size: 35.0,
-                                color: Colors.green,
-                              ),
-                              Text("Transfer")
-                            ],
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: _toHistori,
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.history,
-                                size: 35.0,
-                                color: Colors.green,
-                              ),
-                              Text("History")
-                            ],
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () => underDialog(context),
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Icon(
-                                Icons.code,
-                                size: 35.0,
-                                color: Colors.green,
-                              ),
-                              Text("MyQR")
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+          Container(
+            height: 120.0,
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
               ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: 40.0,
-              child: Card(
-                color: Colors.green,
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
+              child: Container(
+                margin: EdgeInsets.only(top: 45),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Expanded(
-                        child: Container(
-                      padding: EdgeInsets.only(left: 5.0),
+                    InkWell(
+                      onTap: _toTopup,
                       child: Container(
-                          child: Row(
-                        children: <Widget>[
-                          Icon(Icons.account_balance_wallet,
-                              color: Colors.white),
-                          Container(
-                            padding: EdgeInsets.only(left: 5.0),
-                            child: Text(
-                              "Saldo",
-                              style: TextStyle(color: Colors.white),
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.add_circle_outline,
+                              size: 35.0,
+                              color: Colors.green,
                             ),
-                          )
-                        ],
-                      )),
-                    )),
-                    Container(
-                      height: 25,
-                      child: VerticalDivider(
-                        width: 10,
-                        color: Colors.white,
+                            Text("Top Up")
+                          ],
+                        ),
                       ),
                     ),
-                    Expanded(
+                    InkWell(
+                      onTap: () => underDialog(context),
                       child: Container(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              "Rp.0.000.000.000",
-                              style: TextStyle(color: Colors.white),
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.sentiment_very_dissatisfied,
+                              size: 35.0,
+                              color: Colors.green,
                             ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(right: 3.0),
-                            child: Icon(Icons.arrow_forward_ios,
-                                size: 15.0, color: Colors.white),
-                          ),
-                        ],
-                      )),
-                    )
+                            Text("Transfer")
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: _toHistori,
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.history,
+                              size: 35.0,
+                              color: Colors.green,
+                            ),
+                            Text("History")
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () => underDialog(context),
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              Icons.code,
+                              size: 35.0,
+                              color: Colors.green,
+                            ),
+                            Text("MyQR")
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-          )
+          ),
+          Container(
+            height: 40.0,
+            child: Card(
+              color: Colors.green,
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: Container(
+                    padding: EdgeInsets.only(left: 5.0),
+                    child: Container(
+                        child: Row(
+                      children: <Widget>[
+                        Icon(Icons.account_balance_wallet, color: Colors.white),
+                        Container(
+                          padding: EdgeInsets.only(left: 5.0),
+                          child: Text(
+                            "Saldo",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      ],
+                    )),
+                  )),
+                  Container(
+                    height: 25,
+                    child: VerticalDivider(
+                      width: 10,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                        child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: FutureBuilder<Wallet>(
+                            future: _walletService.getSaldo(),
+                            builder: (context, snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return Center(
+                                    child: Text("Koneksi Terputus"),
+                                  );
+                                case ConnectionState.waiting:
+                                  return Text(
+                                    "Mohon Tunggu...",
+                                    style: TextStyle(color: Colors.white),
+                                  );
+                                default:
+                                  if (snapshot.hasData) {
+                                    return Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                          formatRupiah(snapshot
+                                                  .data.data[0].saldoAkhir)
+                                              .replaceAll("Rp ", "Rp"),
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                    );
+                                  } else {
+                                    // return Text('MOHON TUNGGU...');
+                                    return Text('Result: ${snapshot.error}');
+                                  }
+                              }
+                            },
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 3.0),
+                          child: Icon(Icons.arrow_forward_ios,
+                              size: 15.0, color: Colors.white),
+                        ),
+                      ],
+                    )),
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
