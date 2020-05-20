@@ -3,15 +3,18 @@ import 'dart:convert';
 import 'package:ansor_build/src/model/bpjs_model.dart';
 import 'package:ansor_build/src/model/login_model.dart';
 import 'package:ansor_build/src/model/pln_model.dart';
+import 'package:ansor_build/src/model/transfer_model.dart';
 import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/bpjs/pembayaran_gagal.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_berhasil.dart';
 import 'package:ansor_build/src/screen/ppob/pln/pembayaran_gagal.dart';
+import 'package:ansor_build/src/screen/transfer/transferBerhasil.dart';
 import 'package:ansor_build/src/service/bpjs_services.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/login_services.dart';
 import 'package:ansor_build/src/service/pln_services.dart';
+import 'package:ansor_build/src/service/transfer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,6 +55,7 @@ class _PinState extends State<Pin> {
   LocalService _localServices = LocalService();
   BpjsServices _bpjsServices = BpjsServices();
   PlnServices _plnServices = PlnServices();
+  TransferServices _transferServices = TransferServices();
   @override
   Widget build(BuildContext context) {
     final bottom = MediaQuery.of(context).viewInsets.bottom;
@@ -601,6 +605,77 @@ class _PinState extends State<Pin> {
                                       }
                                     });
                                   }
+                                } else if (widget.statusbyr ==
+                                    "transferSesama") {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  String walletId = prefs.getString("walletId");
+                                  String userId = prefs.getString("userId");
+
+                                  print("userId " + userId);
+                                  print("walletId " + walletId);
+
+                                  PutTransaksi transaksi = PutTransaksi(
+                                      userId: userId,
+                                      walletId: walletId,
+                                      pin: int.parse(pin));
+
+                                  _transferServices
+                                      .putTransaksi(transaksi)
+                                      .then((response) async {
+                                    if (response.statusCode == 302) {
+                                      print("berhasil body: " + response.body);
+                                      print(response.statusCode);
+
+                                      url = response.headers['location'];
+                                      print("url: " + url);
+
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (__) =>
+                                                  new TransferBerhasil(url: url)));
+                                      setState(() => _isLoading = false);
+                                    } else if (response.statusCode == 422) {
+                                      setState(() => _isLoading = true);
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text("Pin Gagal",
+                                                  style: TextStyle(
+                                                      color: Colors.green)),
+                                              content: Text(
+                                                  "Konfirmasi pin Anda salah"),
+                                              actions: <Widget>[
+                                                MaterialButton(
+                                                  elevation: 5.0,
+                                                  child: Text("OK",
+                                                      style: TextStyle(
+                                                          color: Colors.green)),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+
+                                      setState(() => _isLoading = false);
+                                    } else {
+                                      print("error: " + response.body);
+                                      print(response.statusCode);
+
+                                      Navigator.push(
+                                          context,
+                                          new MaterialPageRoute(
+                                              builder: (__) =>
+                                                  new PembayaranGagalBpjs(
+                                                      jenis: "kesehatan",
+                                                      index: 0)));
+                                      setState(() => _isLoading = false);
+                                    }
+                                  });
                                 }
                               },
                             ),

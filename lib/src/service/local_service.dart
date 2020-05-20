@@ -24,8 +24,8 @@ class LocalService {
 
   Future<List<String>> _getList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getStringList("imageList");
-}
+    return prefs.getStringList("imageList");
+  }
 
   // LOCAL PayLoad Pulsa
   Future<bool> savePayPulsa(int payTrans, String payNomor, int payNominal,
@@ -153,5 +153,18 @@ class LocalService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = prefs.getString("url");
     return url;
+  }
+
+  // Transfer
+  Future<bool> saveTransferId(String id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("transferId", id);
+    return prefs.commit();
+  }
+
+  Future<String> getTransferId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String id = prefs.getString("transferId");
+    return id;
   }
 }

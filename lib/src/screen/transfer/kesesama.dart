@@ -1,11 +1,21 @@
+import 'dart:convert';
+
+import 'package:ansor_build/src/model/transfer_model.dart';
+import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/transfer/detailTransfer.dart';
 import 'package:ansor_build/src/screen/transfer/transfer.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pln_services.dart';
+import 'package:ansor_build/src/service/transfer_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ansor_build/src/service/permissions_service.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Kesesama extends StatefulWidget {
   @override
@@ -14,12 +24,91 @@ class Kesesama extends StatefulWidget {
 
 class _KesesamaState extends State<Kesesama> {
   bool error = true;
-  String errorText = "";
+  int saldo = 0;
+  String errorTextphone = "";
+  String errorTextnominal = "";
+  String url = "";
   TextEditingController _noPonselController = TextEditingController();
   TextEditingController _nominalController = TextEditingController();
 
+  WalletService _walletService = WalletService();
+  TransferServices _transferServices = TransferServices();
+  LocalService _localServices = LocalService();
+
   @override
   Widget build(BuildContext context) {
+    kes() async {
+      if (_noPonselController.text.isEmpty) {
+        setState(() => {error = false, errorTextphone = "Wajib diisi"});
+      } else if (_nominalController.text.isEmpty) {
+        setState(() => {error = false, errorTextnominal = "Wajib diisi"});
+      } else {
+        String no_penerima = _noPonselController.text;
+        int nominal_trf = int.parse(_nominalController.text);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String walletId = prefs.getString("walletId");
+        String userId = prefs.getString("userId");
+
+        print("walletId: " + walletId);
+        print("userId: " + userId);
+        print("no_penerima: " + no_penerima.toString());
+        print("nominal_trf: " + nominal_trf.toString());
+
+        PostSesama sesama = PostSesama(
+            no_penerima: no_penerima,
+            nominal_trf: nominal_trf,
+            userId: userId,
+            walletId: walletId);
+
+        _transferServices.postSesama(sesama).then((response) async {
+          if (response.statusCode == 302) {
+            print("berhasil body: " + response.body);
+            print(response.statusCode);
+
+            url = response.headers['location'];
+            print("url: " + url);
+
+            id = url.substring(17);
+            print("id: " + id);
+
+            _localServices.saveTransferId(id).then((bool committed) {
+              print(id);
+            });
+
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (__) => new DetailTransfer(url: url)));
+          } else {
+            print("error: " + response.body);
+            print(response.statusCode);
+
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Tranfer Gagal",
+                        style: TextStyle(color: Colors.green)),
+                    // content: Text(
+                    //     "Anda Belum melakukan aktivasi. Lakukan verifikasi email"),
+                    actions: <Widget>[
+                      MaterialButton(
+                        elevation: 5.0,
+                        child:
+                            Text("OK", style: TextStyle(color: Colors.green)),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  );
+                });
+          }
+        });
+      }
+    }
+
     Widget middleSection = Expanded(
       child: new Container(
           color: Colors.white,
@@ -41,7 +130,7 @@ class _KesesamaState extends State<Kesesama> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Contoh: 123456789',
-                    errorText: error ? null : errorText,
+                    errorText: error ? null : errorTextphone,
                     suffixIcon: IconButton(
                       icon: Icon(Icons.contact_phone),
                       onPressed: () async {
@@ -56,7 +145,11 @@ class _KesesamaState extends State<Kesesama> {
                           );
                           setState(() {
                             if (nomor != null) {
-                              _noPonselController.text = nomor;
+                              _noPonselController.text = nomor
+                                  .toString()
+                                  .replaceAll("+62", "0")
+                                  .replaceAll("-", "")
+                                  .replaceAll(" ", "");
                             }
                           });
                         } else {
@@ -71,14 +164,14 @@ class _KesesamaState extends State<Kesesama> {
                   style: new TextStyle(fontSize: 14.0),
                   onChanged: (value) {
                     if (value.length == 0) {
-                      return setState(
-                          () => {error = false, errorText = "Wajib diisi"});
+                      return setState(() =>
+                          {error = false, errorTextphone = "Wajib diisi"});
                     } else {
                       return setState(() => error = true);
                     }
                   },
                   onSubmitted: (value) {
-                    // ket();
+                    kes();
                   },
                 ),
                 Container(height: 10),
@@ -118,26 +211,22 @@ class _KesesamaState extends State<Kesesama> {
                                 ],
                               ),
                             ),
-                            // Container(
-                            //     child: FutureBuilder<Wallet>(
-                            //   future: _walletService.getSaldo(),
-                            //   builder: (context, snapshot) {
-                            //     if (snapshot.hasData) {
-                            //       saldo = snapshot
-                            //           .data.data[0].saldoAkhir;
-                            //       return Text(NumberFormat
-                            //               .simpleCurrency(
-                            //                   locale: 'id',
-                            //                   decimalDigits: 0)
-                            //           .format(snapshot.data
-                            //               .data[0].saldoAkhir));
-                            //     } else if (snapshot.hasError) {
-                            //       return Text(
-                            //           "${snapshot.error}");
-                            //     }
-                            //     return CircularProgressIndicator();
-                            //   },
-                            // )),
+                            Container(
+                                child: FutureBuilder<Wallet>(
+                              future: _walletService.getSaldo(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  saldo = snapshot.data.data[0].saldoAkhir;
+                                  return Text(NumberFormat.simpleCurrency(
+                                          locale: 'id', decimalDigits: 0)
+                                      .format(
+                                          snapshot.data.data[0].saldoAkhir));
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            )),
                           ],
                         ),
                       ),
@@ -173,19 +262,21 @@ class _KesesamaState extends State<Kesesama> {
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           hintText: 'Rp 16.000',
-                          errorText: error ? null : errorText,
+                          errorText: error ? null : errorTextnominal,
                         ),
                         style: new TextStyle(fontSize: 14.0),
                         onChanged: (value) {
                           if (value.length == 0) {
-                            return setState(() =>
-                                {error = false, errorText = "Wajib diisi"});
+                            return setState(() => {
+                                  error = false,
+                                  errorTextnominal = "Wajib diisi"
+                                });
                           } else {
                             return setState(() => error = true);
                           }
                         },
                         onSubmitted: (value) {
-                          // ket();
+                          kes();
                         },
                       ),
                     ],
@@ -211,8 +302,7 @@ class _KesesamaState extends State<Kesesama> {
             child: Text('LANJUT', style: TextStyle(color: Colors.white)),
             color: Colors.green,
             onPressed: () async {
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (__) => new DetailTransfer()));
+              kes();
             },
           ),
         ),
