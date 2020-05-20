@@ -10,10 +10,7 @@ import 'package:ansor_build/src/service/pulsa_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import 'detail_screen.dart';
 
 class PulsaPage extends StatefulWidget {
   final String noValue;
@@ -42,7 +39,7 @@ class _PulsaPageState extends State<PulsaPage> {
   List<Nominal> _nominalForDisplay = List<Nominal>();
   List<Provider> _provider = List<Provider>();
   List<Provider> _providerForDisplay = List<Provider>();
-  static const platform = MethodChannel('flutter_contacts/launch_contacts');
+  // static const platfsorm = MethodChannel('flutter_contacts/launch_contacts');
 
   @override
   void initState() {

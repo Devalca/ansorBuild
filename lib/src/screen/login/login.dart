@@ -11,6 +11,7 @@ import 'package:ansor_build/src/service/login_services.dart';
 import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/beranda/beranda_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
@@ -176,6 +177,23 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     cekLogin();
+    _initPackageInfo();
+  }
+
+  PackageInfo _packageInfo = PackageInfo(
+    version: '0.0.0',
+    buildNumber: '0',
+  );
+
+  Future<void> _initPackageInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
+  }
+
+  Widget _modVersion(String version, String bVer) {
+   return Text("App Version $version $bVer", style: TextStyle(color: Colors.green),);
   }
 
   void _toggle() {
@@ -325,12 +343,7 @@ class _LoginState extends State<Login> {
 
     Widget bottomBanner = new Column(children: <Widget>[
       Center(
-          child: Text("version 1.0.8.9",
-              style: new TextStyle(
-                fontSize: 14.0,
-                color: Colors.green,
-              ),
-              textAlign: TextAlign.center)),
+          child:_modVersion(_packageInfo.version, _packageInfo.buildNumber)),
       Container(height: 10),
     ]);
 

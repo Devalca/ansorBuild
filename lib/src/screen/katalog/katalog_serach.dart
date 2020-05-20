@@ -1,11 +1,8 @@
 import 'package:ansor_build/src/model/katalog_model.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/screen/katalog/katalog_detail.dart';
 import 'package:ansor_build/src/screen/katalog/katalog_home.dart';
 import 'package:ansor_build/src/service/katalog_service.dart';
-import 'package:ansor_build/src/service/local_service.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class KatalogSearchPage extends StatefulWidget {
   @override

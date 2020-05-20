@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:ansor_build/src/model/pulsa_model.dart';
-import 'package:ansor_build/src/routes/routes.dart';
 import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/screen/ppob/pulsa/pascabayar/detail_screen.dart';
 import 'package:ansor_build/src/service/local_service.dart';
 import 'package:ansor_build/src/service/permissions_service.dart';
 import 'package:ansor_build/src/service/pulsa_service.dart';

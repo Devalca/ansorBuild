@@ -1,4 +1,3 @@
-import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/component/pin.dart';
 import 'package:ansor_build/src/screen/login/login.dart';
 import 'package:flutter/material.dart';
