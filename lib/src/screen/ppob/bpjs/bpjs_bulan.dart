@@ -93,7 +93,10 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                                       CrossAxisAlignment.start,
                                                   children: <Widget>[
                                                 Padding(
-                                                  padding: const EdgeInsets.only(top: 10.0,bottom: 0.0),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10.0,
+                                                          bottom: 0.0),
                                                   child: Container(
                                                       height: 30,
                                                       child: Text(
@@ -160,14 +163,19 @@ class _BpjsBulanState extends State<BpjsBulan> {
                                                               .start,
                                                       children: <Widget>[
                                                     Padding(
-                                                      padding: const EdgeInsets.only(top: 10.0,bottom: 0.0),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 10.0,
+                                                              bottom: 0.0),
                                                       child: Container(
                                                           height: 30,
                                                           child: Text(
-                                                            snapshot.data.data[i]
-                                                                .nama,
-                                                            style: new TextStyle(
-                                                                fontSize: 16.0),
+                                                            snapshot.data
+                                                                .data[i].nama,
+                                                            style:
+                                                                new TextStyle(
+                                                                    fontSize:
+                                                                        16.0),
                                                           )),
                                                     ),
                                                     Divider(

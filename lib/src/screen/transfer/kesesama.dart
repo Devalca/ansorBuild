@@ -6,7 +6,6 @@ import 'package:ansor_build/src/screen/component/kontak.dart';
 import 'package:ansor_build/src/screen/transfer/detailTransfer.dart';
 import 'package:ansor_build/src/screen/transfer/transfer.dart';
 import 'package:ansor_build/src/service/local_service.dart';
-import 'package:ansor_build/src/service/pln_services.dart';
 import 'package:ansor_build/src/service/transfer_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +68,7 @@ class _KesesamaState extends State<Kesesama> {
             url = response.headers['location'];
             print("url: " + url);
 
-            id = url.substring(17);
+            String id = url.substring(17);
             print("id: " + id);
 
             _localServices.saveTransferId(id).then((bool committed) {

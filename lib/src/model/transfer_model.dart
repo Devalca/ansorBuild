@@ -29,24 +29,32 @@ PostBank postBankFromJson(String str) => PostBank.fromJson(json.decode(str));
 String postBankToJson(PostBank data) => json.encode(data.toJson());
 
 class PostBank {
-  int nominal_trf;
-  int no_penerima;
   String userId;
   String walletId;
+  int nominal_trf;
+  String no_penerima;
+  String label;
 
-  PostBank({this.nominal_trf, this.no_penerima, this.userId, this.walletId});
+  PostBank(
+      {this.userId,
+      this.walletId,
+      this.nominal_trf,
+      this.no_penerima,
+      this.label});
 
   factory PostBank.fromJson(Map<String, dynamic> item) => PostBank(
-      nominal_trf: item['nominal_trf'],
-      no_penerima: item['no_meter'],
       userId: item['userId'],
-      walletId: item['walletId']);
+      walletId: item['walletId'],
+      nominal_trf: item['nominal_trf'],
+      no_penerima: item['no_penerima'],
+      label: item['label']);
 
   Map<String, dynamic> toJson() => {
+        "userId": userId,
+        "walletId": walletId,
         "nominal_trf": nominal_trf,
         "no_penerima": no_penerima,
-        "userId": userId,
-        "walletId": walletId
+        "label": label
       };
 }
 
