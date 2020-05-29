@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:ansor_build/src/model/bank_model.dart';
 import 'package:ansor_build/src/screen/transfer/antarbank.dart';
 import 'package:ansor_build/src/service/bank_service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Bank extends StatefulWidget {
   @override
@@ -11,6 +14,9 @@ class Bank extends StatefulWidget {
 class _BankState extends State<Bank> {
   @override
   bool _isLoading = false;
+
+  List<Banks> _list = [];
+  List<Banks> _search = [];
 
   BankService _bankServices = BankService();
   TextEditingController _searchController = TextEditingController();
@@ -27,18 +33,6 @@ class _BankState extends State<Bank> {
     {"id": 9, "bank": "BANK OCBC NISP"},
     {"id": 10, "bank": "BANK PERMATA"},
   ];
-
-  // void searchOperation(String searchText){
-  //   searchresult.clear();
-  //   if(_isSearching != null){
-  //     for(int i = 0; i < snapshot.data.data.length; i++){
-  //       String data = snapshot.data.data[i];
-  //       if(data.toLowerCase().contains(searchText.toLowerCase())){
-  //         searchresult.add(data);
-  //       }
-  //     }
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,32 +59,31 @@ class _BankState extends State<Bank> {
                     child: new Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                      Container(
-                        width: double.infinity,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            border:
-                                Border.all(color: Colors.grey[300], width: 1)),
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: new Icon(
-                              Icons.search,
-                            ),
-                            hintText: 'Cari Bank',
-                          ),
-                          style: new TextStyle(fontSize: 15.0),
-                          onChanged: (value) {},
-                          onSubmitted: (value) {},
-                        ),
-                      ),
-                      Container(
-                          height: 300,
+                      // Container(
+                      //   width: double.infinity,
+                      //   height: 40,
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.white,
+                      //       shape: BoxShape.rectangle,
+                      //       borderRadius:
+                      //           BorderRadius.all(Radius.circular(10.0)),
+                      //       border:
+                      //           Border.all(color: Colors.grey[300], width: 1)),
+                      //   child: TextField(
+                      //     controller: _searchController,
+                      //     decoration: InputDecoration(
+                      //       border: InputBorder.none,
+                      //       prefixIcon: new Icon(
+                      //         Icons.search,
+                      //       ),
+                      //       hintText: 'Cari Bank',
+                      //     ),
+                      //     style: new TextStyle(fontSize: 15.0),
+                      //     onChanged: (value) {},
+                      //     onSubmitted: (value) {},
+                      //   ),
+                      // ),
+                      Expanded(
                           child: FutureBuilder<Banks>(
                               future: _bankServices.fetchBank(),
                               builder: (context, snapshot) {
@@ -109,11 +102,10 @@ class _BankState extends State<Bank> {
                                                         new MaterialPageRoute(
                                                             builder: (__) =>
                                                                 new AntarBank(
-                                                                  bank: snapshot
-                                                                      .data
-                                                                      .data[i]
-                                                                      .nama_bank
-                                                                )));
+                                                                    bank: snapshot
+                                                                        .data
+                                                                        .data[i]
+                                                                        .nama_bank)));
                                                   },
                                                   child: Container(
                                                       child: Column(
@@ -125,25 +117,23 @@ class _BankState extends State<Bank> {
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  left: 10.0,
-                                                                  right: 10.0),
+                                                                  top: 5.0,
+                                                                  bottom: 5.0),
                                                           child: Container(
-                                                              height: 30,
                                                               child: Text(
-                                                                snapshot
-                                                                    .data
-                                                                    .data[i]
-                                                                    .nama_bank,
-                                                                style: new TextStyle(
+                                                            snapshot
+                                                                .data
+                                                                .data[i]
+                                                                .nama_bank,
+                                                            style:
+                                                                new TextStyle(
                                                                     fontSize:
                                                                         16.0),
-                                                              )),
+                                                          )),
                                                         ),
                                                         Divider(
-                                                          height: 12,
                                                           color: Colors.black,
                                                         ),
-                                                        Container(height: 15),
                                                       ]))),
                                             ]);
                                       });
