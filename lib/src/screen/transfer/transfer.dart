@@ -61,7 +61,7 @@ class _TransferState extends State<Transfer> {
                             ),
                             Text("Ke Sesama Un1ty",
                                 style: new TextStyle(
-                                    fontSize: 10.0, color: Colors.black))
+                                    fontSize: 11.0, color: Colors.black))
                           ]),
                         )),
                     InkWell(
@@ -99,7 +99,7 @@ class _TransferState extends State<Transfer> {
                           ),
                           Text("Ke Rekening Bank",
                               style: new TextStyle(
-                                  fontSize: 10.0, color: Colors.black))
+                                  fontSize: 11.0, color: Colors.black))
                         ]),
                       ),
                     )

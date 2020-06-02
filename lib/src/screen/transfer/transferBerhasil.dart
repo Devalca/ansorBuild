@@ -105,61 +105,61 @@ class _TransferBerhasilState extends State<TransferBerhasil> {
                                         fontSize: 12.0, color: Colors.black)),
                               ),
                               Container(height: 15),
-                              Container(
-                                  height: 100,
-                                  child: FutureBuilder<DataUser>(
-                                      future: _dataUserServices.getDataUser(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasData) {
-                                          return ListView.builder(
-                                              itemCount:
-                                                  snapshot.data.data.length,
-                                              itemBuilder: (context, i) {
-                                                return Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      InkWell(
-                                                          onTap: () {},
-                                                          child: Container(
-                                                              child: Column(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: <
-                                                                      Widget>[
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top: 10.0,
-                                                                      bottom:
-                                                                          0.0),
-                                                                  child:
-                                                                      Container(
-                                                                          height:
-                                                                              30,
-                                                                          child:
-                                                                              Text(
-                                                                            snapshot.data.data[i].namaLengkap,
-                                                                            style:
-                                                                                new TextStyle(fontSize: 16.0),
-                                                                          )),
-                                                                ),
-                                                                Divider(
-                                                                  height: 12,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                              ]))),
-                                                    ]);
-                                              });
-                                        } else if (snapshot.hasError) {
-                                          return Text("${snapshot.error}");
-                                        }
-                                        return Center(
-                                            child: CircularProgressIndicator());
-                                      })),
+                              // Container(
+                              //     height: 100,
+                              //     child: FutureBuilder<DataUser>(
+                              //         future: _dataUserServices.getDataUser(),
+                              //         builder: (context, snapshot) {
+                              //           if (snapshot.hasData) {
+                              //             return ListView.builder(
+                              //                 itemCount:
+                              //                     snapshot.data.data.length,
+                              //                 itemBuilder: (context, i) {
+                              //                   return Column(
+                              //                       crossAxisAlignment:
+                              //                           CrossAxisAlignment
+                              //                               .start,
+                              //                       children: <Widget>[
+                              //                         InkWell(
+                              //                             onTap: () {},
+                              //                             child: Container(
+                              //                                 child: Column(
+                              //                                     crossAxisAlignment:
+                              //                                         CrossAxisAlignment
+                              //                                             .start,
+                              //                                     children: <
+                              //                                         Widget>[
+                              //                                   Padding(
+                              //                                     padding: const EdgeInsets
+                              //                                             .only(
+                              //                                         top: 10.0,
+                              //                                         bottom:
+                              //                                             0.0),
+                              //                                     child:
+                              //                                         Container(
+                              //                                             height:
+                              //                                                 30,
+                              //                                             child:
+                              //                                                 Text(
+                              //                                               snapshot.data.data[i].namaLengkap,
+                              //                                               style:
+                              //                                                   new TextStyle(fontSize: 16.0),
+                              //                                             )),
+                              //                                   ),
+                              //                                   Divider(
+                              //                                     height: 12,
+                              //                                     color: Colors
+                              //                                         .black,
+                              //                                   ),
+                              //                                 ]))),
+                              //                       ]);
+                              //                 });
+                              //           } else if (snapshot.hasError) {
+                              //             return Text("${snapshot.error}");
+                              //           }
+                              //           return Center(
+                              //               child: CircularProgressIndicator());
+                              //         })),
                               // Container(
                               //     child: FutureBuilder<DataUser>(
                               //   future: _dataUserServices.getDataUser(),
