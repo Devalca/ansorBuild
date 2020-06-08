@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/histori/histori_main.dart';
 import 'package:ansor_build/src/screen/launcher/launcher_screen.dart';
 import 'package:ansor_build/src/screen/transfer/transfer.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green,
         primarySwatch: Colors.green
       ),
-      home: Transfer(),
+      home: LauncherPage(),
       routes: Routes.getRoutes(),
     );
   }
