@@ -14,6 +14,7 @@ import 'package:ansor_build/src/screen/ppob/pdam/pdam_screen.dart';
 import 'package:ansor_build/src/screen/ppob/pln/listrik.dart';
 import 'package:ansor_build/src/screen/ppob/pulsa/main_pulsa.dart';
 import 'package:ansor_build/src/screen/topup/topup_screen.dart';
+import 'package:ansor_build/src/screen/transfer/transfer.dart';
 import 'package:ansor_build/src/service/beranda_service.dart';
 import 'package:ansor_build/src/service/katalog_service.dart';
 import 'package:ansor_build/src/service/wallet_service.dart';
@@ -203,7 +204,12 @@ class _BerandaPageState extends State<BerandaPage> {
                       ),
                     ),
                     InkWell(
-                      onTap: () => underDialog(context),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (__) => new Transfer()));
+                      },
                       child: Container(
                         child: Column(
                           children: <Widget>[

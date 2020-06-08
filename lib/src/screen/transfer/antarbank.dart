@@ -1,21 +1,131 @@
+import 'package:ansor_build/src/model/transfer_model.dart';
+import 'package:ansor_build/src/model/wallet_model.dart';
 import 'package:ansor_build/src/screen/transfer/bank.dart';
 import 'package:ansor_build/src/screen/transfer/detailTransfer.dart';
 import 'package:ansor_build/src/screen/transfer/transfer.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/transfer_service.dart';
+import 'package:ansor_build/src/service/wallet_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AntarBank extends StatefulWidget {
+  final String bank;
+  AntarBank({this.bank});
+
   @override
   _AntarBankState createState() => _AntarBankState();
 }
 
 class _AntarBankState extends State<AntarBank> {
   bool error = true;
-  String errorText = "";
+  int saldo = 0;
+  String url = "";
+  String errorTextrek = "";
+  String errorTextnominal = "";
   TextEditingController _noRekeningController = TextEditingController();
   TextEditingController _nominalController = TextEditingController();
+
+  WalletService _walletService = WalletService();
+  TransferServices _transferServices = TransferServices();
+  LocalService _localServices = LocalService();
+
   @override
   Widget build(BuildContext context) {
+    bank() async {
+      if (_noRekeningController.text.isEmpty) {
+        setState(() => {error = false, errorTextrek = "Wajib diisi"});
+      } else if (_nominalController.text.isEmpty) {
+        setState(() => {error = false, errorTextnominal = "Wajib diisi"});
+      } else if (widget.bank == null) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Transaksi Gagal",
+                    style: TextStyle(color: Colors.green)),
+                content: Text("Silahkan pilih bank pembayaran"),
+                actions: <Widget>[
+                  MaterialButton(
+                    elevation: 5.0,
+                    child: Text("OK", style: TextStyle(color: Colors.green)),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  )
+                ],
+              );
+            });
+      } else {
+        String no_penerima = _noRekeningController.text;
+        int nominal_trf = int.parse(_nominalController.text);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String walletId = prefs.getString("walletId");
+        String userId = prefs.getString("userId");
+
+        print("walletId: " + walletId);
+        print("userId: " + userId);
+        print("no_penerima: " + no_penerima.toString());
+        print("nominal_trf: " + nominal_trf.toString());
+
+        PostBank bank = PostBank(
+            userId: userId,
+            walletId: walletId,
+            nominal_trf: nominal_trf,
+            no_penerima: no_penerima,
+            label: widget.bank);
+
+        _transferServices.postBank(bank).then((response) async {
+          if (response.statusCode == 302) {
+            print("berhasil body: " + response.body);
+            print(response.statusCode);
+
+            url = response.headers['location'];
+            print("url: " + url);
+
+            String id = url.substring(17);
+            print("id: " + id);
+
+            _localServices.saveTransferId(id).then((bool committed) {
+              print(id);
+            });
+
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (__) => new DetailTransfer(url: url)));
+          } else {
+            print("error: " + response.body);
+            print(response.statusCode);
+
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Tranfer Gagal",
+                        style: TextStyle(color: Colors.green)),
+                    // content: Text(
+                    //     "Anda Belum melakukan aktivasi. Lakukan verifikasi email"),
+                    actions: <Widget>[
+                      MaterialButton(
+                        elevation: 5.0,
+                        child:
+                            Text("OK", style: TextStyle(color: Colors.green)),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  );
+                });
+          }
+        });
+      }
+    }
+
     Widget middleSection = Expanded(
       child: new Container(
           color: Colors.white,
@@ -30,10 +140,8 @@ class _AntarBankState extends State<AntarBank> {
                         textAlign: TextAlign.left)),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (__) => new Bank()));
+                    Navigator.push(context,
+                        new MaterialPageRoute(builder: (__) => new Bank()));
                   },
                   child: Container(
                     padding: const EdgeInsets.only(top: 10.0),
@@ -46,15 +154,14 @@ class _AntarBankState extends State<AntarBank> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
-                                  child:
-                                      // widget.bln == null ?
-                                      new Text("Pilih Bank",
-                                          style: new TextStyle(
-                                              fontSize: 14.0,
-                                              color: Colors.black54))
-                                  // : new Text(widget.bln,
-                                  //     style: new TextStyle(fontSize: 14.0)),
-                                  ),
+                                child: widget.bank == null
+                                    ? new Text("Pilih Bank",
+                                        style: new TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black54))
+                                    : new Text(widget.bank,
+                                        style: new TextStyle(fontSize: 14.0)),
+                              ),
                               Container(
                                 child: Icon(
                                   Icons.keyboard_arrow_down,
@@ -83,19 +190,19 @@ class _AntarBankState extends State<AntarBank> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     hintText: 'Masukkan Nomor Rekening',
-                    errorText: error ? null : errorText,
+                    errorText: error ? null : errorTextrek,
                   ),
                   style: new TextStyle(fontSize: 14.0),
                   onChanged: (value) {
                     if (value.length == 0) {
                       return setState(
-                          () => {error = false, errorText = "Wajib diisi"});
+                          () => {error = false, errorTextrek = "Wajib diisi"});
                     } else {
                       return setState(() => error = true);
                     }
                   },
                   onSubmitted: (value) {
-                    // ket();
+                    bank();
                   },
                 ),
                 Container(height: 10),
@@ -135,26 +242,22 @@ class _AntarBankState extends State<AntarBank> {
                                 ],
                               ),
                             ),
-                            // Container(
-                            //     child: FutureBuilder<Wallet>(
-                            //   future: _walletService.getSaldo(),
-                            //   builder: (context, snapshot) {
-                            //     if (snapshot.hasData) {
-                            //       saldo = snapshot
-                            //           .data.data[0].saldoAkhir;
-                            //       return Text(NumberFormat
-                            //               .simpleCurrency(
-                            //                   locale: 'id',
-                            //                   decimalDigits: 0)
-                            //           .format(snapshot.data
-                            //               .data[0].saldoAkhir));
-                            //     } else if (snapshot.hasError) {
-                            //       return Text(
-                            //           "${snapshot.error}");
-                            //     }
-                            //     return CircularProgressIndicator();
-                            //   },
-                            // )),
+                            Container(
+                                child: FutureBuilder<Wallet>(
+                              future: _walletService.getSaldo(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  saldo = snapshot.data.data[0].saldoAkhir;
+                                  return Text(NumberFormat.simpleCurrency(
+                                          locale: 'id', decimalDigits: 0)
+                                      .format(
+                                          snapshot.data.data[0].saldoAkhir));
+                                } else if (snapshot.hasError) {
+                                  return Text("${snapshot.error}");
+                                }
+                                return CircularProgressIndicator();
+                              },
+                            )),
                           ],
                         ),
                       ),
@@ -190,13 +293,15 @@ class _AntarBankState extends State<AntarBank> {
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           hintText: 'Rp 16.000',
-                          errorText: error ? null : errorText,
+                          errorText: error ? null : errorTextnominal,
                         ),
                         style: new TextStyle(fontSize: 14.0),
                         onChanged: (value) {
                           if (value.length == 0) {
-                            return setState(() =>
-                                {error = false, errorText = "Wajib diisi"});
+                            return setState(() => {
+                                  error = false,
+                                  errorTextnominal = "Wajib diisi"
+                                });
                           } else {
                             return setState(() => error = true);
                           }
@@ -228,8 +333,7 @@ class _AntarBankState extends State<AntarBank> {
             child: Text('LANJUT', style: TextStyle(color: Colors.white)),
             color: Colors.green,
             onPressed: () async {
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (__) => new DetailTransfer()));
+              bank();
             },
           ),
         ),
