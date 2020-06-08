@@ -165,3 +165,71 @@ class DataBerhasil {
         "label": label
       };
 }
+
+History historyFromJson(String str) => History.fromJson(json.decode(str));
+String historyToJson(History data) => json.encode(data.toJson());
+
+class History {
+  List<DetailHistory> data;
+  String message;
+
+  History({
+    this.data,
+    this.message,
+  });
+
+  factory History.fromJson(Map<String, dynamic> json) => History(
+        data: List<DetailHistory>.from(
+            json["data"].map((x) => DetailHistory.fromJson(x))),
+        message: json["message"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": List<dynamic>.from(
+            data.map((x) => x.toJson())),
+        "message": message,
+      };
+}
+
+class DetailHistory {
+  int id;
+  int userId;
+  int walletId;
+  int idTrx;
+  String label;
+  int nominalTrx;
+  String deskripsi;
+  DateTime tglTrx;
+
+  DetailHistory(
+      {this.id,
+      this.userId,
+      this.walletId,
+      this.idTrx,
+      this.label,
+      this.nominalTrx,
+      this.deskripsi,
+      this.tglTrx});
+
+  factory DetailHistory.fromJson(Map<String, dynamic> json) => DetailHistory(
+        id: json["id"],
+        userId: json["userId"],
+        walletId: json["walletId"],
+        idTrx: json["idTrx"],
+        label: json["label"],
+        nominalTrx: json["nominalTrx"],
+        deskripsi: json["deskripsi"],
+        tglTrx: DateTime.parse(json["tglTrx"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "userId": userId,
+        "walletId": walletId,
+        "idTrx": idTrx,
+        "label": label,
+        "nominalTrx": nominalTrx,
+        "deskripsi": deskripsi,
+        "tglTrx": tglTrx,
+      };
+}

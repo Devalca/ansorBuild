@@ -1,7 +1,10 @@
+import 'package:ansor_build/src/model/transfer_model.dart';
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/transfer/antarbank.dart';
 import 'package:ansor_build/src/screen/transfer/kesesama.dart';
+import 'package:ansor_build/src/service/transfer_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Transfer extends StatefulWidget {
   @override
@@ -9,6 +12,8 @@ class Transfer extends StatefulWidget {
 }
 
 class _TransferState extends State<Transfer> {
+  TransferServices _transferService = TransferServices();
+
   @override
   Widget build(BuildContext context) {
     Widget topBanner = new Column(children: <Widget>[
@@ -126,22 +131,55 @@ class _TransferState extends State<Transfer> {
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold)),
                 Container(height: 15),
-                Row(children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 12.0),
-                    child: Image.asset("lib/src/assets/BPJS.png"),
-                  ),
-                  Container(
-                    child: Text("nama" + "\n" + "bank",
-                        style:
-                            new TextStyle(color: Colors.black, fontSize: 12.0)),
-                  ),
-                ]),
-                Container(height: 5),
-                Divider(
-                  height: 12,
-                  color: Colors.black26,
-                ),
+                FutureBuilder<History>(
+                    future: _transferService.history(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return (Row(children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: 12.0),
+                            child: Image.asset("lib/src/assets/BPJS.png"),
+                          ),
+                          Container(
+                            child: Text(
+                                snapshot.data.data[0].label +
+                                    "\n" +
+                                    snapshot.data.data[0].deskripsi +
+                                    " - " +
+                                    NumberFormat.simpleCurrency(
+                                            locale: 'id', decimalDigits: 0)
+                                        .format(
+                                            snapshot.data.data[0].nominalTrx),
+                                style: new TextStyle(
+                                    color: Colors.black, fontSize: 12.0)),
+                          ),
+                          Container(height: 5),
+                          Divider(
+                            height: 12,
+                            color: Colors.black26,
+                          ),
+                        ]));
+                      } else if (snapshot.hasError) {
+                        return Text("${snapshot.error}");
+                      }
+                      return CircularProgressIndicator();
+                    }),
+                // Row(children: <Widget>[
+                //   Container(
+                //     margin: EdgeInsets.only(right: 12.0),
+                //     child: Image.asset("lib/src/assets/BPJS.png"),
+                //   ),
+                //   Container(
+                //     child: Text("nama" + "\n" + "bank",
+                //         style:
+                //             new TextStyle(color: Colors.black, fontSize: 12.0)),
+                //   ),
+                // ]),
+                // Container(height: 5),
+                // Divider(
+                //   height: 12,
+                //   color: Colors.black26,
+                // ),
               ],
             ),
           )),
