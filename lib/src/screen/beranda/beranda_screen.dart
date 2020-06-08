@@ -330,10 +330,15 @@ class _BerandaPageState extends State<BerandaPage> {
                             },
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.only(right: 3.0),
-                          child: Icon(Icons.arrow_forward_ios,
-                              size: 15.0, color: Colors.white),
+                        InkWell(
+                          onTap: () {
+                            setState(() {});
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(right: 3.0),
+                            child: Icon(Icons.refresh,
+                                size: 20.0, color: Colors.white),
+                          ),
                         ),
                       ],
                     )),

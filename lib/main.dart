@@ -1,3 +1,4 @@
+import 'package:ansor_build/src/screen/histori/histori_main.dart';
 import 'package:ansor_build/src/screen/launcher/launcher_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ansorBuld',
-      theme: ThemeData(primaryColor: Colors.green, primarySwatch: Colors.green),
+      theme: ThemeData(
+        primaryColor: Colors.green,
+        primarySwatch: Colors.green
+      ),
       home: LauncherPage(),
       routes: Routes.getRoutes(),
     );

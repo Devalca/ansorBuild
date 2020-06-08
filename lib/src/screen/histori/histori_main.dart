@@ -1,5 +1,11 @@
+import 'package:ansor_build/src/model/histori_model.dart';
+import 'package:ansor_build/src/screen/component/formatIndo.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
 import 'package:ansor_build/src/screen/histori/histori_detail.dart';
+import 'package:ansor_build/src/service/histori_service.dart';
 import 'package:flutter/material.dart';
+import 'package:indonesia/indonesia.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class HistoriMainPage extends StatefulWidget {
   @override
@@ -7,7 +13,22 @@ class HistoriMainPage extends StatefulWidget {
 }
 
 class _HistoriMainPageState extends State<HistoriMainPage> {
-  final List<int> _listData = List<int>.generate(20, (i) => i);
+  String headUrl;
+  HistoriService _historiService = HistoriService();
+  List<DataHistori> _histori = List<DataHistori>();
+  List<DataHistori> _historiForDisplay = List<DataHistori>();
+
+  @override
+  void initState() {
+    _historiService.getData().then((value) {
+      setState(() {
+        _histori.addAll(value.data);
+        _historiForDisplay = _histori;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,52 +49,103 @@ class _HistoriMainPageState extends State<HistoriMainPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: ListView(
-        children: _listData.map((i) {
-          return i % 10 == 0
-              ? Container(
-                  color: Colors.grey.withOpacity(0.3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Text("20 Desember, 2020",
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.black45,
-                          )),
-                    ],
-                  ),
-                  padding: EdgeInsets.all(10.0),
-                )
-              : Column(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: _toHistoriTrx,
-                      child: ListTile(
-                        title: Text("TopUp dari Bank BCA"),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text("Pembayaran"),
-                            Text(
-                              "Rp1.000.000",
-                              style: TextStyle(color: Colors.green),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Divider(), //                           <-- Divider
-                  ],
+      body: FutureBuilder<Histori>(
+        future: _historiService.getData(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return Center(
+                child: Text("Koneksi Terputus"),
+              );
+            case ConnectionState.waiting:
+              return centerLoading();
+            default:
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  itemCount: _historiForDisplay.length,
+                  itemBuilder: (context, index) {
+                    DateTime datePlus = _historiForDisplay[index].tglTrx;
+                    String plusDate = formatTanggal(datePlus);
+                    if (index == 0) {
+                      return _buildListHeader(index);
+                    } else {
+                      String lag =
+                          formatTanggal(_historiForDisplay[index - 1].tglTrx);
+                      if (plusDate == lag) {
+                        return _buildListItem(index);
+                      } else {
+                        return _buildListHeader(index);
+                      }
+                    }
+                  },
                 );
-        }).toList(),
+              } else {
+                return Text('Result: ${snapshot.error}');
+              }
+          }
+        },
       ),
     );
   }
 
-  _toHistoriTrx() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HistoriDetailPage()));
+  Widget _buildListHeader(index) {
+    return Material(
+      color: Colors.white,
+      child: Container(
+        padding: EdgeInsets.only(top: 10.0),
+        child: StickyHeader(
+            header: Container(
+              color: Colors.grey[200],
+              height: 40.0,
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              alignment: Alignment.centerRight,
+              child: Text(
+                '${formatTanggal(_historiForDisplay[index].tglTrx)}',
+              ),
+            ),
+            content: Container(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: _buildListItem(index))),
+      ),
+    );
+  }
+
+  Widget _buildListItem(index) {
+    return GestureDetector(
+      onTap: () {
+        _toHistoriTrx(index);
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16.0),
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black38)),
+        ),
+        child: ListTile(
+          title: Text(_historiForDisplay[index].deskripsi),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(_historiForDisplay[index].label),
+              Text(
+                rupiah(_historiForDisplay[index].nominalTrx),
+                style: TextStyle(color: Colors.green),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _toHistoriTrx(index) {
+    String deskiTrans = _historiForDisplay[index].deskripsi;
+    if (deskiTrans == "Pulsa Prabayar" || deskiTrans == "Pulsa Pascabayar") {
+      String idTrx = _historiForDisplay[index].idTrx.toString();
+      setState(() {
+        headUrl = "http://103.9.125.18:3000/ppob/detail/pulsa/$idTrx";
+      });
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => HistoriDetailPage(headUrl)));
+    }
   }
 }
