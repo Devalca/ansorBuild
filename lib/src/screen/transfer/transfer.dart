@@ -131,39 +131,104 @@ class _TransferState extends State<Transfer> {
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold)),
                 Container(height: 15),
-                FutureBuilder<History>(
-                    future: _transferService.history(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return (Row(children: <Widget>[
-                          Container(
-                            margin: EdgeInsets.only(right: 12.0),
-                            child: Image.asset("lib/src/assets/BPJS.png"),
-                          ),
-                          Container(
-                            child: Text(
-                                snapshot.data.data[0].label +
-                                    "\n" +
-                                    snapshot.data.data[0].deskripsi +
-                                    " - " +
-                                    NumberFormat.simpleCurrency(
-                                            locale: 'id', decimalDigits: 0)
-                                        .format(
-                                            snapshot.data.data[0].nominalTrx),
-                                style: new TextStyle(
-                                    color: Colors.black, fontSize: 12.0)),
-                          ),
-                          Container(height: 5),
-                          Divider(
-                            height: 12,
-                            color: Colors.black26,
-                          ),
-                        ]));
-                      } else if (snapshot.hasError) {
-                        return Text("${snapshot.error}");
-                      }
-                      return CircularProgressIndicator();
-                    }),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      child: FutureBuilder<History>(
+                          future: _transferService.history(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.data.length,
+                                  itemBuilder: (context, i) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 5.0, bottom: 5.0),
+                                      child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Row(children: <Widget>[
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    right: 12.0),
+                                                child: Image.asset(
+                                                    "lib/src/assets/BPJS.png"),
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                    snapshot.data.data[0].label +
+                                                        "\n" +
+                                                        snapshot.data.data[0]
+                                                            .deskripsi +
+                                                        " - " +
+                                                        NumberFormat
+                                                                .simpleCurrency(
+                                                                    locale:
+                                                                        'id',
+                                                                    decimalDigits:
+                                                                        0)
+                                                            .format(snapshot
+                                                                .data
+                                                                .data[0]
+                                                                .nominalTrx),
+                                                    style: new TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 12.0)),
+                                              ),
+                                              Container(height: 5),
+                                              Divider(
+                                                height: 12,
+                                                color: Colors.black26,
+                                              ),
+                                            ])
+                                          ]),
+                                    );
+                                  });
+                            } else if (snapshot.hasError) {
+                              return Text("${snapshot.error}");
+                            }
+                            return Center(child: CircularProgressIndicator());
+                          }),
+                    ),
+                  ],
+                )
+
+                // FutureBuilder<History>(
+                //     future: _transferService.history(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.hasData) {
+                //         return (Row(children: <Widget>[
+                //           Container(
+                //             margin: EdgeInsets.only(right: 12.0),
+                //             child: Image.asset("lib/src/assets/BPJS.png"),
+                //           ),
+                //           Container(
+                //             child: Text(
+                //                 snapshot.data.data[0].label +
+                //                     "\n" +
+                //                     snapshot.data.data[0].deskripsi +
+                //                     " - " +
+                //                     NumberFormat.simpleCurrency(
+                //                             locale: 'id', decimalDigits: 0)
+                //                         .format(
+                //                             snapshot.data.data[0].nominalTrx),
+                //                 style: new TextStyle(
+                //                     color: Colors.black, fontSize: 12.0)),
+                //           ),
+                //           Container(height: 5),
+                //           Divider(
+                //             height: 12,
+                //             color: Colors.black26,
+                //           ),
+                //         ]));
+                //       } else if (snapshot.hasError) {
+                //         return Text("${snapshot.error}");
+                //       }
+                //       return CircularProgressIndicator();
+                //     }),
                 // Row(children: <Widget>[
                 //   Container(
                 //     margin: EdgeInsets.only(right: 12.0),
