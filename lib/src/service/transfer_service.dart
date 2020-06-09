@@ -42,14 +42,14 @@ class TransferServices {
     String walletId = prefs.getString("walletId");
     String userId = prefs.getString("userId");
 
-    var response = await http.get(
-        '$baseUrl/history/$userId/$walletId',
-        headers: {"accept": "application/json"},
-      );
-      if (response.statusCode == 200) {
-        return History.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load post');
-      }
+    final response = await http.get(
+      '$baseUrl/transferhistory/$userId/$walletId',
+      headers: {"accept": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      return History.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load post');
+    }
   }
 }

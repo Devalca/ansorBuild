@@ -1,10 +1,8 @@
-import 'package:ansor_build/src/model/transfer_model.dart';
+import 'package:flutter/material.dart';
 import 'package:ansor_build/src/screen/beranda/landing_screen.dart';
 import 'package:ansor_build/src/screen/transfer/antarbank.dart';
 import 'package:ansor_build/src/screen/transfer/kesesama.dart';
 import 'package:ansor_build/src/service/transfer_service.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class Transfer extends StatefulWidget {
   @override
@@ -120,7 +118,7 @@ class _TransferState extends State<Transfer> {
     Widget middleSection = Expanded(
       child: new Container(
           color: Colors.white,
-          child: SingleChildScrollView(
+          child: Padding(
             padding: new EdgeInsets.all(12.0),
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -131,120 +129,74 @@ class _TransferState extends State<Transfer> {
                         fontSize: 12.0,
                         fontWeight: FontWeight.bold)),
                 Container(height: 15),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      child: FutureBuilder<History>(
-                          future: _transferService.history(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.data.length,
-                                  itemBuilder: (context, i) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 5.0, bottom: 5.0),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Row(children: <Widget>[
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    right: 12.0),
-                                                child: Image.asset(
-                                                    "lib/src/assets/BPJS.png"),
-                                              ),
-                                              Container(
-                                                child: Text(
-                                                    snapshot.data.data[0].label +
-                                                        "\n" +
-                                                        snapshot.data.data[0]
-                                                            .deskripsi +
-                                                        " - " +
-                                                        NumberFormat
-                                                                .simpleCurrency(
-                                                                    locale:
-                                                                        'id',
-                                                                    decimalDigits:
-                                                                        0)
-                                                            .format(snapshot
-                                                                .data
-                                                                .data[0]
-                                                                .nominalTrx),
-                                                    style: new TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 12.0)),
-                                              ),
-                                              Container(height: 5),
-                                              Divider(
-                                                height: 12,
-                                                color: Colors.black26,
-                                              ),
-                                            ])
-                                          ]),
-                                    );
-                                  });
-                            } else if (snapshot.hasError) {
-                              return Text("${snapshot.error}");
-                            }
-                            return Center(child: CircularProgressIndicator());
-                          }),
-                    ),
-                  ],
-                )
-
-                // FutureBuilder<History>(
-                //     future: _transferService.history(),
-                //     builder: (context, snapshot) {
-                //       if (snapshot.hasData) {
-                //         return (Row(children: <Widget>[
-                //           Container(
-                //             margin: EdgeInsets.only(right: 12.0),
-                //             child: Image.asset("lib/src/assets/BPJS.png"),
-                //           ),
-                //           Container(
-                //             child: Text(
-                //                 snapshot.data.data[0].label +
-                //                     "\n" +
-                //                     snapshot.data.data[0].deskripsi +
-                //                     " - " +
-                //                     NumberFormat.simpleCurrency(
-                //                             locale: 'id', decimalDigits: 0)
-                //                         .format(
-                //                             snapshot.data.data[0].nominalTrx),
-                //                 style: new TextStyle(
-                //                     color: Colors.black, fontSize: 12.0)),
-                //           ),
-                //           Container(height: 5),
-                //           Divider(
-                //             height: 12,
-                //             color: Colors.black26,
-                //           ),
-                //         ]));
-                //       } else if (snapshot.hasError) {
-                //         return Text("${snapshot.error}");
-                //       }
-                //       return CircularProgressIndicator();
-                //     }),
-                // Row(children: <Widget>[
-                //   Container(
-                //     margin: EdgeInsets.only(right: 12.0),
-                //     child: Image.asset("lib/src/assets/BPJS.png"),
-                //   ),
-                //   Container(
-                //     child: Text("nama" + "\n" + "bank",
-                //         style:
-                //             new TextStyle(color: Colors.black, fontSize: 12.0)),
-                //   ),
-                // ]),
-                // Container(height: 5),
-                // Divider(
-                //   height: 12,
-                //   color: Colors.black26,
-                // ),
+                Expanded(
+                  child: FutureBuilder(
+                      future: _transferService.history(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.data.length,
+                              itemBuilder: (BuildContext context, int i) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 5.0, bottom: 5.0),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Row(children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 12.0),
+                                            child: Container(
+                                              width: 40.0,
+                                              height: 40.0,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.grey[300],
+                                                  shape: BoxShape.rectangle,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              20.0)),
+                                                  border: Border.all(
+                                                      color: Colors.grey[300],
+                                                      width: 1)),
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Text(
+                                                snapshot.data.data[i]
+                                                        .nama_penerima +
+                                                    "\n" +
+                                                    snapshot.data.data[i]
+                                                        .sumber_dana +
+                                                    " - " +
+                                                    snapshot.data.data[i]
+                                                        .no_penerima,
+                                                style: new TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 12.0)),
+                                          ),
+                                        ]),
+                                        Container(height: 5),
+                                        Divider(
+                                          height: 12,
+                                          color: Colors.black38,
+                                        ),
+                                      ]),
+                                );
+                              });
+                        } else if (snapshot.hasError) {
+                          return Text("${snapshot.error}");
+                        }
+                        return Center(
+                          heightFactor: 20,
+                          widthFactor: 20,
+                          child: CircularProgressIndicator(),
+                        );
+                      }),
+                ),
               ],
             ),
           )),
@@ -268,7 +220,7 @@ class _TransferState extends State<Transfer> {
                     new MaterialPageRoute(builder: (__) => new LandingPage()));
               }),
           title: Text(
-            "Trasfer",
+            "Transfer",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.transparent,
