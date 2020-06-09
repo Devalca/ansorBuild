@@ -185,51 +185,69 @@ class History {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": List<dynamic>.from(
-            data.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "message": message,
       };
 }
 
 class DetailHistory {
   int id;
-  int userId;
   int walletId;
-  int idTrx;
+  int userId;
+  String nama_penerima;
+  String no_penerima;
+  int nominal_trf;
+  int admin_fee;
+  int total;
+  String no_transaksi;
+  DateTime tgl_trf;
+  String sumber_dana;
+  String status;
   String label;
-  int nominalTrx;
-  String deskripsi;
-  DateTime tglTrx;
 
   DetailHistory(
       {this.id,
-      this.userId,
       this.walletId,
-      this.idTrx,
-      this.label,
-      this.nominalTrx,
-      this.deskripsi,
-      this.tglTrx});
+      this.userId,
+      this.nama_penerima,
+      this.no_penerima,
+      this.nominal_trf,
+      this.admin_fee,
+      this.total,
+      this.no_transaksi,
+      this.tgl_trf,
+      this.sumber_dana,
+      this.status,
+      this.label});
 
   factory DetailHistory.fromJson(Map<String, dynamic> json) => DetailHistory(
-        id: json["id"],
-        userId: json["userId"],
-        walletId: json["walletId"],
-        idTrx: json["idTrx"],
-        label: json["label"],
-        nominalTrx: json["nominalTrx"],
-        deskripsi: json["deskripsi"],
-        tglTrx: DateTime.parse(json["tglTrx"]),
-      );
+      id: json["id"],
+      walletId: json["walletId"],
+      userId: json["userId"],
+      nama_penerima: json["nama_penerima"],
+      no_penerima: json["no_penerima"],
+      nominal_trf: json["nominal_trf"],
+      admin_fee: json["admin_fee"],
+      total: json["total"],
+      no_transaksi: json["no_transaksi"],
+      tgl_trf: DateTime.parse(json["tgl_trf"]),
+      sumber_dana: json["sumber_dana"],
+      status: json["status"],
+      label: json["label"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "userId": userId,
         "walletId": walletId,
-        "idTrx": idTrx,
+        "userId": userId,
+        "nama_penerima": nama_penerima,
+        "no_penerima": no_penerima,
+        "nominal_trf": nominal_trf,
+        "admin_fee": admin_fee,
+        "total": total,
+        "no_transaksi": no_transaksi,
+        "tgl_trf": tgl_trf,
+        "sumber_dana": sumber_dana,
+        "status": status,
         "label": label,
-        "nominalTrx": nominalTrx,
-        "deskripsi": deskripsi,
-        "tglTrx": tglTrx,
       };
 }
