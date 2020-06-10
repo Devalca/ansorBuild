@@ -8,7 +8,8 @@ import 'package:ansor_build/src/model/transfer_model.dart';
 
 class HistoriTransferPage extends StatefulWidget {
   final String headUrl;
-  HistoriTransferPage(this.headUrl);
+  final String nomorUser;
+  HistoriTransferPage(this.headUrl, this.nomorUser);
 
   @override
   _HistoriTransferPageState createState() => _HistoriTransferPageState();
@@ -16,18 +17,17 @@ class HistoriTransferPage extends StatefulWidget {
 
 class _HistoriTransferPageState extends State<HistoriTransferPage> {
   DataUserService _dataUserService = DataUserService();
-
   List<DetailUser> _detailUser = List<DetailUser>();
   List<DetailUser> _detailUserForDisplay = List<DetailUser>();
 
-    @override 
+  @override
   void initState() {
     _dataUserService.getDataUser().then((value) => {
-      setState(() {
-        _detailUser.addAll(value.data);
-        _detailUserForDisplay = _detailUser;
-      })
-    });
+          setState(() {
+            _detailUser.addAll(value.data);
+            _detailUserForDisplay = _detailUser;
+          })
+        });
     super.initState();
   }
 
@@ -42,6 +42,12 @@ class _HistoriTransferPageState extends State<HistoriTransferPage> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      _detailUserForDisplay = _detailUser.where((userID) {
+        var uu = userID.noHp;
+        return uu.contains(widget.nomorUser);
+      }).toList();
+    });
     Widget middleSection = Expanded(
       child: new Container(
           color: Colors.white,
@@ -108,12 +114,7 @@ class _HistoriTransferPageState extends State<HistoriTransferPage> {
                               ),
                               Container(height: 15),
                               Container(height: 5),
-                              Divider(
-                                height: 12,
-                                color: Colors.black26,
-                              ),
-                              Container(height: 5),
-                              Text("Pengirim",
+                              Text("Dari",
                                   style: new TextStyle(
                                       color: Colors.black,
                                       fontSize: 12.0,
@@ -122,32 +123,36 @@ class _HistoriTransferPageState extends State<HistoriTransferPage> {
                               Row(children: <Widget>[
                                 Container(
                                   margin: EdgeInsets.only(right: 12.0),
-                                  child: Image.asset(
-                                    "lib/src/assets/TRANSFER_GREEN.png",
-                                    height: 40,
+                                  child: Container(
+                                    width: 45.0,
+                                    height: 45.0,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30.0)),
+                                        border: Border.all(
+                                            color: Colors.grey[300], width: 1)),
                                   ),
                                 ),
                                 Container(
                                   child: Text(
-                                      snapshot.data.data[0].nama_penerima +
+                                      _detailUserForDisplay[0].namaLengkap.toUpperCase() +
                                           "\n" +
                                           snapshot.data.data[0].sumber_dana +
-                                          " " +
-                                          snapshot.data.data[0].no_penerima,
+                                          " - " +
+                                          _detailUserForDisplay[0].noHp,
                                       style: new TextStyle(
                                           color: Colors.black, fontSize: 12.0)),
                                 ),
                               ]),
-                              Container(height: 5),
-                              Divider(
-                                height: 12,
-                                color: Colors.black26,
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Divider(
+                                  height: 12,
+                                  color: Colors.black26,
+                                ),
                               ),
-                              Divider(
-                                height: 12,
-                                color: Colors.black26,
-                              ),
-                              Container(height: 5),
                               Text("Penerima",
                                   style: new TextStyle(
                                       color: Colors.black,
@@ -157,26 +162,35 @@ class _HistoriTransferPageState extends State<HistoriTransferPage> {
                               Row(children: <Widget>[
                                 Container(
                                   margin: EdgeInsets.only(right: 12.0),
-                                  child: Image.asset(
-                                    "lib/src/assets/TRANSFER_GREEN.png",
-                                    height: 40,
+                                  child: Container(
+                                    width: 45.0,
+                                    height: 45.0,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        shape: BoxShape.rectangle,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30.0)),
+                                        border: Border.all(
+                                            color: Colors.grey[300], width: 1)),
                                   ),
                                 ),
                                 Container(
                                   child: Text(
-                                      snapshot.data.data[0].nama_penerima +
+                                      snapshot.data.data[0].nama_penerima.toUpperCase() +
                                           "\n" +
                                           snapshot.data.data[0].sumber_dana +
-                                          " " +
+                                          " - " +
                                           snapshot.data.data[0].no_penerima,
                                       style: new TextStyle(
                                           color: Colors.black, fontSize: 12.0)),
                                 ),
                               ]),
-                              Container(height: 5),
-                              Divider(
-                                height: 12,
-                                color: Colors.black26,
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Divider(
+                                  height: 12,
+                                  color: Colors.black26,
+                                ),
                               ),
                             ]));
                       } else if (snapshot.hasError) {
