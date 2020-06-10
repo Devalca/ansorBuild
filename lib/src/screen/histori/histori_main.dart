@@ -9,6 +9,7 @@ import 'package:ansor_build/src/service/histori_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:indonesia/indonesia.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 import 'histori_transfer.dart';
@@ -143,7 +144,9 @@ class _HistoriMainPageState extends State<HistoriMainPage> {
     );
   }
 
-  _toHistoriTrx(index) {
+  _toHistoriTrx(index) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String nomorUser = pref.getString('noHp');
     String deskiTrans = _historiForDisplay[index].deskripsi;
     if (deskiTrans == "Pulsa Prabayar" || deskiTrans == "Pulsa Pascabayar") {
       String idTrx = _historiForDisplay[index].idTrx.toString();
@@ -195,7 +198,7 @@ class _HistoriMainPageState extends State<HistoriMainPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => HistoriTransferPage(headUrl)));
+              builder: (context) => HistoriTransferPage(headUrl, nomorUser)));
     }
   }
 }
