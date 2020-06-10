@@ -1,11 +1,17 @@
 import 'package:ansor_build/src/model/histori_model.dart';
 import 'package:ansor_build/src/screen/component/formatIndo.dart';
 import 'package:ansor_build/src/screen/component/loading.dart';
-import 'package:ansor_build/src/screen/histori/histori_detail.dart';
+import 'package:ansor_build/src/screen/histori/histori_bpjs.dart';
+import 'package:ansor_build/src/screen/histori/histori_pdam.dart';
+import 'package:ansor_build/src/screen/histori/histori_pln.dart';
+import 'package:ansor_build/src/screen/histori/histori_pulsa.dart';
 import 'package:ansor_build/src/service/histori_service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:indonesia/indonesia.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+
+import 'histori_transfer.dart';
 
 class HistoriMainPage extends StatefulWidget {
   @override
@@ -145,7 +151,51 @@ class _HistoriMainPageState extends State<HistoriMainPage> {
         headUrl = "http://103.9.125.18:3000/ppob/detail/pulsa/$idTrx";
       });
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HistoriDetailPage(headUrl)));
+          MaterialPageRoute(builder: (context) => HistoriPulsaPage(headUrl)));
+    } else if (deskiTrans == "PDAM") {
+      String idTrx = _historiForDisplay[index].idTrx.toString();
+      setState(() {
+        headUrl = "http://103.9.125.18:3000/ppob/detail/pdam/$idTrx";
+      });
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => HistoriPdamPage(headUrl)));
+    } else if (deskiTrans == "Token Listrik PLN") {
+      String idTrx = _historiForDisplay[index].idTrx.toString();
+      setState(() {
+        headUrl = "http://103.9.125.18:3000/ppob/detail/pln/$idTrx";
+      });
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => HistoriPlnPage(headUrl)));
+    } else if (deskiTrans == "BPJS Ketenagakerjaan") {
+      String idTrx = _historiForDisplay[index].idTrx.toString();
+      String jenis = "kerja";
+      setState(() {
+        headUrl =
+            "http://103.9.125.18:3000/ppob/bpjs/detail/ketenagakerjaan/$idTrx";
+      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HistoriBpjsPage(headUrl, jenis)));
+    } else if (deskiTrans == "BPJS Kesehatan") {
+      String idTrx = _historiForDisplay[index].idTrx.toString();
+      String jenis = "kesehatan";
+      setState(() {
+        headUrl = "http://103.9.125.18:3000/ppob/bpjs/detail/kesehatan/$idTrx";
+      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HistoriBpjsPage(headUrl, jenis)));
+    } else {
+      String idTrx = _historiForDisplay[index].idTrx.toString();
+      setState(() {
+        headUrl = "http://103.9.125.18:3000/detail/transfer/$idTrx";
+      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HistoriTransferPage(headUrl)));
     }
   }
 }

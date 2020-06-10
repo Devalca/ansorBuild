@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
 
 class ContactsPage extends StatefulWidget {
- 
   @override
   _ContactsPageState createState() => _ContactsPageState();
 }
@@ -28,7 +27,8 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   getAllContacts() async {
-    List<Contact> _contacts = (await ContactsService.getContacts(withThumbnails: false)).toList();
+    List<Contact> _contacts =
+        (await ContactsService.getContacts(withThumbnails: false)).toList();
     setState(() {
       contacts = _contacts;
     });
@@ -94,40 +94,40 @@ class _ContactsPageState extends State<ContactsPage> {
               child: TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  labelText: 'Search',
-                  border: new OutlineInputBorder(
-                    borderSide: new BorderSide(
-                      color: Theme.of(context).primaryColor
-                    )
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Theme.of(context).primaryColor
-                  )
-                ),
+                    labelText: 'Search',
+                    border: new OutlineInputBorder(
+                        borderSide: new BorderSide(
+                            color: Theme.of(context).primaryColor)),
+                    prefixIcon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor)),
               ),
             ),
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: isSearching == true ? contactsFiltered.length : contacts.length,
+                itemCount: isSearching == true
+                    ? contactsFiltered.length
+                    : contacts.length,
                 itemBuilder: (context, index) {
-                  Contact contact = isSearching == true ? contactsFiltered[index] : contacts[index];
+                  Contact contact = isSearching == true
+                      ? contactsFiltered[index]
+                      : contacts[index];
                   return ListTile(
-                    title: Text(contact.displayName),
-                      onTap: () { 
-                      String noValue = contact.phones.elementAt(0).value;
-                      Navigator.pop(context, noValue);
-                    },
-                    subtitle: Text(
-                      contact.phones.elementAt(0).value
-                    ),
-                    leading: (contact.avatar != null && contact.avatar.length > 0) ?
-                      CircleAvatar(
-                        backgroundImage: MemoryImage(contact.avatar),
-                      ) : 
-                      CircleAvatar(child: Text(contact.initials()))
-                  );
+                      title: Text(contact.displayName),
+                      onTap: () {
+                        String noValue = contact.phones.elementAt(0).value;
+                        Navigator.pop(context, noValue);
+                      },
+                      subtitle: contact.phones.isEmpty
+                          ? Text("Nomor tidak tersedia",
+                              style: TextStyle(color: Colors.red))
+                          : Text(contact.phones.elementAt(0).value),
+                      leading:
+                          (contact.avatar != null && contact.avatar.isNotEmpty)
+                              ? CircleAvatar(
+                                  backgroundImage: MemoryImage(contact.avatar),
+                                )
+                              : CircleAvatar(child: Text(contact.initials())));
                 },
               ),
             )
@@ -139,7 +139,6 @@ class _ContactsPageState extends State<ContactsPage> {
 }
 
 class ContactsPage2 extends StatefulWidget {
- 
   @override
   _ContactsPage2State createState() => _ContactsPage2State();
 }
@@ -165,7 +164,8 @@ class _ContactsPage2State extends State<ContactsPage2> {
   }
 
   getAllContacts() async {
-    List<Contact> _contacts = (await ContactsService.getContacts(withThumbnails: false)).toList();
+    List<Contact> _contacts =
+        (await ContactsService.getContacts(withThumbnails: false)).toList();
     setState(() {
       contacts = _contacts;
     });
@@ -231,40 +231,40 @@ class _ContactsPage2State extends State<ContactsPage2> {
               child: TextField(
                 controller: searchController,
                 decoration: InputDecoration(
-                  labelText: 'Search',
-                  border: new OutlineInputBorder(
-                    borderSide: new BorderSide(
-                      color: Theme.of(context).primaryColor
-                    )
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Theme.of(context).primaryColor
-                  )
-                ),
+                    labelText: 'Search',
+                    border: new OutlineInputBorder(
+                        borderSide: new BorderSide(
+                            color: Theme.of(context).primaryColor)),
+                    prefixIcon: Icon(Icons.search,
+                        color: Theme.of(context).primaryColor)),
               ),
             ),
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: isSearching == true ? contactsFiltered.length : contacts.length,
+                itemCount: isSearching == true
+                    ? contactsFiltered.length
+                    : contacts.length,
                 itemBuilder: (context, index) {
-                  Contact contact = isSearching == true ? contactsFiltered[index] : contacts[index];
+                  Contact contact = isSearching == true
+                      ? contactsFiltered[index]
+                      : contacts[index];
                   return ListTile(
-                    title: Text(contact.displayName),
-                     onTap: () {
-                      String noValue2 = contact.phones.elementAt(0).value;
-                      Navigator.pop(context, noValue2);
-                     },
-                    subtitle: Text(
-                      contact.phones.elementAt(0).value
-                    ),
-                    leading: (contact.avatar != null && contact.avatar.length > 0) ?
-                      CircleAvatar(
-                        backgroundImage: MemoryImage(contact.avatar),
-                      ) : 
-                      CircleAvatar(child: Text(contact.initials()))
-                  );
+                      title: Text(contact.displayName),
+                      onTap: () {
+                        String noValue2 = contact.phones.elementAt(0).value;
+                        Navigator.pop(context, noValue2);
+                      },
+                      subtitle: contact.phones.isEmpty
+                          ? Text("Nomor tidak tersedia",
+                              style: TextStyle(color: Colors.red))
+                          : Text(contact.phones.elementAt(0).value),
+                      leading:
+                          (contact.avatar != null && contact.avatar.length > 0)
+                              ? CircleAvatar(
+                                  backgroundImage: MemoryImage(contact.avatar),
+                                )
+                              : CircleAvatar(child: Text(contact.initials())));
                 },
               ),
             )

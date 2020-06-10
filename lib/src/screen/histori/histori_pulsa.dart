@@ -8,15 +8,15 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class HistoriDetailPage extends StatefulWidget {
+class HistoriPulsaPage extends StatefulWidget {
   final String headerUrl;
-  HistoriDetailPage(this.headerUrl);
+  HistoriPulsaPage(this.headerUrl);
 
   @override
-  _HistoriDetailPageState createState() => _HistoriDetailPageState();
+  _HistoriPulsaPageState createState() => _HistoriPulsaPageState();
 }
 
-class _HistoriDetailPageState extends State<HistoriDetailPage> {
+class _HistoriPulsaPageState extends State<HistoriPulsaPage> {
   Future<PostTrans> fetchTrans() async {
     final response = await http.get(widget.headerUrl);
     if (response.statusCode == 200) {
@@ -41,7 +41,7 @@ class _HistoriDetailPageState extends State<HistoriDetailPage> {
             child: IconButton(
                 icon: Icon(Icons.arrow_back_ios),
                 onPressed: () {
-                  _toLanding();
+                  Navigator.pop(context, true);
                 }),
           ),
         ),
@@ -61,7 +61,7 @@ class _HistoriDetailPageState extends State<HistoriDetailPage> {
                             children: <Widget>[
                               Container(
                                 margin:
-                                    EdgeInsets.only(top: 60.0, bottom: 15.0),
+                                    EdgeInsets.only(top: 20.0, bottom: 15.0),
                                 height: 100.0,
                                 width: 100.0,
                                 color: Colors.grey[300],
@@ -90,7 +90,7 @@ class _HistoriDetailPageState extends State<HistoriDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                margin: EdgeInsets.only(top: 50.0),
+                                margin: EdgeInsets.only(top: 35.0),
                                 child: Text('Detail'),
                               ),
                               Container(
@@ -178,8 +178,7 @@ class _HistoriDetailPageState extends State<HistoriDetailPage> {
                                           Container(
                                             margin:
                                                 EdgeInsets.only(bottom: 12.0),
-                                            child: Text(snapshot
-                                                .data.data[0].id
+                                            child: Text(snapshot.data.data[0].id
                                                 .toString()),
                                           ),
                                           Container(
