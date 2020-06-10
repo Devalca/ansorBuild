@@ -16,6 +16,7 @@ class TransferBerhasil extends StatefulWidget {
 }
 
 class _TransferBerhasilState extends State<TransferBerhasil> {
+  bool _isLoading = false;
   String _url = "";
   DataUserService _dataUserServices = DataUserService();
 
@@ -105,103 +106,6 @@ class _TransferBerhasilState extends State<TransferBerhasil> {
                                         fontSize: 12.0, color: Colors.black)),
                               ),
                               Container(height: 15),
-                              // Container(
-                              //     height: 100,
-                              //     child: FutureBuilder<DataUser>(
-                              //         future: _dataUserServices.getDataUser(),
-                              //         builder: (context, snapshot) {
-                              //           if (snapshot.hasData) {
-                              //             return ListView.builder(
-                              //                 itemCount:
-                              //                     snapshot.data.data.length,
-                              //                 itemBuilder: (context, i) {
-                              //                   return Column(
-                              //                       crossAxisAlignment:
-                              //                           CrossAxisAlignment
-                              //                               .start,
-                              //                       children: <Widget>[
-                              //                         InkWell(
-                              //                             onTap: () {},
-                              //                             child: Container(
-                              //                                 child: Column(
-                              //                                     crossAxisAlignment:
-                              //                                         CrossAxisAlignment
-                              //                                             .start,
-                              //                                     children: <
-                              //                                         Widget>[
-                              //                                   Padding(
-                              //                                     padding: const EdgeInsets
-                              //                                             .only(
-                              //                                         top: 10.0,
-                              //                                         bottom:
-                              //                                             0.0),
-                              //                                     child:
-                              //                                         Container(
-                              //                                             height:
-                              //                                                 30,
-                              //                                             child:
-                              //                                                 Text(
-                              //                                               snapshot.data.data[i].namaLengkap,
-                              //                                               style:
-                              //                                                   new TextStyle(fontSize: 16.0),
-                              //                                             )),
-                              //                                   ),
-                              //                                   Divider(
-                              //                                     height: 12,
-                              //                                     color: Colors
-                              //                                         .black,
-                              //                                   ),
-                              //                                 ]))),
-                              //                       ]);
-                              //                 });
-                              //           } else if (snapshot.hasError) {
-                              //             return Text("${snapshot.error}");
-                              //           }
-                              //           return Center(
-                              //               child: CircularProgressIndicator());
-                              //         })),
-                              // Container(
-                              //     child: FutureBuilder<DataUser>(
-                              //   future: _dataUserServices.getDataUser(),
-                              //   builder: (context, snapshot) {
-                              //     if (snapshot.hasData &&
-                              //         snapshot.data.data.isNotEmpty) {
-                              //       dynamic data = snapshot.data.data;
-                              //       print(data);
-                              //       return (Container(
-                              //           child: Column(
-                              //         crossAxisAlignment:
-                              //             CrossAxisAlignment.start,
-                              //         children: <Widget>[
-                              //           Text("Dari",
-                              //               style: new TextStyle(
-                              //                   color: Colors.black,
-                              //                   fontSize: 12.0,
-                              //                   fontWeight: FontWeight.bold)),
-                              //           Container(height: 5),
-                              //           Row(children: <Widget>[
-                              //             Container(
-                              //               margin:
-                              //                   EdgeInsets.only(right: 12.0),
-                              //               child: Image.asset(
-                              //                   "lib/src/assets/BPJS.png"),
-                              //             ),
-                              //             Container(
-                              //               child: Text(
-                              //                   "nama" + "\n" + "un1ty - nomor",
-                              //                   style: new TextStyle(
-                              //                       color: Colors.black,
-                              //                       fontSize: 12.0)),
-                              //             ),
-                              //           ]),
-                              //         ],
-                              //       )));
-                              //     } else if (snapshot.hasError) {
-                              //       return Text("${snapshot.error}");
-                              //     }
-                              //     return CircularProgressIndicator();
-                              //   },
-                              // )),
                               Container(height: 5),
                               Divider(
                                 height: 12,
@@ -262,7 +166,12 @@ class _TransferBerhasilState extends State<TransferBerhasil> {
             child: Text('SELESAI',
                 style: TextStyle(color: Colors.green, fontSize: 16.0)),
             color: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              setState(() => _isLoading = true);
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (__) => new LandingPage()));
+              setState(() => _isLoading = false);
+            },
           ),
         ),
       ),
