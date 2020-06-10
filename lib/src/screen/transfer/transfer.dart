@@ -268,7 +268,7 @@ class _TransferState extends State<Transfer> {
                     new MaterialPageRoute(builder: (__) => new LandingPage()));
               }),
           title: Text(
-            "Trasfer",
+            "Transfer",
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.transparent,
