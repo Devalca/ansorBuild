@@ -11,17 +11,29 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.9+16
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: '>=2.2.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.12.0+4
-  expandable: ^4.1.2
-  shared_preferences: ^0.5.6+2
+  http: ^0.12.1
+  expandable: ^4.1.4
+  get_it: ^3.0.3
+  shared_preferences: ^0.5.6+3
+  intl : ^0.16.1
+  # carousel_slider: ^1.4.1
+  carousel_slider: ^2.0.0
+  indonesia: ^1.0.1
+  permission_handler: ^4.0.0
+  # contacts_service: ^0.3.10
+  contacts_service: ^0.4.6
+  pin_entry_text_field: ^0.1.4
+  material_search: ^0.2.8
+  sticky_headers: ^0.1.8+1
+  package_info: ^0.4.0+16
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -31,32 +43,76 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
   assets:
-    - lib/src/assets/hack.png
+    # Api Local Dummy
+    - lib/src/assets/apidummy/wilayah.json
+    # Example Icon
     - lib/src/assets/qr-code.png
-    
+    # Logo Apps
+    - lib/src/assets/lapak_sahabat.png
+    - lib/src/assets/sahabat_text.png
+    - lib/src/assets/sahabat_logo.png
+    # Iklan Apps
+    - lib/src/assets/BANNER_PULSA.jpg
+    - lib/src/assets/BANNER_ATAS.jpg
+    - lib/src/assets/BANNER_BAWAH.jpg
+    # Icon Apps
+    - lib/src/assets/LISTRIK.png
+    - lib/src/assets/BPJS.png
+    - lib/src/assets/LISTRIK.png
+    - lib/src/assets/PDAM.png
+    - lib/src/assets/PULSA.png
+    - lib/src/assets/XMLID_2.svg
+    - lib/src/assets/produk.jpeg
+    - lib/src/assets/CARI_MASJID.png
+    - lib/src/assets/JADWAL_KAJIAN.png
+    - lib/src/assets/JAM_SOLAT.png
+    - lib/src/assets/KIBLAT.png
+    - lib/src/assets/QURAN.png
+    - lib/src/assets/LAINNYA.png
+    - lib/src/assets/placeholder.jpg
+    # Navbar Icon Apps
+    - lib/src/assets/ACCOUNT_GREEN.png
+    - lib/src/assets/ACCOUNT.png
+    - lib/src/assets/HOME_GREEN.png
+    - lib/src/assets/HOME.png
+    - lib/src/assets/INBOX_GREEN.png
+    - lib/src/assets/INBOX.png
+    - lib/src/assets/TRANSFER_GREEN.png
+    - lib/src/assets/TRANSFER.png
+    - lib/src/assets/XMLID_2.png
+    - lib/src/assets/scan_qr.png
+    # List Icon Bank
+    - lib/src/assets/bank/bca.png
+    - lib/src/assets/bank/niaga.png
+    - lib/src/assets/bank/bjb.png
+    - lib/src/assets/bank/bni.png
+    - lib/src/assets/bank/bri.png
+    - lib/src/assets/bank/dki.png
+    - lib/src/assets/bank/mandiri.png
+    - lib/src/assets/bank/mybank.png
+    - lib/src/assets/bank/ocbc.png
+    - lib/src/assets/bank/permata.png
+    # promo
+    - lib/src/assets/promo.png
+    - lib/src/assets/detailPromo.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

@@ -9,14 +9,14 @@ class SaldoAppBar extends AppBar {
 
   static Widget _buildSaldoAppBar() {
     return Container(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+      padding: EdgeInsets.only(left: 9.0, right: 16.0, top: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text("Lapak Sahabat",
-          style: TextStyle(
-            fontSize: 25.0
-          ),
+          Image.asset(
+            'lib/src/assets/lapak_sahabat.png',
+            fit: BoxFit.cover,
+            width: 140,
           ),
           Container(
             child: Row(
@@ -25,14 +25,10 @@ class SaldoAppBar extends AppBar {
                   height: 28.0,
                   width: 28.0,
                   padding: EdgeInsets.all(6.0),
-                  decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(100.0)),
-                      color: Colors.orangeAccent),
                   alignment: Alignment.centerRight,
                   child: Icon(
                     Icons.notifications,
-                    color: Colors.white,
+                    color: Colors.green,
                     size: 16.0,
                   ),
                 ),

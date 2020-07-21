@@ -1,135 +1,207 @@
-import 'package:ansor_build/src/model/ansor_model.dart';
-import 'package:ansor_build/src/service/api_service.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+import 'package:ansor_build/src/model/pdam_model.dart';
+import 'package:ansor_build/src/screen/component/loading.dart';
+import 'package:ansor_build/src/screen/ppob/pdam/list_screen.dart';
+import 'package:ansor_build/src/service/local_service.dart';
+import 'package:ansor_build/src/service/pdam_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PdamPage extends StatefulWidget {
+  final String namaKotaKab;
+  PdamPage(this.namaKotaKab);
+
   @override
   _PdamPageState createState() => _PdamPageState();
 }
 
 class _PdamPageState extends State<PdamPage> {
-  bool _isLoading = false;
-  ApiService _apiService = ApiService();
-  bool _namaWilayahTxt;
-  bool _noPelangganTxt;
+  bool _validate = true;
+  final GlobalKey<FormState> _key = GlobalKey();
+  PdamService _pdamService = PdamService();
+  LocalService _localService = LocalService();
+  String inputNomor, inputWilayah;
   TextEditingController _controllerWilayah = TextEditingController();
-  TextEditingController _controllerNoPelanggan = TextEditingController();
+  TextEditingController _controllerNomor = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       key: _scaffoldState,
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('Air PDAM'),
+        elevation: 1,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+        ),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context, true);
+            }),
+        backgroundColor: Colors.white,
+        title: Text(
+          "Air PDAM",
+          style: TextStyle(color: Colors.black),
+        ),
       ),
-      body: Stack(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                _buildTextFieldWilayah(),
-                _buildTextFieldPelanggan(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: RaisedButton(
-                    onPressed: () {
-                      if (_namaWilayahTxt == null ||
-                          _noPelangganTxt == null ||
-                          !_namaWilayahTxt ||
-                          !_noPelangganTxt) {
-                        _scaffoldState.currentState.showSnackBar(
-                          SnackBar(
-                            content: Text("Please fill all field"),
-                          ),
-                        );
-                        return;
-                      }
-                      setState(() => _isLoading = true);
-                      String nama_wilayah = _controllerWilayah.text.toString();
-                      int no_pelanggan = int.parse(_controllerNoPelanggan.text.toString());
-                      ScPdam wilayah = ScPdam(nama_wilayah: nama_wilayah, no_pelanggan: no_pelanggan);
-                      // _apiService.createPdam(wilayah).then((isSuccess) {
-                      //   setState(() => _isLoading = false);
-                      //   if (isSuccess) {
-                      //     Navigator.pop(_scaffoldState.currentState.context);
-                      //   } else {
-                      //     _scaffoldState.currentState.showSnackBar(SnackBar(
-                      //       content: Text("Submit data failed"),
-                      //     ));
-                      //   }
-                      // });
-                    },
-                    child: Text(
-                      "Submit".toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    color: Colors.orange[600],
-                  ),
-                )
-              ],
-            ),
-          ),
-          _isLoading
-              ? Stack(
+      body: Form(
+        key: _key,
+        autovalidate: _validate,
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Opacity(
-                      opacity: 0.3,
-                      child: ModalBarrier(
-                        dismissible: false,
-                        color: Colors.grey,
-                      ),
+                    Container(
+                      margin: EdgeInsets.only(top: 12.0),
+                      child: Text('Nama Wilayah'),
                     ),
-                    Center(
-                      child: CircularProgressIndicator(),
+                    Stack(
+                      children: <Widget>[
+                        _buildTextFieldWilayah(),
+                        Container(
+                          width: 500,
+                          height: 50,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ListWilayah()));
+                            },
+                          ),
+                        ),
+                      ],
                     ),
+                    Container(
+                      margin: EdgeInsets.only(top: 12.0),
+                      child: Text('Nomor Pelanggan'),
+                    ),
+                    _buildTextFieldPelanggan(),
                   ],
-                )
-              : Container(),
-        ],
+                ),
+              ),
+              Column(
+                children: <Widget>[
+                  Divider(),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    alignment: Alignment.centerRight,
+                    child: RaisedButton(
+                      onPressed: () {
+                        _sendToServer();
+                      },
+                      child: Text(
+                        "LANJUT".toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: Colors.green,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
+
+  String validateNomor(String value) {
+    String patttern = r'(^[0-9]*$)';
+    RegExp regExp = RegExp(patttern);
+    if (value.isEmpty) {
+      return "Wajib diisi";
+    }
+    if (value.length < 11) {
+      return "Format nomor salah";
+    } else if (!regExp.hasMatch(value)) {
+      return "Format nomor salah";
+    }
+    return null;
+  }
+
+  String validateWilayah(String value) {
+    if (value == "Pilih Daerah") {
+      return "Silahkan pilih nama wilayah";
+    }
+    return null;
+  }
+
   Widget _buildTextFieldWilayah() {
-    return TextField(
+    _controllerWilayah.text =
+        widget.namaKotaKab == "" ? "Pilih Daerah" : widget.namaKotaKab;
+    return TextFormField(
+      // enabled: false,
       controller: _controllerWilayah,
-      keyboardType: TextInputType.text,
+      validator: validateWilayah,
       decoration: InputDecoration(
-        labelText: "Nama Wilayah",
-        errorText: _namaWilayahTxt == null || _namaWilayahTxt
-            ? null
-            : "Nama Wilayah",
+        suffixIcon: Icon(
+          Icons.expand_more,
+          color: Colors.grey,
+        ),
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.grey)),
       ),
-      onChanged: (value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _namaWilayahTxt) {
-          setState(() => _namaWilayahTxt = isFieldValid);
-        }
-      },
     );
   }
 
   Widget _buildTextFieldPelanggan() {
-    return TextField(
-      controller: _controllerNoPelanggan,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        labelText: "No Pelanggan",
-        errorText: _noPelangganTxt == null || _noPelangganTxt
-            ? null
-            : "No Pelanggan",
+    return Container(
+      child: TextFormField(
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(11),
+        ],
+        controller: _controllerNomor,
+        keyboardType: TextInputType.phone,
+        validator: validateNomor,
+        onSaved: (String val) {
+          inputNomor = val;
+        },
+        decoration: InputDecoration(
+          focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(width: 1, color: Colors.grey)),
+          hintText: "Contoh : 123456",
+        ),
       ),
-      onChanged: (value) {
-        bool isFieldValid = value.trim().isNotEmpty;
-        if (isFieldValid != _noPelangganTxt) {
-          setState(() => _noPelangganTxt = isFieldValid);
-        }
-      },
     );
+  }
+
+  void _sendToServer() {
+    if (_key.currentState.validate()) {
+      _key.currentState.save();
+      String nomor = _controllerNomor.text.toString();
+      String wilayah = _controllerWilayah.text = widget.namaKotaKab;
+      PostPdam postPdam = PostPdam(noPelanggan: nomor, namaWilayah: wilayah);
+      if (nomor != null || wilayah != null) {
+        _pdamService.createPostPdam(postPdam).then((response) async {
+          if (response.statusCode == 422) {
+            PdamDialog().pdamNullDialog(context);
+          } else if (response.statusCode == 200) {
+            Map blok = jsonDecode(response.body);
+            userUid = blok['data'][0]['id'].toString();
+            _localService.saveIdName(userUid).then((bool committed) {});
+            PdamDialog().pdamLoadDialog(context);
+          } else if (response.statusCode == 406) {
+            PdamDialog().pdamDoneDialog(context);
+          } else {
+            print("INI STATUS CODE : " + response.statusCode.toString());
+          }
+        });
+      }
+    } else {
+      setState(() {
+        _validate = true;
+      });
+    }
   }
 }
